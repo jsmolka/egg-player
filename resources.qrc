@@ -1,2 +1,15 @@
-<!DOCTYPE RCC>
-<RCC version="1.0"/>
+<RCC>
+	<qresource prefix="/">
+		<file>images/back.png</file>
+		<file>images/forward.png</file>
+		<file>images/mute.png</file>
+		<file>images/next.png</file>
+		<file>images/pause.png</file>
+		<file>images/play.png</file>
+		<file>images/replay.png</file>
+		<file>images/rewind.png</file>
+		<file>images/shuffle.png</file>
+		<file>images/stop.png</file>
+		<file>images/volume.png</file>
+	</qresource>
+</RCC>
