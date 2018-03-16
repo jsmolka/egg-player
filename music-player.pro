@@ -1,11 +1,26 @@
-QT += core
-
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
-
 TARGET = music-player
 TEMPLATE = app
 
-DEFINES += QT_DEPRECATED_WARNINGS
+QT += \
+    core \
+    widgets
+
+# CONFIG += \
+#    console
+
+INCLUDEPATH += \
+    src/const
+
+HEADERS += \
+    src/const/path.hpp \
+    src/const/language.hpp \
+    src/util/fileutil.hpp
 
 SOURCES += \
-        src/main/main.cpp
+    src/main/main.cpp \
+    src/const/path.cpp \
+    src/const/language.cpp \
+    src/util/fileutil.cpp
+
+RESOURCES += \
+    resources.qrc
