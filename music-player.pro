@@ -23,6 +23,3 @@ SOURCES += \
     src/const/language.cpp \
     src/util/fileutil.cpp \
     src/gui/components/iconbutton.cpp
-
-RESOURCES += \
-    resources.qrc
