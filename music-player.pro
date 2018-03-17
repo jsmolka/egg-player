@@ -9,17 +9,17 @@ QT += \
 #    console
 
 # INCLUDEPATH += \
-#     externs/
+#     ext/
 
 HEADERS += \
-    src/const/path.hpp \
-    src/const/language.hpp \
-    src/util/fileutil.hpp \
-    src/gui/components/iconbutton.hpp
+    src/constants/path.hpp \
+    src/constants/language.hpp \
+    src/gui/components/iconbutton.hpp \
+    src/utils/fileutil.hpp
 
 SOURCES += \
-    src/main/main.cpp \
-    src/const/path.cpp \
-    src/const/language.cpp \
-    src/util/fileutil.cpp \
-    src/gui/components/iconbutton.cpp
+    src/main.cpp \
+    src/constants/path.cpp \
+    src/constants/language.cpp \
+    src/gui/components/iconbutton.cpp \
+    src/utils/fileutil.cpp
