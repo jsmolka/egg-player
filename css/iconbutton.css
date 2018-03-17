@@ -1,11 +1,13 @@
 IconButton {
-    background-color: yellow;
-}
-
-IconButton:pressed {
-     background-color: red;
+    background: transparent;
 }
 
 IconButton:hover {
-     background-color: blue;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.35);
+}
+
+IconButton:pressed {
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.1);
 }
