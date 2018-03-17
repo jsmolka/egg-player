@@ -5,16 +5,19 @@
 #include <QString>
 
 // Images
-extern QString IMG_BACK;
-extern QString IMG_FORWARD;
-extern QString IMG_MUTE;
-extern QString IMG_NEXT;
-extern QString IMG_PAUSE;
-extern QString IMG_PLAY;
-extern QString IMG_REPLAY;
-extern QString IMG_REWIND;
-extern QString IMG_SHUFFLE;
-extern QString IMG_STOP;
-extern QString IMG_VOLUME;
+extern const QString IMG_BACK;
+extern const QString IMG_FORWARD;
+extern const QString IMG_MUTE;
+extern const QString IMG_NEXT;
+extern const QString IMG_PAUSE;
+extern const QString IMG_PLAY;
+extern const QString IMG_REPLAY;
+extern const QString IMG_REWIND;
+extern const QString IMG_SHUFFLE;
+extern const QString IMG_STOP;
+extern const QString IMG_VOLUME;
+
+// CSS
+extern const QString CSS_ICONBUTTON;
 
 #endif // PATH_HPP

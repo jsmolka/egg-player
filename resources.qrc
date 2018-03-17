@@ -11,5 +11,7 @@
 		<file>images/shuffle.png</file>
 		<file>images/stop.png</file>
 		<file>images/volume.png</file>
+		
+		<file>css/iconbutton.css</file>
 	</qresource>
 </RCC>

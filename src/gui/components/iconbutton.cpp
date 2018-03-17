@@ -5,7 +5,6 @@ IconButton::IconButton(QWidget *parent) :
 {
     mToggle = true;
 
-    setFlat(true);
     connect(this, SIGNAL(clicked(bool)), this, SLOT(toggleIcon()));
 }
 

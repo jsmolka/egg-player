@@ -1,0 +1,11 @@
+IconButton {
+    background-color: yellow;
+}
+
+IconButton:pressed {
+     background-color: red;
+}
+
+IconButton:hover {
+     background-color: blue;
+}

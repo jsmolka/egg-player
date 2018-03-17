@@ -8,8 +8,8 @@ QT += \
 # CONFIG += \
 #    console
 
-INCLUDEPATH += \
-    src/const
+# INCLUDEPATH += \
+#     externs/
 
 HEADERS += \
     src/const/path.hpp \
