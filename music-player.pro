@@ -8,6 +8,9 @@ QT += \
 INCLUDEPATH += \
     ext/taglib/include
 
+LIBS += \
+    -L"ext/taglib/lib" -ltag.dll
+
 HEADERS += \
     src/constants/path.hpp \
     src/constants/language.hpp \
