@@ -5,11 +5,8 @@ QT += \
     core \
     widgets
 
-# CONFIG += \
-#    console
-
-# INCLUDEPATH += \
-#     ext/
+INCLUDEPATH += \
+    ext/taglib/include
 
 HEADERS += \
     src/constants/path.hpp \
