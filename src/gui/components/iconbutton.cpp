@@ -1,31 +1,52 @@
 #include "iconbutton.hpp"
 
-IconButton::IconButton(QWidget *parent) :
-    QPushButton(parent)
+IconButton::IconButton(QWidget *parent) : QPushButton(parent)
 {
-    mToggle = true;
+    m_selected = true;
 
-    connect(this, SIGNAL(clicked(bool)), this, SLOT(toggleIcon()));
+    connect(this, SIGNAL(clicked(bool)), this, SLOT(switchIcon(void)));
+}
+
+void IconButton::setIcon1(QIcon icon)
+{
+    m_icon1 = icon;
 }
 
 void IconButton::setIcon1(QString path)
 {
-    mIcon1 = QIcon(path);
+    setIcon1(QIcon(path));
 }
 
 QIcon IconButton::icon1() const
 {
-    return mIcon1;
+    return m_icon1;
+}
+
+void IconButton::setIcon2(QIcon icon)
+{
+    m_icon2 = icon;
 }
 
 void IconButton::setIcon2(QString path)
 {
-    mIcon2 = QIcon(path);
+    setIcon2(QIcon(path));
 }
 
 QIcon IconButton::icon2() const
 {
-    return mIcon2;
+    return m_icon2;
+}
+
+void IconButton::setSelected(bool selected)
+{
+    m_selected = selected;
+
+    setSelectedIcon();
+}
+
+bool IconButton::selected() const
+{
+    return m_selected;
 }
 
 void IconButton::init(QString path, QSize size)
@@ -37,21 +58,24 @@ void IconButton::init(QString path1, QString path2, QSize size)
 {
     setIcon1(path1);
     setIcon2(path2);
-    setIconSize(size);
 
-    setIcon(mIcon1);
+    setIcon(m_icon1);
+    setIconSize(size);
 }
 
-void IconButton::toggleIcon()
+void IconButton::switchIcon()
 {
-    mToggle = !mToggle;
+    setSelected(!m_selected);
+}
 
-    if (mToggle && !mIcon1.isNull())
+void IconButton::setSelectedIcon()
+{
+    if (m_selected && !m_icon1.isNull())
     {
-        setIcon(mIcon1);
+        setIcon(m_icon1);
     }
-    else if (!mIcon2.isNull())
+    else if (!m_icon2.isNull())
     {
-        setIcon(mIcon2);
+        setIcon(m_icon2);
     }
 }
