@@ -1,10 +1,5 @@
 #include "fileutil.hpp"
 
-FileUtil::FileUtil()
-{
-
-}
-
 QString FileUtil::read(QString path)
 {
     QFile file(path);

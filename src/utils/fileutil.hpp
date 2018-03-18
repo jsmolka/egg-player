@@ -8,8 +8,6 @@
 class FileUtil
 {
 public:
-    FileUtil();
-
     static QString read(QString path);
 };
 
