@@ -1,5 +1,5 @@
-#ifndef FILEUTIL_H
-#define FILEUTIL_H
+#ifndef FILEUTIL_HPP
+#define FILEUTIL_HPP
 
 #include <QDebug>
 #include <QDir>
@@ -20,4 +20,4 @@ public:
     static QStringList glob(QString &path, QString pattern, bool recursive = true);
 };
 
-#endif // FILEUTIL_H
+#endif // FILEUTIL_HPP

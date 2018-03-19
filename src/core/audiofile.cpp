@@ -177,9 +177,7 @@ QImage AudioFile::loadCoverFromFile()
         QString path = FileUtil::join(dir, cover);
 
         if (FileUtil::exists(path))
-        {
             return QImage(path);
-        }
     }
     return QImage();
 }
