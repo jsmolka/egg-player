@@ -3,8 +3,11 @@
 #include <QWidget>
 #include <QImage>
 #include <QLabel>
+#include <QList>
+#include <QStringList>
 
 #include "src/core/audiofile.hpp"
+#include "src/utils/fileutil.hpp"
 
 int main(int argc, char *argv[])
 {
@@ -32,6 +35,14 @@ int main(int argc, char *argv[])
     label.show();
 
     window.show();
+    QList<AudioFile> fileList;
+    QString path("C:/Users/Julian/Music");
+    QStringList stringList = FileUtil::glob(path, "*.mp3");
+    for (QString string : stringList)
+    {
+        fileList.append(AudioFile(string, false));
+        qDebug() << string;
+    }
 
     return app.exec();
 }
