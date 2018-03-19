@@ -17,3 +17,23 @@ QString FileUtil::read(QString path)
 
     return text;
 }
+
+bool FileUtil::exists(QString path)
+{
+    return QFileInfo(path).exists();
+}
+
+QDir FileUtil::dir(QString path)
+{
+    return QDir(path).current();
+}
+
+QString FileUtil::join(QDir dir, QString path)
+{
+    return dir.current().filePath(path);
+}
+
+QString FileUtil::join(QString path1, QString path2)
+{
+    return join(QDir(path1), path2);
+}

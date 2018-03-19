@@ -1,23 +1,19 @@
 #include "audiofile.hpp"
 
-AudioFile::AudioFile(QString path)
+using namespace TagLib;
+
+AudioFile::AudioFile(QString path, bool loadCover)
 {
     m_path = path;
-    m_ref = TagLib::FileRef(path.toLatin1().data());
+    m_ref = FileRef(path.toLatin1().data());
 
     if (!m_ref.isNull())
-    {
         m_isValid = readTags() && readAudio();
-    }
     else
-    {
         m_isValid = false;
-    }
 
-    if (!readImage())
-    {
-        m_image = QImage(IMG_DEFAULT_COVER);
-    }
+    if (loadCover)
+        setCover();
 }
 
 bool AudioFile::isValid() const
@@ -80,19 +76,32 @@ quint32 AudioFile::minutes() const
     return (m_length - seconds()) / 60;
 }
 
-QImage AudioFile::image() const
+void AudioFile::setCover(QImage cover)
 {
-    return m_image;
+    m_cover = cover;
+}
+
+QImage AudioFile::cover() const
+{
+    return m_cover;
+}
+
+void AudioFile::setCoverPtr(QImage *coverPtr)
+{
+    m_coverPtr = coverPtr;
+}
+
+QImage * AudioFile::coverPtr() const
+{
+    return m_coverPtr;
 }
 
 bool AudioFile::readTags()
 {
     if (!m_ref.tag())
-    {
         return false;
-    }
 
-    TagLib::Tag *tag = m_ref.tag();
+    Tag *tag = m_ref.tag();
 
     m_title = QString(tag->title().toCString());
     m_artist = QString(tag->artist().toCString());
@@ -107,11 +116,9 @@ bool AudioFile::readTags()
 bool AudioFile::readAudio()
 {
     if (!m_ref.audioProperties())
-    {
         return false;
-    }
 
-    TagLib::AudioProperties *audio = m_ref.audioProperties();
+    AudioProperties *audio = m_ref.audioProperties();
 
     m_length = audio->length();
     m_bitrate = audio->bitrate();
@@ -119,13 +126,58 @@ bool AudioFile::readAudio()
     return true;
 }
 
-bool AudioFile::readImage()
+void AudioFile::setCover()
 {
-    /*
-     * TODO:
-     * implement
-     * ini setting to auto load cover.png
-     * support for other file types
-     */
+    if (loadCoverFromFile())
+        return;
+    if (readCover())
+        return;
+    m_cover = QImage(IMG_DEFAULT_COVER);
+}
+
+bool AudioFile::readCover()
+{
+    MPEG::File file(m_path.toLatin1().data());
+    ID3v2::Tag *tag = file.ID3v2Tag();
+    QImage image;
+
+    if (tag)
+    {
+        ID3v2::FrameList frameList = tag->frameListMap()["APIC"];
+        if (!frameList.isEmpty())
+        {
+            ID3v2::FrameList::ConstIterator it = frameList.begin();
+            for (; it != frameList.end(); it++)
+            {
+                ID3v2::AttachedPictureFrame *frame = static_cast<ID3v2::AttachedPictureFrame *>(*it);
+                if (frame->type() == ID3v2::AttachedPictureFrame::FrontCover)
+                {
+                    image.loadFromData((const uchar *) frame->picture().data(), frame->picture().size());
+                    m_cover = image;
+                    return true;
+                }
+            }
+        }
+    }
+    return false;
+}
+
+bool AudioFile::loadCoverFromFile()
+{
+    QStringList covers;
+    covers << "cover.jpg" << "cover.jpeg" << "cover.png";
+
+    QDir dir = FileUtil::dir(m_path);
+
+    for (QString cover : covers)
+    {
+        QString path = FileUtil::join(dir, cover);
+
+        if (FileUtil::exists(path))
+        {
+            m_cover = QImage(path);
+            return true;
+        }
+    }
     return false;
 }

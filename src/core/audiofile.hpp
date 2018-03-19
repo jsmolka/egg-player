@@ -3,16 +3,24 @@
 
 #include <QImage>
 #include <QString>
+#include <QStringList>
 
+#include <taglib/attachedpictureframe.h>
 #include <taglib/fileref.h>
+#include <taglib/id3v2tag.h>
+#include <taglib/id3v2frame.h>
+#include <taglib/mpegfile.h>
 #include <taglib/tag.h>
 
 #include <src/constants/path.hpp>
+#include <src/utils/fileutil.hpp>
+
+using namespace TagLib;
 
 class AudioFile
 {
 public:
-    explicit AudioFile(QString path);
+    AudioFile(QString path, bool loadCover = true);
 
     bool isValid() const;
     QString path() const;
@@ -24,7 +32,12 @@ public:
     quint32 track() const;
     quint32 length() const;
     quint32 bitrate() const;
-    QImage image() const;
+
+    void setCover(QImage cover);
+    QImage cover() const;
+
+    void setCoverPtr(QImage *coverPtr);
+    QImage * coverPtr() const;
 
     quint32 seconds() const;
     quint32 minutes() const;
@@ -32,9 +45,11 @@ public:
 private:
     bool readTags();
     bool readAudio();
-    bool readImage();
+    void setCover();
+    bool readCover();
+    bool loadCoverFromFile();
 
-    TagLib::FileRef m_ref;
+    FileRef m_ref;
     bool m_isValid;
     QString m_path;
     QString m_title;
@@ -45,7 +60,8 @@ private:
     quint32 m_track;
     quint32 m_length;
     quint32 m_bitrate;
-    QImage m_image;
+    QImage m_cover;
+    QImage *m_coverPtr;
 };
 
 #endif // AUDIOFILE_HPP
