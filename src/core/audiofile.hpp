@@ -20,7 +20,7 @@ using namespace TagLib;
 class AudioFile
 {
 public:
-    AudioFile(QString path, bool loadCover = true);
+    AudioFile(QString path, bool autoLoadCover = true);
 
     bool isValid() const;
     QString path() const;
@@ -42,12 +42,13 @@ public:
     quint32 seconds() const;
     quint32 minutes() const;
 
+    QImage getCover();
+
 private:
     bool readTags();
     bool readAudio();
-    void setCover();
-    bool readCover();
-    bool loadCoverFromFile();
+    QImage readCover();
+    QImage loadCoverFromFile();
 
     FileRef m_ref;
     bool m_isValid;

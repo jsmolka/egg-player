@@ -2,7 +2,7 @@
 
 using namespace TagLib;
 
-AudioFile::AudioFile(QString path, bool loadCover)
+AudioFile::AudioFile(QString path, bool autoLoadCover)
 {
     m_path = path;
     m_ref = FileRef(path.toLatin1().data());
@@ -12,8 +12,8 @@ AudioFile::AudioFile(QString path, bool loadCover)
     else
         m_isValid = false;
 
-    if (loadCover)
-        setCover();
+    if (autoLoadCover)
+        m_cover = getCover();
 }
 
 bool AudioFile::isValid() const
@@ -126,16 +126,20 @@ bool AudioFile::readAudio()
     return true;
 }
 
-void AudioFile::setCover()
+QImage AudioFile::getCover()
 {
-    if (loadCoverFromFile())
-        return;
-    if (readCover())
-        return;
-    m_cover = QImage(IMG_DEFAULT_COVER);
+    QImage image = loadCoverFromFile();
+    if (!image.isNull())
+        return image;
+
+    image = readCover();
+    if (!image.isNull())
+        return image;
+
+    return QImage(IMG_DEFAULT_COVER);
 }
 
-bool AudioFile::readCover()
+QImage AudioFile::readCover()
 {
     MPEG::File file(m_path.toLatin1().data());
     ID3v2::Tag *tag = file.ID3v2Tag();
@@ -153,16 +157,15 @@ bool AudioFile::readCover()
                 if (frame->type() == ID3v2::AttachedPictureFrame::FrontCover)
                 {
                     image.loadFromData((const uchar *) frame->picture().data(), frame->picture().size());
-                    m_cover = image;
-                    return true;
+                    return image;
                 }
             }
         }
     }
-    return false;
+    return image;
 }
 
-bool AudioFile::loadCoverFromFile()
+QImage AudioFile::loadCoverFromFile()
 {
     QStringList covers;
     covers << "cover.jpg" << "cover.jpeg" << "cover.png";
@@ -175,9 +178,8 @@ bool AudioFile::loadCoverFromFile()
 
         if (FileUtil::exists(path))
         {
-            m_cover = QImage(path);
-            return true;
+            return QImage(path);
         }
     }
-    return false;
+    return QImage();
 }
