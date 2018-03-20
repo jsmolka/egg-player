@@ -17,7 +17,7 @@ public:
     static QDir dir(QString path);
     static QString join(QDir dir, QString path);
     static QString join(QString path1, QString path2);
-    static QStringList glob(QString &path, QString pattern, bool recursive = true);
+    static QStringList glob(const QString &path, QString pattern, bool recursive = true);
 };
 
 #endif // FILEUTIL_HPP

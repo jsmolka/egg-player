@@ -6,7 +6,7 @@ QString FileUtil::read(QString path)
 
     if (!file.open(QFile::ReadOnly | QFile::Text))
     {
-        qDebug() << "Could not read file: " << path;
+        qDebug() << "Could not read file:" << path;
         return QString();
     }
 
@@ -30,7 +30,7 @@ QDir FileUtil::dir(QString path)
         return QDir(path);
     if (info.isFile())
         return info.absoluteDir();
-    qDebug() << "Could not find dir for: " << path;
+    qDebug() << "Could not find dir for:" << path;
     return QDir();
 }
 
@@ -44,7 +44,7 @@ QString FileUtil::join(QString path1, QString path2)
     return join(FileUtil::dir(path1), path2);
 }
 
-QStringList FileUtil::glob(QString &path, QString pattern, bool recursive)
+QStringList FileUtil::glob(const QString &path, QString pattern, bool recursive)
 {
     QDir dir = FileUtil::dir(path);
     QStringList filter;

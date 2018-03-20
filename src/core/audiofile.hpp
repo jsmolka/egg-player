@@ -4,6 +4,7 @@
 #include <QImage>
 #include <QString>
 #include <QStringList>
+#include <QUrl>
 
 #include <taglib/attachedpictureframe.h>
 #include <taglib/fileref.h>
@@ -15,12 +16,10 @@
 #include <src/constants/path.hpp>
 #include <src/utils/fileutil.hpp>
 
-using namespace TagLib;
-
 class AudioFile
 {
 public:
-    AudioFile(QString path, bool autoLoadCover = true);
+    AudioFile(QString path);
 
     bool isValid() const;
     QString path() const;
@@ -31,26 +30,18 @@ public:
     quint32 year() const;
     quint32 track() const;
     quint32 length() const;
-    quint32 bitrate() const;
-
-    void setCover(QImage cover);
-    QImage cover() const;
-
-    void setCoverPtr(QImage *coverPtr);
-    QImage * coverPtr() const;
 
     quint32 seconds() const;
     quint32 minutes() const;
+    QUrl url() const;
 
     QImage getCover();
 
 private:
     bool readTags();
-    bool readAudio();
     QImage readCover();
     QImage loadCoverFromFile();
 
-    FileRef m_ref;
     bool m_isValid;
     QString m_path;
     QString m_title;
@@ -60,9 +51,6 @@ private:
     quint32 m_year;
     quint32 m_track;
     quint32 m_length;
-    quint32 m_bitrate;
-    QImage m_cover;
-    QImage *m_coverPtr;
 };
 
 #endif // AUDIOFILE_HPP

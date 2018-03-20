@@ -3,7 +3,8 @@ TEMPLATE = app
 
 QT += \
     core \
-    widgets
+    widgets \
+    multimedia
 
 INCLUDEPATH += \
     ext/taglib/include
