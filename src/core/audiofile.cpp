@@ -133,6 +133,8 @@ QImage AudioFile::readCover()
 QImage AudioFile::loadCoverFromFile()
 {
     QStringList covers;
+    covers << "cover.jpg" << "cover.jpeg" << "cover.png";
+
     QDir dir = FileUtil::dir(m_path);
 
     for (QString cover : covers)
