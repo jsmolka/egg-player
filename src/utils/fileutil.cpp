@@ -5,10 +5,7 @@ QString FileUtil::read(QString path)
     QFile file(path);
 
     if (!file.open(QFile::ReadOnly | QFile::Text))
-    {
-        qDebug() << "Could not read file:" << path;
         return QString();
-    }
 
     QTextStream stream(&file);
     QString text = stream.readAll();
@@ -30,7 +27,6 @@ QDir FileUtil::dir(QString path)
         return QDir(path);
     if (info.isFile())
         return info.absoluteDir();
-    qDebug() << "Could not find dir for:" << path;
     return QDir();
 }
 

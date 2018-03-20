@@ -34,11 +34,12 @@ public:
     quint32 seconds() const;
     quint32 minutes() const;
     QUrl url() const;
-
-    QImage getCover();
+    QImage cover();
 
 private:
     bool readTags();
+    QImage resizeCover(QImage image);
+    QImage getCover();
     QImage readCover();
     QImage loadCoverFromFile();
 

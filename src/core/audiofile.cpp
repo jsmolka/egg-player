@@ -68,6 +68,11 @@ QUrl AudioFile::url() const
     return QUrl::fromLocalFile(m_path);
 }
 
+QImage AudioFile::cover()
+{
+    return resizeCover(getCover());
+}
+
 bool AudioFile::readTags()
 {
     FileRef fileRef(m_path.toLatin1().data());
@@ -89,13 +94,18 @@ bool AudioFile::readTags()
     return true;
 }
 
+QImage AudioFile::resizeCover(QImage image)
+{
+    return image.scaled(500, 500, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+}
+
 QImage AudioFile::getCover()
 {
-    QImage image = loadCoverFromFile();
+    QImage image = readCover();
     if (!image.isNull())
         return image;
 
-    image = readCover();
+    image = loadCoverFromFile();
     if (!image.isNull())
         return image;
 
@@ -113,16 +123,8 @@ QImage AudioFile::readCover()
         ID3v2::FrameList frameList = tag->frameListMap()["APIC"];
         if (!frameList.isEmpty())
         {
-            ID3v2::FrameList::ConstIterator it = frameList.begin();
-            for (; it != frameList.end(); it++)
-            {
-                ID3v2::AttachedPictureFrame *frame = static_cast<ID3v2::AttachedPictureFrame *>(*it);
-                if (frame->type() == ID3v2::AttachedPictureFrame::FrontCover)
-                {
-                    image.loadFromData((const uchar *) frame->picture().data(), frame->picture().size());
-                    return image;
-                }
-            }
+            ID3v2::AttachedPictureFrame *frame = static_cast<ID3v2::AttachedPictureFrame *>(frameList.front());
+            image.loadFromData((const uchar *) frame->picture().data(), frame->picture().size());
         }
     }
     return image;
@@ -131,8 +133,6 @@ QImage AudioFile::readCover()
 QImage AudioFile::loadCoverFromFile()
 {
     QStringList covers;
-    covers << "cover.jpg" << "cover.jpeg" << "cover.png";
-
     QDir dir = FileUtil::dir(m_path);
 
     for (QString cover : covers)

@@ -1,5 +1,5 @@
 #include <QApplication>
-#include <QMediaPlayer>
+#include <QWidget>
 
 #include "src/core/library.hpp"
 #include "src/core/audiofile.hpp"
@@ -10,7 +10,7 @@ int main(int argc, char *argv[])
     QApplication app(argc, argv);
 
     QWidget window;
-    window.setFixedSize(200, 200);
+    window.setFixedSize(500, 500);
 
     Library lib("C:/Users/Julian/Music");
     lib.sortByTitle();
