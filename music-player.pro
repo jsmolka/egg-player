@@ -18,7 +18,8 @@ HEADERS += \
     src/core/audiofile.hpp \
     src/gui/components/iconbutton.hpp \
     src/utils/fileutil.hpp \
-    src/utils/randutil.hpp
+    src/utils/randutil.hpp \
+    src/core/library.hpp
 
 SOURCES += \
     src/constants/path.cpp \
@@ -27,4 +28,5 @@ SOURCES += \
     src/gui/components/iconbutton.cpp \
     src/utils/fileutil.cpp \
     src/main.cpp \
-    src/utils/randutil.cpp
+    src/utils/randutil.cpp \
+    src/core/library.cpp
