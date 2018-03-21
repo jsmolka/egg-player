@@ -1,11 +1,6 @@
 #ifndef ICONBUTTON_HPP
 #define ICONBUTTON_HPP
 
-/*
- * TODO:
- * Create fade in Q_PROPERTY for css
- */
-
 #include <QPushButton>
 #include <QIcon>
 

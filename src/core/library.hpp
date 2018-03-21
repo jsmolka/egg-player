@@ -36,7 +36,6 @@ public:
 signals:
     void libraryUpdated();
 
-
 private:
     void loadFiles(const QString &path);
 
