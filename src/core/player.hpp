@@ -5,21 +5,22 @@
 #include <QMediaPlayer>
 #include <QMediaPlaylist>
 
-#include <src/core/audiofile.hpp>
+#include <src/core/audio.hpp>
+#include <src/core/audiolist.hpp>
 
 class Player : public QMediaPlayer
 {
 public:
     explicit Player(QObject *parent = 0);
 
-    void setAudioList(QList<AudioFile> audioList);
-    QList<AudioFile> audioList() const;
+    void setAudioList(AudioList audioList);
+    AudioList audioList() const;
 
     bool refresh();
 
 private:
     QMediaPlaylist *m_playlist;
-    QList<AudioFile> m_audioList;
+    AudioList m_audioList;
 };
 
 #endif // PLAYER_HPP

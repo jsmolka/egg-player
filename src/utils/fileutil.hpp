@@ -1,7 +1,6 @@
 #ifndef FILEUTIL_HPP
 #define FILEUTIL_HPP
 
-#include <QDebug>
 #include <QDir>
 #include <QFile>
 #include <QFileInfo>

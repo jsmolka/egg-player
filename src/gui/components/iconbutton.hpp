@@ -8,10 +8,6 @@ class IconButton : public QPushButton
 {
     Q_OBJECT
 
-    Q_PROPERTY(QIcon icon1 READ icon1 WRITE setIcon1)
-    Q_PROPERTY(QIcon icon2 READ icon2 WRITE setIcon2)
-    Q_PROPERTY(bool selected READ selected WRITE setSelected)
-
 public:
     explicit IconButton(QWidget *parent = 0);
 

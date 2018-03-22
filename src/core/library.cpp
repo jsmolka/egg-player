@@ -11,97 +11,94 @@ Library::Library(QStringList pathList)
         loadFiles(path);
 }
 
-QList<AudioFile> Library::library() const
+AudioList Library::audioList() const
 {
-    return m_library;
+    return m_audioList;
 }
 
 bool Library::isEmpty() const
 {
-    return m_library.isEmpty();
+    return m_audioList.isEmpty();
 }
 
-QList<AudioFile> Library::getByTitle(const QString &title, Qt::CaseSensitivity cs)
+AudioList Library::getByTitle(const QString &title, Qt::CaseSensitivity cs)
 {
-    QList<AudioFile> result;
-    for (AudioFile audioFile : m_library)
-        if (QString::compare(audioFile.title(), title, cs))
-            result << audioFile;
+    AudioList result;
+    for (Audio audio : m_audioList)
+        if (QString::compare(audio.title(), title, cs))
+            result << audio;
     return result;
 }
 
-QList<AudioFile> Library::getByArtist(const QString &artist, Qt::CaseSensitivity cs)
+AudioList Library::getByArtist(const QString &artist, Qt::CaseSensitivity cs)
 {
-    QList<AudioFile> result;
-    for (AudioFile audioFile : m_library)
-        if (QString::compare(audioFile.artist(), artist, cs))
-            result << audioFile;
+    AudioList result;
+    for (Audio audio : m_audioList)
+        if (QString::compare(audio.artist(), artist, cs))
+            result << audio;
     return result;
 }
 
-QList<AudioFile> Library::getByAlbum(const QString &album, Qt::CaseSensitivity cs)
+AudioList Library::getByAlbum(const QString &album, Qt::CaseSensitivity cs)
 {
-    QList<AudioFile> result;
-    for (AudioFile audioFile : m_library)
-        if (QString::compare(audioFile.album(), album, cs))
-            result << audioFile;
+    AudioList result;
+    for (Audio audio : m_audioList)
+        if (QString::compare(audio.album(), album, cs))
+            result << audio;
     return result;
 }
 
-QList<AudioFile> Library::searchByTitle(const QString &title, Qt::CaseSensitivity cs)
+AudioList Library::searchByTitle(const QString &title, Qt::CaseSensitivity cs)
 {
-    QList<AudioFile> result;
-    for (AudioFile audioFile : m_library)
-        if (audioFile.title().contains(title, cs))
-            result << audioFile;
+    AudioList result;
+    for (Audio audio : m_audioList)
+        if (audio.title().contains(title, cs))
+            result << audio;
     return result;
 }
 
-QList<AudioFile> Library::searchByArtist(const QString &artist, Qt::CaseSensitivity cs)
+AudioList Library::searchByArtist(const QString &artist, Qt::CaseSensitivity cs)
 {
-    QList<AudioFile> result;
-    for (AudioFile audioFile : m_library)
-        if (audioFile.artist().contains(artist, cs))
-            result << audioFile;
+    AudioList result;
+    for (Audio audio : m_audioList)
+        if (audio.artist().contains(artist, cs))
+            result << audio;
     return result;
 }
 
-QList<AudioFile> Library::searchByAlbum(const QString &album, Qt::CaseSensitivity cs)
+AudioList Library::searchByAlbum(const QString &album, Qt::CaseSensitivity cs)
 {
-    QList<AudioFile> result;
-    for (AudioFile audioFile : m_library)
-        if (audioFile.album().contains(album, cs))
-            result << audioFile;
+    AudioList result;
+    for (Audio audio : m_audioList)
+        if (audio.album().contains(album, cs))
+            result << audio;
     return result;
 }
 
-void Library::sortByTitle()
+void Library::sortByTitle(bool reverse)
 {
-    std::sort(m_library.begin(), m_library.end(),
-              [](const AudioFile &af1, const AudioFile &af2) {return af1.title() < af2.title();});
+    m_audioList.sortByTitle(reverse);
 
     emit libraryUpdated();
 }
 
-void Library::sortByArtist()
+void Library::sortByArtist(bool reverse)
 {
-    std::sort(m_library.begin(), m_library.end(),
-              [](const AudioFile &af1, const AudioFile &af2) {return af1.artist() < af2.artist();});
+    m_audioList.sortByArtist(reverse);
 
     emit libraryUpdated();
 }
 
-void Library::sortByAlbum()
+void Library::sortByAlbum(bool reverse)
 {
-    std::sort(m_library.begin(), m_library.end(),
-              [](const AudioFile &af1, const AudioFile &af2) {return af1.album() < af2.album();});
+    m_audioList.sortByAlbum(reverse);
 
     emit libraryUpdated();
 }
 
-AudioFile Library::at(quint32 idx) const
+Audio Library::at(quint32 idx) const
 {
-    return m_library.at(idx);
+    return m_audioList.at(idx);
 }
 
 void Library::libraryUpdated()
@@ -116,9 +113,9 @@ void Library::loadFiles(const QString &path)
     {
         for (QString filePath : filePaths)
         {
-            AudioFile audioFile(filePath);
+            Audio audioFile(filePath);
             if (audioFile.isValid())
-                m_library << audioFile;
+                m_audioList << audioFile;
         }
     }
 }

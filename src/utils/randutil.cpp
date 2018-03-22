@@ -1,6 +1,6 @@
 #include "randutil.hpp"
 
-double RandUtil::random()
+qreal RandUtil::random()
 {
     return QRandomGenerator64::global()->generateDouble();
 }

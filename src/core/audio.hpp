@@ -1,5 +1,5 @@
-#ifndef AUDIOFILE_HPP
-#define AUDIOFILE_HPP
+#ifndef AUDIO_HPP
+#define AUDIO_HPP
 
 #include <QImage>
 #include <QString>
@@ -16,10 +16,10 @@
 #include <src/constants/path.hpp>
 #include <src/utils/fileutil.hpp>
 
-class AudioFile
+class Audio
 {
 public:
-    AudioFile(QString path);
+    Audio(QString path);
 
     bool isValid() const;
     QString path() const;
@@ -54,4 +54,4 @@ private:
     quint32 m_length;
 };
 
-#endif // AUDIOFILE_HPP
+#endif // AUDIO_HPP

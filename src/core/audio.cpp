@@ -1,79 +1,79 @@
-#include "audiofile.hpp"
+#include "audio.hpp"
 
 using namespace TagLib;
 
-AudioFile::AudioFile(QString path)
+Audio::Audio(QString path)
 {
     m_path = path;
     m_isValid = readTags();
 }
 
-bool AudioFile::isValid() const
+bool Audio::isValid() const
 {
     return m_isValid;
 }
 
-QString AudioFile::path() const
+QString Audio::path() const
 {
     return m_path;
 }
 
-QString AudioFile::title() const
+QString Audio::title() const
 {
     return m_title;
 }
 
-QString AudioFile::artist() const
+QString Audio::artist() const
 {
     return m_artist;
 }
 
-QString AudioFile::album() const
+QString Audio::album() const
 {
     return m_album;
 }
 
-QString AudioFile::genre() const
+QString Audio::genre() const
 {
     return m_genre;
 }
 
-quint32 AudioFile::year() const
+quint32 Audio::year() const
 {
     return m_year;
 }
 
-quint32 AudioFile::track() const
+quint32 Audio::track() const
 {
     return m_track;
 }
 
-quint32 AudioFile::length() const
+quint32 Audio::length() const
 {
     return m_length;
 }
 
-quint32 AudioFile::seconds() const
+quint32 Audio::seconds() const
 {
     return m_length % 60;
 }
 
-quint32 AudioFile::minutes() const
+quint32 Audio::minutes() const
 {
     return (m_length - seconds()) / 60;
 }
 
-QUrl AudioFile::url() const
+QUrl Audio::url() const
 {
     return QUrl::fromLocalFile(m_path);
 }
 
-QImage AudioFile::cover()
+QImage Audio::cover()
 {
     return resizeCover(getCover());
 }
 
-bool AudioFile::readTags()
+bool Audio::readTags()
 {
     FileRef fileRef(m_path.toLatin1().data());
 
@@ -94,12 +94,12 @@ bool AudioFile::readTags()
     return true;
 }
 
-QImage AudioFile::resizeCover(QImage image)
+QImage Audio::resizeCover(QImage image)
 {
     return image.scaled(500, 500, Qt::KeepAspectRatio, Qt::SmoothTransformation);
 }
 
-QImage AudioFile::getCover()
+QImage Audio::getCover()
 {
     QImage image = readCover();
     if (!image.isNull())
@@ -112,7 +112,7 @@ QImage AudioFile::getCover()
     return QImage(IMG_DEFAULT_COVER);
 }
 
-QImage AudioFile::readCover()
+QImage Audio::readCover()
 {
     MPEG::File file(m_path.toLatin1().data());
     ID3v2::Tag *tag = file.ID3v2Tag();
@@ -130,7 +130,7 @@ QImage AudioFile::readCover()
     return image;
 }
 
-QImage AudioFile::loadCoverFromFile()
+QImage Audio::loadCoverFromFile()
 {
     QStringList covers;
     covers << "cover.jpg" << "cover.jpeg" << "cover.png";
