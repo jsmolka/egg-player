@@ -11,5 +11,6 @@ Under construction...
 - DRY principle
 
 ### General
+- documentation
 - debounced search bar
 - caching with SQL
