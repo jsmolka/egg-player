@@ -18,11 +18,15 @@ int main(int argc, char *argv[])
 
     AudioList result = lib.searchByAlbum("swell");
     result.sortByTrack();
-    for (Audio audio : result)
-        qDebug() << audio.track() << audio.artist() << audio.title();
 
     Player player;
     player.setAudioList(result);
+    player.shuffle();
+    player.setIndex(2);
+
+    for (Audio audio : player.audioList())
+        qDebug() << audio.track() << audio.artist() << audio.title();
+
     player.setVolume(5);
     player.play();
 

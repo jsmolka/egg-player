@@ -10,8 +10,6 @@
 class AudioList : public QList<Audio>
 {
 public:
-    AudioList();
-
     void sortByTitle(bool reverse = false);
     void sortByArtist(bool reverse = false);
     void sortByAlbum(bool reverse = false);

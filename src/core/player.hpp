@@ -1,6 +1,8 @@
 #ifndef PLAYER_HPP
 #define PLAYER_HPP
 
+#include <time.h>
+
 #include <QList>
 #include <QMediaPlayer>
 #include <QMediaPlaylist>
@@ -11,12 +13,21 @@
 class Player : public QMediaPlayer
 {
 public:
-    explicit Player(QObject *parent = 0);
+    Player(QObject *parent = 0);
 
     void setAudioList(AudioList audioList);
     AudioList audioList() const;
 
+    QMediaPlaylist * playlist() const;
+
+    void setIndex(quint32 index);
+    quint32 index() const;
+    Audio audio() const;
+
+    void setPlaybackMode(QMediaPlaylist::PlaybackMode mode);
+
     bool refresh();
+    void shuffle();
 
 private:
     QMediaPlaylist *m_playlist;

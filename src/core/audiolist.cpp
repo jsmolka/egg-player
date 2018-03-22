@@ -1,10 +1,5 @@
 #include "audiolist.hpp"
 
-AudioList::AudioList()
-{
-
-}
-
 void AudioList::sortByTitle(bool reverse)
 {
     if (!reverse)
