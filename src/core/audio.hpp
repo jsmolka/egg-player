@@ -23,6 +23,7 @@ public:
 
     bool isValid() const;
     QString path() const;
+    QUrl url() const;
     QString title() const;
     QString artist() const;
     QString album() const;
@@ -33,7 +34,6 @@ public:
 
     quint32 seconds() const;
     quint32 minutes() const;
-    QUrl url() const;
     QImage cover();
 
 private:
@@ -45,6 +45,7 @@ private:
 
     bool m_isValid;
     QString m_path;
+    QUrl m_url;
     QString m_title;
     QString m_artist;
     QString m_album;

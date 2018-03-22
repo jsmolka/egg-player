@@ -6,6 +6,8 @@ Audio::Audio(QString path)
 {
     m_path = path;
     m_isValid = readTags();
+    if (m_isValid)
+        m_url = QUrl::fromLocalFile(path);
 }
 
 bool Audio::isValid() const
@@ -16,6 +18,11 @@ bool Audio::isValid() const
 QString Audio::path() const
 {
     return m_path;
+}
+
+QUrl Audio::url() const
+{
+    return m_url;
 }
 
 QString Audio::title() const
@@ -61,11 +68,6 @@ quint32 Audio::seconds() const
 quint32 Audio::minutes() const
 {
     return (m_length - seconds()) / 60;
-}
-
-QUrl Audio::url() const
-{
-    return QUrl::fromLocalFile(m_path);
 }
 
 QImage Audio::cover()
