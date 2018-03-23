@@ -22,7 +22,9 @@ HEADERS += \
     src/core/player.hpp \
     src/core/audio.hpp \
     src/core/audiolist.hpp \
-    src/gui/layouts/borderlayout.hpp
+    src/gui/layouts/borderlayout.hpp \
+    src/gui/mainwindow.hpp \
+    src/gui/songlist.hpp
 
 SOURCES += \
     src/constants/path.cpp \
@@ -35,4 +37,6 @@ SOURCES += \
     src/core/player.cpp \
     src/core/audio.cpp \
     src/core/audiolist.cpp \
-    src/gui/layouts/borderlayout.cpp
+    src/gui/layouts/borderlayout.cpp \
+    src/gui/mainwindow.cpp \
+    src/gui/songlist.cpp

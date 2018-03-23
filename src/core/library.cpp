@@ -1,5 +1,10 @@
 #include "library.hpp"
 
+Library::Library()
+{
+
+}
+
 Library::Library(const QString &path)
 {
     loadFiles(path);

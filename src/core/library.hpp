@@ -11,6 +11,7 @@
 class Library
 {
 public:
+    Library();
     Library(const QString &path);
     Library(QStringList pathList);
 
