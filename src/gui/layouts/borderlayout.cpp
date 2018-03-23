@@ -1,7 +1,6 @@
 #include "borderlayout.hpp"
 
-BorderLayout::BorderLayout(QWidget *parent, int margin, int spacing)
-    : QLayout(parent)
+BorderLayout::BorderLayout(QWidget *parent, int margin, int spacing) : QLayout(parent)
 {
     setMargin(margin);
     setSpacing(spacing);
@@ -15,9 +14,9 @@ BorderLayout::BorderLayout(int spacing)
 
 BorderLayout::~BorderLayout()
 {
-    QLayoutItem *l;
-    while ((l = takeAt(0)))
-        delete l;
+    QLayoutItem *item;
+    while ((item = takeAt(0)))
+        delete item;
 }
 
 void BorderLayout::addItem(QLayoutItem *item)
@@ -30,28 +29,15 @@ void BorderLayout::addWidget(QWidget *widget, Position position)
     add(new QWidgetItem(widget), position);
 }
 
-Qt::Orientations BorderLayout::expandingDirections() const
-{
-    return Qt::Horizontal | Qt::Vertical;
-}
-
-bool BorderLayout::hasHeightForWidth() const
-{
-    return false;
-}
-
 int BorderLayout::count() const
 {
-    return list.size();
+    return m_items.size();
 }
 
 QLayoutItem *BorderLayout::itemAt(int index) const
 {
-    ItemWrapper *wrapper = list.value(index);
-    if (wrapper)
-        return wrapper->item;
-    else
-        return 0;
+    ItemWrapper *wrapper = m_items.value(index);
+    return wrapper ? wrapper->item : 0;
 }
 
 QSize BorderLayout::minimumSize() const
@@ -67,63 +53,79 @@ void BorderLayout::setGeometry(const QRect &rect)
     int northHeight = 0;
     int southHeight = 0;
     int centerHeight = 0;
-    int i;
 
     QLayout::setGeometry(rect);
 
-    for (i = 0; i < list.size(); ++i) {
-        ItemWrapper *wrapper = list.at(i);
+    for (int i = 0; i < m_items.size(); i++) {
+        ItemWrapper *wrapper = m_items.at(i);
         QLayoutItem *item = wrapper->item;
         Position position = wrapper->position;
 
-        if (position == North) {
-            item->setGeometry(QRect(rect.x(), northHeight, rect.width(),
+        if (position == North)
+        {
+            item->setGeometry(QRect(rect.x(),
+                                    northHeight,
+                                    rect.width(),
                                     item->sizeHint().height()));
 
             northHeight += item->geometry().height() + spacing();
-        } else if (position == South) {
+        }
+        else if (position == South)
+        {
             item->setGeometry(QRect(item->geometry().x(),
-                                    item->geometry().y(), rect.width(),
+                                    item->geometry().y(),
+                                    rect.width(),
                                     item->sizeHint().height()));
 
             southHeight += item->geometry().height() + spacing();
 
             item->setGeometry(QRect(rect.x(),
-                              rect.y() + rect.height() - southHeight + spacing(),
-                              item->geometry().width(),
-                              item->geometry().height()));
-        } else if (position == Center) {
+                                    rect.y() + rect.height() - southHeight + spacing(),
+                                    item->geometry().width(),
+                                    item->geometry().height()));
+        }
+        else if (position == Center)
+        {
             center = wrapper;
         }
     }
 
     centerHeight = rect.height() - northHeight - southHeight;
 
-    for (i = 0; i < list.size(); ++i) {
-        ItemWrapper *wrapper = list.at(i);
+    for (int i = 0; i < m_items.size(); i++)
+    {
+        ItemWrapper *wrapper = m_items.at(i);
         QLayoutItem *item = wrapper->item;
         Position position = wrapper->position;
 
-        if (position == West) {
-            item->setGeometry(QRect(rect.x() + westWidth, northHeight,
-                                    item->sizeHint().width(), centerHeight));
+        if (position == West)
+        {
+            item->setGeometry(QRect(rect.x() + westWidth,
+                                    northHeight,
+                                    item->sizeHint().width(),
+                                    centerHeight));
 
             westWidth += item->geometry().width() + spacing();
-        } else if (position == East) {
-            item->setGeometry(QRect(item->geometry().x(), item->geometry().y(),
-                                    item->sizeHint().width(), centerHeight));
+        }
+        else if (position == East)
+        {
+            item->setGeometry(QRect(item->geometry().x(),
+                                    item->geometry().y(),
+                                    item->sizeHint().width(),
+                                    centerHeight));
 
             eastWidth += item->geometry().width() + spacing();
 
-            item->setGeometry(QRect(
-                              rect.x() + rect.width() - eastWidth + spacing(),
-                              northHeight, item->geometry().width(),
-                              item->geometry().height()));
+            item->setGeometry(QRect(rect.x() + rect.width() - eastWidth + spacing(),
+                                    northHeight,
+                                    item->geometry().width(),
+                                    item->geometry().height()));
         }
     }
 
     if (center)
-        center->item->setGeometry(QRect(westWidth, northHeight,
+        center->item->setGeometry(QRect(westWidth,
+                                        northHeight,
                                         rect.width() - eastWidth - westWidth,
                                         centerHeight));
 }
@@ -135,8 +137,9 @@ QSize BorderLayout::sizeHint() const
 
 QLayoutItem *BorderLayout::takeAt(int index)
 {
-    if (index >= 0 && index < list.size()) {
-        ItemWrapper *layoutStruct = list.takeAt(index);
+    if (index >= 0 && index < m_items.size())
+    {
+        ItemWrapper *layoutStruct = m_items.takeAt(index);
         return layoutStruct->item;
     }
     return 0;
@@ -144,21 +147,22 @@ QLayoutItem *BorderLayout::takeAt(int index)
 
 void BorderLayout::add(QLayoutItem *item, Position position)
 {
-    list.append(new ItemWrapper(item, position));
+    m_items.append(new ItemWrapper(item, position));
 }
 
 QSize BorderLayout::calculateSize(SizeType sizeType) const
 {
     QSize totalSize;
 
-    for (int i = 0; i < list.size(); ++i) {
-        ItemWrapper *wrapper = list.at(i);
+    for (int i = 0; i < m_items.size(); i++)
+    {
+        ItemWrapper *wrapper = m_items.at(i);
         Position position = wrapper->position;
         QSize itemSize;
 
         if (sizeType == MinimumSize)
             itemSize = wrapper->item->minimumSize();
-        else // (sizeType == SizeHint)
+        else
             itemSize = wrapper->item->sizeHint();
 
         if (position == North || position == South || position == Center)

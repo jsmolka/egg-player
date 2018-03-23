@@ -1,5 +1,5 @@
-#ifndef BORDERLAYOUT_H
-#define BORDERLAYOUT_H
+#ifndef BORDERLAYOUT_HPP
+#define BORDERLAYOUT_HPP
 
 #include <QLayout>
 #include <QRect>
@@ -7,7 +7,7 @@
 class BorderLayout : public QLayout
 {
 public:
-    enum Position { West, North, South, East, Center };
+    enum Position {North, East, South, West, Center};
 
     explicit BorderLayout(QWidget *parent, int margin = 0, int spacing = -1);
     BorderLayout(int spacing = -1);
@@ -15,8 +15,6 @@ public:
 
     void addItem(QLayoutItem *item) override;
     void addWidget(QWidget *widget, Position position);
-    Qt::Orientations expandingDirections() const override;
-    bool hasHeightForWidth() const override;
     int count() const override;
     QLayoutItem *itemAt(int index) const override;
     QSize minimumSize() const override;
@@ -38,10 +36,10 @@ private:
         Position position;
     };
 
-    enum SizeType { MinimumSize, SizeHint };
+    enum SizeType {MinimumSize, SizeHint};
     QSize calculateSize(SizeType sizeType) const;
 
-    QList<ItemWrapper *> list;
+    QList<ItemWrapper *> m_items;
 };
 
-#endif // BORDERLAYOUT_H
+#endif // BORDERLAYOUT_HPPM
