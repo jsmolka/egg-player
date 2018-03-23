@@ -1,6 +1,9 @@
 #include <QApplication>
 #include <QWidget>
+#include <QLabel>
+#include <QListWidget>
 
+#include "src/gui/layouts/borderlayout.hpp"
 #include "src/core/audio.hpp"
 #include "src/core/audiolist.hpp"
 #include "src/core/library.hpp"
@@ -14,21 +17,13 @@ int main(int argc, char *argv[])
     QWidget window;
     window.setFixedSize(500, 500);
 
-    Library lib("C:/Users/Julian/Music");
-
-    AudioList result = lib.searchByAlbum("swell");
-    result.sortByTrack();
-
-    Player player;
-    player.setAudioList(result);
-    player.shuffle();
-    player.setIndex(2);
-
-    for (Audio audio : player.audioList())
-        qDebug() << audio.track() << audio.artist() << audio.title();
-
-    player.setVolume(5);
-    player.play();
+    BorderLayout *layout = new BorderLayout;
+    layout->addWidget(new QLabel("lul"), BorderLayout::Center);
+    layout->addWidget(new QLabel("lul"), BorderLayout::North);
+    layout->addWidget(new QLabel("lul"), BorderLayout::West);
+    layout->addWidget(new QLabel("lul"), BorderLayout::East);
+    layout->addWidget(new QLabel("lul"), BorderLayout::South);
+    window.setLayout(layout);
 
     window.show();
     return app.exec();

@@ -54,10 +54,10 @@ QStringList FileUtil::glob(const QString &path, QString pattern, bool recursive)
         if (info.isDir() && recursive)
         {
             QString sub = info.absoluteFilePath();
-            result.append(glob(sub, pattern, recursive));
+            result << glob(sub, pattern, recursive);
         }
         if (info.isFile())
-            result.append(info.absoluteFilePath());
+            result << info.absoluteFilePath();
     }
     return result;
 }

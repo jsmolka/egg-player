@@ -21,7 +21,8 @@ HEADERS += \
     src/utils/randutil.hpp \
     src/core/player.hpp \
     src/core/audio.hpp \
-    src/core/audiolist.hpp
+    src/core/audiolist.hpp \
+    src/gui/layouts/borderlayout.hpp
 
 SOURCES += \
     src/constants/path.cpp \
@@ -33,4 +34,5 @@ SOURCES += \
     src/main.cpp \
     src/core/player.cpp \
     src/core/audio.cpp \
-    src/core/audiolist.cpp
+    src/core/audiolist.cpp \
+    src/gui/layouts/borderlayout.cpp

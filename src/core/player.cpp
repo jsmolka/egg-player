@@ -50,8 +50,8 @@ bool Player::refresh()
     if (!m_playlist->clear())
         return false;
 
-    for (Audio audioFile : m_audioList)
-        m_playlist->addMedia(audioFile.url());
+    for (Audio audio : m_audioList)
+        m_playlist->addMedia(audio.url());
 
     return true;
 }

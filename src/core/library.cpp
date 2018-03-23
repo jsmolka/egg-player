@@ -113,9 +113,9 @@ void Library::loadFiles(const QString &path)
     {
         for (QString filePath : filePaths)
         {
-            Audio audioFile(filePath);
-            if (audioFile.isValid())
-                m_audioList << audioFile;
+            Audio audio(filePath);
+            if (audio.isValid())
+                m_audioList << audio;
         }
     }
 }
