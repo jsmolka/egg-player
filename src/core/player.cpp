@@ -4,8 +4,8 @@ Player::Player(QObject *parent) : QMediaPlayer(parent)
 {
     qsrand(time(0));
 
-    m_playlist = new QMediaPlaylist;
-    setPlaylist(m_playlist);
+    pm_playlist = new QMediaPlaylist;
+    setPlaylist(pm_playlist);
 }
 
 void Player::setAudioList(AudioList audioList)
@@ -22,17 +22,17 @@ AudioList Player::audioList() const
 
 QMediaPlaylist * Player::playlist() const
 {
-    return m_playlist;
+    return pm_playlist;
 }
 
 void Player::setIndex(quint32 index)
 {
-    m_playlist->setCurrentIndex(index);
+    pm_playlist->setCurrentIndex(index);
 }
 
 quint32 Player::index() const
 {
-    return m_playlist->currentIndex();
+    return pm_playlist->currentIndex();
 }
 
 Audio Player::audio() const
@@ -42,16 +42,16 @@ Audio Player::audio() const
 
 void Player::setPlaybackMode(QMediaPlaylist::PlaybackMode mode)
 {
-    m_playlist->setPlaybackMode(mode);
+    pm_playlist->setPlaybackMode(mode);
 }
 
 bool Player::refresh()
 {
-    if (!m_playlist->clear())
+    if (!pm_playlist->clear())
         return false;
 
     for (Audio audio : m_audioList)
-        m_playlist->addMedia(audio.url());
+        pm_playlist->addMedia(audio.url());
 
     return true;
 }

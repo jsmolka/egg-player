@@ -30,7 +30,7 @@ public:
     void shuffle();
 
 private:
-    QMediaPlaylist *m_playlist;
+    QMediaPlaylist *pm_playlist;
     AudioList m_audioList;
 };
 

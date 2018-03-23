@@ -4,6 +4,8 @@ SongList::SongList(Library *library) : QListWidget()
 {
     pm_library = library;
 
+    setVerticalScrollMode(QAbstractItemView::ScrollPerPixel);
+
     setupUi();
 }
 
@@ -14,11 +16,11 @@ void SongList::setupUi()
     {
         QLabel *label = new QLabel(audio.title());
         if (idx % 2 == 0)
-            label->setStyleSheet("QLabel {background-color: white;}");
+            label->setStyleSheet("QLabel {color: white; background-color: #4d4d4d;}");
         else
-            label->setStyleSheet("QLabel {background-color: grey;}");
+            label->setStyleSheet("QLabel {color: white; background-color: #333333;}");
         QListWidgetItem *item = new QListWidgetItem();
-        item->setSizeHint(QSize(0, 65));
+        item->setSizeHint(QSize(0, 55));
         addItem(item);
         setItemWidget(item, label);
         idx++;

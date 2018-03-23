@@ -4,8 +4,8 @@
 #include <QWidget>
 
 #include "src/core/library.hpp"
-#include "src/gui/songlist.hpp"
-#include "src/gui/layouts/borderlayout.hpp"
+#include "src/ui/songlist.hpp"
+#include "src/ui/layouts/borderlayout.hpp"
 
 class MainWindow : public QWidget
 {
@@ -18,7 +18,7 @@ private:
     void createSongList();
 
     Library m_library;
-    SongList *m_songList;
+    SongList *pm_songList;
 };
 
 #endif // MAINWINDOW_HPP

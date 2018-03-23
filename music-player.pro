@@ -13,30 +13,30 @@ LIBS += \
     -L"$$PWD/ext/taglib/lib" -ltag.dll
 
 HEADERS += \
-    src/constants/path.hpp \
     src/constants/language.hpp \
-    src/core/library.hpp \
-    src/gui/components/iconbutton.hpp \
-    src/utils/fileutil.hpp \
-    src/utils/randutil.hpp \
-    src/core/player.hpp \
+    src/constants/path.hpp \
     src/core/audio.hpp \
     src/core/audiolist.hpp \
-    src/gui/layouts/borderlayout.hpp \
-    src/gui/mainwindow.hpp \
-    src/gui/songlist.hpp
+    src/core/library.hpp \
+    src/core/player.hpp \
+    src/ui/components/iconbutton.hpp \
+    src/ui/layouts/borderlayout.hpp \
+    src/ui/mainwindow.hpp \
+    src/ui/songlist.hpp \
+    src/utils/fileutil.hpp \
+    src/utils/randutil.hpp
 
 SOURCES += \
-    src/constants/path.cpp \
-    src/constants/language.cpp \
-    src/core/library.cpp \
-    src/gui/components/iconbutton.cpp \
-    src/utils/fileutil.cpp \
-    src/utils/randutil.cpp \
     src/main.cpp \
-    src/core/player.cpp \
+    src/constants/language.cpp \
+    src/constants/path.cpp \
     src/core/audio.cpp \
     src/core/audiolist.cpp \
-    src/gui/layouts/borderlayout.cpp \
-    src/gui/mainwindow.cpp \
-    src/gui/songlist.cpp
+    src/core/library.cpp \
+    src/core/player.cpp \
+    src/ui/components/iconbutton.cpp \
+    src/ui/layouts/borderlayout.cpp \
+    src/ui/mainwindow.cpp \
+    src/ui/songlist.cpp \
+    src/utils/fileutil.cpp \
+    src/utils/randutil.cpp \
