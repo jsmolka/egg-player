@@ -17,3 +17,5 @@ const QString IMG_DEFAULT_COVER = "data/images/default-cover.png";
 const QString CSS_ICONBUTTON    = "data/css/iconbutton.css";
 const QString CSS_SONGINFO_EVEN = "data/css/songinfo_even.css";
 const QString CSS_SONGINFO_ODD  = "data/css/songinfo_odd.css";
+
+const QString FNT_LATO          = "data/fonts/Lato.ttf";

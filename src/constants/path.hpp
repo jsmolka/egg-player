@@ -22,4 +22,6 @@ extern const QString CSS_ICONBUTTON;
 extern const QString CSS_SONGINFO_EVEN;
 extern const QString CSS_SONGINFO_ODD;
 
+extern const QString FNT_LATO;
+
 #endif // PATH_HPP

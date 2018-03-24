@@ -10,11 +10,8 @@ Under construction...
 - artist-album map
 - DRY principle
 
-### songinfo.cpp
-- custom orientation
-- custom width
-
 ### songlist.cpp
+- fix black boxes while hovering
 - borderlayout for songs / album / artist tabs
 
 ### General
