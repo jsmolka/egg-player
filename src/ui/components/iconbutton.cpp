@@ -4,6 +4,8 @@ IconButton::IconButton(QWidget *parent) : QPushButton(parent)
 {
     m_selected = true;
 
+    setAttribute(Qt::WA_TranslucentBackground);
+
     connect(this, SIGNAL(clicked(bool)), this, SLOT(switchIcon(void)));
 }
 

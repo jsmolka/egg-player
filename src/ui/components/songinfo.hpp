@@ -2,6 +2,7 @@
 #define SONGINFO_HPP
 
 #include <QChar>
+#include <QEvent>
 #include <QGridLayout>
 #include <QLabel>
 #include <QList>
@@ -16,7 +17,7 @@ public:
     SongInfo(Audio *audio);
     ~SongInfo();
 
-    void init();
+    void init(QList<qint32> stretches);
     void showTrack();
     void showTitle();
     void showArtist();
@@ -26,7 +27,7 @@ public:
     void showLength();
 
 private:
-    void createLabel(const QString &string);
+    void createLabel(const QString &string, Qt::Alignment align = Qt::AlignLeft);
 
     QList<QLabel *> m_labels;
     Audio *pm_audio;

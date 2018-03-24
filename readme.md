@@ -13,9 +13,12 @@ Under construction...
 ### songinfo.cpp
 - custom orientation
 - custom width
-- hover effect
+
+### songlist.cpp
+- borderlayout for songs / album / artist tabs
 
 ### General
 - documentation
+- use different font
 - debounced search bar
 - caching with SQL

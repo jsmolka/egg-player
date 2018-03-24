@@ -1,0 +1,12 @@
+QWidget {
+	color: white;
+	background-color: black;
+}
+
+QWidget:hover {
+	background-color: #404040;
+}
+
+QWidget:pressed {
+	background-color: #595959;
+}

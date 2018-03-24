@@ -2,6 +2,7 @@
 #define SONGLIST_HPP
 
 #include <QLabel>
+#include <QList>
 #include <QListWidget>
 
 #include "src/constants/path.hpp"

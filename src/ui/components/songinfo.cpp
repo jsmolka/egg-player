@@ -11,15 +11,14 @@ SongInfo::~SongInfo()
         delete label;
 }
 
-void SongInfo::init()
+void SongInfo::init(QList<qint32> stretches)
 {
     QGridLayout *layout = new QGridLayout;
 
-    int index = 0;
-    for (QLabel *label : m_labels)
+    for (int i = 0; i < m_labels.size(); i++)
     {
-        layout->addWidget(label, 0, index);
-        index++;
+        layout->addWidget(m_labels.at(i), 0, i);
+        layout->setColumnStretch(i, stretches.at(i));
     }
     setLayout(layout);
 }
@@ -57,13 +56,13 @@ void SongInfo::showGenre()
 void SongInfo::showLength()
 {
     QString seconds = QString("%1").arg(pm_audio->seconds(), 2, 10, QChar('0'));
-    createLabel(QString("%1:%2").arg(QString::number(pm_audio->minutes()), seconds));
+    createLabel(QString("%1:%2").arg(QString::number(pm_audio->minutes()), seconds), Qt::AlignRight);
 }
 
-void SongInfo::createLabel(const QString &string)
+void SongInfo::createLabel(const QString &string, Qt::Alignment align)
 {
     QLabel *label = new QLabel(string, this);
-    label->setMargin(10);
-    label->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    label->setAlignment(align | Qt::AlignVCenter);
+    label->setAttribute(Qt::WA_TranslucentBackground);
     m_labels << label;
 }

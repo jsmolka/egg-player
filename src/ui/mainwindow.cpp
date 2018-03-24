@@ -12,16 +12,14 @@ void MainWindow::setupUi()
     createSongList();
 
     QLabel *south = new QLabel;
-    south->setText("south");
-    south->setFixedHeight(75);
+    south->setFixedHeight(65);
     south->setStyleSheet("QLabel {background-color: #006666;}");
 
     QLabel *west = new QLabel;
-    west->setText("west");
-    west->setFixedWidth(350);
+    west->setFixedWidth(315);
     west->setStyleSheet("QLabel {background-color: #666666;}");
 
-    BorderLayout *layout = new BorderLayout(1);
+    BorderLayout *layout = new BorderLayout(0);
     layout->addWidget(pm_songList, BorderLayout::Center);
     layout->addWidget(west, BorderLayout::West);
     layout->addWidget(south, BorderLayout::South);
