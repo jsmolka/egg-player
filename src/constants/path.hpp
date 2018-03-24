@@ -22,5 +22,7 @@ extern const QString IMG_DEFAULT_COVER;
 
 // CSS
 extern const QString CSS_ICONBUTTON;
+extern const QString CSS_SONGINFO_EVEN;
+extern const QString CSS_SONGINFO_ODD;
 
 #endif // PATH_HPP

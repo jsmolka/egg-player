@@ -4,7 +4,10 @@
 #include <QLabel>
 #include <QListWidget>
 
+#include "src/constants/path.hpp"
 #include "src/core/library.hpp"
+#include "src/ui/components/songinfo.hpp"
+#include "src/utils/fileutil.hpp"
 
 class SongList : public QListWidget
 {

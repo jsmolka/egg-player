@@ -24,7 +24,8 @@ HEADERS += \
     src/ui/mainwindow.hpp \
     src/ui/songlist.hpp \
     src/utils/fileutil.hpp \
-    src/utils/randutil.hpp
+    src/utils/randutil.hpp \
+    src/ui/components/songinfo.hpp
 
 SOURCES += \
     src/main.cpp \
@@ -40,3 +41,4 @@ SOURCES += \
     src/ui/songlist.cpp \
     src/utils/fileutil.cpp \
     src/utils/randutil.cpp \
+    src/ui/components/songinfo.cpp

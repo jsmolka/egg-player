@@ -10,6 +10,11 @@ Under construction...
 - artist-album map
 - DRY principle
 
+### songinfo.cpp
+- custom orientation
+- custom width
+- hover effect
+
 ### General
 - documentation
 - debounced search bar

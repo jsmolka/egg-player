@@ -17,4 +17,6 @@ const QString ICO_VOLUME  = "images/icons/volume.png";
 const QString IMG_DEFAULT_COVER = "images/default-cover.png";
 
 // CSS
-const QString CSS_ICONBUTTON = "css/iconbutton.css";
+const QString CSS_ICONBUTTON    = "css/iconbutton.css";
+const QString CSS_SONGINFO_EVEN = "css/songinfo_even.css";
+const QString CSS_SONGINFO_ODD  = "css/songinfo_odd.css";

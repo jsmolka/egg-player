@@ -11,18 +11,27 @@ SongList::SongList(Library *library) : QListWidget()
 
 void SongList::setupUi()
 {
-    int idx = 0;
+    QString cssEven = FileUtil::read(CSS_SONGINFO_EVEN);
+    QString cssOdd = FileUtil::read(CSS_SONGINFO_ODD);
+
+    int index = 0;
     for (Audio audio : pm_library->audioList())
     {
-        QLabel *label = new QLabel(audio.title());
-        if (idx % 2 == 0)
-            label->setStyleSheet("QLabel {color: white; background-color: #4d4d4d;}");
-        else
-            label->setStyleSheet("QLabel {color: white; background-color: #333333;}");
+        SongInfo *info = new SongInfo(&audio);
+        info->showTrack();
+        info->showTitle();
+        info->showAlbum();
+        info->showArtist();
+        info->showYear();
+        info->showGenre();
+        info->showLength();
+        info->init();
+        info->setStyleSheet(index % 2 == 0 ? cssEven : cssOdd);
+
         QListWidgetItem *item = new QListWidgetItem();
         item->setSizeHint(QSize(0, 55));
         addItem(item);
-        setItemWidget(item, label);
-        idx++;
+        setItemWidget(item, info);
+        index++;
     }
 }
