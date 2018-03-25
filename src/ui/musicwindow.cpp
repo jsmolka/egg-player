@@ -4,6 +4,10 @@ MusicWindow::MusicWindow(Library *library) : QListWidget()
 {
     pm_library = library;
 
+    setVerticalScrollMode(QAbstractItemView::ScrollPerPixel);
+    verticalScrollBar()->setStyleSheet(FileUtil::read(CSS_SCROLLBAR));
+    setFrameStyle(QFrame::NoFrame);
+
     setupUi();
 }
 

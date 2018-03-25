@@ -54,8 +54,7 @@ void PlayerWindow::setupUi()
 {
     QSize size(40, 40);
     setFixedHeight(67);
-    setObjectName("test");
-    setStyleSheet("#test {background-color: #006666;}");
+    setStyleSheet(FileUtil::read(CSS_PLAYERWINDOW));
 
     QList<IconButton *> buttons;
 

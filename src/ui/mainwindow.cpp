@@ -52,10 +52,6 @@ void MainWindow::createMusicWindow()
 {
     pm_musicWindow = new MusicWindow(&m_library);
 
-    pm_musicWindow->setVerticalScrollMode(QAbstractItemView::ScrollPerPixel);
-    pm_musicWindow->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    pm_musicWindow->setFrameStyle(QFrame::NoFrame);
-
     connect(pm_musicWindow, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(play(QModelIndex)));
 }
 

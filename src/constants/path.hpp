@@ -21,6 +21,8 @@ extern const QString IMG_DEFAULT_COVER;
 extern const QString CSS_ICONBUTTON;
 extern const QString CSS_SONGINFO_EVEN;
 extern const QString CSS_SONGINFO_ODD;
+extern const QString CSS_PLAYERWINDOW;
+extern const QString CSS_SCROLLBAR;
 
 extern const QString FNT_LATO;
 

@@ -8,7 +8,10 @@ class IconButton : public QPushButton
 {
     Q_OBJECT
 
+    Q_PROPERTY(bool locked READ locked WRITE setLocked)
+
 public:
+    IconButton(bool autoSwitch, QWidget *parent = 0);
     explicit IconButton(QWidget *parent = 0);
 
     void setIcon1(QIcon icon);
@@ -22,6 +25,9 @@ public:
     void setSelected(bool selected);
     bool selected() const;
 
+    void setLocked(bool locked);
+    bool locked() const;
+
     void init(QString path, QSize size);
     void init(QString path1, QString path2, QSize size);
 
@@ -34,6 +40,8 @@ private:
     QIcon m_icon1;
     QIcon m_icon2;
     bool m_selected;
+    bool m_locked;
+    bool m_autoSwitch;
 };
 
 #endif // ICONBUTTON_HPP

@@ -1,10 +1,18 @@
 #include "iconbutton.hpp"
 
-IconButton::IconButton(QWidget *parent) : QPushButton(parent)
+IconButton::IconButton(bool autoSwitch, QWidget *parent) : QPushButton(parent)
 {
     m_selected = true;
+    m_locked = false;
+    m_autoSwitch = autoSwitch;
 
-    connect(this, SIGNAL(clicked(bool)), this, SLOT(switchIcon(void)));
+    if (autoSwitch)
+        connect(this, SIGNAL(clicked(bool)), this, SLOT(switchIcon(void)));
+}
+
+IconButton::IconButton(QWidget *parent)
+{
+    IconButton(true, parent);
 }
 
 void IconButton::setIcon1(QIcon icon)
@@ -49,6 +57,16 @@ bool IconButton::selected() const
     return m_selected;
 }
 
+void IconButton::setLocked(bool locked)
+{
+    m_locked = locked;
+}
+
+bool IconButton::locked() const
+{
+    return m_locked;
+}
+
 void IconButton::init(QString path, QSize size)
 {
    init(path, QString(), size);
@@ -67,6 +85,7 @@ void IconButton::init(QString path1, QString path2, QSize size)
 void IconButton::switchIcon()
 {
     setSelected(!m_selected);
+    m_locked = !m_locked;
 }
 
 void IconButton::setSelectedIcon()

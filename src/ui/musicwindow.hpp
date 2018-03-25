@@ -4,6 +4,7 @@
 #include <QLabel>
 #include <QList>
 #include <QListWidget>
+#include <QScrollBar>
 
 #include "src/constants/path.hpp"
 #include "src/core/library.hpp"

@@ -28,6 +28,7 @@ public:
     IconButton * replayButton();
     IconButton * volumeButton();
 
+protected:
     void paintEvent(QPaintEvent *event);
 
 private:
