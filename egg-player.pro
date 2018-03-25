@@ -26,9 +26,10 @@ HEADERS += \
     src/ui/components/songinfo.hpp \
     src/ui/layouts/borderlayout.hpp \
     src/ui/mainwindow.hpp \
-    src/ui/songlist.hpp \
+    src/ui/musicwindow.hpp \
     src/utils/fileutil.hpp \
-    src/utils/randutil.hpp
+    src/utils/randutil.hpp \
+    src/ui/playerwindow.hpp
 
 SOURCES += \
     src/main.cpp \
@@ -42,6 +43,7 @@ SOURCES += \
     src/ui/components/songinfo.cpp \
     src/ui/layouts/borderlayout.cpp \
     src/ui/mainwindow.cpp \
-    src/ui/songlist.cpp \
+    src/ui/musicwindow.cpp \
     src/utils/fileutil.cpp \
-    src/utils/randutil.cpp
+    src/utils/randutil.cpp \
+    src/ui/playerwindow.cpp

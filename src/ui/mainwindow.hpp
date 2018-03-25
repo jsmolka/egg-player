@@ -4,21 +4,30 @@
 #include <QWidget>
 
 #include "src/core/library.hpp"
-#include "src/ui/songlist.hpp"
+#include "src/ui/musicwindow.hpp"
+#include "src/ui/playerwindow.hpp"
 #include "src/ui/layouts/borderlayout.hpp"
 
 class MainWindow : public QWidget
 {
+    Q_OBJECT
+
 public:
     MainWindow();
+
+public slots:
+    void play();
+    void play(const QModelIndex &index);
 
 private:
     void setupUi();
 
-    void createSongList();
+    void createMusicWindow();
+    void createPlayerWindow();
 
     Library m_library;
-    SongList *pm_songList;
+    MusicWindow *pm_musicWindow;
+    PlayerWindow *pm_playerWindow;
 };
 
 #endif // MAINWINDOW_HPP

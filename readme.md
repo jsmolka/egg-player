@@ -17,6 +17,7 @@ Under construction...
 ### General
 - black window
 - documentation
+- proper destructors for every function
 - use different font
 - debounced search bar
 - caching with SQL

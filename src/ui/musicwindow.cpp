@@ -1,25 +1,21 @@
-#include "songlist.hpp"
+#include "musicwindow.hpp"
 
-SongList::SongList(Library *library) : QListWidget()
+MusicWindow::MusicWindow(Library *library) : QListWidget()
 {
     pm_library = library;
-
-    setVerticalScrollMode(QAbstractItemView::ScrollPerPixel);
-    setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    setFrameStyle(QFrame::NoFrame);
 
     setupUi();
 }
 
-void SongList::setupUi()
+void MusicWindow::setupUi()
 {
     QString cssEven = FileUtil::read(CSS_SONGINFO_EVEN);
     QString cssOdd = FileUtil::read(CSS_SONGINFO_ODD);
 
-    int i = 0;
-    for (Audio audio : pm_library->audioList())
+    AudioList audios = pm_library->audioList();
+    for (int i = 0; i < audios.size(); i++)
     {
-        SongInfo *info = new SongInfo(&audio);
+        SongInfo *info = new SongInfo(&audios[i]);
         info->showTitle();
         info->showArtist();
         info->showAlbum();
@@ -33,7 +29,5 @@ void SongList::setupUi()
         item->setSizeHint(QSize(0, 50));
         addItem(item);
         setItemWidget(item, info);
-
-        i++;
     }
 }

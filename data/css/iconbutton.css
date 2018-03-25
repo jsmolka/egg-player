@@ -1,9 +1,13 @@
-QPushButton:hover {
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.35);
+IconButton {
+    background: transparent;
 }
 
-QPushButton:pressed {
-    border-radius: 50%;
-    background: rgba(0, 0, 0, 0.1);
+IconButton:hover {
+    border-radius: 19%;
+    background: rgba(255, 255, 255, 0.2);
+}
+
+IconButton:pressed {
+    border-radius: 19%;
+    background: rgba(0, 0, 0, 0.15);
 }
