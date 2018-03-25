@@ -3,16 +3,11 @@
 IconButton::IconButton(bool autoSwitch, QWidget *parent) : QPushButton(parent)
 {
     m_selected = true;
+    m_lockable = false;
     m_locked = false;
     m_autoSwitch = autoSwitch;
 
-    if (autoSwitch)
-        connect(this, SIGNAL(clicked(bool)), this, SLOT(switchIcon(void)));
-}
-
-IconButton::IconButton(QWidget *parent)
-{
-    IconButton(true, parent);
+    connect(this, SIGNAL(clicked(bool)), this, SLOT(switchIcon(void)));
 }
 
 void IconButton::setIcon1(QIcon icon)
@@ -57,6 +52,11 @@ bool IconButton::selected() const
     return m_selected;
 }
 
+void IconButton::setLockable(bool lockable)
+{
+    m_lockable = lockable;
+}
+
 void IconButton::setLocked(bool locked)
 {
     m_locked = locked;
@@ -84,18 +84,20 @@ void IconButton::init(QString path1, QString path2, QSize size)
 
 void IconButton::switchIcon()
 {
-    setSelected(!m_selected);
-    m_locked = !m_locked;
+    if (m_autoSwitch)
+        setSelected(!m_selected);
+    else if (m_lockable)
+    {
+        m_locked = !m_locked;
+        style()->unpolish(this);
+        style()->polish(this);
+    }
 }
 
 void IconButton::setSelectedIcon()
 {
     if (m_selected && !m_icon1.isNull())
-    {
         setIcon(m_icon1);
-    }
     else if (!m_icon2.isNull())
-    {
         setIcon(m_icon2);
-    }
 }

@@ -10,7 +10,8 @@ Under construction...
 - artist-album map
 - DRY principle
 
-### songlist.cpp
+### musicwindow.cpp
+- css based on object name with #even / #uneven
 - fix black boxes while hovering
 - borderlayout for songs / album / artist tabs
 

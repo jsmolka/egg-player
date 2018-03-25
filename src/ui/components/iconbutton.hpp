@@ -1,8 +1,9 @@
 #ifndef ICONBUTTON_HPP
 #define ICONBUTTON_HPP
 
-#include <QPushButton>
 #include <QIcon>
+#include <QPushButton>
+#include <QStyle>
 
 class IconButton : public QPushButton
 {
@@ -12,7 +13,6 @@ class IconButton : public QPushButton
 
 public:
     IconButton(bool autoSwitch, QWidget *parent = 0);
-    explicit IconButton(QWidget *parent = 0);
 
     void setIcon1(QIcon icon);
     void setIcon1(QString path);
@@ -24,6 +24,8 @@ public:
 
     void setSelected(bool selected);
     bool selected() const;
+
+    void setLockable(bool lockable);
 
     void setLocked(bool locked);
     bool locked() const;
@@ -40,6 +42,7 @@ private:
     QIcon m_icon1;
     QIcon m_icon2;
     bool m_selected;
+    bool m_lockable;
     bool m_locked;
     bool m_autoSwitch;
 };

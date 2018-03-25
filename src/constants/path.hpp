@@ -19,6 +19,7 @@ extern const QString ICO_VOLUME;
 extern const QString IMG_DEFAULT_COVER;
 
 extern const QString CSS_ICONBUTTON;
+extern const QString CSS_ICONBUTTON_LOCK;
 extern const QString CSS_SONGINFO_EVEN;
 extern const QString CSS_SONGINFO_ODD;
 extern const QString CSS_PLAYERWINDOW;
