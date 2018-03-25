@@ -1,4 +1,4 @@
-# music-player
+# egg-player
 Under construction...
 
 ## ToDo
@@ -15,6 +15,7 @@ Under construction...
 - borderlayout for songs / album / artist tabs
 
 ### General
+- black window
 - documentation
 - use different font
 - debounced search bar

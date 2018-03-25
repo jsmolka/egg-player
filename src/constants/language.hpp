@@ -4,4 +4,6 @@
 #include <QtGlobal>
 #include <QString>
 
+extern const QString LNG_APP_NAME;
+
 #endif // LANGUAGE_HPP

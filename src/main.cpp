@@ -2,6 +2,7 @@
 #include <QFont>
 #include <QFontDatabase>
 
+#include "src/constants/language.hpp"
 #include "src/constants/path.hpp"
 #include "src/ui/mainwindow.hpp"
 
@@ -18,6 +19,7 @@ QFont loadFont()
 
 void setup(QApplication *app)
 {
+    app->setApplicationName(LNG_APP_NAME);
     app->setFont(loadFont());
 }
 
