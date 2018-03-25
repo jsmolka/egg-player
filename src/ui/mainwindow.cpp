@@ -13,11 +13,7 @@ void MainWindow::play()
     IconButton *button = pm_playerWindow->playButton();
 
     if (button->selected())
-    {
-        if (player->index() == 0)
-            player->setIndex(0);
         player->play();
-    }
     else
         player->pause();
 }
@@ -25,11 +21,17 @@ void MainWindow::play()
 void MainWindow::play(const QModelIndex &index)
 {
     Player *player = pm_playerWindow->player();
-    IconButton *button = pm_playerWindow->playButton();
 
+    QLabel *cover = pm_playerWindow->coverLabel();
+    cover->setPixmap(m_library.at(index.row()).pixmap(50));
+
+    player->setAudioList(m_library.audioList());
     player->setIndex(index.row());
+    qDebug() << player->currentAudio().title();
     player->play();
-    button->setSelected(false);
+
+    // Set play button to correct state
+    pm_playerWindow->playButton()->setSelected(false);
 }
 
 void MainWindow::setupUi()
@@ -60,8 +62,8 @@ void MainWindow::createPlayerWindow()
     pm_playerWindow = new PlayerWindow;
 
     Player *player = pm_playerWindow->player();
+    player->setIndex(0);
     player->setVolume(5);
-    player->setAudioList(m_library.audioList());
 
     connect(pm_playerWindow->playButton(), SIGNAL(pressed()), this, SLOT(play()));
 }

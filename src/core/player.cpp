@@ -35,7 +35,7 @@ quint32 Player::index() const
     return pm_playlist->currentIndex();
 }
 
-Audio Player::audio() const
+Audio Player::currentAudio()
 {
     return m_audioList.at(index());
 }

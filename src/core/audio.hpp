@@ -2,6 +2,7 @@
 #define AUDIO_HPP
 
 #include <QImage>
+#include <QPixmap>
 #include <QString>
 #include <QStringList>
 #include <QUrl>
@@ -34,11 +35,13 @@ public:
 
     quint32 seconds() const;
     quint32 minutes() const;
-    QImage cover();
+    QImage cover(quint32 size);
+    QPixmap pixmap(quint32 size);
+
 
 private:
     bool readTags();
-    QImage resizeCover(QImage image);
+    QImage resizeCover(QImage image, quint32 size);
     QImage getCover();
     QImage readCover();
     QImage loadCoverFromFile();

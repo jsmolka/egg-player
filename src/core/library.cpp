@@ -10,9 +10,9 @@ Library::Library(const QString &path)
     loadFiles(path);
 }
 
-Library::Library(QStringList pathList)
+Library::Library(QStringList paths)
 {
-    for (QString path : pathList)
+    for (QString path : paths)
         loadFiles(path);
 }
 

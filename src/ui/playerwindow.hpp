@@ -2,11 +2,12 @@
 #define PLAYERWINDOW_HPP
 
 #include <QGridLayout>
+#include <QLabel>
 #include <QList>
-#include <QWidget>
-
-#include <QStyleOption>
 #include <QPainter>
+#include <QPixmap>
+#include <QStyleOption>
+#include <QWidget>
 
 #include "src/constants/path.hpp"
 #include "src/core/player.hpp"
@@ -21,8 +22,10 @@ public:
     PlayerWindow();
 
     Player * player();
-    IconButton * playButton();
+    QLabel *coverLabel();
+    QLabel *trackLabel();
     IconButton * nextButton();
+    IconButton * playButton();
     IconButton * backButton();
     IconButton * shuffleButton();
     IconButton * replayButton();
@@ -33,10 +36,13 @@ protected:
 
 private:
     void setupUi();
+    QPixmap defaultCover();
 
     Player *pm_player;
-    IconButton *pm_playButton;
+    QLabel *pm_coverLabel;
+    QLabel *pm_trackLabel;
     IconButton *pm_nextButton;
+    IconButton *pm_playButton;
     IconButton *pm_backButton;
     IconButton *pm_shuffleButton;
     IconButton *pm_replayButton;

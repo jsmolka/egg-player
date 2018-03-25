@@ -12,6 +12,16 @@ Player * PlayerWindow::player()
     return pm_player;
 }
 
+QLabel * PlayerWindow::coverLabel()
+{
+    return pm_coverLabel;
+}
+
+QLabel * PlayerWindow::trackLabel()
+{
+    return pm_trackLabel;
+}
+
 IconButton * PlayerWindow::playButton()
 {
     return pm_playButton;
@@ -56,6 +66,13 @@ void PlayerWindow::setupUi()
     setFixedHeight(67);
     setStyleSheet(FileUtil::read(CSS_PLAYERWINDOW));
 
+    QGridLayout *layout = new QGridLayout;
+
+    pm_coverLabel = new QLabel("lul", this);
+    pm_coverLabel->setPixmap(defaultCover());
+    //pm_cover->setFixedSize(QSize(50, 50));
+    layout->addWidget(pm_coverLabel, 0, 0);
+
     QList<IconButton *> buttons;
 
     pm_backButton = new IconButton(false, this);
@@ -84,13 +101,20 @@ void PlayerWindow::setupUi()
     pm_volumeButton->init(ICO_VOLUME, ICO_MUTE, size);
     buttons << pm_volumeButton;
 
-    QGridLayout *layout = new QGridLayout;
     QString css = FileUtil::read(CSS_ICONBUTTON);
-    for (int i = 0; i < buttons.size(); i++)
+    int column = 1;
+    for (IconButton *button : buttons)
     {
-        IconButton *button = buttons[i];
         button->setStyleSheet(css);
-        layout->addWidget(button, 0, i);
+        layout->addWidget(button, 0, column);
+        column++;
     }
     setLayout(layout);
+}
+
+QPixmap PlayerWindow::defaultCover()
+{
+    QImage image(IMG_DEFAULT_COVER);
+    image = image.scaled(50, 50, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+    return QPixmap::fromImage(image);
 }

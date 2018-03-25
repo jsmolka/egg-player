@@ -22,7 +22,7 @@ public:
 
     void setIndex(quint32 index);
     quint32 index() const;
-    Audio audio() const;
+    Audio currentAudio();
 
     void setPlaybackMode(QMediaPlaylist::PlaybackMode mode);
 

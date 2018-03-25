@@ -70,9 +70,14 @@ quint32 Audio::minutes() const
     return (m_length - seconds()) / 60;
 }
 
-QImage Audio::cover()
+QImage Audio::cover(quint32 size)
 {
-    return resizeCover(getCover());
+    return resizeCover(getCover(), size);
+}
+
+QPixmap Audio::pixmap(quint32 size)
+{
+    return QPixmap::fromImage(resizeCover(getCover(), size));
 }
 
 bool Audio::readTags()
@@ -96,9 +101,9 @@ bool Audio::readTags()
     return true;
 }
 
-QImage Audio::resizeCover(QImage image)
+QImage Audio::resizeCover(QImage image, quint32 size)
 {
-    return image.scaled(500, 500, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+    return image.scaled(size, size, Qt::KeepAspectRatio, Qt::SmoothTransformation);
 }
 
 QImage Audio::getCover()
