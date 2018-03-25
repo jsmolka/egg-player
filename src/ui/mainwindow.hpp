@@ -17,10 +17,13 @@ public:
 
 public slots:
     void play();
-    void play(const QModelIndex &index);
+    void start(const QModelIndex &index);
+    void next();
+    void back();
 
 private:
     void setupUi();
+    void updateInfo(Audio *audio);
 
     void createMusicWindow();
     void createPlayerWindow();

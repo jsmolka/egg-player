@@ -30,7 +30,7 @@ public:
     void sortByArtist(bool reverse = false);
     void sortByAlbum(bool reverse = false);
 
-    Audio at(quint32 idx) const;
+    Audio * at(quint32 idx);
 
 signals:
     void libraryUpdated();

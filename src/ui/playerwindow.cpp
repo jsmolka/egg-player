@@ -29,12 +29,12 @@ IconButton * PlayerWindow::playButton()
 
 IconButton * PlayerWindow::nextButton()
 {
-    return pm_backButton;
+    return pm_nextButton;
 }
 
 IconButton * PlayerWindow::backButton()
 {
-    return pm_nextButton;
+    return pm_backButton;
 }
 
 IconButton * PlayerWindow::shuffleButton()
@@ -67,11 +67,20 @@ void PlayerWindow::setupUi()
     setStyleSheet(FileUtil::read(CSS_PLAYERWINDOW));
 
     QGridLayout *layout = new QGridLayout;
+    layout->setSpacing(15);
 
-    pm_coverLabel = new QLabel("lul", this);
+    pm_coverLabel = new QLabel(this);
     pm_coverLabel->setPixmap(defaultCover());
-    //pm_cover->setFixedSize(QSize(50, 50));
+    pm_coverLabel->setFixedSize(QSize(50, 50));
     layout->addWidget(pm_coverLabel, 0, 0);
+
+    pm_trackLabel = new QLabel(this);
+    pm_trackLabel->setStyleSheet("color: white");
+    pm_trackLabel->setFixedSize(QSize(240, 50));
+    layout->addWidget(pm_trackLabel, 0, 1);
+
+    QLabel *label = new QLabel(this);
+    layout->addWidget(label, 0, 2);
 
     QList<IconButton *> buttons;
 
@@ -102,7 +111,7 @@ void PlayerWindow::setupUi()
     buttons << pm_volumeButton;
 
     QString css = FileUtil::read(CSS_ICONBUTTON);
-    int column = 1;
+    int column = 3;
     for (IconButton *button : buttons)
     {
         button->setStyleSheet(css);

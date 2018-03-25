@@ -8,7 +8,7 @@ Player::Player(QObject *parent) : QMediaPlayer(parent)
     setPlaylist(pm_playlist);
 }
 
-void Player::setAudioList(AudioList audioList)
+void Player::setAudioList(const AudioList &audioList)
 {
     m_audioList = audioList;
 

@@ -15,7 +15,7 @@ class Player : public QMediaPlayer
 public:
     Player(QObject *parent = 0);
 
-    void setAudioList(AudioList audioList);
+    void setAudioList(const AudioList &audioList);
     AudioList audioList() const;
 
     QMediaPlaylist * playlist() const;

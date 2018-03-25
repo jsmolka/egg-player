@@ -101,9 +101,9 @@ void Library::sortByAlbum(bool reverse)
     emit libraryUpdated();
 }
 
-Audio Library::at(quint32 idx) const
+Audio * Library::at(quint32 idx)
 {
-    return m_audioList.at(idx);
+    return &m_audioList[idx];
 }
 
 void Library::libraryUpdated()
