@@ -3,26 +3,26 @@ IconButton[locked="false"] {
 }
 
 IconButton[locked="true"] {
-    border-radius: 19%;
+    border-radius: 15%;
     background: rgba(255, 255, 255, 0.3);
 }
 
 IconButton[locked="true"]:hover {
-    border-radius: 19%;
+    border-radius: 15%;
     background: rgba(255, 255, 255, 0.2);
 }
 
 IconButton[locked="false"]:hover {
-    border-radius: 19%;
+    border-radius: 15%;
     background: rgba(255, 255, 255, 0.2);
 }
 
 IconButton[locked="true"]:pressed {
-    border-radius: 19%;
+    border-radius: 15%;
     background: rgba(0, 0, 0, 0.15);
 }
 
 IconButton[locked="false"]:pressed {
-    border-radius: 19%;
+    border-radius: 15%;
     background: rgba(0, 0, 0, 0.15);
 }

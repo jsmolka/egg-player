@@ -10,11 +10,14 @@ MainWindow::MainWindow() : QWidget()
 void MainWindow::play()
 {
     Player *player = pm_playerWindow->player();
+    IconButton *playButton = pm_playerWindow->playButton();
 
-    if (pm_playerWindow->playButton()->selected())
+    if (playButton->isSelected())
         player->play();
     else
         player->pause();
+
+    playButton->switchIcon();
 }
 
 void MainWindow::start(const QModelIndex &index)
@@ -57,7 +60,7 @@ void MainWindow::back()
     int current = player->index();
     int count = player->playlist()->mediaCount() - 1;
     if (current == 0)
-        count;
+        current = count;
     else
         current--;
 

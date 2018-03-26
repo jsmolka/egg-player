@@ -6,10 +6,9 @@
 #include <QListWidget>
 #include <QScrollBar>
 
-#include "src/constants/path.hpp"
+#include "src/constants/constant.hpp"
 #include "src/core/library.hpp"
 #include "src/ui/components/songinfo.hpp"
-#include "src/utils/fileutil.hpp"
 
 class MusicWindow : public QListWidget
 {

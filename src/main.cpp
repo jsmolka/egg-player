@@ -2,13 +2,12 @@
 #include <QFont>
 #include <QFontDatabase>
 
-#include "src/constants/language.hpp"
-#include "src/constants/path.hpp"
+#include "src/constants/constant.hpp"
 #include "src/ui/mainwindow.hpp"
 
 QFont loadFont()
 {
-    int id = QFontDatabase::addApplicationFont(FNT_LATO);
+    int id = QFontDatabase::addApplicationFont(FONT_LATO);
     QString family = QFontDatabase::applicationFontFamilies(id).at(0);
     QFont font(family);
     font.setPointSizeF(10.25);
@@ -19,7 +18,7 @@ QFont loadFont()
 
 void setup(QApplication *app)
 {
-    app->setApplicationName(LNG_APP_NAME);
+    app->setApplicationName(LANG_APPNAME);
     app->setFont(loadFont());
 }
 

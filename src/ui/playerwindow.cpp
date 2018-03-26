@@ -64,7 +64,7 @@ void PlayerWindow::setupUi()
 {
     QSize size(40, 40);
     setFixedHeight(67);
-    setStyleSheet(FileUtil::read(CSS_PLAYERWINDOW));
+    setStyleSheet(CSS_PLAYERWINDOW);
 
     QGridLayout *layout = new QGridLayout;
     layout->setSpacing(15);
@@ -84,37 +84,36 @@ void PlayerWindow::setupUi()
 
     QList<IconButton *> buttons;
 
-    pm_backButton = new IconButton(false, this);
-    pm_backButton->init(ICO_REWIND, size);
+    pm_backButton = new IconButton(this);
+    pm_backButton->init(QIcon(ICO_REWIND), size);
     buttons << pm_backButton;
 
-    pm_playButton = new IconButton(true, this);
-    pm_playButton->init(ICO_PLAY, ICO_PAUSE, size);
+    pm_playButton = new IconButton(this);
+    pm_playButton->init(QIcon(ICO_PLAY), QIcon(ICO_PAUSE), size);
     buttons << pm_playButton;
 
-    pm_nextButton = new IconButton(false, this);
-    pm_nextButton->init(ICO_FORWARD, size);
+    pm_nextButton = new IconButton(this);
+    pm_nextButton->init(QIcon(ICO_FORWARD), size);
     buttons << pm_nextButton;
 
-    pm_shuffleButton = new IconButton(false, this);
+    pm_shuffleButton = new IconButton(this);
     pm_shuffleButton->setLockable(true);
-    pm_shuffleButton->init(ICO_SHUFFLE, size);
+    pm_shuffleButton->init(QIcon(ICO_SHUFFLE), size);
     buttons << pm_shuffleButton;
 
-    pm_replayButton = new IconButton(false, this);
+    pm_replayButton = new IconButton(this);
     pm_replayButton->setLockable(true);
-    pm_replayButton->init(ICO_REPLAY, size);
+    pm_replayButton->init(QIcon(ICO_REPLAY), size);
     buttons << pm_replayButton;
 
-    pm_volumeButton = new IconButton(false, this);
-    pm_volumeButton->init(ICO_VOLUME, ICO_MUTE, size);
+    pm_volumeButton = new IconButton(this);
+    pm_volumeButton->init(QIcon(ICO_VOLUME), QIcon(ICO_MUTE), size);
     buttons << pm_volumeButton;
 
-    QString css = FileUtil::read(CSS_ICONBUTTON);
     int column = 3;
     for (IconButton *button : buttons)
     {
-        button->setStyleSheet(css);
+        button->setStyleSheet(CSS_ICONBUTTON);
         layout->addWidget(button, 0, column);
         column++;
     }

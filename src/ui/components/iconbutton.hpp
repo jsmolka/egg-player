@@ -9,32 +9,33 @@ class IconButton : public QPushButton
 {
     Q_OBJECT
 
-    Q_PROPERTY(bool locked READ locked WRITE setLocked)
+    Q_PROPERTY(bool locked READ isLocked WRITE setLocked)
 
 public:
-    IconButton(bool autoSwitch, QWidget *parent = 0);
+    IconButton(QWidget *parent = 0);
 
     void setIcon1(QIcon icon);
-    void setIcon1(QString path);
     QIcon icon1() const;
 
     void setIcon2(QIcon icon);
-    void setIcon2(QString path);
     QIcon icon2() const;
 
     void setSelected(bool selected);
-    bool selected() const;
+    void setSelected(int selected);
+    bool isSelected() const;
 
     void setLockable(bool lockable);
 
     void setLocked(bool locked);
-    bool locked() const;
+    bool isLocked() const;
 
-    void init(QString path, QSize size);
-    void init(QString path1, QString path2, QSize size);
+    void init(QIcon icon, QSize size);
+    void init(QIcon icon1, QIcon icon2, QSize size);
+
+    void switchIcon();
 
 public slots:
-    void switchIcon();
+    void switchLocked();
 
 private:
     void setSelectedIcon();
@@ -44,7 +45,6 @@ private:
     bool m_selected;
     bool m_lockable;
     bool m_locked;
-    bool m_autoSwitch;
 };
 
 #endif // ICONBUTTON_HPP

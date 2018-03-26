@@ -1,23 +1,17 @@
 #include "iconbutton.hpp"
 
-IconButton::IconButton(bool autoSwitch, QWidget *parent) : QPushButton(parent)
+IconButton::IconButton(QWidget *parent) : QPushButton(parent)
 {
     m_selected = true;
     m_lockable = false;
     m_locked = false;
-    m_autoSwitch = autoSwitch;
 
-    connect(this, SIGNAL(clicked(bool)), this, SLOT(switchIcon(void)));
+    connect(this, SIGNAL(clicked(bool)), this, SLOT(switchLocked(void)));
 }
 
 void IconButton::setIcon1(QIcon icon)
 {
     m_icon1 = icon;
-}
-
-void IconButton::setIcon1(QString path)
-{
-    setIcon1(QIcon(path));
 }
 
 QIcon IconButton::icon1() const
@@ -28,11 +22,6 @@ QIcon IconButton::icon1() const
 void IconButton::setIcon2(QIcon icon)
 {
     m_icon2 = icon;
-}
-
-void IconButton::setIcon2(QString path)
-{
-    setIcon2(QIcon(path));
 }
 
 QIcon IconButton::icon2() const
@@ -47,7 +36,12 @@ void IconButton::setSelected(bool selected)
     setSelectedIcon();
 }
 
-bool IconButton::selected() const
+void IconButton::setSelected(int selected)
+{
+    setSelected(!(bool)selected);
+}
+
+bool IconButton::isSelected() const
 {
     return m_selected;
 }
@@ -62,20 +56,20 @@ void IconButton::setLocked(bool locked)
     m_locked = locked;
 }
 
-bool IconButton::locked() const
+bool IconButton::isLocked() const
 {
     return m_locked;
 }
 
-void IconButton::init(QString path, QSize size)
+void IconButton::init(QIcon icon, QSize size)
 {
-   init(path, QString(), size);
+   init(icon, QIcon(), size);
 }
 
-void IconButton::init(QString path1, QString path2, QSize size)
+void IconButton::init(QIcon icon1, QIcon icon2, QSize size)
 {
-    setIcon1(path1);
-    setIcon2(path2);
+    m_icon1 = icon1;
+    m_icon2 = icon2;
 
     setIcon(m_icon1);
     setIconSize(size);
@@ -84,9 +78,12 @@ void IconButton::init(QString path1, QString path2, QSize size)
 
 void IconButton::switchIcon()
 {
-    if (m_autoSwitch)
-        setSelected(!m_selected);
-    else if (m_lockable)
+    setSelected(!m_selected);
+}
+
+void IconButton::switchLocked()
+{
+    if (m_lockable)
     {
         m_locked = !m_locked;
         style()->unpolish(this);
@@ -96,8 +93,8 @@ void IconButton::switchIcon()
 
 void IconButton::setSelectedIcon()
 {
-    if (m_selected && !m_icon1.isNull())
+    if (m_selected)
         setIcon(m_icon1);
-    else if (!m_icon2.isNull())
+    else
         setIcon(m_icon2);
 }

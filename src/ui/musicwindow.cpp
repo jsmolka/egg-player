@@ -5,7 +5,7 @@ MusicWindow::MusicWindow(Library *library) : QListWidget()
     pm_library = library;
 
     setVerticalScrollMode(QAbstractItemView::ScrollPerPixel);
-    verticalScrollBar()->setStyleSheet(FileUtil::read(CSS_SCROLLBAR));
+    verticalScrollBar()->setStyleSheet(CSS_SCROLLBAR);
     setFrameStyle(QFrame::NoFrame);
 
     setupUi();
@@ -13,9 +13,6 @@ MusicWindow::MusicWindow(Library *library) : QListWidget()
 
 void MusicWindow::setupUi()
 {
-    QString cssEven = FileUtil::read(CSS_SONGINFO_EVEN);
-    QString cssOdd = FileUtil::read(CSS_SONGINFO_ODD);
-
     AudioList audioList = pm_library->audioList();
     for (int i = 0; i < audioList.size(); i++)
     {
@@ -27,7 +24,7 @@ void MusicWindow::setupUi()
         info->showGenre();
         info->showLength();
         info->init({10, 10, 10, 1, 10, 1});
-        info->setStyleSheet(i % 2 == 0 ? cssEven : cssOdd);
+        info->setStyleSheet(i % 2 == 0 ? CSS_SONGINFO_EVEN : CSS_SONGINFO_ODD);
 
         QListWidgetItem *item = new QListWidgetItem();
         item->setSizeHint(QSize(0, 50));

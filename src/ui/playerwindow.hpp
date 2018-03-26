@@ -2,6 +2,7 @@
 #define PLAYERWINDOW_HPP
 
 #include <QGridLayout>
+#include <QIcon>
 #include <QLabel>
 #include <QList>
 #include <QPainter>
@@ -9,10 +10,9 @@
 #include <QStyleOption>
 #include <QWidget>
 
-#include "src/constants/path.hpp"
+#include "src/constants/constant.hpp"
 #include "src/core/player.hpp"
 #include "src/ui/components/iconbutton.hpp"
-#include "src/utils/fileutil.hpp"
 
 class PlayerWindow : public QWidget
 {
