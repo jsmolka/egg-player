@@ -6,6 +6,7 @@
 #include <QList>
 #include <QMediaPlayer>
 #include <QMediaPlaylist>
+#include <QPixmap>
 
 #include <src/core/audio.hpp>
 #include <src/core/audiolist.hpp>
@@ -18,15 +19,21 @@ public:
     void setAudioList(const AudioList &audioList);
     AudioList audioList() const;
 
-    QMediaPlaylist * playlist() const;
+    void setCurrentIndex(int index);
+    int currentIndex() const;
 
-    void setIndex(quint32 index);
-    quint32 index() const;
-    Audio currentAudio();
+    Audio * currentAudio();
+    QString currentTitle();
+    QString currentArtist();
+    QPixmap currentCover();
 
-    void setPlaybackMode(QMediaPlaylist::PlaybackMode mode);
+    void setLoop(bool loop);
+    bool isLoop();
 
-    bool refresh();
+    int nextIndex();
+    int backIndex();
+
+    void refresh();
     void shuffle();
 
 private:

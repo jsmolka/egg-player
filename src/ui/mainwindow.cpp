@@ -12,63 +12,50 @@ void MainWindow::play()
     Player *player = pm_playerWindow->player();
     IconButton *playButton = pm_playerWindow->playButton();
 
-    if (playButton->isSelected())
+    playButton->switchIcon();
+
+    if (!playButton->isSelected())
         player->play();
     else
         player->pause();
-
-    playButton->switchIcon();
 }
 
 void MainWindow::start(const QModelIndex &index)
 {
-    // Set current song information
-    updateInfo(m_library.at(index.row()));
-
-    // Set play button to correct state
-    pm_playerWindow->playButton()->setSelected(false);
-
-    // Setup player
     Player *player = pm_playerWindow->player();
+    IconButton *playButton = pm_playerWindow->playButton();
+
     player->setAudioList(m_library.audioList());
-    player->setIndex(index.row());
+    player->setCurrentIndex(index.row());
     player->play();
+
+    playButton->setSelected(0);
+
+    updateTrackInfo();
 }
 
 void MainWindow::next()
 {
-    // Get next index
     Player *player = pm_playerWindow->player();
-    int current = player->index();
-    int count = player->playlist()->mediaCount() - 1;
-    if (current == count)
-        current = 0;
-    else
-        current++;
+    int index = player->nextIndex();
+    if (index != -1)
+    {
+        player->setCurrentIndex(index);
 
-    // Set current song information
-    updateInfo(m_library.at(current));
-
-    // Setup player
-    player->setIndex(current);
+        updateTrackInfo();
+    }
 }
 
 void MainWindow::back()
 {
-    // Get next index
     Player *player = pm_playerWindow->player();
-    int current = player->index();
-    int count = player->playlist()->mediaCount() - 1;
-    if (current == 0)
-        current = count;
-    else
-        current--;
+    int index = player->backIndex();
+    if (index != -1)
+    {
+        player->setCurrentIndex(index);
 
-    // Set current song information
-    updateInfo(m_library.at(current));
-
-    // Setup player
-    player->setIndex(current);
+        updateTrackInfo();
+    }
 }
 
 void MainWindow::setupUi()
@@ -87,12 +74,14 @@ void MainWindow::setupUi()
     setLayout(layout);
 }
 
-void MainWindow::updateInfo(Audio *audio)
+void MainWindow::updateTrackInfo()
 {
-    QLabel *cover = pm_playerWindow->coverLabel();
-    cover->setPixmap(audio->pixmap(50));
-    QLabel *track = pm_playerWindow->trackLabel();
-    track->setText(QString("%1\n%2").arg(audio->title(), audio->artist()));
+    Player *player = pm_playerWindow->player();
+    QLabel *trackLabel = pm_playerWindow->trackLabel();
+    QLabel *coverLabel = pm_playerWindow->coverLabel();
+
+    trackLabel->setText(QString("%1\n%2").arg(player->currentTitle(), player->currentArtist()));
+    //coverLabel->setPixmap(player->currentCover());
 }
 
 void MainWindow::createMusicWindow()
@@ -107,7 +96,6 @@ void MainWindow::createPlayerWindow()
     pm_playerWindow = new PlayerWindow;
 
     Player *player = pm_playerWindow->player();
-    player->setIndex(0);
     player->setVolume(5);
 
     connect(pm_playerWindow->playButton(), SIGNAL(pressed()), this, SLOT(play()));

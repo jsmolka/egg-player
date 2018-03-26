@@ -23,7 +23,7 @@ public slots:
 
 private:
     void setupUi();
-    void updateInfo(Audio *audio);
+    void updateTrackInfo();
 
     void createMusicWindow();
     void createPlayerWindow();

@@ -20,40 +20,108 @@ AudioList Player::audioList() const
     return m_audioList;
 }
 
-QMediaPlaylist * Player::playlist() const
+void Player::setCurrentIndex(int index)
 {
-    return pm_playlist;
+    if (0 <= index && index << m_audioList.size())
+        pm_playlist->setCurrentIndex(index);
+    else
+        pm_playlist->setCurrentIndex(0);
 }
 
-void Player::setIndex(quint32 index)
+int Player::currentIndex() const
 {
-    pm_playlist->setCurrentIndex(index);
+    int index = pm_playlist->currentIndex();
+    if (0 <= index && index < m_audioList.size())
+        return index;
+    else
+        return -1;
 }
 
-quint32 Player::index() const
+Audio * Player::currentAudio()
 {
-    return pm_playlist->currentIndex();
+    int index = currentIndex();
+    if (index != -1)
+        return &m_audioList[index];
+    else
+        return 0;
 }
 
-Audio Player::currentAudio()
+QString Player::currentTitle()
 {
-    return m_audioList.at(index());
+    Audio *audio = currentAudio();
+    if (audio)
+        return currentAudio()->title();
+    else
+        return QString();
 }
 
-void Player::setPlaybackMode(QMediaPlaylist::PlaybackMode mode)
+QString Player::currentArtist()
 {
-    pm_playlist->setPlaybackMode(mode);
+    Audio *audio = currentAudio();
+    if (audio)
+        return currentAudio()->artist();
+    else
+        return QString();
 }
 
-bool Player::refresh()
+QPixmap Player::currentCover()
 {
-    if (!pm_playlist->clear())
-        return false;
+    Audio *audio = currentAudio();
+    if (audio)
+        return currentAudio()->pixmap(50);
+    else
+        return QPixmap();
+}
+
+void Player::setLoop(bool loop)
+{
+    if (loop)
+        pm_playlist->setPlaybackMode(QMediaPlaylist::PlaybackMode::Loop);
+    else
+        pm_playlist->setPlaybackMode(QMediaPlaylist::PlaybackMode::Sequential);
+}
+
+bool Player::isLoop()
+{
+    return pm_playlist->playbackMode() == QMediaPlaylist::PlaybackMode::Loop;
+}
+
+int Player::nextIndex()
+{
+    int index = currentIndex();
+    if (index == -1)
+        return -1;
+    if (index == m_audioList.size() - 1)
+    {
+        if (isLoop())
+            return 0;
+        else
+            return -1;
+    }
+    return ++index;
+}
+
+int Player::backIndex()
+{
+    int index = currentIndex();
+    if (index == -1)
+        return -1;
+    if (index == 0)
+    {
+        if (isLoop())
+            return m_audioList.size() - 1;
+        else
+            return -1;
+    }
+    return --index;
+}
+
+void Player::refresh()
+{
+    pm_playlist->clear();
 
     for (Audio audio : m_audioList)
         pm_playlist->addMedia(audio.url());
-
-    return true;
 }
 
 void Player::shuffle()
