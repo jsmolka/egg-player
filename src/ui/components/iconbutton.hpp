@@ -37,6 +37,9 @@ public:
 public slots:
     void switchLocked();
 
+signals:
+    void locked();
+
 private:
     void setSelectedIcon();
 

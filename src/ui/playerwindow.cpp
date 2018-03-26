@@ -85,7 +85,7 @@ void PlayerWindow::setupUi()
     QList<IconButton *> buttons;
 
     pm_backButton = new IconButton(this);
-    pm_backButton->init(QIcon(ICO_REWIND), size);
+    pm_backButton->init(QIcon(ICO_BACK), size);
     buttons << pm_backButton;
 
     pm_playButton = new IconButton(this);
@@ -93,7 +93,7 @@ void PlayerWindow::setupUi()
     buttons << pm_playButton;
 
     pm_nextButton = new IconButton(this);
-    pm_nextButton->init(QIcon(ICO_FORWARD), size);
+    pm_nextButton->init(QIcon(ICO_NEXT), size);
     buttons << pm_nextButton;
 
     pm_shuffleButton = new IconButton(this);

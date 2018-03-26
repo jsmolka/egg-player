@@ -88,6 +88,9 @@ void IconButton::switchLocked()
         m_locked = !m_locked;
         style()->unpolish(this);
         style()->polish(this);
+
+        if (isLocked())
+            emit locked();
     }
 }
 

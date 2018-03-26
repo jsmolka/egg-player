@@ -12,12 +12,15 @@ void MainWindow::play()
     Player *player = pm_playerWindow->player();
     IconButton *playButton = pm_playerWindow->playButton();
 
-    playButton->switchIcon();
+    if (player->currentIndex() != -1)
+    {
+        playButton->switchIcon();
 
-    if (!playButton->isSelected())
-        player->play();
-    else
-        player->pause();
+        if (!playButton->isSelected())
+            player->play();
+        else
+            player->pause();
+    }
 }
 
 void MainWindow::start(const QModelIndex &index)
@@ -26,12 +29,12 @@ void MainWindow::start(const QModelIndex &index)
     IconButton *playButton = pm_playerWindow->playButton();
 
     player->setAudioList(m_library.audioList());
-    player->setCurrentIndex(index.row());
-    player->play();
 
+    updateTrackInfo(index.row());
     playButton->setSelected(0);
 
-    updateTrackInfo();
+    player->setCurrentIndex(index.row());
+    player->play();
 }
 
 void MainWindow::next()
@@ -40,9 +43,9 @@ void MainWindow::next()
     int index = player->nextIndex();
     if (index != -1)
     {
-        player->setCurrentIndex(index);
+        updateTrackInfo(index);
 
-        updateTrackInfo();
+        player->setCurrentIndex(index);
     }
 }
 
@@ -52,10 +55,21 @@ void MainWindow::back()
     int index = player->backIndex();
     if (index != -1)
     {
-        player->setCurrentIndex(index);
+        updateTrackInfo(index);
 
-        updateTrackInfo();
+        player->setCurrentIndex(index);
     }
+}
+
+void MainWindow::loop()
+{
+    Player *player = pm_playerWindow->player();
+    IconButton *replayButton = pm_playerWindow->replayButton();
+
+    if (replayButton->isLocked())
+        player->setLoop(true);
+    else
+        player->setLoop(false);
 }
 
 void MainWindow::setupUi()
@@ -74,14 +88,18 @@ void MainWindow::setupUi()
     setLayout(layout);
 }
 
-void MainWindow::updateTrackInfo()
+void MainWindow::updateTrackInfo(int index)
 {
     Player *player = pm_playerWindow->player();
     QLabel *trackLabel = pm_playerWindow->trackLabel();
     QLabel *coverLabel = pm_playerWindow->coverLabel();
 
-    trackLabel->setText(QString("%1\n%2").arg(player->currentTitle(), player->currentArtist()));
-    //coverLabel->setPixmap(player->currentCover());
+    QString title = player->titleAt(index);
+    QString artist = player->artistAt(index);
+    QPixmap cover = player->coverAt(index);
+
+    trackLabel->setText(QString("%1\n%2").arg(title, artist));
+    coverLabel->setPixmap(cover);
 }
 
 void MainWindow::createMusicWindow()
@@ -101,4 +119,5 @@ void MainWindow::createPlayerWindow()
     connect(pm_playerWindow->playButton(), SIGNAL(pressed()), this, SLOT(play()));
     connect(pm_playerWindow->nextButton(), SIGNAL(pressed()), this, SLOT(next()));
     connect(pm_playerWindow->backButton(), SIGNAL(pressed()), this, SLOT(back()));
+    connect(pm_playerWindow->replayButton(), SIGNAL(locked()), this, SLOT(loop()));
 }

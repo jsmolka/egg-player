@@ -27,6 +27,10 @@ public:
     QString currentArtist();
     QPixmap currentCover();
 
+    QString titleAt(int index);
+    QString artistAt(int index);
+    QPixmap coverAt(int index);
+
     void setLoop(bool loop);
     bool isLoop();
 

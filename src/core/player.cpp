@@ -73,6 +73,21 @@ QPixmap Player::currentCover()
         return QPixmap();
 }
 
+QString Player::titleAt(int index)
+{
+    return m_audioList[index].title();
+}
+
+QString Player::artistAt(int index)
+{
+    return m_audioList[index].artist();
+}
+
+QPixmap Player::coverAt(int index)
+{
+    return m_audioList[index].pixmap(50);
+}
+
 void Player::setLoop(bool loop)
 {
     if (loop)

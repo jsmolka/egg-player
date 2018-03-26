@@ -20,10 +20,11 @@ public slots:
     void start(const QModelIndex &index);
     void next();
     void back();
+    void loop();
 
 private:
     void setupUi();
-    void updateTrackInfo();
+    void updateTrackInfo(int index);
 
     void createMusicWindow();
     void createPlayerWindow();
