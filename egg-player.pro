@@ -28,7 +28,8 @@ HEADERS += \
     src/constants/constant.hpp \
     src/ui/eggplayer.hpp \
     src/ui/musicbar.hpp \
-    src/ui/musiclibrary.hpp
+    src/ui/musiclibrary.hpp \
+    src/constants/language.hpp
 
 SOURCES += \
     src/main.cpp \
@@ -44,4 +45,5 @@ SOURCES += \
     src/constants/constant.cpp \
     src/ui/eggplayer.cpp \
     src/ui/musicbar.cpp \
-    src/ui/musiclibrary.cpp
+    src/ui/musiclibrary.cpp \
+    src/constants/language.cpp

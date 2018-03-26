@@ -5,36 +5,34 @@
 
 #include "src/utils/fileutil.hpp"
 
-extern QString ICO_BACK;
-extern QString ICO_EXPAND;
-extern QString ICO_FASTFORWARD;
-extern QString ICO_FASTREWIND;
-extern QString ICO_FORWARD;
-extern QString ICO_HEART;
-extern QString ICO_MINIMIZE;
-extern QString ICO_MUTE;
-extern QString ICO_NEXT;
-extern QString ICO_PAUSE;
-extern QString ICO_PLAY;
-extern QString ICO_REPLAY;
-extern QString ICO_REWIND;
-extern QString ICO_SHUFFLE;
-extern QString ICO_STOP;
-extern QString ICO_VOLUME;
-extern QString ICO_VOLUME1;
-extern QString ICO_VOLUME2;
+const extern QString ICO_BACK;
+const extern QString ICO_EXPAND;
+const extern QString ICO_FASTFORWARD;
+const extern QString ICO_FASTREWIND;
+const extern QString ICO_FORWARD;
+const extern QString ICO_HEART;
+const extern QString ICO_MINIMIZE;
+const extern QString ICO_MUTE;
+const extern QString ICO_NEXT;
+const extern QString ICO_PAUSE;
+const extern QString ICO_PLAY;
+const extern QString ICO_REPLAY;
+const extern QString ICO_REWIND;
+const extern QString ICO_SHUFFLE;
+const extern QString ICO_STOP;
+const extern QString ICO_VOLUME;
+const extern QString ICO_VOLUME1;
+const extern QString ICO_VOLUME2;
 
-extern QString IMG_DEFAULT_COVER;
+const extern QString IMG_DEFAULT_COVER;
 
-extern QString CSS_ICONBUTTON;
-extern QString CSS_SONGINFO_EVEN;
-extern QString CSS_SONGINFO_ODD;
-extern QString CSS_MUSICBAR;
-extern QString CSS_SCROLLBAR;
-extern QString CSS_TRACKLABEL;
+const extern QString CSS_ICONBUTTON;
+const extern QString CSS_SONGINFO_EVEN;
+const extern QString CSS_SONGINFO_ODD;
+const extern QString CSS_MUSICBAR;
+const extern QString CSS_SCROLLBAR;
+const extern QString CSS_TRACKLABEL;
 
-extern QString FONT_LATO;
-
-extern QString LANG_APPNAME;
+const extern QString FONT_LATO;
 
 #endif // CONSTANT_HPP
