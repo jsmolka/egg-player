@@ -1,5 +1,5 @@
-#ifndef MUSICWINDOW_HPP
-#define MUSICWINDOW_HPP
+#ifndef MUSICLIBRARY_HPP
+#define MUSICLIBRARY_HPP
 
 #include <QLabel>
 #include <QList>
@@ -10,10 +10,10 @@
 #include "src/core/library.hpp"
 #include "src/ui/components/songinfo.hpp"
 
-class MusicWindow : public QListWidget
+class MusicLibrary : public QListWidget
 {
 public:
-    MusicWindow(Library *library);
+    MusicLibrary(Library *library);
 
 private:
     void setupUi();
@@ -21,4 +21,4 @@ private:
     Library *pm_library;
 };
 
-#endif // MUSICWINDOW_HPP
+#endif // MUSICLIBRARY_HPP

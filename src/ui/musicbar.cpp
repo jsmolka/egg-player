@@ -1,58 +1,58 @@
-#include "playerwindow.hpp"
+#include "musicbar.hpp"
 
-PlayerWindow::PlayerWindow() : QWidget()
+MusicBar::MusicBar() : QWidget()
 {
     pm_player = new Player;
 
     setupUi();
 }
 
-Player * PlayerWindow::player()
+Player * MusicBar::player()
 {
     return pm_player;
 }
 
-QLabel * PlayerWindow::coverLabel()
+QLabel * MusicBar::coverLabel()
 {
     return pm_coverLabel;
 }
 
-QLabel * PlayerWindow::trackLabel()
+QLabel * MusicBar::trackLabel()
 {
     return pm_trackLabel;
 }
 
-IconButton * PlayerWindow::playButton()
+IconButton * MusicBar::playButton()
 {
     return pm_playButton;
 }
 
-IconButton * PlayerWindow::nextButton()
+IconButton * MusicBar::nextButton()
 {
     return pm_nextButton;
 }
 
-IconButton * PlayerWindow::backButton()
+IconButton * MusicBar::backButton()
 {
     return pm_backButton;
 }
 
-IconButton * PlayerWindow::shuffleButton()
+IconButton * MusicBar::shuffleButton()
 {
     return pm_shuffleButton;
 }
 
-IconButton * PlayerWindow::replayButton()
+IconButton * MusicBar::loopButton()
 {
-    return pm_replayButton;
+    return pm_loopButton;
 }
 
-IconButton * PlayerWindow::volumeButton()
+IconButton * MusicBar::volumeButton()
 {
     return pm_volumeButton;
 }
 
-void PlayerWindow::paintEvent(QPaintEvent *event)
+void MusicBar::paintEvent(QPaintEvent *event)
 {
   QStyleOption option;
   option.initFrom(this);
@@ -60,11 +60,10 @@ void PlayerWindow::paintEvent(QPaintEvent *event)
   style()->drawPrimitive(QStyle::PE_Widget, &option, &painter, this);
 }
 
-void PlayerWindow::setupUi()
+void MusicBar::setupUi()
 {
-    QSize size(40, 40);
     setFixedHeight(67);
-    setStyleSheet(CSS_PLAYERWINDOW);
+    setStyleSheet(CSS_MUSICBAR);
 
     QGridLayout *layout = new QGridLayout;
     layout->setSpacing(15);
@@ -75,7 +74,7 @@ void PlayerWindow::setupUi()
     layout->addWidget(pm_coverLabel, 0, 0);
 
     pm_trackLabel = new QLabel(this);
-    pm_trackLabel->setStyleSheet("color: white");
+    pm_trackLabel->setStyleSheet(CSS_TRACKLABEL);
     pm_trackLabel->setFixedSize(QSize(240, 50));
     layout->addWidget(pm_trackLabel, 0, 1);
 
@@ -83,6 +82,7 @@ void PlayerWindow::setupUi()
     layout->addWidget(label, 0, 2);
 
     QList<IconButton *> buttons;
+    QSize size(40, 40);
 
     pm_backButton = new IconButton(this);
     pm_backButton->init(QIcon(ICO_BACK), size);
@@ -101,10 +101,10 @@ void PlayerWindow::setupUi()
     pm_shuffleButton->init(QIcon(ICO_SHUFFLE), size);
     buttons << pm_shuffleButton;
 
-    pm_replayButton = new IconButton(this);
-    pm_replayButton->setLockable(true);
-    pm_replayButton->init(QIcon(ICO_REPLAY), size);
-    buttons << pm_replayButton;
+    pm_loopButton = new IconButton(this);
+    pm_loopButton->setLockable(true);
+    pm_loopButton->init(QIcon(ICO_REPLAY), size);
+    buttons << pm_loopButton;
 
     pm_volumeButton = new IconButton(this);
     pm_volumeButton->init(QIcon(ICO_VOLUME), QIcon(ICO_MUTE), size);
@@ -120,7 +120,7 @@ void PlayerWindow::setupUi()
     setLayout(layout);
 }
 
-QPixmap PlayerWindow::defaultCover()
+QPixmap MusicBar::defaultCover()
 {
     QImage image(IMG_DEFAULT_COVER);
     image = image.scaled(50, 50, Qt::KeepAspectRatio, Qt::SmoothTransformation);

@@ -1,6 +1,6 @@
-#include "musicwindow.hpp"
+#include "musiclibrary.hpp"
 
-MusicWindow::MusicWindow(Library *library) : QListWidget()
+MusicLibrary::MusicLibrary(Library *library) : QListWidget()
 {
     pm_library = library;
 
@@ -11,7 +11,7 @@ MusicWindow::MusicWindow(Library *library) : QListWidget()
     setupUi();
 }
 
-void MusicWindow::setupUi()
+void MusicLibrary::setupUi()
 {
     AudioList audioList = pm_library->audioList();
     for (int i = 0; i < audioList.size(); i++)

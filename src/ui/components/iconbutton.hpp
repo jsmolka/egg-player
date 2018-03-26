@@ -9,6 +9,9 @@ class IconButton : public QPushButton
 {
     Q_OBJECT
 
+    Q_PROPERTY(QIcon icon1 READ icon1 WRITE setIcon1)
+    Q_PROPERTY(QIcon icon2 READ icon2 WRITE setIcon2)
+    Q_PROPERTY(bool selected READ isSelected WRITE setSelected)
     Q_PROPERTY(bool locked READ isLocked WRITE setLocked)
 
 public:
@@ -24,10 +27,10 @@ public:
     void setSelected(int selected);
     bool isSelected() const;
 
-    void setLockable(bool lockable);
-
     void setLocked(bool locked);
     bool isLocked() const;
+
+    void setLockable(bool lockable);
 
     void init(QIcon icon, QSize size);
     void init(QIcon icon1, QIcon icon2, QSize size);

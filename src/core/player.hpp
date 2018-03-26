@@ -13,6 +13,12 @@
 
 class Player : public QMediaPlayer
 {
+    Q_OBJECT
+
+    Q_PROPERTY(AudioList audioList READ audioList WRITE setAudioList)
+    Q_PROPERTY(int currentIndex READ currentIndex WRITE setCurrentIndex)
+    Q_PROPERTY(bool loop READ isLoop WRITE setLoop)
+
 public:
     Player(QObject *parent = 0);
 
@@ -22,17 +28,18 @@ public:
     void setCurrentIndex(int index);
     int currentIndex() const;
 
+    void setLoop(bool loop);
+    bool isLoop() const;
+
     Audio * currentAudio();
     QString currentTitle();
     QString currentArtist();
     QPixmap currentCover();
 
+    Audio * at(int index);
     QString titleAt(int index);
     QString artistAt(int index);
     QPixmap coverAt(int index);
-
-    void setLoop(bool loop);
-    bool isLoop();
 
     int nextIndex();
     int backIndex();

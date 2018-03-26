@@ -37,6 +37,19 @@ int Player::currentIndex() const
         return -1;
 }
 
+void Player::setLoop(bool loop)
+{
+    if (loop)
+        pm_playlist->setPlaybackMode(QMediaPlaylist::PlaybackMode::Loop);
+    else
+        pm_playlist->setPlaybackMode(QMediaPlaylist::PlaybackMode::Sequential);
+}
+
+bool Player::isLoop() const
+{
+    return pm_playlist->playbackMode() == QMediaPlaylist::PlaybackMode::Loop;
+}
+
 Audio * Player::currentAudio()
 {
     int index = currentIndex();
@@ -73,32 +86,36 @@ QPixmap Player::currentCover()
         return QPixmap();
 }
 
+Audio * Player::at(int index)
+{
+    return &m_audioList[index];
+}
+
 QString Player::titleAt(int index)
 {
-    return m_audioList[index].title();
+    Audio *audio = at(index);
+    if (audio)
+        return m_audioList[index].title();
+    else
+        return QString();
 }
 
 QString Player::artistAt(int index)
 {
-    return m_audioList[index].artist();
+    Audio *audio = at(index);
+    if (audio)
+        return m_audioList[index].artist();
+    else
+        return QString();
 }
 
 QPixmap Player::coverAt(int index)
 {
-    return m_audioList[index].pixmap(50);
-}
-
-void Player::setLoop(bool loop)
-{
-    if (loop)
-        pm_playlist->setPlaybackMode(QMediaPlaylist::PlaybackMode::Loop);
+    Audio *audio = at(index);
+    if (audio)
+        return m_audioList[index].pixmap(50);
     else
-        pm_playlist->setPlaybackMode(QMediaPlaylist::PlaybackMode::Sequential);
-}
-
-bool Player::isLoop()
-{
-    return pm_playlist->playbackMode() == QMediaPlaylist::PlaybackMode::Loop;
+        return QPixmap();
 }
 
 int Player::nextIndex()

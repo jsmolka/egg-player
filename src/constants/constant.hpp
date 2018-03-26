@@ -5,7 +5,6 @@
 
 #include "src/utils/fileutil.hpp"
 
-// Icons
 extern QString ICO_BACK;
 extern QString ICO_EXPAND;
 extern QString ICO_FASTFORWARD;
@@ -25,20 +24,17 @@ extern QString ICO_VOLUME;
 extern QString ICO_VOLUME1;
 extern QString ICO_VOLUME2;
 
-// Images
 extern QString IMG_DEFAULT_COVER;
 
-// CSS
 extern QString CSS_ICONBUTTON;
 extern QString CSS_SONGINFO_EVEN;
 extern QString CSS_SONGINFO_ODD;
-extern QString CSS_PLAYERWINDOW;
+extern QString CSS_MUSICBAR;
 extern QString CSS_SCROLLBAR;
+extern QString CSS_TRACKLABEL;
 
-// Font
 extern QString FONT_LATO;
 
-// Language
 extern QString LANG_APPNAME;
 
 #endif // CONSTANT_HPP

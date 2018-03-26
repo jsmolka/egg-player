@@ -1,5 +1,5 @@
-#ifndef PLAYERWINDOW_HPP
-#define PLAYERWINDOW_HPP
+#ifndef MUSICBAR_HPP
+#define MUSICBAR_HPP
 
 #include <QGridLayout>
 #include <QIcon>
@@ -14,21 +14,21 @@
 #include "src/core/player.hpp"
 #include "src/ui/components/iconbutton.hpp"
 
-class PlayerWindow : public QWidget
+class MusicBar : public QWidget
 {
     Q_OBJECT
 
 public:
-    PlayerWindow();
+    MusicBar();
 
     Player * player();
-    QLabel *coverLabel();
-    QLabel *trackLabel();
+    QLabel * coverLabel();
+    QLabel * trackLabel();
     IconButton * nextButton();
     IconButton * playButton();
     IconButton * backButton();
     IconButton * shuffleButton();
-    IconButton * replayButton();
+    IconButton * loopButton();
     IconButton * volumeButton();
 
 protected:
@@ -45,9 +45,8 @@ private:
     IconButton *pm_playButton;
     IconButton *pm_backButton;
     IconButton *pm_shuffleButton;
-    IconButton *pm_replayButton;
+    IconButton *pm_loopButton;
     IconButton *pm_volumeButton;
-
 };
 
-#endif // PLAYERWINDOW_HPP
+#endif // MUSICBAR_HPP

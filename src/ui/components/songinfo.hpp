@@ -6,7 +6,6 @@
 #include <QGridLayout>
 #include <QLabel>
 #include <QList>
-#include <QString>
 #include <QWidget>
 
 #include "src/core/audio.hpp"

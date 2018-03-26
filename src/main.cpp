@@ -3,7 +3,7 @@
 #include <QFontDatabase>
 
 #include "src/constants/constant.hpp"
-#include "src/ui/mainwindow.hpp"
+#include "src/ui/eggplayer.hpp"
 
 QFont loadFont()
 {
@@ -28,8 +28,8 @@ int main(int argc, char *argv[])
 
     setup(&app);
 
-    MainWindow window;
-    window.showMaximized();
+    EggPlayer player;
+    player.showMaximized();
 
     return app.exec();
 }

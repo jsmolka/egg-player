@@ -38,7 +38,6 @@ public:
     QImage cover(quint32 size);
     QPixmap pixmap(quint32 size);
 
-
 private:
     bool readTags();
     QImage resizeCover(QImage image, quint32 size);

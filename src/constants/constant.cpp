@@ -1,6 +1,5 @@
 #include "constant.hpp"
 
-// Icons
 QString ICO_BACK          = "data/images/icons/back.png";
 QString ICO_EXPAND        = "data/images/icons/expand.png";
 QString ICO_FASTFORWARD   = "data/images/icons/fastforward.png";
@@ -20,18 +19,15 @@ QString ICO_VOLUME        = "data/images/icons/volume.png";
 QString ICO_VOLUME1       = "data/images/icons/volume1.png";
 QString ICO_VOLUME2       = "data/images/icons/volume2.png";
 
-// Images
 QString IMG_DEFAULT_COVER = "data/images/default-cover.png";
 
-// CSS
 QString CSS_ICONBUTTON    = FileUtil::read("data/css/iconbutton.css");
 QString CSS_SONGINFO_EVEN = FileUtil::read("data/css/songinfo_even.css");
 QString CSS_SONGINFO_ODD  = FileUtil::read("data/css/songinfo_odd.css");
-QString CSS_PLAYERWINDOW  = FileUtil::read("data/css/playerwindow.css");
+QString CSS_MUSICBAR      = FileUtil::read("data/css/musicbar.css");
 QString CSS_SCROLLBAR     = FileUtil::read("data/css/scrollbar.css");
+QString CSS_TRACKLABEL    = FileUtil::read("data/css/tracklabel.css");
 
-// Font
 QString FONT_LATO         = "data/fonts/Lato.ttf";
 
-// Language
 QString LANG_APPNAME      = "Egg Player";

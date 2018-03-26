@@ -1,19 +1,19 @@
-#ifndef MAINWINDOW_HPP
-#define MAINWINDOW_HPP
+#ifndef EGGPLAYER_HPP
+#define EGGPLAYER_HPP
 
 #include <QWidget>
 
 #include "src/core/library.hpp"
-#include "src/ui/musicwindow.hpp"
-#include "src/ui/playerwindow.hpp"
+#include "src/ui/musiclibrary.hpp"
+#include "src/ui/musicbar.hpp"
 #include "src/ui/layouts/borderlayout.hpp"
 
-class MainWindow : public QWidget
+class EggPlayer : public QWidget
 {
     Q_OBJECT
 
 public:
-    MainWindow();
+    EggPlayer();
 
 public slots:
     void play();
@@ -26,12 +26,12 @@ private:
     void setupUi();
     void updateTrackInfo(int index);
 
-    void createMusicWindow();
-    void createPlayerWindow();
+    void createMusicLibrary();
+    void createMusicBar();
 
     Library m_library;
-    MusicWindow *pm_musicWindow;
-    PlayerWindow *pm_playerWindow;
+    MusicLibrary *pm_musicLibrary;
+    MusicBar *pm_musicBar;
 };
 
-#endif // MAINWINDOW_HPP
+#endif // EGGPLAYER_HPP

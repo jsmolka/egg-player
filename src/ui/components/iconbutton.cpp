@@ -46,11 +46,6 @@ bool IconButton::isSelected() const
     return m_selected;
 }
 
-void IconButton::setLockable(bool lockable)
-{
-    m_lockable = lockable;
-}
-
 void IconButton::setLocked(bool locked)
 {
     m_locked = locked;
@@ -59,6 +54,11 @@ void IconButton::setLocked(bool locked)
 bool IconButton::isLocked() const
 {
     return m_locked;
+}
+
+void IconButton::setLockable(bool lockable)
+{
+    m_lockable = lockable;
 }
 
 void IconButton::init(QIcon icon, QSize size)
