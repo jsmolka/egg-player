@@ -4,9 +4,10 @@
 #include <QString>
 #include <QStringList>
 
-#include <src/core/audio.hpp>
-#include <src/core/audiolist.hpp>
-#include <src/utils/fileutil.hpp>
+#include "src/core/audio.hpp"
+#include "src/core/audiolist.hpp"
+#include "src/core/cache.hpp"
+#include "src/utils/fileutil.hpp"
 
 class Library
 {
@@ -39,6 +40,7 @@ private:
     void loadFiles(const QString &path);
 
     AudioList m_audioList;
+
 };
 
 #endif // LIBRARY_HPP

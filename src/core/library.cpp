@@ -113,6 +113,9 @@ void Library::libraryUpdated()
 
 void Library::loadFiles(const QString &path)
 {
+    Cache cache;
+    cache.connect();
+
     QStringList filePaths = FileUtil::glob(path, "*.mp3");
     if (!filePaths.isEmpty())
     {
@@ -120,7 +123,12 @@ void Library::loadFiles(const QString &path)
         {
             Audio audio(filePath);
             if (audio.isValid())
+            {
+                if (!cache.exists(audio.path()))
+                    cache.insert(audio.path(), audio.pixmap(200));
                 m_audioList << audio;
+            }
         }
     }
+    cache.close();
 }

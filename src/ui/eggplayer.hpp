@@ -3,6 +3,7 @@
 
 #include <QWidget>
 
+#include "src/core/cache.hpp"
 #include "src/core/library.hpp"
 #include "src/ui/musiclibrary.hpp"
 #include "src/ui/musicbar.hpp"
@@ -24,11 +25,12 @@ public slots:
 
 private:
     void setupUi();
-    void updateTrackInfo(int index);
+    void updateTrackInfo();
 
     void createMusicLibrary();
     void createMusicBar();
 
+    Cache m_cache;
     Library m_library;
     MusicLibrary *pm_musicLibrary;
     MusicBar *pm_musicBar;

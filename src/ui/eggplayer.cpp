@@ -3,6 +3,7 @@
 EggPlayer::EggPlayer() : QWidget()
 {
     m_library = Library("C:/Users/Julian/Music/Tiny Moving Parts");
+    m_cache.connect();
 
     setupUi();
 }
@@ -29,12 +30,11 @@ void EggPlayer::start(const QModelIndex &index)
     IconButton *playButton = pm_musicBar->playButton();
 
     player->setAudioList(m_library.audioList());
-
-    updateTrackInfo(index.row());
-    playButton->setSelected(0);
-
     player->setCurrentIndex(index.row());
     player->play();
+
+    playButton->setSelected(0);
+    updateTrackInfo();
 }
 
 void EggPlayer::next()
@@ -43,9 +43,8 @@ void EggPlayer::next()
     int index = player->nextIndex();
     if (index != -1)
     {
-        updateTrackInfo(index);
-
         player->setCurrentIndex(index);
+        updateTrackInfo();
     }
 }
 
@@ -55,9 +54,8 @@ void EggPlayer::back()
     int index = player->backIndex();
     if (index != -1)
     {
-        updateTrackInfo(index);
-
         player->setCurrentIndex(index);
+        updateTrackInfo();
     }
 }
 
@@ -88,15 +86,15 @@ void EggPlayer::setupUi()
     setLayout(layout);
 }
 
-void EggPlayer::updateTrackInfo(int index)
+void EggPlayer::updateTrackInfo()
 {
-    Player *player = pm_musicBar->player();
+    Audio *audio = pm_musicBar->player()->currentAudio();
     QLabel *trackLabel = pm_musicBar->trackLabel();
     QLabel *coverLabel = pm_musicBar->coverLabel();
 
-    QString title = player->titleAt(index);
-    QString artist = player->artistAt(index);
-    QPixmap cover = player->coverAt(index);
+    QString title = audio->title();
+    QString artist = audio->artist();
+    QPixmap cover = m_cache.cover(audio->path(), 50);
 
     trackLabel->setText(QString("%1\n%2").arg(title, artist));
     coverLabel->setPixmap(cover);

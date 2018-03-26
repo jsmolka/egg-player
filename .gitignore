@@ -1,3 +1,6 @@
 # Qt
-/bin/
+/bin
 *.pro.user
+
+# Cache
+cache.db

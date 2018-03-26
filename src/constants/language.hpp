@@ -3,6 +3,6 @@
 
 #include <QString>
 
-const extern QString LANG_APPNAME;
+const extern QString LANG_APP_NAME;
 
 #endif // LANGUAGE_HPP

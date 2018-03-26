@@ -1,3 +1,3 @@
 #include "language.hpp"
 
-const QString LANG_APPNAME = "Egg Player";
+const QString LANG_APP_NAME = "Egg Player";

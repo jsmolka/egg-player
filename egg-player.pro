@@ -7,7 +7,8 @@ RC_ICONS += \
 QT += \
     core \
     widgets \
-    multimedia
+    multimedia \
+    sql
 
 INCLUDEPATH += \
     ext/taglib/include
@@ -29,7 +30,9 @@ HEADERS += \
     src/ui/eggplayer.hpp \
     src/ui/musicbar.hpp \
     src/ui/musiclibrary.hpp \
-    src/constants/language.hpp
+    src/constants/language.hpp \
+    src/constants/database.hpp \
+    src/core/cache.hpp
 
 SOURCES += \
     src/main.cpp \
@@ -46,4 +49,6 @@ SOURCES += \
     src/ui/eggplayer.cpp \
     src/ui/musicbar.cpp \
     src/ui/musiclibrary.cpp \
-    src/constants/language.cpp
+    src/constants/language.cpp \
+    src/constants/database.cpp \
+    src/core/cache.cpp

@@ -19,7 +19,7 @@ QFont loadFont()
 
 void setup(QApplication *app)
 {
-    app->setApplicationName(LANG_APPNAME);
+    app->setApplicationName(LANG_APP_NAME);
     app->setFont(loadFont());
 }
 

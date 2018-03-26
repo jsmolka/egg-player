@@ -8,8 +8,8 @@
 #include <QMediaPlaylist>
 #include <QPixmap>
 
-#include <src/core/audio.hpp>
-#include <src/core/audiolist.hpp>
+#include "src/core/audio.hpp"
+#include "src/core/audiolist.hpp"
 
 class Player : public QMediaPlayer
 {
