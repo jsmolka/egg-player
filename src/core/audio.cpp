@@ -2,12 +2,20 @@
 
 using namespace TagLib;
 
+Audio::Audio()
+{
+
+}
+
 Audio::Audio(QString path)
 {
     m_path = path;
     m_isValid = readTags();
-    if (m_isValid)
-        m_url = QUrl::fromLocalFile(path);
+}
+
+bool Audio::operator==(const Audio &other)
+{
+    return QString::compare(m_path, other.path()) == 0;
 }
 
 bool Audio::isValid() const
@@ -57,7 +65,7 @@ int Audio::length() const
 
 QUrl Audio::url() const
 {
-    return m_url;
+    return QUrl::fromLocalFile(m_path);
 }
 
 int Audio::seconds() const

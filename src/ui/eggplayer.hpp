@@ -18,9 +18,8 @@ public:
 
 public slots:
     void play();
+    void stop();
     void start(const QModelIndex &index);
-    void next();
-    void back();
     void loop();
     void change();
     void shuffle();

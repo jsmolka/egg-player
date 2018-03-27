@@ -1,12 +1,45 @@
 #include "player.hpp"
 
-#include <QDebug>
-
-Player::Player(QObject *parent) : QMediaPlayer(parent)
+Player::Player(QWidget *parent) : QWidget(parent)
 {
-    pm_playlist = new QMediaPlaylist;
-    setPlaylist(pm_playlist);
+    qsrand(time(0));
+
+    pm_player = new QMediaPlayer;
+    pm_player->setPlaylist(new QMediaPlaylist);
+    m_loop = false;
     m_shuffled = false;
+    m_playing = false;
+    m_currentIndex = -1;
+
+    connect(pm_player->playlist(), SIGNAL(currentIndexChanged(int)), this, SLOT(autoPlay(int)));
+    connect(pm_player->playlist(), SIGNAL(currentIndexChanged(int)), this, SLOT(audioChanged()));
+}
+
+void Player::setCurrentIndex(int index)
+{
+    m_currentIndex = index;
+    if (index != -1)
+        insertAudio(index);
+}
+
+int Player::currentIndex()
+{
+    return m_currentIndex;
+}
+
+void Player::setLoop(bool loop)
+{
+    m_loop = loop;
+}
+
+bool Player::isLoop() const
+{
+    return m_loop;
+}
+
+void Player::setShuffled(bool shuffle)
+{
+    m_shuffled = shuffle;
 }
 
 bool Player::isShuffled() const
@@ -14,131 +47,165 @@ bool Player::isShuffled() const
     return m_shuffled;
 }
 
-void Player::setAudioList(const AudioList &audioList)
+int Player::volume()
 {
-    m_playlist.setAudioList(audioList);
+    return pm_player->volume();
+}
 
-    pm_playlist->clear();
+int Player::position()
+{
+    return pm_player->position();
+}
 
-    for (int i = 0; i < m_playlist.size(); i++)
-        pm_playlist->addMedia(m_playlist.audioAt(i)->url());
+bool Player::isPlaying() const
+{
+    return m_playing;
+}
+
+void Player::setAudioList(AudioList audioList)
+{
+    m_playlist.clear();
+
+    for (int i = 0; i < audioList.size(); i++)
+        m_playlist << AudioPosition(i, audioList[i]);
 
     m_shuffled = false;
 }
 
-void Player::setCurrentIndex(int index)
+Audio Player::audioAt(int index)
 {
-    if (0 <= index && index < m_playlist.size())
-        pm_playlist->setCurrentIndex(index);
-    else
-        pm_playlist->setCurrentIndex(0);
+    return m_playlist[index].audio;
 }
 
-int Player::currentIndex() const
+Audio Player::currentAudio()
 {
-    int index = pm_playlist->currentIndex();
-    if (0 <= index && index < m_playlist.size())
-        return index;
-    else
-        return -1;
-}
-
-void Player::setLoop(bool loop)
-{
-    if (loop)
-        pm_playlist->setPlaybackMode(QMediaPlaylist::PlaybackMode::Loop);
-    else
-        pm_playlist->setPlaybackMode(QMediaPlaylist::PlaybackMode::Sequential);
-}
-
-bool Player::isLoop() const
-{
-    return pm_playlist->playbackMode() == QMediaPlaylist::PlaybackMode::Loop;
-}
-
-Audio * Player::currentAudio()
-{
-    int index = currentIndex();
-    if (index != -1)
-        return m_playlist.audioAt(index);
-    else
-        return 0;
+    return audioAt(m_currentIndex);
 }
 
 int Player::nextIndex()
 {
-    int index = currentIndex();
-    if (index == -1)
+    if (m_currentIndex == -1)
         return -1;
-    if (index == m_playlist.size() - 1)
+    if (m_currentIndex == m_playlist.size() - 1)
     {
-        if (isLoop())
+        if (m_loop)
             return 0;
         else
             return -1;
     }
-    return ++index;
+    return ++m_currentIndex;
 }
 
 int Player::backIndex()
 {
-    int index = currentIndex();
-    if (index == -1)
+    if (m_currentIndex == -1)
         return -1;
-    if (index == 0)
+    if (m_currentIndex == 0)
     {
-        if (isLoop())
+        if (m_loop)
             return m_playlist.size() - 1;
         else
             return -1;
     }
-    return --index;
+    return --m_currentIndex;
 }
 
 void Player::shuffle()
 {
-    int index = currentIndex();
-    if (index != -1 && !m_shuffled)
+    Audio audio = currentAudio();
+
+    std::random_shuffle(m_playlist.begin(), m_playlist.end());
+
+    for (int i = 0; i < m_playlist.size(); i++)
     {
-        m_playlist.shuffle(index);
-        pm_playlist->moveMedia(index, 0);
-        pm_playlist->removeMedia(1, pm_playlist->mediaCount() - 1);
-        pm_playlist->insertMedia(1, mediaContent(1, m_playlist.size()));
-        m_shuffled = true;
+        if (audio == audioAt(i))
+        {
+            m_playlist.swap(0, i);
+            break;
+        }
     }
+    m_currentIndex = 0;
+    m_shuffled = true;
 }
 
 void Player::unshuffle()
 {
-    int index = currentIndex();
-    if (index != -1 && m_shuffled)
+    Audio audio = currentAudio();
+
+    std::sort(m_playlist.begin(), m_playlist.end(),
+        [](const AudioPosition &ap1, const AudioPosition &ap2) {return ap1.index < ap2.index;});
+
+    for (int i = 0; i < m_playlist.size(); i++)
     {
-        Audio *audio = currentAudio();
-
-        m_playlist.sort();
-        pm_playlist->moveMedia(index, 0);
-        pm_playlist->removeMedia(1, pm_playlist->mediaCount() - 1);
-        pm_playlist->insertMedia(1, mediaContent(0, m_playlist.size()));
-        pm_playlist->removeMedia(index + 1);
-        pm_playlist->moveMedia(0, index);
-        m_shuffled = false;
-
-        for (int i = 0; i < m_playlist.size(); i++)
+        if (audio == audioAt(i))
         {
-            if (audio == m_playlist.audioAt(i))
-            {
-                setCurrentIndex(i);
-                break;
-            }
+            m_currentIndex = i;
+            break;
         }
     }
-
+    m_shuffled = false;
 }
 
-QList<QMediaContent> Player::mediaContent(int start, int end)
+void Player::setVolume(int volume)
 {
-    QList<QMediaContent> result;
-    for (int i = start; i < end; i++)
-        result << QMediaContent(m_playlist.audioAt(i)->url());
-    return result;
+    pm_player->setVolume(volume);
 }
+
+void Player::setPosition(int position)
+{
+    pm_player->setPosition(position);
+}
+
+void Player::play()
+{
+    pm_player->play();
+    m_playing = true;
+}
+
+void Player::pause()
+{
+    pm_player->pause();
+    m_playing = false;
+}
+
+void Player::next()
+{
+    int index = nextIndex();
+    if (index != -1)
+        setCurrentIndex(index);
+    else
+        emit stopped();
+}
+
+void Player::back()
+{
+    int index = backIndex();
+    if (index != -1)
+        setCurrentIndex(index);
+}
+
+void Player::autoPlay(int index)
+{
+    if (index != 0)
+        next();
+}
+
+void Player::audioChanged()
+{
+    int index = currentIndex();
+    if (index != -1)
+        emit changed();
+}
+
+void Player::insertAudio(int index)
+{
+    QMediaPlaylist *playlist = pm_player->playlist();
+
+    playlist->clear();
+    playlist->addMedia(audioAt(index).url());
+    playlist->setCurrentIndex(0);
+
+    if (m_playing)
+        play();
+}
+

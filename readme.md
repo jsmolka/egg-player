@@ -16,8 +16,7 @@ Under construction...
 - borderlayout for songs / album / artist tabs
 
 ### player.cpp
-- maybe use playlists nextIndex / previousIndex
-- shuffle / unshuffle without interrupting
+- return pointers
 
 ### General
 - black window

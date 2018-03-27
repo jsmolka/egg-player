@@ -18,7 +18,10 @@
 class Audio
 {
 public:
+    Audio();
     Audio(QString path);
+
+    bool operator==(const Audio &other);
 
     bool isValid() const;
     QString path() const;

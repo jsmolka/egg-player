@@ -24,6 +24,16 @@ void EggPlayer::play()
     }
 }
 
+void EggPlayer::stop()
+{
+    Player *player = pm_musicBar->player();
+    IconButton *playButton = pm_musicBar->playButton();
+
+    player->pause();
+
+    playButton->setSelected(0);
+}
+
 void EggPlayer::start(const QModelIndex &index)
 {
     Player *player = pm_musicBar->player();
@@ -37,24 +47,6 @@ void EggPlayer::start(const QModelIndex &index)
     player->play();
 
     playButton->setSelected(1);
-}
-
-void EggPlayer::next()
-{
-    Player *player = pm_musicBar->player();
-
-    int index = player->nextIndex();
-    if (index != -1)
-        player->setCurrentIndex(index);
-}
-
-void EggPlayer::back()
-{
-    Player *player = pm_musicBar->player();
-
-    int index = player->backIndex();
-    if (index != -1)
-        player->setCurrentIndex(index);
 }
 
 void EggPlayer::loop()
@@ -85,7 +77,6 @@ void EggPlayer::shuffle()
         player->shuffle();
     else
         player->unshuffle();
-
 }
 
 void EggPlayer::setupUi()
@@ -106,13 +97,13 @@ void EggPlayer::setupUi()
 
 void EggPlayer::updateTrackInfo()
 {
-    Audio *audio = pm_musicBar->player()->currentAudio();
+    Audio audio = pm_musicBar->player()->currentAudio();
     QLabel *trackLabel = pm_musicBar->trackLabel();
     QLabel *coverLabel = pm_musicBar->coverLabel();
 
-    QString title = audio->title();
-    QString artist = audio->artist();
-    QString album = audio->album();
+    QString title = audio.title();
+    QString artist = audio.artist();
+    QString album = audio.album();
     QPixmap cover = m_cache.cover(artist, album, 50);
 
     trackLabel->setText(QString("%1\n%2").arg(title, artist));
@@ -134,10 +125,12 @@ void EggPlayer::createMusicBar()
     player->setVolume(5);
 
     connect(pm_musicBar->playButton(), SIGNAL(pressed()), this, SLOT(play()));
-    connect(pm_musicBar->nextButton(), SIGNAL(pressed()), this, SLOT(next()));
-    connect(pm_musicBar->backButton(), SIGNAL(pressed()), this, SLOT(back()));
     connect(pm_musicBar->loopButton(), SIGNAL(locked()), this, SLOT(loop()));
     connect(pm_musicBar->shuffleButton(), SIGNAL(locked()), this, SLOT(shuffle()));
 
-    connect(pm_musicBar->player(), SIGNAL(currentMediaChanged(QMediaContent)), this, SLOT(change()));
+    connect(pm_musicBar->nextButton(), SIGNAL(pressed()), pm_musicBar->player(), SLOT(next()));
+    connect(pm_musicBar->backButton(), SIGNAL(pressed()), pm_musicBar->player(), SLOT(back()));
+
+    connect(pm_musicBar->player(), SIGNAL(changed()), this, SLOT(change()));
+    connect(pm_musicBar->player(), SIGNAL(stopped()), this, SLOT(stop()));
 }

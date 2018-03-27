@@ -32,8 +32,7 @@ HEADERS += \
     src/ui/musiclibrary.hpp \
     src/constants/language.hpp \
     src/constants/database.hpp \
-    src/core/cache.hpp \
-    src/core/playlist.hpp
+    src/core/cache.hpp
 
 SOURCES += \
     src/main.cpp \
@@ -52,5 +51,4 @@ SOURCES += \
     src/ui/musiclibrary.cpp \
     src/constants/language.cpp \
     src/constants/database.cpp \
-    src/core/cache.cpp \
-    src/core/playlist.cpp
+    src/core/cache.cpp
