@@ -23,6 +23,7 @@ public slots:
     void back();
     void loop();
     void change();
+    void shuffle();
 
 private:
     void setupUi();

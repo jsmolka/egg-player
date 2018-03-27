@@ -1,8 +1,6 @@
 #ifndef PLAYER_HPP
 #define PLAYER_HPP
 
-#include <time.h>
-
 #include <QList>
 #include <QMediaPlayer>
 #include <QMediaPlaylist>
@@ -10,20 +8,21 @@
 
 #include "src/core/audio.hpp"
 #include "src/core/audiolist.hpp"
+#include "src/core/playlist.hpp"
 
 class Player : public QMediaPlayer
 {
     Q_OBJECT
 
-    Q_PROPERTY(AudioList audioList READ audioList WRITE setAudioList)
     Q_PROPERTY(int currentIndex READ currentIndex WRITE setCurrentIndex)
     Q_PROPERTY(bool loop READ isLoop WRITE setLoop)
 
 public:
     Player(QObject *parent = 0);
 
+    bool isShuffled() const;
+
     void setAudioList(const AudioList &audioList);
-    AudioList audioList() const;
 
     void setCurrentIndex(int index);
     int currentIndex() const;
@@ -36,12 +35,15 @@ public:
     int nextIndex();
     int backIndex();
 
-    void refresh();
     void shuffle();
+    void unshuffle();
 
 private:
+    QList<QMediaContent> mediaContent(int start, int end);
+
     QMediaPlaylist *pm_playlist;
-    AudioList m_audioList;
+    Playlist m_playlist;
+    bool m_shuffled;
 };
 
 #endif // PLAYER_HPP

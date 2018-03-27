@@ -122,7 +122,6 @@ void MusicBar::setupUi()
 
 QPixmap MusicBar::defaultCover()
 {
-    QImage image(IMG_DEFAULT_COVER);
-    image = image.scaled(50, 50, Qt::KeepAspectRatio, Qt::SmoothTransformation);
-    return QPixmap::fromImage(image);
+    QPixmap image(IMG_DEFAULT_COVER);
+    return image.scaled(50, 50, Qt::KeepAspectRatio, Qt::SmoothTransformation);
 }

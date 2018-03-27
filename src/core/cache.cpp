@@ -19,8 +19,8 @@ bool Cache::connect()
 
     if (m_db.open())
     {
-        m_query = QSqlQuery(m_db);
-        m_query.exec(SQL_CREATE_TABLE);
+        QSqlQuery query = QSqlQuery(m_db);
+        query.exec(SQL_CREATE_TABLE);
         return true;
     }
     return false;
@@ -38,34 +38,37 @@ bool Cache::insert(QString artist, QString album, QPixmap cover)
     buffer.open(QIODevice::WriteOnly);
     cover.save(&buffer, "PNG");
 
-    m_query.prepare(SQL_INSERT);
-    m_query.bindValue(":ARTIST", QVariant(artist));
-    m_query.bindValue(":ALBUM", QVariant(album));
-    m_query.bindValue(":COVER", QVariant(bytes));
+    QSqlQuery query = QSqlQuery(m_db);
+    query.prepare(SQL_INSERT);
+    query.bindValue(":ARTIST", QVariant(artist));
+    query.bindValue(":ALBUM", QVariant(album));
+    query.bindValue(":COVER", QVariant(bytes));
 
-    return m_query.exec();
+    return query.exec();
 }
 
 bool Cache::exists(QString artist, QString album)
 {
-    m_query.prepare(SQL_RETRIEVE);
-    m_query.bindValue(":ARTIST", QVariant(artist));
-    m_query.bindValue(":ALBUM", QVariant(album));
+    QSqlQuery query = QSqlQuery(m_db);
+    query.prepare(SQL_RETRIEVE);
+    query.bindValue(":ARTIST", QVariant(artist));
+    query.bindValue(":ALBUM", QVariant(album));
 
-    return m_query.exec() && m_query.first();
+    return query.exec() && query.first();
 }
 
 QPixmap Cache::cover(QString artist, QString album, int size)
 {
-    m_query.prepare(SQL_RETRIEVE);
-    m_query.bindValue(":ARTIST", QVariant(artist));
-    m_query.bindValue(":ALBUM", QVariant(album));
+    QSqlQuery query = QSqlQuery(m_db);
+    query.prepare(SQL_RETRIEVE);
+    query.bindValue(":ARTIST", QVariant(artist));
+    query.bindValue(":ALBUM", QVariant(album));
 
-    if (m_query.exec())
+    if (query.exec())
     {
-        if (m_query.first())
+        if (query.first())
         {
-            QByteArray bytes = m_query.value(0).toByteArray();
+            QByteArray bytes = query.value(0).toByteArray();
             QPixmap image;
             image.loadFromData(bytes);
             return scale(image, size);

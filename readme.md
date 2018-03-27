@@ -10,10 +10,13 @@ Under construction...
 - artist-album map
 - DRY principle
 
-### musicwindow.cpp
+### musiclibrary.cpp
 - css based on object name with #even / #uneven
 - fix black boxes while hovering
 - borderlayout for songs / album / artist tabs
+
+### player.cpp
+- maybe use playlists nextIndex / previousIndex
 
 ### General
 - black window
@@ -21,4 +24,3 @@ Under construction...
 - proper destructors for every class
 - use different font
 - debounced search bar
-- caching with SQL

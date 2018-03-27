@@ -26,7 +26,6 @@ private:
     QPixmap scale(QPixmap pixmap, int size);
 
     QSqlDatabase m_db;
-    QSqlQuery m_query;
 
 };
 

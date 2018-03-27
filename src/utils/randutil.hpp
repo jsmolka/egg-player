@@ -7,6 +7,7 @@ class RandUtil
 {
 public:
     static qreal random();
+    static quint64 randmax();
     static qint64 randint(qint64 min, qint64 max);
     static qint64 randint(qint64 max);
 };

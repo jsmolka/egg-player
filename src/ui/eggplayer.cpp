@@ -28,9 +28,12 @@ void EggPlayer::start(const QModelIndex &index)
 {
     Player *player = pm_musicBar->player();
     IconButton *playButton = pm_musicBar->playButton();
+    IconButton *shuffleButton = pm_musicBar->shuffleButton();
 
     player->setAudioList(m_library.audioList());
     player->setCurrentIndex(index.row());
+    if (shuffleButton->isLocked())
+        player->shuffle();
     player->play();
 
     playButton->setSelected(1);
@@ -71,6 +74,18 @@ void EggPlayer::change()
 
     if (player->currentIndex() != -1)
         updateTrackInfo();
+}
+
+void EggPlayer::shuffle()
+{
+    Player *player = pm_musicBar->player();
+    IconButton *shuffleButton = pm_musicBar->shuffleButton();
+
+    if (shuffleButton->isLocked())
+        player->shuffle();
+    else
+        player->unshuffle();
+
 }
 
 void EggPlayer::setupUi()
@@ -122,6 +137,7 @@ void EggPlayer::createMusicBar()
     connect(pm_musicBar->nextButton(), SIGNAL(pressed()), this, SLOT(next()));
     connect(pm_musicBar->backButton(), SIGNAL(pressed()), this, SLOT(back()));
     connect(pm_musicBar->loopButton(), SIGNAL(locked()), this, SLOT(loop()));
+    connect(pm_musicBar->shuffleButton(), SIGNAL(locked()), this, SLOT(shuffle()));
 
     connect(pm_musicBar->player(), SIGNAL(currentMediaChanged(QMediaContent)), this, SLOT(change()));
 }
