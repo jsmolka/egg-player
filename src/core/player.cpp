@@ -97,31 +97,12 @@ int Player::backIndex()
 
 void Player::shuffle()
 {
-    qDebug() << "Shuffeling";
-    // Get current index in unshuffled list
     int index = currentIndex();
     if (index != -1 && !m_shuffled)
     {
-        // Shuffle playlist so that index is first
         m_playlist.shuffle(index);
-
-        for (int i = 0; i < m_playlist.size(); i++)
-        {
-            qDebug() << i << m_playlist.audioAt(i)->title();
-        }
-        // Remove all media objects apart from current
-        if (index == 0)
-        {
-            // Remove media objects after current
-            pm_playlist->removeMedia(1, m_playlist.size() - 1);
-        }
-        else
-        {
-            // Remove media objects around current
-            pm_playlist->removeMedia(index + 1, m_playlist.size());
-            pm_playlist->removeMedia(0, index - 1);
-        }
-        // Insert shuffled media objects after current
+        pm_playlist->moveMedia(index, 0);
+        pm_playlist->removeMedia(1, pm_playlist->mediaCount() - 1);
         pm_playlist->insertMedia(1, mediaContent(1, m_playlist.size()));
         m_shuffled = true;
     }
@@ -129,55 +110,27 @@ void Player::shuffle()
 
 void Player::unshuffle()
 {
-    // Get current index in shuffled list
     int index = currentIndex();
     if (index != -1 && m_shuffled)
     {
-        qDebug() << "Unshuffle with index" << index;
-        // Get current audio
         Audio *audio = currentAudio();
-        qDebug() << "Current audio" << audio->title();
-        // Remove all media objects apart from current
-        if (index == 0)
-        {
-            // Remove media objects after current
-            pm_playlist->removeMedia(1, m_playlist.size() - 1);
-        }
-        else
-        {
-            // Remove media objects around current
-            pm_playlist->removeMedia(index + 1, m_playlist.size());
-            pm_playlist->removeMedia(0, index - 1);
-        }
-        // Go trough sorted list and find index of current audio
-        int current;
+
         m_playlist.sort();
+        pm_playlist->moveMedia(index, 0);
+        pm_playlist->removeMedia(1, pm_playlist->mediaCount() - 1);
+        pm_playlist->insertMedia(1, mediaContent(0, m_playlist.size()));
+        pm_playlist->removeMedia(index + 1);
+        pm_playlist->moveMedia(0, index);
+        m_shuffled = false;
+
         for (int i = 0; i < m_playlist.size(); i++)
         {
-            qDebug() << i << m_playlist.audioAt(i)->title();
-        }
-        for (int i = 0; i < m_playlist.size(); i++)
-        {
-            if (QString::compare(audio->path(), m_playlist.audioAt(i)->path())) // Compare pointers???
+            if (audio == m_playlist.audioAt(i))
             {
-                current = i;
-                qDebug() << "Found index" << i;
+                setCurrentIndex(i);
                 break;
             }
         }
-        // Insert sorted media objects around current
-        if (current == 0)
-        {
-            // Insert media objects after current
-            pm_playlist->insertMedia(1, mediaContent(1, m_playlist.size()));
-        }
-        else
-        {
-            // Inser media objects around current
-            pm_playlist->insertMedia(0, mediaContent(0, m_playlist.size() - current - 1));
-            pm_playlist->insertMedia(current + 1, mediaContent(current + 1, m_playlist.size()));
-        }
-        m_shuffled = false;
     }
 
 }

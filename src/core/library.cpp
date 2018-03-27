@@ -80,23 +80,23 @@ AudioList Library::searchByAlbum(const QString &album, Qt::CaseSensitivity cs)
     return result;
 }
 
-void Library::sortByTitle(bool reverse)
+void Library::sortByTitle()
 {
-    m_audioList.sortByTitle(reverse);
+    m_audioList.sortByTitle();
 
     emit libraryUpdated();
 }
 
-void Library::sortByArtist(bool reverse)
+void Library::sortByArtist()
 {
-    m_audioList.sortByArtist(reverse);
+    m_audioList.sortByArtist();
 
     emit libraryUpdated();
 }
 
-void Library::sortByAlbum(bool reverse)
+void Library::sortByAlbum()
 {
-    m_audioList.sortByAlbum(reverse);
+    m_audioList.sortByAlbum();
 
     emit libraryUpdated();
 }

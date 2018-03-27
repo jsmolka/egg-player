@@ -36,14 +36,10 @@ QList<Playlist::Item> * Playlist::itemList()
     return &m_itemList;
 }
 
-void Playlist::sort(bool reverse)
+void Playlist::sort()
 {
-    if (!reverse)
-        std::sort(m_itemList.begin(), m_itemList.end(),
-            [](const Item &i1, const Item &i2) {return i1.index < i2.index;});
-    else
-        std::sort(m_itemList.begin(), m_itemList.end(),
-            [](const Item &i1, const Item &i2) {return i1.index > i2.index;});
+    std::sort(m_itemList.begin(), m_itemList.end(),
+        [](const Item &i1, const Item &i2) {return i1.index < i2.index;});
     m_shuffled = false;
 }
 

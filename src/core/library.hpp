@@ -27,9 +27,9 @@ public:
     AudioList searchByArtist(const QString &artist, Qt::CaseSensitivity cs = Qt::CaseInsensitive);
     AudioList searchByAlbum(const QString &album, Qt::CaseSensitivity cs = Qt::CaseInsensitive);
 
-    void sortByTitle(bool reverse = false);
-    void sortByArtist(bool reverse = false);
-    void sortByAlbum(bool reverse = false);
+    void sortByTitle();
+    void sortByArtist();
+    void sortByAlbum();
 
     Audio * at(quint32 idx);
 

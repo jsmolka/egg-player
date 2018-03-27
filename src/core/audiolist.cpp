@@ -1,41 +1,25 @@
 #include "audiolist.hpp"
 
-void AudioList::sortByTitle(bool reverse)
+void AudioList::sortByTitle()
 {
-    if (!reverse)
-        std::sort(begin(), end(),
-            [](const Audio &a1, const Audio &a2) {return a1.title() < a2.title();});
-    else
-        std::sort(begin(), end(),
-            [](const Audio &a1, const Audio &a2) {return a1.title() > a2.title();});
+    std::sort(begin(), end(),
+        [](const Audio &a1, const Audio &a2) {return a1.title() < a2.title();});
 }
 
-void AudioList::sortByArtist(bool reverse)
+void AudioList::sortByArtist()
 {
-    if (!reverse)
-        std::sort(begin(), end(),
-            [](const Audio &a1, const Audio &a2) {return a1.artist() < a2.artist();});
-    else
-        std::sort(begin(), end(),
-            [](const Audio &a1, const Audio &a2) {return a1.artist() > a2.artist();});
+    std::sort(begin(), end(),
+        [](const Audio &a1, const Audio &a2) {return a1.artist() < a2.artist();});
 }
 
-void AudioList::sortByAlbum(bool reverse)
+void AudioList::sortByAlbum()
 {
-    if (!reverse)
-        std::sort(begin(), end(),
-            [](const Audio &a1, const Audio &a2) {return a1.album() < a2.album();});
-    else
-        std::sort(begin(), end(),
-            [](const Audio &a1, const Audio &a2) {return a1.album() > a2.album();});
+    std::sort(begin(), end(),
+        [](const Audio &a1, const Audio &a2) {return a1.album() < a2.album();});
 }
 
-void AudioList::sortByTrack(bool reverse)
+void AudioList::sortByTrack()
 {
-    if (!reverse)
-        std::sort(begin(), end(),
-            [](const Audio &a1, const Audio &a2) {return a1.track() < a2.track();});
-    else
-        std::sort(begin(), end(),
-            [](const Audio &a1, const Audio &a2) {return a1.track() > a2.track();});
+    std::sort(begin(), end(),
+        [](const Audio &a1, const Audio &a2) {return a1.track() < a2.track();});
 }

@@ -29,7 +29,7 @@ public:
 
     QList<Playlist::Item> * itemList();
 
-    void sort(bool reverse = false);
+    void sort();
     void shuffle(int index);
 
     Audio * audioAt(int index);

@@ -17,6 +17,7 @@ Under construction...
 
 ### player.cpp
 - maybe use playlists nextIndex / previousIndex
+- shuffle / unshuffle without interrupting
 
 ### General
 - black window
