@@ -38,7 +38,7 @@ void IconButton::setSelected(bool selected)
 
 void IconButton::setSelected(int selected)
 {
-    setSelected((bool)selected);
+    setSelected(!(bool)selected);
 }
 
 bool IconButton::isSelected() const

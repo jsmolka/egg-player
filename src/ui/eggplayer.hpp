@@ -22,6 +22,7 @@ public slots:
     void next();
     void back();
     void loop();
+    void change();
 
 private:
     void setupUi();

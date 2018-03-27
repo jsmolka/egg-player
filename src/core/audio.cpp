@@ -20,11 +20,6 @@ QString Audio::path() const
     return m_path;
 }
 
-QUrl Audio::url() const
-{
-    return m_url;
-}
-
 QString Audio::title() const
 {
     return m_title;
@@ -45,39 +40,39 @@ QString Audio::genre() const
     return m_genre;
 }
 
-quint32 Audio::year() const
+int Audio::year() const
 {
     return m_year;
 }
 
-quint32 Audio::track() const
+int Audio::track() const
 {
     return m_track;
 }
 
-quint32 Audio::length() const
+int Audio::length() const
 {
     return m_length;
 }
 
-quint32 Audio::seconds() const
+QUrl Audio::url() const
+{
+    return m_url;
+}
+
+int Audio::seconds() const
 {
     return m_length % 60;
 }
 
-quint32 Audio::minutes() const
+int Audio::minutes() const
 {
     return (m_length - seconds()) / 60;
 }
 
-QImage Audio::cover(quint32 size)
+QPixmap Audio::cover(int size)
 {
-    return resizeCover(getCover(), size);
-}
-
-QPixmap Audio::pixmap(quint32 size)
-{
-    return QPixmap::fromImage(resizeCover(getCover(), size));
+    return resizeCover(readCover(), size);
 }
 
 bool Audio::readTags()
@@ -101,29 +96,15 @@ bool Audio::readTags()
     return true;
 }
 
-QImage Audio::resizeCover(QImage image, quint32 size)
+QPixmap Audio::resizeCover(QPixmap image, int size)
 {
     return image.scaled(size, size, Qt::KeepAspectRatio, Qt::SmoothTransformation);
 }
 
-QImage Audio::getCover()
-{
-    QImage image = readCover();
-    if (!image.isNull())
-        return image;
-
-    image = loadCoverFromFile();
-    if (!image.isNull())
-        return image;
-
-    return QImage(IMG_DEFAULT_COVER);
-}
-
-QImage Audio::readCover()
+QPixmap Audio::readCover()
 {
     MPEG::File file(m_path.toLatin1().data());
     ID3v2::Tag *tag = file.ID3v2Tag();
-    QImage image;
 
     if (tag)
     {
@@ -131,25 +112,11 @@ QImage Audio::readCover()
         if (!frameList.isEmpty())
         {
             ID3v2::AttachedPictureFrame *frame = static_cast<ID3v2::AttachedPictureFrame *>(frameList.front());
+
+            QPixmap image;
             image.loadFromData((const uchar *) frame->picture().data(), frame->picture().size());
+            return image;
         }
     }
-    return image;
-}
-
-QImage Audio::loadCoverFromFile()
-{
-    QStringList covers;
-    covers << "cover.jpg" << "cover.jpeg" << "cover.png";
-
-    QDir dir = FileUtil::dir(m_path);
-
-    for (QString cover : covers)
-    {
-        QString path = FileUtil::join(dir, cover);
-
-        if (FileUtil::exists(path))
-            return QImage(path);
-    }
-    return QImage();
+    return QPixmap(IMG_DEFAULT_COVER);
 }

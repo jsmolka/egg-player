@@ -8,6 +8,7 @@
 #include <QSqlQuery>
 #include <QVariant>
 
+#include "src/constants/constant.hpp"
 #include "src/constants/database.hpp"
 
 class Cache
@@ -17,11 +18,13 @@ public:
 
     bool connect();
     void close();
-    bool insert(QString file, QPixmap cover);
-    bool exists(QString file);
-    QPixmap cover(QString file, int size);
+    bool insert(QString artist, QString album, QPixmap cover);
+    bool exists(QString artist, QString album);
+    QPixmap cover(QString artist, QString album, int size);
 
 private:
+    QPixmap scale(QPixmap pixmap, int size);
+
     QSqlDatabase m_db;
     QSqlQuery m_query;
 

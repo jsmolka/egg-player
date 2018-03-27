@@ -59,65 +59,6 @@ Audio * Player::currentAudio()
         return 0;
 }
 
-QString Player::currentTitle()
-{
-    Audio *audio = currentAudio();
-    if (audio)
-        return currentAudio()->title();
-    else
-        return QString();
-}
-
-QString Player::currentArtist()
-{
-    Audio *audio = currentAudio();
-    if (audio)
-        return currentAudio()->artist();
-    else
-        return QString();
-}
-
-QPixmap Player::currentCover()
-{
-    Audio *audio = currentAudio();
-    if (audio)
-        return currentAudio()->pixmap(50);
-    else
-        return QPixmap();
-}
-
-Audio * Player::at(int index)
-{
-    return &m_audioList[index];
-}
-
-QString Player::titleAt(int index)
-{
-    Audio *audio = at(index);
-    if (audio)
-        return m_audioList[index].title();
-    else
-        return QString();
-}
-
-QString Player::artistAt(int index)
-{
-    Audio *audio = at(index);
-    if (audio)
-        return m_audioList[index].artist();
-    else
-        return QString();
-}
-
-QPixmap Player::coverAt(int index)
-{
-    Audio *audio = at(index);
-    if (audio)
-        return m_audioList[index].pixmap(50);
-    else
-        return QPixmap();
-}
-
 int Player::nextIndex()
 {
     int index = currentIndex();

@@ -32,14 +32,6 @@ public:
     bool isLoop() const;
 
     Audio * currentAudio();
-    QString currentTitle();
-    QString currentArtist();
-    QPixmap currentCover();
-
-    Audio * at(int index);
-    QString titleAt(int index);
-    QString artistAt(int index);
-    QPixmap coverAt(int index);
 
     int nextIndex();
     int backIndex();

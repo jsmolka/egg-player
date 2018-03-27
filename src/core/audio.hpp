@@ -4,7 +4,6 @@
 #include <QImage>
 #include <QPixmap>
 #include <QString>
-#include <QStringList>
 #include <QUrl>
 
 #include <taglib/attachedpictureframe.h>
@@ -15,7 +14,6 @@
 #include <taglib/tag.h>
 
 #include "src/constants/constant.hpp"
-#include "src/utils/fileutil.hpp"
 
 class Audio
 {
@@ -24,37 +22,34 @@ public:
 
     bool isValid() const;
     QString path() const;
-    QUrl url() const;
     QString title() const;
     QString artist() const;
     QString album() const;
     QString genre() const;
-    quint32 year() const;
-    quint32 track() const;
-    quint32 length() const;
+    int year() const;
+    int track() const;
+    int length() const;
+    QUrl url() const;
 
-    quint32 seconds() const;
-    quint32 minutes() const;
-    QImage cover(quint32 size);
-    QPixmap pixmap(quint32 size);
+    int seconds() const;
+    int minutes() const;
+    QPixmap cover(int size);
 
 private:
     bool readTags();
-    QImage resizeCover(QImage image, quint32 size);
-    QImage getCover();
-    QImage readCover();
-    QImage loadCoverFromFile();
+    QPixmap resizeCover(QPixmap image, int size);
+    QPixmap readCover();
 
     bool m_isValid;
     QString m_path;
-    QUrl m_url;
     QString m_title;
     QString m_artist;
     QString m_album;
     QString m_genre;
-    quint32 m_year;
-    quint32 m_track;
-    quint32 m_length;
+    int m_year;
+    int m_track;
+    int m_length;
+    QUrl m_url;
 };
 
 #endif // AUDIO_HPP

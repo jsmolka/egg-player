@@ -33,30 +33,25 @@ void EggPlayer::start(const QModelIndex &index)
     player->setCurrentIndex(index.row());
     player->play();
 
-    playButton->setSelected(0);
-    updateTrackInfo();
+    playButton->setSelected(1);
 }
 
 void EggPlayer::next()
 {
     Player *player = pm_musicBar->player();
+
     int index = player->nextIndex();
     if (index != -1)
-    {
         player->setCurrentIndex(index);
-        updateTrackInfo();
-    }
 }
 
 void EggPlayer::back()
 {
     Player *player = pm_musicBar->player();
+
     int index = player->backIndex();
     if (index != -1)
-    {
         player->setCurrentIndex(index);
-        updateTrackInfo();
-    }
 }
 
 void EggPlayer::loop()
@@ -68,6 +63,14 @@ void EggPlayer::loop()
         player->setLoop(true);
     else
         player->setLoop(false);
+}
+
+void EggPlayer::change()
+{
+    Player *player = pm_musicBar->player();
+
+    if (player->currentIndex() != -1)
+        updateTrackInfo();
 }
 
 void EggPlayer::setupUi()
@@ -94,7 +97,8 @@ void EggPlayer::updateTrackInfo()
 
     QString title = audio->title();
     QString artist = audio->artist();
-    QPixmap cover = m_cache.cover(audio->path(), 50);
+    QString album = audio->album();
+    QPixmap cover = m_cache.cover(artist, album, 50);
 
     trackLabel->setText(QString("%1\n%2").arg(title, artist));
     coverLabel->setPixmap(cover);
@@ -118,4 +122,6 @@ void EggPlayer::createMusicBar()
     connect(pm_musicBar->nextButton(), SIGNAL(pressed()), this, SLOT(next()));
     connect(pm_musicBar->backButton(), SIGNAL(pressed()), this, SLOT(back()));
     connect(pm_musicBar->loopButton(), SIGNAL(locked()), this, SLOT(loop()));
+
+    connect(pm_musicBar->player(), SIGNAL(currentMediaChanged(QMediaContent)), this, SLOT(change()));
 }
