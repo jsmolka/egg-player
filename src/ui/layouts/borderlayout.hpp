@@ -9,7 +9,7 @@ class BorderLayout : public QLayout
 public:
     enum Position {North, East, South, West, Center};
 
-    explicit BorderLayout(QWidget *parent, int margin = 0, int spacing = -1);
+    BorderLayout(QWidget *parent, int margin = 0, int spacing = -1);
     BorderLayout(int spacing = -1);
     ~BorderLayout();
 

@@ -1,11 +1,22 @@
 # egg-player
-Under construction...
+A Groove Music like music player.
 
 ## ToDo
-### iconbutton.cpp
-- Q_PROPERTY for css fade in animation
+
+### General
+- black window
+- documentation
+- proper destructors
+- use audio pointers outside library
+
+### audiolist.cpp
+- remove entirely
+
+### player.cpp
+- return audio in changed signal
 
 ### library.cpp
+- return list of audio pointers
 - album map
 - artist-album map
 - DRY principle
@@ -17,10 +28,3 @@ Under construction...
 
 ### player.cpp
 - return pointers
-
-### General
-- black window
-- documentation
-- proper destructors for every class
-- use different font
-- debounced search bar

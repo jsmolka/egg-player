@@ -10,10 +10,15 @@ Library::Library(const QString &path)
     loadFiles(path);
 }
 
-Library::Library(QStringList paths)
+Library::Library(const QStringList &paths)
 {
-    for (QString path : paths)
+    for (const QString &path : paths)
         loadFiles(path);
+}
+
+Library::~Library()
+{
+
 }
 
 AudioList Library::audioList() const
@@ -29,7 +34,7 @@ bool Library::isEmpty() const
 AudioList Library::getByTitle(const QString &title, Qt::CaseSensitivity cs)
 {
     AudioList result;
-    for (Audio audio : m_audioList)
+    for (const Audio &audio : m_audioList)
         if (QString::compare(audio.title(), title, cs))
             result << audio;
     return result;
@@ -38,7 +43,7 @@ AudioList Library::getByTitle(const QString &title, Qt::CaseSensitivity cs)
 AudioList Library::getByArtist(const QString &artist, Qt::CaseSensitivity cs)
 {
     AudioList result;
-    for (Audio audio : m_audioList)
+    for (const Audio &audio : m_audioList)
         if (QString::compare(audio.artist(), artist, cs))
             result << audio;
     return result;
@@ -47,7 +52,7 @@ AudioList Library::getByArtist(const QString &artist, Qt::CaseSensitivity cs)
 AudioList Library::getByAlbum(const QString &album, Qt::CaseSensitivity cs)
 {
     AudioList result;
-    for (Audio audio : m_audioList)
+    for (const Audio &audio : m_audioList)
         if (QString::compare(audio.album(), album, cs))
             result << audio;
     return result;
@@ -56,7 +61,7 @@ AudioList Library::getByAlbum(const QString &album, Qt::CaseSensitivity cs)
 AudioList Library::searchByTitle(const QString &title, Qt::CaseSensitivity cs)
 {
     AudioList result;
-    for (Audio audio : m_audioList)
+    for (const Audio &audio : m_audioList)
         if (audio.title().contains(title, cs))
             result << audio;
     return result;
@@ -65,7 +70,7 @@ AudioList Library::searchByTitle(const QString &title, Qt::CaseSensitivity cs)
 AudioList Library::searchByArtist(const QString &artist, Qt::CaseSensitivity cs)
 {
     AudioList result;
-    for (Audio audio : m_audioList)
+    for (const Audio &audio : m_audioList)
         if (audio.artist().contains(artist, cs))
             result << audio;
     return result;
@@ -74,7 +79,7 @@ AudioList Library::searchByArtist(const QString &artist, Qt::CaseSensitivity cs)
 AudioList Library::searchByAlbum(const QString &album, Qt::CaseSensitivity cs)
 {
     AudioList result;
-    for (Audio audio : m_audioList)
+    for (const Audio &audio : m_audioList)
         if (audio.album().contains(album, cs))
             result << audio;
     return result;
@@ -101,7 +106,7 @@ void Library::sortByAlbum()
     emit libraryUpdated();
 }
 
-Audio * Library::at(quint32 idx)
+Audio * Library::at(int idx)
 {
     return &m_audioList[idx];
 }
@@ -116,16 +121,17 @@ void Library::loadFiles(const QString &path)
     Cache cache;
     cache.connect();
 
-    QStringList filePaths = FileUtil::glob(path, "*.mp3");
-    if (!filePaths.isEmpty())
+    QStringList files = FileUtil::glob(path, "*.mp3");
+    if (!files.isEmpty())
     {
-        for (QString filePath : filePaths)
+        for (const QString &file : files)
         {
-            Audio audio(filePath);
+            Audio audio(file);
             if (audio.isValid())
             {
                 QString artist = audio.artist();
                 QString album = audio.album();
+
                 if (!cache.exists(artist, album))
                     cache.insert(artist, album, audio.cover(200));
 

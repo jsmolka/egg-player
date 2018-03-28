@@ -7,10 +7,15 @@ Audio::Audio()
 
 }
 
-Audio::Audio(QString path)
+Audio::Audio(const QString &path)
 {
     m_path = path;
     m_isValid = readTags();
+}
+
+Audio::~Audio()
+{
+
 }
 
 bool Audio::operator==(const Audio &other)
@@ -91,7 +96,7 @@ bool Audio::readTags()
         return false;
 
     Tag *tag = fileRef.tag();
-    AudioProperties *audio = fileRef.audioProperties();
+    AudioProperties *audioProp = fileRef.audioProperties();
 
     m_title = QString(tag->title().toCString());
     m_artist = QString(tag->artist().toCString());
@@ -99,12 +104,12 @@ bool Audio::readTags()
     m_genre = QString(tag->genre().toCString());
     m_year = tag->year();
     m_track = tag->track();
-    m_length = audio->length();
+    m_length = audioProp->length();
 
     return true;
 }
 
-QPixmap Audio::resizeCover(QPixmap image, int size)
+QPixmap Audio::resizeCover(const QPixmap &image, int size)
 {
     return image.scaled(size, size, Qt::KeepAspectRatio, Qt::SmoothTransformation);
 }

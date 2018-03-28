@@ -2,13 +2,9 @@
 #define MUSICBAR_HPP
 
 #include <QGridLayout>
-#include <QIcon>
 #include <QLabel>
-#include <QList>
 #include <QPainter>
-#include <QPixmap>
 #include <QStyleOption>
-#include <QWidget>
 
 #include "src/constants/constant.hpp"
 #include "src/core/player.hpp"
@@ -19,7 +15,8 @@ class MusicBar : public QWidget
     Q_OBJECT
 
 public:
-    MusicBar();
+    MusicBar(QWidget *parent = 0);
+    ~MusicBar();
 
     Player * player();
     QLabel * coverLabel();

@@ -7,11 +7,10 @@ SongInfo::SongInfo(Audio *audio) : QWidget()
 
 SongInfo::~SongInfo()
 {
-    for (QLabel *label : m_labels)
-        delete label;
+
 }
 
-void SongInfo::init(QList<qint32> stretches)
+void SongInfo::init(const QList<int> &stretches)
 {
     QGridLayout *layout = new QGridLayout;
 
@@ -56,7 +55,10 @@ void SongInfo::showGenre()
 void SongInfo::showLength()
 {
     QString seconds = QString("%1").arg(pm_audio->seconds(), 2, 10, QChar('0'));
-    createLabel(QString("%1:%2").arg(QString::number(pm_audio->minutes()), seconds), Qt::AlignRight);
+    QString minutes = QString::number(pm_audio->minutes());
+    QString length = QString("%1:%2").arg(minutes, seconds);
+
+    createLabel(length, Qt::AlignRight);
 }
 
 void SongInfo::createLabel(const QString &string, Qt::Alignment align)

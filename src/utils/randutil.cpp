@@ -1,21 +1,21 @@
 #include "randutil.hpp"
 
-qreal RandUtil::random()
+double RandUtil::random()
 {
-    return QRandomGenerator64::global()->generateDouble();
+    return QRandomGenerator::global()->generateDouble();
 }
 
-quint64 RandUtil::randmax()
+unsigned int RandUtil::randmax()
 {
-    return QRandomGenerator64::global()->generate64();
+    return QRandomGenerator::global()->generate();
 }
 
-qint64 RandUtil::randint(qint64 min, qint64 max)
+int RandUtil::randint(int min, int max)
 {
     return min + randmax() % max;
 }
 
-qint64 RandUtil::randint(qint64 max)
+int RandUtil::randint(int max)
 {
     return randint(0, max);
 }

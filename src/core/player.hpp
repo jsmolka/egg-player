@@ -1,12 +1,8 @@
 #ifndef PLAYER_HPP
 #define PLAYER_HPP
 
-#include <time.h>
-
-#include <QList>
 #include <QMediaPlayer>
 #include <QMediaPlaylist>
-#include <QPixmap>
 #include <QWidget>
 
 #include "src/core/audio.hpp"
@@ -16,12 +12,9 @@ class Player : public QWidget
 {
     Q_OBJECT
 
-    Q_PROPERTY(int currentIndex READ currentIndex WRITE setCurrentIndex)
-    Q_PROPERTY(bool loop READ isLoop WRITE setLoop)
-    Q_PROPERTY(bool shuffled READ isShuffled WRITE setShuffled)
-
 public:
     Player(QWidget *parent = 0);
+    ~Player();
 
     void setCurrentIndex(int index);
     int currentIndex();
@@ -29,15 +22,14 @@ public:
     void setLoop(bool loop);
     bool isLoop() const;
 
-    void setShuffled(bool shuffle);
     bool isShuffled() const;
 
-    int volume();
-    int position();
+    int volume() const;
+    int position() const;
 
     bool isPlaying() const;
 
-    void setAudioList(AudioList audioList);
+    void setAudioList(const AudioList &audioList);
 
     Audio audioAt(int index);
     Audio currentAudio();
@@ -62,8 +54,8 @@ signals:
     void stopped();
 
 private slots:
-    void autoPlay(int index);
-    void audioChanged();
+    void slotAutoPlay(int index);
+    void slotAudioChanged();
 
 private:
     struct AudioPosition
@@ -78,7 +70,7 @@ private:
         Audio audio;
     };
 
-    void insertAudio(int index);
+    void playAudio(int index);
 
     QMediaPlayer *pm_player;
     QList<AudioPosition> m_playlist;

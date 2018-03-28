@@ -1,7 +1,6 @@
 #ifndef LIBRARY_HPP
 #define LIBRARY_HPP
 
-#include <QString>
 #include <QStringList>
 
 #include "src/core/audio.hpp"
@@ -14,7 +13,8 @@ class Library
 public:
     Library();
     Library(const QString &path);
-    Library(QStringList paths);
+    Library(const QStringList &paths);
+    ~Library();
 
     AudioList audioList() const;
     bool isEmpty() const;
@@ -31,7 +31,7 @@ public:
     void sortByArtist();
     void sortByAlbum();
 
-    Audio * at(quint32 idx);
+    Audio * at(int idx);
 
 signals:
     void libraryUpdated();

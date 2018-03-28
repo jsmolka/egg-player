@@ -1,8 +1,6 @@
 #ifndef MUSICLIBRARY_HPP
 #define MUSICLIBRARY_HPP
 
-#include <QLabel>
-#include <QList>
 #include <QListWidget>
 #include <QScrollBar>
 
@@ -13,7 +11,8 @@
 class MusicLibrary : public QListWidget
 {
 public:
-    MusicLibrary(Library *library);
+    MusicLibrary(Library *library, QWidget *parent = 0);
+    ~MusicLibrary();
 
 private:
     void setupUi();

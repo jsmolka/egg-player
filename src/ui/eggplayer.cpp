@@ -8,6 +8,26 @@ EggPlayer::EggPlayer() : QWidget()
     setupUi();
 }
 
+EggPlayer::~EggPlayer()
+{
+
+}
+
+void EggPlayer::start(const QModelIndex &index)
+{
+    Player *player = pm_musicBar->player();
+    IconButton *playButton = pm_musicBar->playButton();
+    IconButton *shuffleButton = pm_musicBar->shuffleButton();
+
+    player->setAudioList(m_library.audioList());
+    player->setCurrentIndex(index.row());
+    if (shuffleButton->isLocked())
+        player->shuffle();
+    player->play();
+
+    playButton->setSelected(1);
+}
+
 void EggPlayer::play()
 {
     Player *player = pm_musicBar->player();
@@ -34,21 +54,6 @@ void EggPlayer::stop()
     playButton->setSelected(0);
 }
 
-void EggPlayer::start(const QModelIndex &index)
-{
-    Player *player = pm_musicBar->player();
-    IconButton *playButton = pm_musicBar->playButton();
-    IconButton *shuffleButton = pm_musicBar->shuffleButton();
-
-    player->setAudioList(m_library.audioList());
-    player->setCurrentIndex(index.row());
-    if (shuffleButton->isLocked())
-        player->shuffle();
-    player->play();
-
-    playButton->setSelected(1);
-}
-
 void EggPlayer::loop()
 {
     Player *player = pm_musicBar->player();
@@ -73,10 +78,13 @@ void EggPlayer::shuffle()
     Player *player = pm_musicBar->player();
     IconButton *shuffleButton = pm_musicBar->shuffleButton();
 
-    if (shuffleButton->isLocked())
-        player->shuffle();
-    else
-        player->unshuffle();
+    if (player->currentIndex() != -1)
+    {
+        if (shuffleButton->isLocked())
+            player->shuffle();
+        else
+            player->unshuffle();
+    }
 }
 
 void EggPlayer::setupUi()
@@ -112,14 +120,14 @@ void EggPlayer::updateTrackInfo()
 
 void EggPlayer::createMusicLibrary()
 {
-    pm_musicLibrary = new MusicLibrary(&m_library);
+    pm_musicLibrary = new MusicLibrary(&m_library, this);
 
     connect(pm_musicLibrary, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(start(QModelIndex)));
 }
 
 void EggPlayer::createMusicBar()
 {
-    pm_musicBar = new MusicBar;
+    pm_musicBar = new MusicBar(this);
 
     Player *player = pm_musicBar->player();
     player->setVolume(5);

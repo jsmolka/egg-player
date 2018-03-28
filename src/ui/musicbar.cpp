@@ -1,10 +1,15 @@
 #include "musicbar.hpp"
 
-MusicBar::MusicBar() : QWidget()
+MusicBar::MusicBar(QWidget *parent) : QWidget(parent)
 {
-    pm_player = new Player;
+    pm_player = new Player(this);
 
     setupUi();
+}
+
+MusicBar::~MusicBar()
+{
+
 }
 
 Player * MusicBar::player()

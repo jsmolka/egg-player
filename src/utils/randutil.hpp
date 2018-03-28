@@ -1,15 +1,15 @@
 #ifndef RANDUTIL_HPP
 #define RANDUTIL_HPP
 
-#include <QRandomGenerator64>
+#include <QRandomGenerator>
 
 class RandUtil
 {
 public:
-    static qreal random();
-    static quint64 randmax();
-    static qint64 randint(qint64 min, qint64 max);
-    static qint64 randint(qint64 max);
+    static double random();
+    static unsigned int randmax();
+    static int randint(int min, int max);
+    static int randint(int max);
 };
 
 #endif // RANDUTIL_HPP

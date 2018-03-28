@@ -1,11 +1,8 @@
 #ifndef SONGINFO_HPP
 #define SONGINFO_HPP
 
-#include <QChar>
-#include <QEvent>
 #include <QGridLayout>
 #include <QLabel>
-#include <QList>
 #include <QWidget>
 
 #include "src/core/audio.hpp"
@@ -16,7 +13,7 @@ public:
     SongInfo(Audio *audio);
     ~SongInfo();
 
-    void init(QList<qint32> stretches);
+    void init(const QList<int> &stretches);
     void showTrack();
     void showTitle();
     void showArtist();

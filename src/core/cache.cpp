@@ -5,6 +5,11 @@ Cache::Cache()
 
 }
 
+Cache::~Cache()
+{
+
+}
+
 bool Cache::connect()
 {
     if (QSqlDatabase::contains(SQL_DB_NAME))
@@ -31,7 +36,7 @@ void Cache::close()
     m_db.close();
 }
 
-bool Cache::insert(QString artist, QString album, QPixmap cover)
+bool Cache::insert(const QString &artist, const QString &album, const QPixmap &cover)
 {
     QByteArray bytes;
     QBuffer buffer(&bytes);
@@ -47,7 +52,7 @@ bool Cache::insert(QString artist, QString album, QPixmap cover)
     return query.exec();
 }
 
-bool Cache::exists(QString artist, QString album)
+bool Cache::exists(const QString &artist, const QString &album)
 {
     QSqlQuery query = QSqlQuery(m_db);
     query.prepare(SQL_RETRIEVE);
@@ -57,7 +62,7 @@ bool Cache::exists(QString artist, QString album)
     return query.exec() && query.first();
 }
 
-QPixmap Cache::cover(QString artist, QString album, int size)
+QPixmap Cache::cover(const QString &artist, const QString &album, int size)
 {
     QSqlQuery query = QSqlQuery(m_db);
     query.prepare(SQL_RETRIEVE);

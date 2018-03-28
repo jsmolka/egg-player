@@ -1,9 +1,7 @@
 #ifndef AUDIO_HPP
 #define AUDIO_HPP
 
-#include <QImage>
 #include <QPixmap>
-#include <QString>
 #include <QUrl>
 
 #include <taglib/attachedpictureframe.h>
@@ -19,7 +17,8 @@ class Audio
 {
 public:
     Audio();
-    Audio(QString path);
+    Audio(const QString &path);
+    ~Audio();
 
     bool operator==(const Audio &other);
 
@@ -40,7 +39,7 @@ public:
 
 private:
     bool readTags();
-    QPixmap resizeCover(QPixmap image, int size);
+    QPixmap resizeCover(const QPixmap &image, int size);
     QPixmap readCover();
 
     bool m_isValid;

@@ -1,8 +1,6 @@
 #ifndef AUDIOLIST_HPP
 #define AUDIOLIST_HPP
 
-#include <algorithm>
-
 #include <QList>
 
 #include "src/core/audio.hpp"

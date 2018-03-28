@@ -1,8 +1,6 @@
 #ifndef EGGPLAYER_HPP
 #define EGGPLAYER_HPP
 
-#include <QWidget>
-
 #include "src/core/cache.hpp"
 #include "src/core/library.hpp"
 #include "src/ui/musiclibrary.hpp"
@@ -15,11 +13,12 @@ class EggPlayer : public QWidget
 
 public:
     EggPlayer();
+    ~EggPlayer();
 
 public slots:
+    void start(const QModelIndex &index);
     void play();
     void stop();
-    void start(const QModelIndex &index);
     void loop();
     void change();
     void shuffle();

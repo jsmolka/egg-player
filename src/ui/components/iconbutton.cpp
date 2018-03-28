@@ -9,7 +9,12 @@ IconButton::IconButton(QWidget *parent) : QPushButton(parent)
     connect(this, SIGNAL(clicked(bool)), this, SLOT(switchLocked(void)));
 }
 
-void IconButton::setIcon1(QIcon icon)
+IconButton::~IconButton()
+{
+
+}
+
+void IconButton::setIcon1(const QIcon &icon)
 {
     m_icon1 = icon;
 }
@@ -19,7 +24,7 @@ QIcon IconButton::icon1() const
     return m_icon1;
 }
 
-void IconButton::setIcon2(QIcon icon)
+void IconButton::setIcon2(const QIcon &icon)
 {
     m_icon2 = icon;
 }
@@ -61,12 +66,12 @@ void IconButton::setLockable(bool lockable)
     m_lockable = lockable;
 }
 
-void IconButton::init(QIcon icon, QSize size)
+void IconButton::init(const QIcon &icon, const QSize &size)
 {
    init(icon, QIcon(), size);
 }
 
-void IconButton::init(QIcon icon1, QIcon icon2, QSize size)
+void IconButton::init(const QIcon &icon1, const QIcon &icon2, const QSize &size)
 {
     m_icon1 = icon1;
     m_icon2 = icon2;

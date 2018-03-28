@@ -2,7 +2,6 @@
 #define CACHE_HPP
 
 #include <QBuffer>
-#include <QByteArray>
 #include <QPixmap>
 #include <QSqlDatabase>
 #include <QSqlQuery>
@@ -15,12 +14,13 @@ class Cache
 {
 public:
     Cache();
+    ~Cache();
 
     bool connect();
     void close();
-    bool insert(QString artist, QString album, QPixmap cover);
-    bool exists(QString artist, QString album);
-    QPixmap cover(QString artist, QString album, int size);
+    bool insert(const QString &artist, const QString &album, const QPixmap &cover);
+    bool exists(const QString &artist, const QString &album);
+    QPixmap cover(const QString &artist, const QString &album, int size);
 
 private:
     QPixmap scale(QPixmap pixmap, int size);

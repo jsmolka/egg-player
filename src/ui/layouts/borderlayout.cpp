@@ -11,7 +11,6 @@ BorderLayout::BorderLayout(int spacing)
     setSpacing(spacing);
 }
 
-
 BorderLayout::~BorderLayout()
 {
     QLayoutItem *item;

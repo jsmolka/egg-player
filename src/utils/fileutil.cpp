@@ -1,6 +1,6 @@
 #include "fileutil.hpp"
 
-QString FileUtil::read(QString path)
+QString FileUtil::read(const QString &path)
 {
     QFile file(path);
 
@@ -15,47 +15,48 @@ QString FileUtil::read(QString path)
     return text;
 }
 
-bool FileUtil::exists(QString path)
+bool FileUtil::exists(const QString &path)
 {
     return QFileInfo(path).exists();
 }
 
-QDir FileUtil::dir(QString path)
+QDir FileUtil::dir(const QString &path)
 {
     QFileInfo info(path);
+
     if (info.isDir())
         return QDir(path);
+
     if (info.isFile())
         return info.absoluteDir();
+
     return QDir();
 }
 
-QString FileUtil::join(QDir dir, QString path)
+QString FileUtil::join(const QDir &dir, const QString &path)
 {
     return dir.filePath(path);
 }
 
-QString FileUtil::join(QString path1, QString path2)
+QString FileUtil::join(const QString &path1, const QString &path2)
 {
     return join(FileUtil::dir(path1), path2);
 }
 
-QStringList FileUtil::glob(const QString &path, QString pattern, bool recursive)
+QStringList FileUtil::glob(const QString &path, const QString &pattern, bool recursive)
 {
     QDir dir = FileUtil::dir(path);
     QStringList filter;
     filter << pattern;
     QStringList result;
 
-    QFileInfoList infoList = dir.entryInfoList(filter, QDir::NoDotAndDotDot | QDir::AllDirs | QDir::Files);
+    QFileInfoList infos = dir.entryInfoList(filter, QDir::NoDotAndDotDot | QDir::AllDirs | QDir::Files);
 
-    for (QFileInfo info : infoList)
+    for (const QFileInfo &info : infos)
     {
         if (info.isDir() && recursive)
-        {
-            QString sub = info.absoluteFilePath();
-            result << glob(sub, pattern, recursive);
-        }
+            result << glob(info.absoluteFilePath(), pattern, recursive);
+
         if (info.isFile())
             result << info.absoluteFilePath();
     }
