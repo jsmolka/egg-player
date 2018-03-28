@@ -10,7 +10,7 @@
 class SongInfo : public QWidget
 {
 public:
-    SongInfo(Audio *audio);
+    SongInfo(Audio *audio, QWidget *parent = 0);
     ~SongInfo();
 
     void init(const QList<int> &stretches);

@@ -1,6 +1,6 @@
 #include "songinfo.hpp"
 
-SongInfo::SongInfo(Audio *audio) : QWidget()
+SongInfo::SongInfo(Audio *audio, QWidget *parent) : QWidget(parent)
 {
     pm_audio = audio;
 }

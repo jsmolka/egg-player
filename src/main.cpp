@@ -2,7 +2,6 @@
 #include <QFont>
 #include <QFontDatabase>
 
-#include "src/constants/constant.hpp"
 #include "src/constants/language.hpp"
 #include "src/ui/eggplayer.hpp"
 

@@ -27,8 +27,7 @@ const extern QString ICO_VOLUME2;
 const extern QString IMG_DEFAULT_COVER;
 
 const extern QString CSS_ICONBUTTON;
-const extern QString CSS_SONGINFO_EVEN;
-const extern QString CSS_SONGINFO_ODD;
+const extern QString CSS_SONGINFO;
 const extern QString CSS_MUSICBAR;
 const extern QString CSS_SCROLLBAR;
 const extern QString CSS_TRACKLABEL;

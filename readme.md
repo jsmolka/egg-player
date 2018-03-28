@@ -22,9 +22,8 @@ A Groove Music like music player.
 - DRY principle
 
 ### musiclibrary.cpp
-- css based on object name with #even / #uneven
 - fix black boxes while hovering
-- borderlayout for songs / album / artist tabs
+- songs / album / artist tabs
 
 ### player.cpp
 - return pointers

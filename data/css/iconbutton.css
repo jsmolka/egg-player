@@ -1,28 +1,18 @@
-IconButton[locked="false"] {
+IconButton[locked=false] {
     background: transparent;
 }
 
-IconButton[locked="true"] {
+IconButton[locked=true] {
     border-radius: 15%;
     background: rgba(255, 255, 255, 0.3);
 }
 
-IconButton[locked="true"]:hover {
+IconButton:hover {
     border-radius: 15%;
     background: rgba(255, 255, 255, 0.2);
 }
 
-IconButton[locked="false"]:hover {
-    border-radius: 15%;
-    background: rgba(255, 255, 255, 0.2);
-}
-
-IconButton[locked="true"]:pressed {
-    border-radius: 15%;
-    background: rgba(0, 0, 0, 0.15);
-}
-
-IconButton[locked="false"]:pressed {
+IconButton:pressed {
     border-radius: 15%;
     background: rgba(0, 0, 0, 0.15);
 }

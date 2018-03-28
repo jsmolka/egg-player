@@ -1,5 +1,12 @@
 QWidget {
 	color: white;
+}
+
+QWidget[even=true] {
+	background-color: #262626;
+}
+
+QWidget[even=false] {
 	background-color: black;
 }
 
