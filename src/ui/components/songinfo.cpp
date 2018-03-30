@@ -61,6 +61,16 @@ void SongInfo::showLength()
     createLabel(length, Qt::AlignRight);
 }
 
+void SongInfo::paintEvent(QPaintEvent *event)
+{
+    Q_UNUSED(event);
+
+    QStyleOption option;
+    option.initFrom(this);
+    QPainter painter(this);
+    style()->drawPrimitive(QStyle::PE_Widget, &option, &painter, this);
+}
+
 void SongInfo::createLabel(const QString &string, Qt::Alignment align)
 {
     QLabel *label = new QLabel(string, this);

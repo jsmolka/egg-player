@@ -30,16 +30,12 @@ public:
     void sortByArtist();
     void sortByAlbum();
 
-    Audio * at(int idx);
-
-signals:
-    void libraryUpdated();
+    Audio * audioAt(int idx);
 
 private:
     void loadFiles(const QString &path);
 
     AudioList m_audioList;
-
 };
 
 #endif // LIBRARY_HPP

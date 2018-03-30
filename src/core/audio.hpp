@@ -20,8 +20,6 @@ public:
     Audio(const QString &path);
     ~Audio();
 
-    bool operator==(const Audio &other);
-
     bool isValid() const;
     QString path() const;
     QString title() const;
@@ -39,7 +37,7 @@ public:
 
 private:
     bool readTags();
-    QPixmap resizeCover(const QPixmap &image, int size);
+    QPixmap resizeCover(const QPixmap &cover, int size);
     QPixmap readCover();
 
     bool m_valid;

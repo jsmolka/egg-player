@@ -18,11 +18,6 @@ Audio::~Audio()
 
 }
 
-bool Audio::operator==(const Audio &other)
-{
-    return m_path.compare(other.path()) == 0;
-}
-
 bool Audio::isValid() const
 {
     return m_valid;
@@ -109,9 +104,9 @@ bool Audio::readTags()
     return true;
 }
 
-QPixmap Audio::resizeCover(const QPixmap &image, int size)
+QPixmap Audio::resizeCover(const QPixmap &cover, int size)
 {
-    return image.scaled(size, size, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+    return cover.scaled(size, size, Qt::KeepAspectRatio, Qt::SmoothTransformation);
 }
 
 QPixmap Audio::readCover()

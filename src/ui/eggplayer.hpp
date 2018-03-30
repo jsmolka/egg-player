@@ -15,7 +15,7 @@ public:
     EggPlayer();
     ~EggPlayer();
 
-public slots:
+private slots:
     void start(const QModelIndex &index);
     void play();
     void stop();

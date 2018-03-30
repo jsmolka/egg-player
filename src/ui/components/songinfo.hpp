@@ -3,12 +3,16 @@
 
 #include <QGridLayout>
 #include <QLabel>
+#include <QStyleOption>
+#include <QPainter>
 #include <QWidget>
 
 #include "src/core/audio.hpp"
 
 class SongInfo : public QWidget
 {
+    Q_OBJECT
+
 public:
     SongInfo(Audio *audio, QWidget *parent = 0);
     ~SongInfo();
@@ -21,6 +25,9 @@ public:
     void showYear();
     void showGenre();
     void showLength();
+
+protected:
+    void paintEvent(QPaintEvent *event);
 
 private:
     void createLabel(const QString &string, Qt::Alignment align = Qt::AlignLeft);

@@ -1,19 +1,19 @@
-QWidget {
+QLabel {
 	color: white;
 }
 
-QWidget[even=true] {
+SongInfo[even=true] {
 	background-color: #262626;
 }
 
-QWidget[even=false] {
+SongInfo[even=false] {
 	background-color: black;
 }
 
-QWidget:hover {
+SongInfo:hover {
 	background-color: #404040;
 }
 
-QWidget:pressed {
+SongInfo:pressed {
 	background-color: #595959;
 }

@@ -16,19 +16,18 @@ public:
 
     bool connect();
     void close();
-    bool insert(Audio audio);
-    bool exists(Audio audio);
+    bool insert(Audio *audio);
+    bool exists(Audio *audio);
     QPixmap cover(const QString &path, int size);
 
 private:
-    QByteArray coverToBytes(const QPixmap &cover);
     int lastCoverId();
+    QByteArray coverToBytes(const QPixmap &cover);
     int coverId(const QByteArray &bytes);
     int insertCover(const QByteArray &bytes);
-    QPixmap scale(QPixmap pixmap, int size);
+    QPixmap scale(const QPixmap &pixmap, int size);
 
     QSqlDatabase m_db;
-
 };
 
 #endif // CACHE_HPP

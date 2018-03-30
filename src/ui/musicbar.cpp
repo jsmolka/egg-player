@@ -59,12 +59,12 @@ IconButton * MusicBar::volumeButton()
 
 void MusicBar::paintEvent(QPaintEvent *event)
 {
-  Q_UNUSED(event);
+    Q_UNUSED(event);
 
-  QStyleOption option;
-  option.initFrom(this);
-  QPainter painter(this);
-  style()->drawPrimitive(QStyle::PE_Widget, &option, &painter, this);
+    QStyleOption option;
+    option.initFrom(this);
+    QPainter painter(this);
+    style()->drawPrimitive(QStyle::PE_Widget, &option, &painter, this);
 }
 
 void MusicBar::setupUi()

@@ -72,12 +72,12 @@ void Player::setAudioList(const AudioList &audioList)
     m_shuffled = false;
 }
 
-Audio Player::audioAt(int index)
+Audio * Player::audioAt(int index)
 {
     return m_playlist[index].audio;
 }
 
-Audio Player::currentAudio()
+Audio * Player::currentAudio()
 {
     return audioAt(m_currentIndex);
 }
@@ -108,7 +108,7 @@ void Player::shuffle()
 {
     if (!m_shuffled)
     {
-        Audio audio = currentAudio();
+        Audio * audio = currentAudio();
 
         std::random_shuffle(m_playlist.begin(), m_playlist.end());
 
@@ -129,7 +129,7 @@ void Player::unshuffle()
 {
     if (m_shuffled)
     {
-        Audio audio = currentAudio();
+        Audio *audio = currentAudio();
 
         std::sort(m_playlist.begin(), m_playlist.end(),
             [](const AudioPosition &ap1, const AudioPosition &ap2) {return ap1.index < ap2.index;});
@@ -202,7 +202,7 @@ void Player::playAudio(int index)
     QMediaPlaylist *playlist = pm_player->playlist();
 
     playlist->clear();
-    playlist->addMedia(audioAt(index).url());
+    playlist->addMedia(audioAt(index)->url());
     playlist->setCurrentIndex(0);
 
     if (m_playing)

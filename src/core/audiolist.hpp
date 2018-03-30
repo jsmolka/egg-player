@@ -5,7 +5,7 @@
 
 #include "src/core/audio.hpp"
 
-class AudioList : public QList<Audio>
+class AudioList : public QList<Audio *>
 {
 public:
     void sortByTitle();

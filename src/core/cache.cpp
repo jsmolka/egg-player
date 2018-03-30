@@ -49,9 +49,9 @@ void Cache::close()
     m_db.close();
 }
 
-bool Cache::insert(Audio audio)
+bool Cache::insert(Audio *audio)
 {
-    QByteArray bytes = coverToBytes(audio.cover(200));
+    QByteArray bytes = coverToBytes(audio->cover(200));
 
     int id = coverId(bytes);
     if (id == -1)
@@ -59,17 +59,17 @@ bool Cache::insert(Audio audio)
 
     QSqlQuery query(m_db);
     query.prepare("INSERT INTO audios VALUES (:PATH, :COVERID)");
-    query.bindValue(":PATH", audio.path());
+    query.bindValue(":PATH", audio->path());
     query.bindValue(":COVERID", id);
 
     return query.exec();
 }
 
-bool Cache::exists(Audio audio)
+bool Cache::exists(Audio *audio)
 {
     QSqlQuery query(m_db);
     query.prepare("SELECT 1 FROM audios WHERE path = :PATH LIMIT 1");
-    query.bindValue(":PATH", audio.path());
+    query.bindValue(":PATH", audio->path());
     query.exec();
 
     return query.first();
@@ -96,17 +96,6 @@ QPixmap Cache::cover(const QString &path, int size)
     return scale(QPixmap(IMG_DEFAULT_COVER), size);
 }
 
-QByteArray Cache::coverToBytes(const QPixmap &cover)
-{
-    QByteArray bytes;
-
-    QBuffer buffer(&bytes);
-    buffer.open(QIODevice::WriteOnly);
-    cover.save(&buffer, "PNG");
-
-    return bytes;
-}
-
 int Cache::lastCoverId()
 {
     QSqlQuery query(m_db);
@@ -116,6 +105,17 @@ int Cache::lastCoverId()
         return query.value(0).toInt();
 
     return 0;
+}
+
+QByteArray Cache::coverToBytes(const QPixmap &cover)
+{
+    QByteArray bytes;
+
+    QBuffer buffer(&bytes);
+    buffer.open(QIODevice::WriteOnly);
+    cover.save(&buffer, "PNG");
+
+    return bytes;
 }
 
 int Cache::coverId(const QByteArray &bytes)
@@ -160,7 +160,7 @@ int Cache::insertCover(const QByteArray &bytes)
     return id;
 }
 
-QPixmap Cache::scale(QPixmap image, int size)
+QPixmap Cache::scale(const QPixmap &pixmap, int size)
 {
-    return image.scaled(size, size, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+    return pixmap.scaled(size, size, Qt::KeepAspectRatio, Qt::SmoothTransformation);
 }

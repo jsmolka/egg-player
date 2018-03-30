@@ -31,8 +31,8 @@ public:
 
     void setAudioList(const AudioList &audioList);
 
-    Audio audioAt(int index);
-    Audio currentAudio();
+    Audio * audioAt(int index);
+    Audio * currentAudio();
 
     int nextIndex();
     int backIndex();
@@ -60,14 +60,14 @@ private slots:
 private:
     struct AudioPosition
     {
-        AudioPosition(int i, Audio a)
+        AudioPosition(int i, Audio *a)
         {
             index = i;
             audio = a;
         }
 
         int index;
-        Audio audio;
+        Audio *audio;
     };
 
     void playAudio(int index);

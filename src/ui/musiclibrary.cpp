@@ -22,7 +22,7 @@ void MusicLibrary::setupUi()
 
     for (int i = 0; i < audioList.size(); i++)
     {
-        SongInfo *info = new SongInfo(&audioList[i], this);
+        SongInfo *info = new SongInfo(audioList[i], this);
         info->showTitle();
         info->showArtist();
         info->showAlbum();
