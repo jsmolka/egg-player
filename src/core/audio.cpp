@@ -20,7 +20,7 @@ Audio::~Audio()
 
 bool Audio::operator==(const Audio &other)
 {
-    return QString::compare(m_path, other.path()) == 0;
+    return m_path.compare(other.path()) == 0;
 }
 
 bool Audio::isValid() const

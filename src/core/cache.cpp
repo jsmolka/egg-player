@@ -1,5 +1,5 @@
 #include "cache.hpp"
-#include <QDebug>
+
 Cache::Cache()
 {
 
@@ -13,7 +13,9 @@ Cache::~Cache()
 bool Cache::connect()
 {
     if (QSqlDatabase::contains(SQL_DATABASE))
+    {
         m_db = QSqlDatabase::database(SQL_DATABASE, false);
+    }
     else
     {
         m_db = QSqlDatabase::addDatabase("QSQLITE", SQL_DATABASE);
@@ -50,6 +52,7 @@ void Cache::close()
 bool Cache::insert(Audio audio)
 {
     QByteArray bytes = coverToBytes(audio.cover(200));
+
     int id = coverId(bytes);
     if (id == -1)
         id = insertCover(bytes);
@@ -65,10 +68,11 @@ bool Cache::insert(Audio audio)
 bool Cache::exists(Audio audio)
 {
     QSqlQuery query(m_db);
-    query.prepare("SELECT 1 FROM audios WHERE path = :PATH");
+    query.prepare("SELECT 1 FROM audios WHERE path = :PATH LIMIT 1");
     query.bindValue(":PATH", audio.path());
+    query.exec();
 
-    return query.exec() && query.first();
+    return query.first();
 }
 
 QPixmap Cache::cover(const QString &path, int size)
@@ -77,11 +81,12 @@ QPixmap Cache::cover(const QString &path, int size)
     query.prepare(
         "SELECT covers.cover FROM audios "
         "JOIN covers ON audios.coverid = covers.id "
-        "WHERE path = :PATH"
+        "WHERE path = :PATH LIMIT 1"
     );
     query.bindValue(":PATH", path);
+    query.exec();
 
-    if (query.exec() && query.first())
+    if (query.first())
     {
         QByteArray bytes = query.value(0).toByteArray();
         QPixmap image;
@@ -94,6 +99,7 @@ QPixmap Cache::cover(const QString &path, int size)
 QByteArray Cache::coverToBytes(const QPixmap &cover)
 {
     QByteArray bytes;
+
     QBuffer buffer(&bytes);
     buffer.open(QIODevice::WriteOnly);
     cover.save(&buffer, "PNG");
@@ -104,7 +110,7 @@ QByteArray Cache::coverToBytes(const QPixmap &cover)
 int Cache::lastCoverId()
 {
     QSqlQuery query(m_db);
-    query.exec("SELECT max(id) FROM covers");
+    query.exec("SELECT max(id) FROM covers LIMIT 1");
 
     if (query.first())
         return query.value(0).toInt();
@@ -117,19 +123,23 @@ int Cache::coverId(const QByteArray &bytes)
     QSqlQuery query(m_db);
     query.prepare("SELECT id FROM covers WHERE len = :LEN");
     query.bindValue(":LEN", bytes.length());
+    query.exec();
 
-    if (query.exec() && query.first())
+    if (query.first())
     {
         int id = query.value(0).toInt();
 
         if (!query.next())
+        {
             return id;
+        }
         else
         {
-            query.prepare("SELECT id FROM covers WHERE cover = :COVER");
+            query.prepare("SELECT id FROM covers WHERE cover = :COVER LIMIT 1");
             query.bindValue(":COVER", bytes);
+            query.exec();
 
-            if (query.exec() && query.first())
+            if (query.first())
                 return query.value(0).toInt();
         }
     }

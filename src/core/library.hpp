@@ -13,7 +13,6 @@ class Library
 public:
     Library();
     Library(const QString &path);
-    Library(const QStringList &paths);
     ~Library();
 
     AudioList audioList() const;

@@ -12,9 +12,6 @@ A Groove Music like music player.
 ### audiolist.cpp
 - remove entirely
 
-### cache.cpp
-- limit query result for better performance
-
 ### player.cpp
 - return audio in changed signal
 
