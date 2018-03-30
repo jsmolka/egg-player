@@ -119,7 +119,6 @@ void MusicBar::setupUi()
     int column = 3;
     for (IconButton *button : buttons)
     {
-        button->setStyleSheet(CSS_ICONBUTTON);
         layout->addWidget(button, 0, column);
         column++;
     }

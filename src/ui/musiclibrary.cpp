@@ -14,8 +14,8 @@ MusicLibrary::~MusicLibrary()
 
 void MusicLibrary::setupUi()
 {
+    setStyleSheet(CSS_MUSICLIBRARY);
     setVerticalScrollMode(QAbstractItemView::ScrollPerPixel);
-    verticalScrollBar()->setStyleSheet(CSS_SCROLLBAR);
     setFrameStyle(QFrame::NoFrame);
 
     AudioList audioList = pm_library->audioList();
@@ -30,8 +30,8 @@ void MusicLibrary::setupUi()
         info->showGenre();
         info->showLength();
         info->init({10, 10, 10, 1, 10, 1});
+
         info->setProperty("even", i % 2 == 0);
-        info->setStyleSheet(CSS_SONGINFO);
 
         QListWidgetItem *item = new QListWidgetItem(this);
         item->setSizeHint(QSize(0, 50));

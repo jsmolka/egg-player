@@ -12,9 +12,8 @@ A Groove Music like music player.
 
 ### library.cpp
 - splash screen while caching
-- album map
-- artist-album map
+- artist / album maps
+- proper destructor for audio pointer
 
 ### musiclibrary.cpp
-- fix black boxes while hovering
 - songs / album / artist tabs

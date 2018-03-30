@@ -21,10 +21,8 @@ const QString ICO_VOLUME2       = "data/images/icons/volume2.png";
 
 const QString IMG_DEFAULT_COVER = "data/images/default-cover.png";
 
-const QString CSS_ICONBUTTON    = FileUtil::read("data/css/iconbutton.css");
-const QString CSS_SONGINFO      = FileUtil::read("data/css/songinfo.css");
 const QString CSS_MUSICBAR      = FileUtil::read("data/css/musicbar.css");
-const QString CSS_SCROLLBAR     = FileUtil::read("data/css/scrollbar.css");
+const QString CSS_MUSICLIBRARY  = FileUtil::read("data/css/musiclibrary.css");
 
 const QString FONT_LATO         = "data/fonts/Lato.ttf";
 

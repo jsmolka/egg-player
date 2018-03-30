@@ -2,6 +2,25 @@ QLabel {
     color: white;
 }
 
+IconButton[locked=false] {
+    background: transparent;
+}
+
+IconButton[locked=true] {
+    border-radius: 15%;
+    background: rgba(255, 255, 255, 0.3);
+}
+
+IconButton:hover {
+    border-radius: 15%;
+    background: rgba(255, 255, 255, 0.2);
+}
+
+IconButton:pressed {
+    border-radius: 15%;
+    background: rgba(0, 0, 0, 0.15);
+}
+
 MusicBar {
     background-color: #006666;
 }
