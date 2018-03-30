@@ -1,3 +1,7 @@
+QLabel {
+    color: white;
+}
+
 MusicBar {
     background-color: #006666;
 }

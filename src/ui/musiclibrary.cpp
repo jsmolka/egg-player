@@ -4,10 +4,6 @@ MusicLibrary::MusicLibrary(Library *library, QWidget *parent) : QListWidget(pare
 {
     pm_library = library;
 
-    setVerticalScrollMode(QAbstractItemView::ScrollPerPixel);
-    verticalScrollBar()->setStyleSheet(CSS_SCROLLBAR);
-    setFrameStyle(QFrame::NoFrame);
-
     setupUi();
 }
 
@@ -18,6 +14,10 @@ MusicLibrary::~MusicLibrary()
 
 void MusicLibrary::setupUi()
 {
+    setVerticalScrollMode(QAbstractItemView::ScrollPerPixel);
+    verticalScrollBar()->setStyleSheet(CSS_SCROLLBAR);
+    setFrameStyle(QFrame::NoFrame);
+
     AudioList audioList = pm_library->audioList();
 
     for (int i = 0; i < audioList.size(); i++)

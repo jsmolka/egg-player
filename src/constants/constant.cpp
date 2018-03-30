@@ -25,7 +25,6 @@ const QString CSS_ICONBUTTON    = FileUtil::read("data/css/iconbutton.css");
 const QString CSS_SONGINFO      = FileUtil::read("data/css/songinfo.css");
 const QString CSS_MUSICBAR      = FileUtil::read("data/css/musicbar.css");
 const QString CSS_SCROLLBAR     = FileUtil::read("data/css/scrollbar.css");
-const QString CSS_TRACKLABEL    = FileUtil::read("data/css/tracklabel.css");
 
 const QString FONT_LATO         = "data/fonts/Lato.ttf";
 

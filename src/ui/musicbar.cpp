@@ -81,7 +81,6 @@ void MusicBar::setupUi()
     layout->addWidget(pm_coverLabel, 0, 0);
 
     pm_trackLabel = new QLabel(this);
-    pm_trackLabel->setStyleSheet(CSS_TRACKLABEL);
     pm_trackLabel->setFixedSize(QSize(240, 50));
     layout->addWidget(pm_trackLabel, 0, 1);
 

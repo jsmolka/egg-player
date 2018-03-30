@@ -30,7 +30,6 @@ const extern QString CSS_ICONBUTTON;
 const extern QString CSS_SONGINFO;
 const extern QString CSS_MUSICBAR;
 const extern QString CSS_SCROLLBAR;
-const extern QString CSS_TRACKLABEL;
 
 const extern QString FONT_LATO;
 
