@@ -129,11 +129,8 @@ void Library::loadFiles(const QString &path)
             Audio audio(file);
             if (audio.isValid())
             {
-                QString artist = audio.artist();
-                QString album = audio.album();
-
-                if (!cache.exists(artist, album))
-                    cache.insert(artist, album, audio.cover(200));
+                if (!cache.exists(audio))
+                    cache.insert(audio);
 
                 m_audioList << audio;
             }

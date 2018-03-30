@@ -42,7 +42,7 @@ private:
     QPixmap resizeCover(const QPixmap &image, int size);
     QPixmap readCover();
 
-    bool m_isValid;
+    bool m_valid;
     QString m_path;
     QString m_title;
     QString m_artist;
@@ -51,7 +51,6 @@ private:
     int m_year;
     int m_track;
     int m_length;
-    QUrl m_url;
 };
 
 #endif // AUDIO_HPP

@@ -10,7 +10,7 @@ Audio::Audio()
 Audio::Audio(const QString &path)
 {
     m_path = path;
-    m_isValid = readTags();
+    m_valid = readTags();
 }
 
 Audio::~Audio()
@@ -25,7 +25,7 @@ bool Audio::operator==(const Audio &other)
 
 bool Audio::isValid() const
 {
-    return m_isValid;
+    return m_valid;
 }
 
 QString Audio::path() const
@@ -128,7 +128,8 @@ QPixmap Audio::readCover()
 
             QPixmap image;
             image.loadFromData((const uchar *) frame->picture().data(), frame->picture().size());
-            return image;
+            if (!image.isNull())
+                return image;
         }
     }
     return QPixmap(IMG_DEFAULT_COVER);

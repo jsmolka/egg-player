@@ -31,7 +31,6 @@ HEADERS += \
     src/ui/musicbar.hpp \
     src/ui/musiclibrary.hpp \
     src/constants/language.hpp \
-    src/constants/database.hpp \
     src/core/cache.hpp
 
 SOURCES += \
@@ -50,5 +49,4 @@ SOURCES += \
     src/ui/musicbar.cpp \
     src/ui/musiclibrary.cpp \
     src/constants/language.cpp \
-    src/constants/database.cpp \
     src/core/cache.cpp

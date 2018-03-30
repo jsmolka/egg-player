@@ -109,10 +109,10 @@ void EggPlayer::updateTrackInfo()
     QLabel *trackLabel = pm_musicBar->trackLabel();
     QLabel *coverLabel = pm_musicBar->coverLabel();
 
+    QString path = audio.path();
     QString title = audio.title();
     QString artist = audio.artist();
-    QString album = audio.album();
-    QPixmap cover = m_cache.cover(artist, album, 50);
+    QPixmap cover = m_cache.cover(path, 50);
 
     trackLabel->setText(QString("%1\n%2").arg(title, artist));
     coverLabel->setPixmap(cover);

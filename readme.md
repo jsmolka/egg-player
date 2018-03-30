@@ -12,10 +12,14 @@ A Groove Music like music player.
 ### audiolist.cpp
 - remove entirely
 
+### cache.cpp
+- limit query result for better performance
+
 ### player.cpp
 - return audio in changed signal
 
 ### library.cpp
+- splash screen while caching
 - return list of audio pointers
 - album map
 - artist-album map

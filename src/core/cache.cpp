@@ -1,5 +1,5 @@
 #include "cache.hpp"
-
+#include <QDebug>
 Cache::Cache()
 {
 
@@ -12,20 +12,31 @@ Cache::~Cache()
 
 bool Cache::connect()
 {
-    if (QSqlDatabase::contains(SQL_DB_NAME))
-    {
-        m_db = QSqlDatabase::database(SQL_DB_NAME, false);
-    }
+    if (QSqlDatabase::contains(SQL_DATABASE))
+        m_db = QSqlDatabase::database(SQL_DATABASE, false);
     else
     {
-        m_db = QSqlDatabase::addDatabase("QSQLITE", SQL_DB_NAME);
-        m_db.setDatabaseName(SQL_DB_NAME);
+        m_db = QSqlDatabase::addDatabase("QSQLITE", SQL_DATABASE);
+        m_db.setDatabaseName(SQL_DATABASE);
     }
 
     if (m_db.open())
     {
-        QSqlQuery query = QSqlQuery(m_db);
-        query.exec(SQL_CREATE_TABLE);
+        QSqlQuery query(m_db);
+        query.exec(
+            "CREATE TABLE IF NOT EXISTS covers("
+            "  id INTEGER PRIMARY KEY,"
+            "  len INTEGER,"
+            "  cover BLOB"
+            ")"
+        );
+        query.exec(
+            "CREATE TABLE IF NOT EXISTS audios("
+            "  path TEXT PRIMARY KEY,"
+            "  coverid INTEGER,"
+            "  FOREIGN KEY (coverid) REFERENCES covers(id)"
+            ")"
+        );
         return true;
     }
     return false;
@@ -36,50 +47,107 @@ void Cache::close()
     m_db.close();
 }
 
-bool Cache::insert(const QString &artist, const QString &album, const QPixmap &cover)
+bool Cache::insert(Audio audio)
+{
+    QByteArray bytes = coverToBytes(audio.cover(200));
+    int id = coverId(bytes);
+    if (id == -1)
+        id = insertCover(bytes);
+
+    QSqlQuery query(m_db);
+    query.prepare("INSERT INTO audios VALUES (:PATH, :COVERID)");
+    query.bindValue(":PATH", audio.path());
+    query.bindValue(":COVERID", id);
+
+    return query.exec();
+}
+
+bool Cache::exists(Audio audio)
+{
+    QSqlQuery query(m_db);
+    query.prepare("SELECT 1 FROM audios WHERE path = :PATH");
+    query.bindValue(":PATH", audio.path());
+
+    return query.exec() && query.first();
+}
+
+QPixmap Cache::cover(const QString &path, int size)
+{
+    QSqlQuery query = QSqlQuery(m_db);
+    query.prepare(
+        "SELECT covers.cover FROM audios "
+        "JOIN covers ON audios.coverid = covers.id "
+        "WHERE path = :PATH"
+    );
+    query.bindValue(":PATH", path);
+
+    if (query.exec() && query.first())
+    {
+        QByteArray bytes = query.value(0).toByteArray();
+        QPixmap image;
+        image.loadFromData(bytes);
+        return scale(image, size);
+    }
+    return scale(QPixmap(IMG_DEFAULT_COVER), size);
+}
+
+QByteArray Cache::coverToBytes(const QPixmap &cover)
 {
     QByteArray bytes;
     QBuffer buffer(&bytes);
     buffer.open(QIODevice::WriteOnly);
     cover.save(&buffer, "PNG");
 
-    QSqlQuery query = QSqlQuery(m_db);
-    query.prepare(SQL_INSERT);
-    query.bindValue(":ARTIST", QVariant(artist));
-    query.bindValue(":ALBUM", QVariant(album));
-    query.bindValue(":COVER", QVariant(bytes));
-
-    return query.exec();
+    return bytes;
 }
 
-bool Cache::exists(const QString &artist, const QString &album)
+int Cache::lastCoverId()
 {
-    QSqlQuery query = QSqlQuery(m_db);
-    query.prepare(SQL_RETRIEVE);
-    query.bindValue(":ARTIST", QVariant(artist));
-    query.bindValue(":ALBUM", QVariant(album));
+    QSqlQuery query(m_db);
+    query.exec("SELECT max(id) FROM covers");
 
-    return query.exec() && query.first();
+    if (query.first())
+        return query.value(0).toInt();
+
+    return 0;
 }
 
-QPixmap Cache::cover(const QString &artist, const QString &album, int size)
+int Cache::coverId(const QByteArray &bytes)
 {
-    QSqlQuery query = QSqlQuery(m_db);
-    query.prepare(SQL_RETRIEVE);
-    query.bindValue(":ARTIST", QVariant(artist));
-    query.bindValue(":ALBUM", QVariant(album));
+    QSqlQuery query(m_db);
+    query.prepare("SELECT id FROM covers WHERE len = :LEN");
+    query.bindValue(":LEN", bytes.length());
 
-    if (query.exec())
+    if (query.exec() && query.first())
     {
-        if (query.first())
+        int id = query.value(0).toInt();
+
+        if (!query.next())
+            return id;
+        else
         {
-            QByteArray bytes = query.value(0).toByteArray();
-            QPixmap image;
-            image.loadFromData(bytes);
-            return scale(image, size);
+            query.prepare("SELECT id FROM covers WHERE cover = :COVER");
+            query.bindValue(":COVER", bytes);
+
+            if (query.exec() && query.first())
+                return query.value(0).toInt();
         }
     }
-    return scale(QPixmap(IMG_DEFAULT_COVER), size);
+    return -1;
+}
+
+int Cache::insertCover(const QByteArray &bytes)
+{
+    int id = lastCoverId() + 1;
+
+    QSqlQuery query(m_db);
+    query.prepare("INSERT INTO covers VALUES (:ID, :LEN, :COVER)");
+    query.bindValue(":ID", id);
+    query.bindValue(":LEN", bytes.length());
+    query.bindValue(":COVER", bytes);
+    query.exec();
+
+    return id;
 }
 
 QPixmap Cache::scale(QPixmap image, int size)

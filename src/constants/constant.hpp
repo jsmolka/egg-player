@@ -34,4 +34,6 @@ const extern QString CSS_TRACKLABEL;
 
 const extern QString FONT_LATO;
 
+const extern QString SQL_DATABASE;
+
 #endif // CONSTANT_HPP

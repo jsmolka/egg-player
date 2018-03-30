@@ -28,3 +28,5 @@ const QString CSS_SCROLLBAR     = FileUtil::read("data/css/scrollbar.css");
 const QString CSS_TRACKLABEL    = FileUtil::read("data/css/tracklabel.css");
 
 const QString FONT_LATO         = "data/fonts/Lato.ttf";
+
+const QString SQL_DATABASE      = "cache.db";
