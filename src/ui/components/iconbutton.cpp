@@ -6,7 +6,7 @@ IconButton::IconButton(QWidget *parent) : QPushButton(parent)
     m_lockable = false;
     m_locked = false;
 
-    connect(this, SIGNAL(clicked(bool)), this, SLOT(switchLocked(void)));
+    connect(this, SIGNAL(clicked(bool)), this, SLOT(onClicked()));
 }
 
 IconButton::~IconButton()
@@ -14,39 +14,24 @@ IconButton::~IconButton()
 
 }
 
-void IconButton::setIcon1(const QIcon &icon)
+void IconButton::setIcons(const QList<QIcon> &icons)
 {
-    m_icon1 = icon;
+    m_icons = icons;
 }
 
-QIcon IconButton::icon1() const
+QList<QIcon> IconButton::icons() const
 {
-    return m_icon1;
+    return m_icons;
 }
 
-void IconButton::setIcon2(const QIcon &icon)
-{
-    m_icon2 = icon;
-}
-
-QIcon IconButton::icon2() const
-{
-    return m_icon2;
-}
-
-void IconButton::setSelected(bool selected)
+void IconButton::setSelectedIcon(int selected)
 {
     m_selected = selected;
 
-    setSelectedIcon();
+    setIcon(m_icons[selected]);
 }
 
-void IconButton::setSelected(int selected)
-{
-    setSelected(!(bool)selected);
-}
-
-bool IconButton::isSelected() const
+int IconButton::selectedIcon() const
 {
     return m_selected;
 }
@@ -66,27 +51,22 @@ void IconButton::setLockable(bool lockable)
     m_lockable = lockable;
 }
 
-void IconButton::init(const QIcon &icon, const QSize &size)
+bool IconButton::isLockable() const
 {
-   init(icon, QIcon(), size);
+    return m_lockable;
 }
 
-void IconButton::init(const QIcon &icon1, const QIcon &icon2, const QSize &size)
+void IconButton::init(const QList<QIcon> &icons, const QSize &size, bool lockable)
 {
-    m_icon1 = icon1;
-    m_icon2 = icon2;
+    m_icons = icons;
+    m_lockable = lockable;
 
-    setIcon(m_icon1);
+    setIcon(icons[0]);
     setIconSize(size);
     setFixedSize(size);
 }
 
-void IconButton::switchIcon()
-{
-    setSelected(!m_selected);
-}
-
-void IconButton::switchLocked()
+void IconButton::onClicked()
 {
     if (m_lockable)
     {
@@ -95,12 +75,4 @@ void IconButton::switchLocked()
         style()->polish(this);
         emit locked(m_locked);
     }
-}
-
-void IconButton::setSelectedIcon()
-{
-    if (m_selected)
-        setIcon(m_icon1);
-    else
-        setIcon(m_icon2);
 }

@@ -91,29 +91,27 @@ void MusicBar::setupUi()
     QSize size(40, 40);
 
     pm_backButton = new IconButton(this);
-    pm_backButton->init(QIcon(ICO_BACK), size);
+    pm_backButton->init({QIcon(ICO_BACK)}, size);
     buttons << pm_backButton;
 
     pm_playButton = new IconButton(this);
-    pm_playButton->init(QIcon(ICO_PLAY), QIcon(ICO_PAUSE), size);
+    pm_playButton->init({QIcon(ICO_PLAY), QIcon(ICO_PAUSE)}, size);
     buttons << pm_playButton;
 
     pm_nextButton = new IconButton(this);
-    pm_nextButton->init(QIcon(ICO_NEXT), size);
+    pm_nextButton->init({QIcon(ICO_NEXT)}, size);
     buttons << pm_nextButton;
 
     pm_shuffleButton = new IconButton(this);
-    pm_shuffleButton->setLockable(true);
-    pm_shuffleButton->init(QIcon(ICO_SHUFFLE), size);
+    pm_shuffleButton->init({QIcon(ICO_SHUFFLE)}, size, true);
     buttons << pm_shuffleButton;
 
     pm_loopButton = new IconButton(this);
-    pm_loopButton->setLockable(true);
-    pm_loopButton->init(QIcon(ICO_REPLAY), size);
+    pm_loopButton->init({QIcon(ICO_REPLAY)}, size, true);
     buttons << pm_loopButton;
 
     pm_volumeButton = new IconButton(this);
-    pm_volumeButton->init(QIcon(ICO_VOLUME), QIcon(ICO_MUTE), size);
+    pm_volumeButton->init({QIcon(ICO_VOLUME), QIcon(ICO_MUTE)}, size);
     buttons << pm_volumeButton;
 
     int column = 3;

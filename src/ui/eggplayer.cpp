@@ -34,7 +34,7 @@ void EggPlayer::onPlayButtonPressed()
 
     if (player->index() != -1)
     {
-        if (playButton->isSelected())
+        if (playButton->selectedIcon() == 0)
             player->play();
         else
             player->pause();
@@ -70,7 +70,7 @@ void EggPlayer::onStateChanged(bool playing)
 {
     IconButton *playButton = pm_musicBar->playButton();
 
-    playButton->setSelected(!playing);
+    playButton->setSelectedIcon(playing ? 1 : 0);
 }
 
 void EggPlayer::setupUi()

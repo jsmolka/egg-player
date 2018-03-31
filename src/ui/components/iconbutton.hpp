@@ -14,37 +14,28 @@ public:
     IconButton(QWidget *parent = 0);
     ~IconButton();
 
-    void setIcon1(const QIcon &icon);
-    QIcon icon1() const;
+    void setIcons(const QList<QIcon> &icons);
+    QList<QIcon> icons() const;
 
-    void setIcon2(const QIcon &icon);
-    QIcon icon2() const;
-
-    void setSelected(bool selected);
-    void setSelected(int selected);
-    bool isSelected() const;
+    void setSelectedIcon(int selected);
+    int selectedIcon() const;
 
     void setLocked(bool locked);
     bool isLocked() const;
 
     void setLockable(bool lockable);
+    bool isLockable() const;
 
-    void init(const QIcon &icon, const QSize &size);
-    void init(const QIcon &icon1, const QIcon &icon2, const QSize &size);
-
-    void switchIcon();
-
-public slots:
-    void switchLocked();
+    void init(const QList<QIcon> &icons, const QSize &size, bool lockable = false);
 
 signals:
     void locked(bool locked);
 
-private:
-    void setSelectedIcon();
+private slots:
+    void onClicked();
 
-    QIcon m_icon1;
-    QIcon m_icon2;
+private:
+    QList<QIcon> m_icons;
     bool m_selected;
     bool m_lockable;
     bool m_locked;
