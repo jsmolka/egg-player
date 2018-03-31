@@ -12,7 +12,7 @@ Player::Player(QWidget *parent) : QWidget(parent)
     m_shuffled = false;
     m_playing = false;
 
-    connect(pm_player->playlist(), SIGNAL(currentIndexChanged(int)), this, SLOT(indexChanged(int)));
+    connect(pm_player->playlist(), SIGNAL(currentIndexChanged(int)), this, SLOT(onIndexChanged(int)));
 }
 
 Player::~Player()
@@ -195,7 +195,7 @@ void Player::back()
     }
 }
 
-void Player::indexChanged(int index)
+void Player::onIndexChanged(int index)
 {
     if (index == -1)
         next();

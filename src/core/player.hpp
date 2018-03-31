@@ -54,7 +54,7 @@ signals:
     void stateChanged(bool playing);
 
 private slots:
-    void indexChanged(int index);
+    void onIndexChanged(int index);
 
 private:
     struct AudioPosition

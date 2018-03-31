@@ -1,6 +1,6 @@
 #include "eggplayer.hpp"
 
-EggPlayer::EggPlayer() : QWidget()
+EggPlayer::EggPlayer(QWidget *parent) : QWidget(parent)
 {
     m_library = Library("C:/Users/Julian/Music/Tiny Moving Parts");
     m_cache.connect();
@@ -61,12 +61,12 @@ void EggPlayer::onShuffleButtonLocked(bool locked)
     }
 }
 
-void EggPlayer::onAudioChanged(Audio *audio)
+void EggPlayer::onPlayerAudioChanged(Audio *audio)
 {
     updateTrackInfo(audio);
 }
 
-void EggPlayer::onStateChanged(bool playing)
+void EggPlayer::onPlayerStateChanged(bool playing)
 {
     IconButton *playButton = pm_musicBar->playButton();
 
@@ -124,6 +124,6 @@ void EggPlayer::createMusicBar()
     connect(pm_musicBar->nextButton(), SIGNAL(pressed()), pm_musicBar->player(), SLOT(next()));
     connect(pm_musicBar->backButton(), SIGNAL(pressed()), pm_musicBar->player(), SLOT(back()));
 
-    connect(pm_musicBar->player(), SIGNAL(audioChanged(Audio *)), this, SLOT(onAudioChanged(Audio *)));
-    connect(pm_musicBar->player(), SIGNAL(stateChanged(bool)), this, SLOT(onStateChanged(bool)));
+    connect(pm_musicBar->player(), SIGNAL(audioChanged(Audio *)), this, SLOT(onPlayerAudioChanged(Audio *)));
+    connect(pm_musicBar->player(), SIGNAL(stateChanged(bool)), this, SLOT(onPlayerStateChanged(bool)));
 }

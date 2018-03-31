@@ -12,7 +12,7 @@ class EggPlayer : public QWidget
     Q_OBJECT
 
 public:
-    EggPlayer();
+    EggPlayer(QWidget *parent = 0);
     ~EggPlayer();
 
 private slots:
@@ -20,8 +20,8 @@ private slots:
     void onPlayButtonPressed();
     void onLoopButtonLocked(bool locked);
     void onShuffleButtonLocked(bool locked);
-    void onAudioChanged(Audio *audio);
-    void onStateChanged(bool playing);
+    void onPlayerAudioChanged(Audio *audio);
+    void onPlayerStateChanged(bool playing);
 
 private:
     void setupUi();
