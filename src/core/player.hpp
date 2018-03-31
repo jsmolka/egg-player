@@ -50,7 +50,7 @@ public slots:
     void back();
 
 signals:
-    void changed();
+    void changed(Audio *audio);
     void stopped();
 
 private slots:

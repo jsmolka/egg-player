@@ -20,12 +20,12 @@ private slots:
     void play();
     void stop();
     void loop();
-    void change();
+    void change(Audio *audio);
     void shuffle();
 
 private:
     void setupUi();
-    void updateTrackInfo();
+    void updateTrackInfo(Audio *audio);
 
     void createMusicLibrary();
     void createMusicBar();

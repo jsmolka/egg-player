@@ -187,14 +187,17 @@ void Player::back()
 void Player::slotAutoPlay(int index)
 {
     if (index != 0)
+    {
         next();
+        emit changed(audioAt(index));
+    }
 }
 
 void Player::slotAudioChanged()
 {
     int index = currentIndex();
     if (index != -1)
-        emit changed();
+        emit changed(audioAt(index));
 }
 
 void Player::playAudio(int index)
@@ -208,4 +211,3 @@ void Player::playAudio(int index)
     if (m_playing)
         play();
 }
-

@@ -65,12 +65,9 @@ void EggPlayer::loop()
         player->setLoop(false);
 }
 
-void EggPlayer::change()
+void EggPlayer::change(Audio *audio)
 {
-    Player *player = pm_musicBar->player();
-
-    if (player->currentIndex() != -1)
-        updateTrackInfo();
+    updateTrackInfo(audio);
 }
 
 void EggPlayer::shuffle()
@@ -103,9 +100,8 @@ void EggPlayer::setupUi()
     setLayout(layout);
 }
 
-void EggPlayer::updateTrackInfo()
+void EggPlayer::updateTrackInfo(Audio *audio)
 {
-    Audio *audio = pm_musicBar->player()->currentAudio();
     QLabel *trackLabel = pm_musicBar->trackLabel();
     QLabel *coverLabel = pm_musicBar->coverLabel();
 
@@ -139,6 +135,6 @@ void EggPlayer::createMusicBar()
     connect(pm_musicBar->nextButton(), SIGNAL(pressed()), pm_musicBar->player(), SLOT(next()));
     connect(pm_musicBar->backButton(), SIGNAL(pressed()), pm_musicBar->player(), SLOT(back()));
 
-    connect(pm_musicBar->player(), SIGNAL(changed()), this, SLOT(change()));
+    connect(pm_musicBar->player(), SIGNAL(changed(Audio *)), this, SLOT(change(Audio *)));
     connect(pm_musicBar->player(), SIGNAL(stopped()), this, SLOT(stop()));
 }
