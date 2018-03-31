@@ -16,8 +16,8 @@ public:
     Player(QWidget *parent = 0);
     ~Player();
 
-    void setCurrentIndex(int index);
-    int currentIndex();
+    void setIndex(int index);
+    int index() const;
 
     void setLoop(bool loop);
     bool isLoop() const;
@@ -50,12 +50,11 @@ public slots:
     void back();
 
 signals:
-    void changed(Audio *audio);
-    void stopped();
+    void audioChanged(Audio *audio);
+    void stateChanged(bool playing);
 
 private slots:
-    void slotAutoPlay(int index);
-    void slotAudioChanged();
+    void indexChanged(int index);
 
 private:
     struct AudioPosition
@@ -70,11 +69,11 @@ private:
         Audio *audio;
     };
 
-    void playAudio(int index);
+    void setActiveAudio(int index);
 
     QMediaPlayer *pm_player;
     QList<AudioPosition> m_playlist;
-    int m_currentIndex;
+    int m_index;
     bool m_loop;
     bool m_shuffled;
     bool m_playing;

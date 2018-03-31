@@ -13,75 +13,64 @@ EggPlayer::~EggPlayer()
 
 }
 
-void EggPlayer::start(const QModelIndex &index)
+void EggPlayer::onLibraryDoubleClicked(const QModelIndex &index)
 {
     Player *player = pm_musicBar->player();
-    IconButton *playButton = pm_musicBar->playButton();
     IconButton *shuffleButton = pm_musicBar->shuffleButton();
 
     player->setAudioList(m_library.audioList());
-    player->setCurrentIndex(index.row());
+    player->setIndex(index.row());
+
     if (shuffleButton->isLocked())
         player->shuffle();
-    player->play();
 
-    playButton->setSelected(1);
+    player->play();
 }
 
-void EggPlayer::play()
+void EggPlayer::onPlayButtonPressed()
 {
     Player *player = pm_musicBar->player();
     IconButton *playButton = pm_musicBar->playButton();
 
-    if (player->currentIndex() != -1)
+    if (player->index() != -1)
     {
-        playButton->switchIcon();
-
-        if (!playButton->isSelected())
+        if (playButton->isSelected())
             player->play();
         else
             player->pause();
     }
 }
 
-void EggPlayer::stop()
+void EggPlayer::onLoopButtonLocked(bool locked)
 {
     Player *player = pm_musicBar->player();
-    IconButton *playButton = pm_musicBar->playButton();
 
-    player->pause();
-
-    playButton->setSelected(0);
+    player->setLoop(locked);
 }
 
-void EggPlayer::loop()
+void EggPlayer::onShuffleButtonLocked(bool locked)
 {
     Player *player = pm_musicBar->player();
-    IconButton *replayButton = pm_musicBar->loopButton();
 
-    if (replayButton->isLocked())
-        player->setLoop(true);
-    else
-        player->setLoop(false);
-}
-
-void EggPlayer::change(Audio *audio)
-{
-    updateTrackInfo(audio);
-}
-
-void EggPlayer::shuffle()
-{
-    Player *player = pm_musicBar->player();
-    IconButton *shuffleButton = pm_musicBar->shuffleButton();
-
-    if (player->currentIndex() != -1)
+    if (player->index() != -1)
     {
-        if (shuffleButton->isLocked())
+        if (locked)
             player->shuffle();
         else
             player->unshuffle();
     }
+}
+
+void EggPlayer::onAudioChanged(Audio *audio)
+{
+    updateTrackInfo(audio);
+}
+
+void EggPlayer::onStateChanged(bool playing)
+{
+    IconButton *playButton = pm_musicBar->playButton();
+
+    playButton->setSelected(!playing);
 }
 
 void EggPlayer::setupUi()
@@ -118,7 +107,7 @@ void EggPlayer::createMusicLibrary()
 {
     pm_musicLibrary = new MusicLibrary(&m_library, this);
 
-    connect(pm_musicLibrary, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(start(QModelIndex)));
+    connect(pm_musicLibrary, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(onLibraryDoubleClicked(QModelIndex)));
 }
 
 void EggPlayer::createMusicBar()
@@ -128,13 +117,13 @@ void EggPlayer::createMusicBar()
     Player *player = pm_musicBar->player();
     player->setVolume(5);
 
-    connect(pm_musicBar->playButton(), SIGNAL(pressed()), this, SLOT(play()));
-    connect(pm_musicBar->loopButton(), SIGNAL(locked()), this, SLOT(loop()));
-    connect(pm_musicBar->shuffleButton(), SIGNAL(locked()), this, SLOT(shuffle()));
+    connect(pm_musicBar->playButton(), SIGNAL(pressed()), this, SLOT(onPlayButtonPressed()));
+    connect(pm_musicBar->loopButton(), SIGNAL(locked(bool)), this, SLOT(onLoopButtonLocked(bool)));
+    connect(pm_musicBar->shuffleButton(), SIGNAL(locked(bool)), this, SLOT(onShuffleButtonLocked(bool)));
 
     connect(pm_musicBar->nextButton(), SIGNAL(pressed()), pm_musicBar->player(), SLOT(next()));
     connect(pm_musicBar->backButton(), SIGNAL(pressed()), pm_musicBar->player(), SLOT(back()));
 
-    connect(pm_musicBar->player(), SIGNAL(changed(Audio *)), this, SLOT(change(Audio *)));
-    connect(pm_musicBar->player(), SIGNAL(stopped()), this, SLOT(stop()));
+    connect(pm_musicBar->player(), SIGNAL(audioChanged(Audio *)), this, SLOT(onAudioChanged(Audio *)));
+    connect(pm_musicBar->player(), SIGNAL(stateChanged(bool)), this, SLOT(onStateChanged(bool)));
 }

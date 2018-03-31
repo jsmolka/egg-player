@@ -6,13 +6,13 @@ Player::Player(QWidget *parent) : QWidget(parent)
 
     pm_player = new QMediaPlayer(this);
     pm_player->setPlaylist(new QMediaPlaylist(this));
-    m_currentIndex = -1;
+
+    m_index = -1;
     m_loop = false;
     m_shuffled = false;
     m_playing = false;
 
-    connect(pm_player->playlist(), SIGNAL(currentIndexChanged(int)), this, SLOT(slotAutoPlay(int)));
-    connect(pm_player->playlist(), SIGNAL(currentIndexChanged(int)), this, SLOT(slotAudioChanged()));
+    connect(pm_player->playlist(), SIGNAL(currentIndexChanged(int)), this, SLOT(indexChanged(int)));
 }
 
 Player::~Player()
@@ -20,16 +20,16 @@ Player::~Player()
 
 }
 
-void Player::setCurrentIndex(int index)
+void Player::setIndex(int index)
 {
-    m_currentIndex = index;
+    m_index = index;
     if (index != -1)
-        playAudio(index);
+        setActiveAudio(index);
 }
 
-int Player::currentIndex()
+int Player::index() const
 {
-    return m_currentIndex;
+    return m_index;
 }
 
 void Player::setLoop(bool loop)
@@ -79,29 +79,29 @@ Audio * Player::audioAt(int index)
 
 Audio * Player::currentAudio()
 {
-    return audioAt(m_currentIndex);
+    return audioAt(m_index);
 }
 
 int Player::nextIndex()
 {
-    if (m_currentIndex == -1)
+    if (m_index == -1)
         return -1;
 
-    if (m_currentIndex == m_playlist.size() - 1)
+    if (m_index == m_playlist.size() - 1)
         return m_loop ? 0 : -1;
 
-    return ++m_currentIndex;
+    return ++m_index;
 }
 
 int Player::backIndex()
 {
-    if (m_currentIndex == -1)
+    if (m_index == -1)
         return -1;
 
-    if (m_currentIndex == 0)
+    if (m_index == 0)
         return m_loop ? m_playlist.size() - 1 : -1;
 
-    return --m_currentIndex;
+    return --m_index;
 }
 
 void Player::shuffle()
@@ -120,7 +120,7 @@ void Player::shuffle()
                 break;
             }
         }
-        m_currentIndex = 0;
+        m_index = 0;
         m_shuffled = true;
     }
 }
@@ -138,7 +138,7 @@ void Player::unshuffle()
         {
             if (audio == audioAt(i))
             {
-                m_currentIndex = i;
+                m_index = i;
                 break;
             }
         }
@@ -160,47 +160,51 @@ void Player::play()
 {
     pm_player->play();
     m_playing = true;
+    emit stateChanged(true);
 }
 
 void Player::pause()
 {
     pm_player->pause();
     m_playing = false;
+    emit stateChanged(false);
 }
 
 void Player::next()
 {
     int index = nextIndex();
     if (index != -1)
-        setCurrentIndex(index);
+    {
+        m_index = index;
+        setActiveAudio(index);
+    }
     else
-        emit stopped();
+    {
+        pause();
+        setActiveAudio(m_index);
+    }
 }
 
 void Player::back()
 {
     int index = backIndex();
     if (index != -1)
-        setCurrentIndex(index);
-}
-
-void Player::slotAutoPlay(int index)
-{
-    if (index != 0)
     {
-        next();
-        emit changed(audioAt(index));
+        m_index = index;
+        setActiveAudio(index);
     }
 }
 
-void Player::slotAudioChanged()
+void Player::indexChanged(int index)
 {
-    int index = currentIndex();
-    if (index != -1)
-        emit changed(audioAt(index));
+    if (index == -1)
+        next();
+
+    if (m_index != -1)
+        emit audioChanged(audioAt(m_index));
 }
 
-void Player::playAudio(int index)
+void Player::setActiveAudio(int index)
 {
     QMediaPlaylist *playlist = pm_player->playlist();
 

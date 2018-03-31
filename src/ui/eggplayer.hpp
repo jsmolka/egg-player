@@ -16,12 +16,12 @@ public:
     ~EggPlayer();
 
 private slots:
-    void start(const QModelIndex &index);
-    void play();
-    void stop();
-    void loop();
-    void change(Audio *audio);
-    void shuffle();
+    void onLibraryDoubleClicked(const QModelIndex &index);
+    void onPlayButtonPressed();
+    void onLoopButtonLocked(bool locked);
+    void onShuffleButtonLocked(bool locked);
+    void onAudioChanged(Audio *audio);
+    void onStateChanged(bool playing);
 
 private:
     void setupUi();
