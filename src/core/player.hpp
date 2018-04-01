@@ -19,9 +19,7 @@ public:
     void setIndex(int index);
     int index() const;
 
-    void setLoop(bool loop);
     bool isLoop() const;
-
     bool isShuffled() const;
 
     int volume() const;
@@ -37,12 +35,12 @@ public:
     int nextIndex();
     int backIndex();
 
-    void shuffle();
-    void unshuffle();
-
 public slots:
     void setVolume(int volume);
     void setPosition(int position);
+
+    void setLoop(bool loop);
+    void setShuffled(bool shuffled);
 
     void play();
     void pause();
@@ -68,6 +66,9 @@ private:
         int index;
         Audio *audio;
     };
+
+    void shuffle();
+    void unshuffle();
 
     void setActiveAudio(int index);
 

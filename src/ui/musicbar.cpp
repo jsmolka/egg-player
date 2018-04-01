@@ -2,9 +2,20 @@
 
 MusicBar::MusicBar(QWidget *parent) : QWidget(parent)
 {
+    m_cache.connect();
     pm_player = new Player(this);
 
     setupUi();
+
+    connect(pm_nextButton, SIGNAL(pressed()), pm_player, SLOT(next()));
+    connect(pm_backButton, SIGNAL(pressed()), pm_player, SLOT(back()));
+    connect(pm_loopButton, SIGNAL(locked(bool)), pm_player, SLOT(setLoop(bool)));
+    connect(pm_shuffleButton, SIGNAL(locked(bool)), pm_player, SLOT(setShuffled(bool)));
+
+    connect(pm_playButton, SIGNAL(pressed()), this, SLOT(onPlayButtonPressed()));
+
+    connect(pm_player, SIGNAL(audioChanged(Audio *)), this, SLOT(onPlayerAudioChanged(Audio *)));
+    connect(pm_player, SIGNAL(stateChanged(bool)), this, SLOT(onPlayerStateChanged(bool)));
 }
 
 MusicBar::~MusicBar()
@@ -65,6 +76,33 @@ void MusicBar::paintEvent(QPaintEvent *event)
     option.initFrom(this);
     QPainter painter(this);
     style()->drawPrimitive(QStyle::PE_Widget, &option, &painter, this);
+}
+
+void MusicBar::onPlayButtonPressed()
+{
+    if (pm_player->index() != -1)
+    {
+        if (pm_playButton->selectedIcon() == 0)
+            pm_player->play();
+        else
+            pm_player->pause();
+    }
+}
+
+void MusicBar::onPlayerAudioChanged(Audio *audio)
+{
+    QString path = audio->path();
+    QString title = audio->title();
+    QString artist = audio->artist();
+    QPixmap cover = m_cache.cover(path, 50);
+
+    pm_trackLabel->setText(QString("%1\n%2").arg(title, artist));
+    pm_coverLabel->setPixmap(cover);
+}
+
+void MusicBar::onPlayerStateChanged(bool playing)
+{
+    pm_playButton->setSelectedIcon(playing ? 1 : 0);
 }
 
 void MusicBar::setupUi()

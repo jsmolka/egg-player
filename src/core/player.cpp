@@ -32,11 +32,6 @@ int Player::index() const
     return m_index;
 }
 
-void Player::setLoop(bool loop)
-{
-    m_loop = loop;
-}
-
 bool Player::isLoop() const
 {
     return m_loop;
@@ -69,7 +64,8 @@ void Player::setAudioList(const AudioList &audioList)
     for (int i = 0; i < audioList.size(); i++)
         m_playlist << AudioPosition(i, audioList[i]);
 
-    m_shuffled = false;
+    if (m_shuffled)
+        shuffle();
 }
 
 Audio * Player::audioAt(int index)
@@ -104,48 +100,6 @@ int Player::backIndex()
     return --m_index;
 }
 
-void Player::shuffle()
-{
-    if (!m_shuffled)
-    {
-        Audio * audio = currentAudio();
-
-        std::random_shuffle(m_playlist.begin(), m_playlist.end());
-
-        for (int i = 0; i < m_playlist.size(); i++)
-        {
-            if (audio == audioAt(i))
-            {
-                m_playlist.swap(0, i);
-                break;
-            }
-        }
-        m_index = 0;
-        m_shuffled = true;
-    }
-}
-
-void Player::unshuffle()
-{
-    if (m_shuffled)
-    {
-        Audio *audio = currentAudio();
-
-        std::sort(m_playlist.begin(), m_playlist.end(),
-            [](const AudioPosition &ap1, const AudioPosition &ap2) {return ap1.index < ap2.index;});
-
-        for (int i = 0; i < m_playlist.size(); i++)
-        {
-            if (audio == audioAt(i))
-            {
-                m_index = i;
-                break;
-            }
-        }
-        m_shuffled = false;
-    }
-}
-
 void Player::setVolume(int volume)
 {
     pm_player->setVolume(volume);
@@ -154,6 +108,25 @@ void Player::setVolume(int volume)
 void Player::setPosition(int position)
 {
     pm_player->setPosition(position);
+}
+
+void Player::setLoop(bool loop)
+{
+    m_loop = loop;
+}
+
+void Player::setShuffled(bool shuffled)
+{
+    if (m_shuffled != shuffled)
+    {
+        if (m_index != -1)
+        {
+            if (shuffled)
+                shuffle();
+            else
+                unshuffle();
+        }
+    }
 }
 
 void Player::play()
@@ -181,7 +154,7 @@ void Player::next()
     else
     {
         pause();
-        setActiveAudio(m_index);
+        setPosition(0);
     }
 }
 
@@ -202,6 +175,42 @@ void Player::onIndexChanged(int index)
 
     if (m_index != -1)
         emit audioChanged(audioAt(m_index));
+}
+
+void Player::shuffle()
+{
+    Audio * audio = currentAudio();
+
+    std::random_shuffle(m_playlist.begin(), m_playlist.end());
+
+    for (int i = 0; i < m_playlist.size(); i++)
+    {
+        if (audio == audioAt(i))
+        {
+            m_playlist.swap(0, i);
+            break;
+        }
+    }
+    m_index = 0;
+    m_shuffled = true;
+}
+
+void Player::unshuffle()
+{
+    Audio *audio = currentAudio();
+
+    std::sort(m_playlist.begin(), m_playlist.end(),
+        [](const AudioPosition &ap1, const AudioPosition &ap2) {return ap1.index < ap2.index;});
+
+    for (int i = 0; i < m_playlist.size(); i++)
+    {
+        if (audio == audioAt(i))
+        {
+            m_index = i;
+            break;
+        }
+    }
+    m_shuffled = false;
 }
 
 void Player::setActiveAudio(int index)

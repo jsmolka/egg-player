@@ -7,9 +7,6 @@ A Groove Music like music player.
 - black window
 - documentation
 
-### player.cpp
-- return audio in changed signal
-
 ### library.cpp
 - splash screen while caching
 - artist / album maps

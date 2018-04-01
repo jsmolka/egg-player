@@ -7,6 +7,7 @@
 #include <QStyleOption>
 
 #include "src/constants/constant.hpp"
+#include "src/core/cache.hpp"
 #include "src/core/player.hpp"
 #include "src/ui/components/iconbutton.hpp"
 
@@ -31,10 +32,16 @@ public:
 protected:
     void paintEvent(QPaintEvent *event);
 
+private slots:
+    void onPlayButtonPressed();
+    void onPlayerAudioChanged(Audio *audio);
+    void onPlayerStateChanged(bool playing);
+
 private:
     void setupUi();
     QPixmap defaultCover();
 
+    Cache m_cache;
     Player *pm_player;
     QLabel *pm_coverLabel;
     QLabel *pm_trackLabel;
