@@ -14,3 +14,7 @@ A Groove Music like music player.
 
 ### musiclibrary.cpp
 - songs / album / artist tabs
+
+### colorutil.cpp
+- dominant color algorithm
+- constant time for algorithm

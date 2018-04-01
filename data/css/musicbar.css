@@ -20,7 +20,3 @@ IconButton:pressed {
     border-radius: 15%;
     background: rgba(0, 0, 0, 0.15);
 }
-
-MusicBar {
-    background-color: #006666;
-}

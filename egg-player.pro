@@ -25,13 +25,13 @@ HEADERS += \
     src/ui/components/songinfo.hpp \
     src/ui/layouts/borderlayout.hpp \
     src/utils/fileutil.hpp \
-    src/utils/randutil.hpp \
     src/constants/constant.hpp \
     src/ui/eggplayer.hpp \
     src/ui/musicbar.hpp \
     src/ui/musiclibrary.hpp \
     src/constants/language.hpp \
-    src/core/cache.hpp
+    src/core/cache.hpp \
+    src/utils/colorutil.hpp
 
 SOURCES += \
     src/main.cpp \
@@ -43,10 +43,10 @@ SOURCES += \
     src/ui/components/songinfo.cpp \
     src/ui/layouts/borderlayout.cpp \
     src/utils/fileutil.cpp \
-    src/utils/randutil.cpp \
     src/constants/constant.cpp \
     src/ui/eggplayer.cpp \
     src/ui/musicbar.cpp \
     src/ui/musiclibrary.cpp \
     src/constants/language.cpp \
-    src/core/cache.cpp
+    src/core/cache.cpp \
+    src/utils/colorutil.cpp

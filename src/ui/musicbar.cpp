@@ -68,6 +68,13 @@ IconButton * MusicBar::volumeButton()
     return pm_volumeButton;
 }
 
+void MusicBar::setColor(QColor color)
+{
+    QPalette palette;
+    palette.setColor(QPalette::Background, color);
+    setPalette(palette);
+}
+
 void MusicBar::paintEvent(QPaintEvent *event)
 {
     Q_UNUSED(event);
@@ -98,6 +105,8 @@ void MusicBar::onPlayerAudioChanged(Audio *audio)
 
     pm_trackLabel->setText(QString("%1\n%2").arg(title, artist));
     pm_coverLabel->setPixmap(cover);
+
+    setColor(ColorUtil::backgroundColor(cover));
 }
 
 void MusicBar::onPlayerStateChanged(bool playing)
@@ -109,6 +118,8 @@ void MusicBar::setupUi()
 {
     setFixedHeight(67);
     setStyleSheet(CSS_MUSICBAR);
+    setAutoFillBackground(true);
+    setColor(ColorUtil::backgroundColor(defaultCover()));
 
     QGridLayout *layout = new QGridLayout;
     layout->setSpacing(15);

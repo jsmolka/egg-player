@@ -10,6 +10,7 @@
 #include "src/core/cache.hpp"
 #include "src/core/player.hpp"
 #include "src/ui/components/iconbutton.hpp"
+#include "src/utils/colorutil.hpp"
 
 class MusicBar : public QWidget
 {
@@ -28,6 +29,8 @@ public:
     IconButton * shuffleButton();
     IconButton * loopButton();
     IconButton * volumeButton();
+
+    void setColor(QColor color);
 
 protected:
     void paintEvent(QPaintEvent *event);
