@@ -59,13 +59,14 @@ bool Player::isPlaying() const
 
 void Player::setAudioList(const AudioList &audioList)
 {
+    m_index = -1;
+    m_shuffled = false;
+    m_playing = false;
+
     m_playlist.clear();
 
     for (int i = 0; i < audioList.size(); i++)
         m_playlist << AudioPosition(i, audioList[i]);
-
-    if (m_shuffled)
-        shuffle();
 }
 
 Audio * Player::audioAt(int index)

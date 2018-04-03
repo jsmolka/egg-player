@@ -12,14 +12,14 @@ This has something to do with the audio codec / backend Qt is using for Windows.
 - documentation
 - recompile with different audio backend
 
-##### library.cpp
+#### Library
 - splash screen while caching
 - artist / album maps
 - proper destructor for audio pointer
 
-#### musiclibrary.cpp
+#### MusicLibrary
 - songs / albums / artists tabs
 
-##### colorutil.cpp
+#### ColorUtil
 - constant time for algorithm
 - prefer 'colorful' colors over dark ones
