@@ -34,7 +34,7 @@ QColor ColorUtil::averageColor(QImage image)
     return QColor(red, green, blue);
 }
 
-QColor ColorUtil::dominantColorByHue(QImage image)
+QColor ColorUtil::dominantColorHsv(QImage image, Hsv part)
 {
     const quint32 RANGE = 360;
 
@@ -69,115 +69,40 @@ QColor ColorUtil::dominantColorByHue(QImage image)
     quint32 satuation;
     quint32 value;
 
-    quint32 hueCount = hues[0];
-    for (quint32 i = 1; i < RANGE; i++)
+    if (part == Hsv::Hue)
     {
-        if (hues[i] > hueCount)
+        quint32 max = hues[0];
+        for (quint32 i = 1; i < RANGE; i++)
         {
-            hue = i;
-            hueCount = hues[i];
+            if (hues[i] > max)
+            {
+                hue = i;
+                max = hues[i];
+            }
         }
     }
-
-    satuation = saturations[hue] / hueCount;
-    value = values[hue] / hueCount;
-
-    return QColor::fromHsv(hue, satuation, value).toRgb();
-}
-
-QColor ColorUtil::dominantColorBySaturation(QImage image)
-{
-    const quint32 RANGE = 360;
-
-    QRgb *pixels = (QRgb *) image.bits();
-    quint32 pixelCount = image.height() * image.width();
-
-    std::array<quint32, RANGE> hues;
-    std::array<quint32, RANGE> saturations;
-    std::array<quint32, RANGE> values;
-
-    hues.fill(0);
-    saturations.fill(0);
-    values.fill(0);
-
-    for (quint32 i = 0; i < pixelCount; i++)
+    else if (part == Hsv::Saturation)
     {
-        QColor pixel = QColor(pixels[i]).toHsv();
-
-        qint32 hue = pixel.hsvHue();
-        quint32 saturation = pixel.hsvSaturation();
-        quint32 value = pixel.value();
-
-        if (hue == -1)
-            hue = 0;
-
-        hues[hue]++;
-        saturations[hue] += saturation;
-        values[hue] += value;
-    }
-
-    quint32 hue = 0;
-    quint32 satuation;
-    quint32 value;
-
-    quint32 maxSaturation = saturations[0];
-    for (quint32 i = 1; i < RANGE; i++)
-    {
-        if (saturations[i] > maxSaturation)
+        quint32 max = saturations[0];
+        for (quint32 i = 1; i < RANGE; i++)
         {
-            hue = i;
-            maxSaturation = saturations[i];
+            if (saturations[0] > max)
+            {
+                hue = i;
+                max = saturations[0];
+            }
         }
     }
-
-    satuation = saturations[hue] / hues[hue];
-    value = values[hue] / hues[hue];
-
-    return QColor::fromHsv(hue, satuation, value).toRgb();
-}
-
-QColor ColorUtil::dominantColorByValue(QImage image)
-{
-    const quint32 RANGE = 360;
-
-    QRgb *pixels = (QRgb *) image.bits();
-    quint32 pixelCount = image.height() * image.width();
-
-    std::array<quint32, RANGE> hues;
-    std::array<quint32, RANGE> saturations;
-    std::array<quint32, RANGE> values;
-
-    hues.fill(0);
-    saturations.fill(0);
-    values.fill(0);
-
-    for (quint32 i = 0; i < pixelCount; i++)
+    else
     {
-        QColor pixel = QColor(pixels[i]).toHsv();
-
-        qint32 hue = pixel.hsvHue();
-        quint32 saturation = pixel.hsvSaturation();
-        quint32 value = pixel.value();
-
-        if (hue == -1)
-            hue = 0;
-
-        hues[hue]++;
-        saturations[hue] += saturation;
-        values[hue] += value;
-    }
-
-    quint32 hue = 0;
-    quint32 satuation;
-    quint32 value;
-
-    quint32 maxValue = values[0];
-    for (quint32 i = 1; i < RANGE; i++)
-    {
-        if (values[i] > maxValue)
+        quint32 max = values[0];
+        for (quint32 i = 1; i < RANGE; i++)
         {
-            hue = i;
-            maxValue = values[i];
+            if (values[i] > max)
+            {
+                hue = i;
+                max = values[i];
+            }
         }
     }
 
@@ -194,5 +119,6 @@ QColor ColorUtil::backgroundColor(QPixmap image)
 
 QColor ColorUtil::backgroundColor(QImage image)
 {
-    return darken(dominantColorByValue(image), 0.6);
+    return darken(dominantColorHsv(image, Hsv::Value), 0.5);
 }
+
