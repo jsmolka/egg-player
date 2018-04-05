@@ -13,6 +13,10 @@ MusicBar::MusicBar(QWidget *parent) : QWidget(parent)
     connect(pm_shuffleButton, SIGNAL(locked(bool)), pm_player, SLOT(setShuffled(bool)));    
     connect(pm_playButton, SIGNAL(pressed()), this, SLOT(onPlayButtonPressed()));
 
+    connect(pm_lengthSlider, SIGNAL(sliderPressed()), this, SLOT(onLengthSliderPressed()));
+    connect(pm_lengthSlider, SIGNAL(sliderReleased()), this, SLOT(onLengthSliderReleased()));
+    connect(pm_lengthSlider, SIGNAL(sliderMoved(int)), pm_player, SLOT(setPosition(int)));
+
     connect(pm_player, SIGNAL(audioChanged(Audio *)), this, SLOT(onPlayerAudioChanged(Audio *)));
     connect(pm_player, SIGNAL(stateChanged(bool)), this, SLOT(onPlayerStateChanged(bool)));
     connect(pm_player, SIGNAL(positionChanged(int)), this, SLOT(onPlayerPositionChanged(int)));
@@ -39,14 +43,14 @@ QLabel * MusicBar::trackLabel()
     return pm_trackLabel;
 }
 
-QLabel * MusicBar::leftLengthLabel()
+QLabel * MusicBar::currentTimeLabel()
 {
-    return pm_leftLengthLabel;
+    return pm_currentTimeLabel;
 }
 
-QLabel * MusicBar::rightLengthLabel()
+QLabel * MusicBar::totalTimeLabel()
 {
-    return pm_rightLengthLabel;
+    return pm_totalTimeLabel;
 }
 
 QSlider * MusicBar::lengthSlider()
@@ -119,8 +123,8 @@ void MusicBar::onPlayerAudioChanged(Audio *audio)
     pm_trackLabel->setText(QString("%1\n%2").arg(audio->title(), audio->artist()));
     pm_coverLabel->setPixmap(cover);
 
-    pm_rightLengthLabel->setText(lengthString(audio->length()));
-    pm_leftLengthLabel->setText(lengthString(0));
+    pm_totalTimeLabel->setText(lengthString(audio->length()));
+    pm_currentTimeLabel->setText(lengthString(0));
     pm_lengthSlider->setRange(0, audio->length());
 
     setColor(ColorUtil::backgroundColor(cover));
@@ -133,8 +137,19 @@ void MusicBar::onPlayerStateChanged(bool playing)
 
 void MusicBar::onPlayerPositionChanged(int position)
 {
-    pm_leftLengthLabel->setText(lengthString(position));
+    pm_currentTimeLabel->setText(lengthString(position));
     pm_lengthSlider->setValue(position);
+}
+
+void MusicBar::onLengthSliderPressed()
+{
+    pm_player->pause(pm_player->isPlaying() ? true : false);
+}
+
+void MusicBar::onLengthSliderReleased()
+{
+    if (pm_player->isPlaying())
+        pm_player->play();
 }
 
 void MusicBar::setupUi()
@@ -156,18 +171,18 @@ void MusicBar::setupUi()
     pm_trackLabel->setFixedSize(QSize(240, 50));
     layout->addWidget(pm_trackLabel, 0, 1);
 
-    pm_leftLengthLabel = new QLabel(this);
-    pm_leftLengthLabel->setFixedSize(QSize(60, 50));
-    pm_leftLengthLabel->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
-    layout->addWidget(pm_leftLengthLabel, 0, 2);
+    pm_currentTimeLabel = new QLabel(this);
+    pm_currentTimeLabel->setFixedSize(QSize(60, 50));
+    pm_currentTimeLabel->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
+    layout->addWidget(pm_currentTimeLabel, 0, 2);
 
     pm_lengthSlider = new QSlider(this);
     pm_lengthSlider->setOrientation(Qt::Horizontal);
     layout->addWidget(pm_lengthSlider, 0, 3);
 
-    pm_rightLengthLabel = new QLabel(this);
-    pm_rightLengthLabel->setFixedSize(QSize(60, 50));
-    layout->addWidget(pm_rightLengthLabel, 0, 4);
+    pm_totalTimeLabel = new QLabel(this);
+    pm_totalTimeLabel->setFixedSize(QSize(60, 50));
+    layout->addWidget(pm_totalTimeLabel, 0, 4);
 
     QList<IconButton *> buttons;
     QSize size(40, 40);

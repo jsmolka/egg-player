@@ -109,7 +109,7 @@ void Player::setVolume(int volume)
 
 void Player::setPosition(int position)
 {
-    pm_player->setPosition(position);
+    pm_player->setPosition(position * 1000);
 }
 
 void Player::setLoop(bool loop)
@@ -138,10 +138,11 @@ void Player::play()
     emit stateChanged(true);
 }
 
-void Player::pause()
+void Player::pause(bool temporary)
 {
     pm_player->pause();
-    m_playing = false;
+    if (!temporary)
+        m_playing = false;
     emit stateChanged(false);
 }
 

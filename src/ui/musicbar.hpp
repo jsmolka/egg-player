@@ -24,8 +24,8 @@ public:
     Player * player();
     QLabel * coverLabel();
     QLabel * trackLabel();
-    QLabel * leftLengthLabel();
-    QLabel * rightLengthLabel();
+    QLabel * currentTimeLabel();
+    QLabel * totalTimeLabel();
     QSlider * lengthSlider();
     IconButton * nextButton();
     IconButton * playButton();
@@ -44,6 +44,8 @@ private slots:
     void onPlayerAudioChanged(Audio *audio);
     void onPlayerStateChanged(bool playing);
     void onPlayerPositionChanged(int position);
+    void onLengthSliderPressed();
+    void onLengthSliderReleased();
 
 private:
     void setupUi();
@@ -54,8 +56,8 @@ private:
     Player *pm_player;
     QLabel *pm_coverLabel;
     QLabel *pm_trackLabel;
-    QLabel *pm_leftLengthLabel;
-    QLabel *pm_rightLengthLabel;
+    QLabel *pm_currentTimeLabel;
+    QLabel *pm_totalTimeLabel;
     QSlider *pm_lengthSlider;
     IconButton *pm_nextButton;
     IconButton *pm_playButton;

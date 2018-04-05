@@ -20,3 +20,17 @@ IconButton:pressed {
     border-radius: 15%;
     background: rgba(0, 0, 0, 0.15);
 }
+
+QSlider::groove:horizontal {
+	background-color: white;
+	height: 2px;
+}
+
+QSlider::handle:horizontal {
+	background-color: white;
+	width: 16px;
+	height: 16px;
+	margin-top: -8px;
+	margin-bottom: -8px;
+	border-radius: 8px;
+}

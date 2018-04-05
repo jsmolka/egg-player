@@ -27,6 +27,7 @@ public:
     int position() const;
 
     bool isPlaying() const;
+    bool isTempPaused();
 
     void setAudioList(const AudioList &audioList);
 
@@ -44,7 +45,7 @@ public slots:
     void setShuffled(bool shuffled);
 
     void play();
-    void pause();
+    void pause(bool temporary = false);
     void next();
     void back();
 
@@ -81,7 +82,6 @@ private:
     bool m_loop;
     bool m_shuffled;
     bool m_playing;
-
 };
 
 #endif // PLAYER_HPP
