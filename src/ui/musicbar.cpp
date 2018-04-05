@@ -182,10 +182,11 @@ void MusicBar::setupUi()
 
     pm_totalTimeLabel = new QLabel(this);
     pm_totalTimeLabel->setFixedSize(QSize(60, 50));
+    pm_totalTimeLabel->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
     layout->addWidget(pm_totalTimeLabel, 0, 4);
 
     QList<IconButton *> buttons;
-    QSize size(40, 40);
+    QSize size(37, 37);
 
     pm_backButton = new IconButton(this);
     pm_backButton->init({QIcon(ICO_BACK)}, size);

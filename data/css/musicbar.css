@@ -22,12 +22,12 @@ IconButton:pressed {
 }
 
 QSlider::groove:horizontal {
-	background-color: white;
+	background: #969696;
 	height: 2px;
 }
 
 QSlider::handle:horizontal {
-	background-color: white;
+	background: #D2D2D2;
 	width: 16px;
 	height: 16px;
 	margin-top: -8px;
