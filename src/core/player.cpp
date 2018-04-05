@@ -13,6 +13,7 @@ Player::Player(QWidget *parent) : QWidget(parent)
     m_playing = false;
 
     connect(pm_player->playlist(), SIGNAL(currentIndexChanged(int)), this, SLOT(onIndexChanged(int)));
+    connect(pm_player, SIGNAL(positionChanged(qint64)), this, SLOT(onPositionChanged(qint64)));
 }
 
 Player::~Player()
@@ -176,6 +177,11 @@ void Player::onIndexChanged(int index)
 
     if (m_index != -1)
         emit audioChanged(audioAt(m_index));
+}
+
+void Player::onPositionChanged(qint64 position)
+{
+    emit positionChanged(position / 1000);
 }
 
 void Player::shuffle()

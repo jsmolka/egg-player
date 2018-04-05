@@ -17,10 +17,8 @@ This has something to do with the audio codec / backend Qt is using for Windows.
 - artist / album maps
 - proper destructor for audio pointer
 
+#### Player
+- change position emit / receive
+
 #### MusicLibrary
 - songs / albums / artists tabs
-
-#### ColorUtil
-- constant time for algorithm
-- prefer 'colorful' colors over dark ones
-- condense hsv range

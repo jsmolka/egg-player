@@ -3,6 +3,7 @@
 
 #include <QMediaPlayer>
 #include <QMediaPlaylist>
+#include <QTimer>
 #include <QWidget>
 
 #include "src/core/audio.hpp"
@@ -50,9 +51,11 @@ public slots:
 signals:
     void audioChanged(Audio *audio);
     void stateChanged(bool playing);
+    void positionChanged(int position);
 
 private slots:
     void onIndexChanged(int index);
+    void onPositionChanged(qint64 position);
 
 private:
     struct AudioPosition

@@ -10,12 +10,13 @@ MusicBar::MusicBar(QWidget *parent) : QWidget(parent)
     connect(pm_nextButton, SIGNAL(pressed()), pm_player, SLOT(next()));
     connect(pm_backButton, SIGNAL(pressed()), pm_player, SLOT(back()));
     connect(pm_loopButton, SIGNAL(locked(bool)), pm_player, SLOT(setLoop(bool)));
-    connect(pm_shuffleButton, SIGNAL(locked(bool)), pm_player, SLOT(setShuffled(bool)));
-
+    connect(pm_shuffleButton, SIGNAL(locked(bool)), pm_player, SLOT(setShuffled(bool)));    
     connect(pm_playButton, SIGNAL(pressed()), this, SLOT(onPlayButtonPressed()));
 
     connect(pm_player, SIGNAL(audioChanged(Audio *)), this, SLOT(onPlayerAudioChanged(Audio *)));
     connect(pm_player, SIGNAL(stateChanged(bool)), this, SLOT(onPlayerStateChanged(bool)));
+    connect(pm_player, SIGNAL(positionChanged(int)), this, SLOT(onPlayerPositionChanged(int)));
+
 }
 
 MusicBar::~MusicBar()
@@ -36,6 +37,21 @@ QLabel * MusicBar::coverLabel()
 QLabel * MusicBar::trackLabel()
 {
     return pm_trackLabel;
+}
+
+QLabel * MusicBar::leftLengthLabel()
+{
+    return pm_leftLengthLabel;
+}
+
+QLabel * MusicBar::rightLengthLabel()
+{
+    return pm_rightLengthLabel;
+}
+
+QSlider * MusicBar::lengthSlider()
+{
+    return pm_lengthSlider;
 }
 
 IconButton * MusicBar::playButton()
@@ -98,13 +114,14 @@ void MusicBar::onPlayButtonPressed()
 
 void MusicBar::onPlayerAudioChanged(Audio *audio)
 {
-    QString path = audio->path();
-    QString title = audio->title();
-    QString artist = audio->artist();
-    QPixmap cover = m_cache.cover(path, 50);
+    QPixmap cover = m_cache.cover(audio->path(), 50);
 
-    pm_trackLabel->setText(QString("%1\n%2").arg(title, artist));
+    pm_trackLabel->setText(QString("%1\n%2").arg(audio->title(), audio->artist()));
     pm_coverLabel->setPixmap(cover);
+
+    pm_rightLengthLabel->setText(lengthString(audio->length()));
+    pm_leftLengthLabel->setText(lengthString(0));
+    pm_lengthSlider->setRange(0, audio->length());
 
     setColor(ColorUtil::backgroundColor(cover));
 }
@@ -112,6 +129,12 @@ void MusicBar::onPlayerAudioChanged(Audio *audio)
 void MusicBar::onPlayerStateChanged(bool playing)
 {
     pm_playButton->setSelectedIcon(playing ? 1 : 0);
+}
+
+void MusicBar::onPlayerPositionChanged(int position)
+{
+    pm_leftLengthLabel->setText(lengthString(position));
+    pm_lengthSlider->setValue(position);
 }
 
 void MusicBar::setupUi()
@@ -133,8 +156,18 @@ void MusicBar::setupUi()
     pm_trackLabel->setFixedSize(QSize(240, 50));
     layout->addWidget(pm_trackLabel, 0, 1);
 
-    QLabel *label = new QLabel(this);
-    layout->addWidget(label, 0, 2);
+    pm_leftLengthLabel = new QLabel(this);
+    pm_leftLengthLabel->setFixedSize(QSize(60, 50));
+    pm_leftLengthLabel->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
+    layout->addWidget(pm_leftLengthLabel, 0, 2);
+
+    pm_lengthSlider = new QSlider(this);
+    pm_lengthSlider->setOrientation(Qt::Horizontal);
+    layout->addWidget(pm_lengthSlider, 0, 3);
+
+    pm_rightLengthLabel = new QLabel(this);
+    pm_rightLengthLabel->setFixedSize(QSize(60, 50));
+    layout->addWidget(pm_rightLengthLabel, 0, 4);
 
     QList<IconButton *> buttons;
     QSize size(40, 40);
@@ -163,7 +196,7 @@ void MusicBar::setupUi()
     pm_volumeButton->init({QIcon(ICO_VOLUME), QIcon(ICO_MUTE)}, size);
     buttons << pm_volumeButton;
 
-    int column = 3;
+    int column = 5;
     for (IconButton *button : buttons)
     {
         layout->addWidget(button, 0, column);
@@ -176,4 +209,15 @@ QPixmap MusicBar::defaultCover()
 {
     QPixmap image(IMG_DEFAULT_COVER);
     return image.scaled(50, 50, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+}
+
+QString MusicBar::lengthString(int length)
+{
+    int seconds = length % 60;
+    int minutes = (length - seconds) / 60;
+
+    QString secondsString = QString("%1").arg(seconds, 2, 10, QChar('0'));
+    QString minutesString = QString::number(minutes);
+
+    return QString("%1:%2").arg(minutesString, secondsString);
 }
