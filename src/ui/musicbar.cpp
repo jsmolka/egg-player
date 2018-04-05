@@ -172,7 +172,7 @@ void MusicBar::setupUi()
     layout->addWidget(pm_trackLabel, 0, 1);
 
     pm_currentTimeLabel = new QLabel(this);
-    pm_currentTimeLabel->setFixedSize(QSize(60, 50));
+    pm_currentTimeLabel->setFixedWidth(60);
     pm_currentTimeLabel->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
     layout->addWidget(pm_currentTimeLabel, 0, 2);
 
@@ -181,7 +181,7 @@ void MusicBar::setupUi()
     layout->addWidget(pm_lengthSlider, 0, 3);
 
     pm_totalTimeLabel = new QLabel(this);
-    pm_totalTimeLabel->setFixedSize(QSize(60, 50));
+    pm_totalTimeLabel->setFixedWidth(60);
     pm_totalTimeLabel->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
     layout->addWidget(pm_totalTimeLabel, 0, 4);
 

@@ -1,6 +1,6 @@
 #include "colorutil.hpp"
 
-QColor ColorUtil::darken(QColor color, qreal factor)
+QColor ColorUtil::darker(QColor color, qreal factor)
 {
     qreal r = (qreal) color.red() * (1 - factor);
     qreal g = (qreal) color.green() * (1 - factor);
@@ -34,7 +34,7 @@ QColor ColorUtil::averageColor(QImage image)
     return QColor(red, green, blue);
 }
 
-QColor ColorUtil::dominantColor(QImage image, Hsv portion)
+QColor ColorUtil::dominantColor(QImage image)
 {
     const quint32 RANGE = 18;
     std::array<quint32, RANGE> counts;
@@ -69,48 +69,22 @@ QColor ColorUtil::dominantColor(QImage image, Hsv portion)
     }
 
     quint32 index = 0;
-    if (portion == Hsv::Hue)
+    quint32 max = hues[0] + 2 * saturations[0];
+    for (quint32 i = 1; i < RANGE; i++)
     {
-        quint32 max = hues[0];
-        for (quint32 i = 1; i < RANGE; i++)
+        quint32 temp = hues[i] + 2 * saturations[i];
+        if (temp > max)
         {
-            if (hues[i] > max)
-            {
-                index = i;
-                max = hues[i];
-            }
-        }
-    }
-    else if (portion == Hsv::Saturation)
-    {
-        quint32 max = saturations[0];
-        for (quint32 i = 1; i < RANGE; i++)
-        {
-            if (saturations[i] > max)
-            {
-                index = i;
-                max = saturations[i];
-            }
-        }
-    }
-    else if (portion == Hsv::Value)
-    {
-        quint32 max = values[0];
-        for (quint32 i = 1; i < RANGE; i++)
-        {
-            if (values[i] > max)
-            {
-                index = i;
-                max = values[i];
-            }
+            index = i;
+            max = temp;
         }
     }
 
     quint32 hue = hues[index] / counts[index];
-    quint32 satuation = saturations[index] / counts[index];
+    quint32 saturation = saturations[index] / counts[index];
     quint32 value = values[index] / counts[index];
 
-    return QColor::fromHsv(hue, satuation, value).toRgb();
+    return QColor::fromHsv(hue, saturation, value);
 }
 
 QColor ColorUtil::backgroundColor(QPixmap image, quint32 width, quint32 height)
@@ -120,6 +94,15 @@ QColor ColorUtil::backgroundColor(QPixmap image, quint32 width, quint32 height)
 
 QColor ColorUtil::backgroundColor(QImage image, quint32 width, quint32 height)
 {
-    return darken(dominantColor(image.scaled(width, height), Hsv::Saturation), 0.55);
-}
+    QColor color = dominantColor(image.scaled(width, height));
 
+    quint32 hue = color.hue();
+    quint32 saturation = color.saturation();
+    quint32 value = color.value();
+
+    value = qMax((quint32) 20, qMin((quint32) 92, value));
+    saturation = qMax((quint32) 20, qMin((quint32) 88, saturation));
+    color.setHsv(hue, saturation, value);
+
+    return darker(color.toRgb(), 0.175);
+}
