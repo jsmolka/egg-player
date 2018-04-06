@@ -2,7 +2,7 @@
 
 EggPlayer::EggPlayer(QWidget *parent) : QWidget(parent)
 {
-    m_library = Library("C:/Users/Julian/Music/Tiny Moving Parts");
+    m_library = Library("D:/Backup/Compressed Music");
 
     setupUi();
 

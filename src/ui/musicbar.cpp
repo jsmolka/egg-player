@@ -20,7 +20,6 @@ MusicBar::MusicBar(QWidget *parent) : QWidget(parent)
     connect(pm_player, SIGNAL(audioChanged(Audio *)), this, SLOT(onPlayerAudioChanged(Audio *)));
     connect(pm_player, SIGNAL(stateChanged(bool)), this, SLOT(onPlayerStateChanged(bool)));
     connect(pm_player, SIGNAL(positionChanged(int)), this, SLOT(onPlayerPositionChanged(int)));
-
 }
 
 MusicBar::~MusicBar()
