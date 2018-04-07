@@ -81,7 +81,7 @@ QColor ColorUtil::dominantColor(const QImage &image)
         quint32 index = hue / (360 / RANGE);
 
         // Check if color is 'colorful' or a grey scale
-        if (qAbs(red - green) < 25 && qAbs(green - blue) < 25)
+        if (qAbs(red - green) < 25 && qAbs(green - blue) < 25 && qAbs(red - blue) < 25)
         {
             // Current color is a grey scale
             gCounts[index]++;
