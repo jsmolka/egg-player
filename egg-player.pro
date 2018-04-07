@@ -31,7 +31,8 @@ HEADERS += \
     src/ui/musiclibrary.hpp \
     src/constants/language.hpp \
     src/core/cache.hpp \
-    src/utils/colorutil.hpp
+    src/utils/colorutil.hpp \
+    src/ui/components/lengthslider.hpp
 
 SOURCES += \
     src/main.cpp \
@@ -49,4 +50,5 @@ SOURCES += \
     src/ui/musiclibrary.cpp \
     src/constants/language.cpp \
     src/core/cache.cpp \
-    src/utils/colorutil.cpp
+    src/utils/colorutil.cpp \
+    src/ui/components/lengthslider.cpp

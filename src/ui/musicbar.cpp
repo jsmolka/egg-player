@@ -13,9 +13,7 @@ MusicBar::MusicBar(QWidget *parent) : QWidget(parent)
     connect(pm_shuffleButton, SIGNAL(locked(bool)), pm_player, SLOT(setShuffled(bool)));    
     connect(pm_playButton, SIGNAL(pressed()), this, SLOT(onPlayButtonPressed()));
 
-    connect(pm_lengthSlider, SIGNAL(sliderPressed()), this, SLOT(onLengthSliderPressed()));
-    connect(pm_lengthSlider, SIGNAL(sliderReleased()), this, SLOT(onLengthSliderReleased()));
-    connect(pm_lengthSlider, SIGNAL(sliderMoved(int)), pm_player, SLOT(setPosition(int)));
+    connect(pm_lengthSlider, SIGNAL(positionChanged(int)), pm_player, SLOT(setPosition(int)));
 
     connect(pm_player, SIGNAL(audioChanged(Audio *)), this, SLOT(onPlayerAudioChanged(Audio *)));
     connect(pm_player, SIGNAL(stateChanged(bool)), this, SLOT(onPlayerStateChanged(bool)));
@@ -52,7 +50,7 @@ QLabel * MusicBar::totalTimeLabel()
     return pm_totalTimeLabel;
 }
 
-QSlider * MusicBar::lengthSlider()
+LengthSlider * MusicBar::lengthSlider()
 {
     return pm_lengthSlider;
 }
@@ -85,13 +83,6 @@ IconButton * MusicBar::loopButton()
 IconButton * MusicBar::volumeButton()
 {
     return pm_volumeButton;
-}
-
-void MusicBar::setColor(QColor color)
-{
-    QPalette palette;
-    palette.setColor(QPalette::Background, color);
-    setPalette(palette);
 }
 
 void MusicBar::paintEvent(QPaintEvent *event)
@@ -137,18 +128,8 @@ void MusicBar::onPlayerStateChanged(bool playing)
 void MusicBar::onPlayerPositionChanged(int position)
 {
     pm_currentTimeLabel->setText(lengthString(position));
-    pm_lengthSlider->setValue(position);
-}
-
-void MusicBar::onLengthSliderPressed()
-{
-    pm_player->pause(pm_player->isPlaying() ? true : false);
-}
-
-void MusicBar::onLengthSliderReleased()
-{
-    if (pm_player->isPlaying())
-        pm_player->play();
+    if (!pm_lengthSlider->isPressed())
+        pm_lengthSlider->setValue(position);
 }
 
 void MusicBar::setupUi()
@@ -175,8 +156,8 @@ void MusicBar::setupUi()
     pm_currentTimeLabel->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
     layout->addWidget(pm_currentTimeLabel, 0, 2);
 
-    pm_lengthSlider = new QSlider(this);
-    pm_lengthSlider->setOrientation(Qt::Horizontal);
+    pm_lengthSlider = new LengthSlider(this);
+    pm_lengthSlider->setFixedHeight(50);
     layout->addWidget(pm_lengthSlider, 0, 3);
 
     pm_totalTimeLabel = new QLabel(this);
@@ -235,4 +216,11 @@ QString MusicBar::lengthString(int length)
     QString minutesString = QString::number(minutes);
 
     return QString("%1:%2").arg(minutesString, secondsString);
+}
+
+void MusicBar::setColor(const QColor &color)
+{
+    QPalette palette;
+    palette.setColor(QPalette::Background, color);
+    setPalette(palette);
 }

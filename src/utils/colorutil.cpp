@@ -1,6 +1,6 @@
 #include "colorutil.hpp"
 
-QColor ColorUtil::darker(QColor color, qreal factor)
+QColor ColorUtil::darker(const QColor &color, qreal factor)
 {
     qreal r = (qreal) color.red() * (1 - factor);
     qreal g = (qreal) color.green() * (1 - factor);

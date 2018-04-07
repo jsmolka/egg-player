@@ -4,13 +4,13 @@
 #include <QGridLayout>
 #include <QLabel>
 #include <QPainter>
-#include <QSlider>
 #include <QStyleOption>
 
 #include "src/constants/constant.hpp"
 #include "src/core/cache.hpp"
 #include "src/core/player.hpp"
 #include "src/ui/components/iconbutton.hpp"
+#include "src/ui/components/lengthslider.hpp"
 #include "src/utils/colorutil.hpp"
 
 class MusicBar : public QWidget
@@ -26,15 +26,13 @@ public:
     QLabel * trackLabel();
     QLabel * currentTimeLabel();
     QLabel * totalTimeLabel();
-    QSlider * lengthSlider();
+    LengthSlider * lengthSlider();
     IconButton * nextButton();
     IconButton * playButton();
     IconButton * backButton();
     IconButton * shuffleButton();
     IconButton * loopButton();
     IconButton * volumeButton();
-
-    void setColor(QColor color);
 
 protected:
     void paintEvent(QPaintEvent *event);
@@ -44,13 +42,12 @@ private slots:
     void onPlayerAudioChanged(Audio *audio);
     void onPlayerStateChanged(bool playing);
     void onPlayerPositionChanged(int position);
-    void onLengthSliderPressed();
-    void onLengthSliderReleased();
 
 private:
     void setupUi();
     QPixmap defaultCover();
     QString lengthString(int length);
+    void setColor(const QColor &color);
 
     Cache m_cache;
     Player *pm_player;
@@ -58,7 +55,7 @@ private:
     QLabel *pm_trackLabel;
     QLabel *pm_currentTimeLabel;
     QLabel *pm_totalTimeLabel;
-    QSlider *pm_lengthSlider;
+    LengthSlider *pm_lengthSlider;
     IconButton *pm_nextButton;
     IconButton *pm_playButton;
     IconButton *pm_backButton;

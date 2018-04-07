@@ -8,9 +8,13 @@ This has something to do with the audio codec / backend Qt is using for Windows.
 ## Things to do
 
 #### General
+- include relevant header
 - black window
 - documentation
 - recompile with different audio backend
+
+#### Audio
+- file name as title for tagless files
 
 #### Library
 - splash screen while caching
@@ -19,6 +23,9 @@ This has something to do with the audio codec / backend Qt is using for Windows.
 
 #### Player
 - change position emit / receive
+
+#### MusicBar
+- fix problems with long songs
 
 #### MusicLibrary
 - songs / albums / artists tabs
