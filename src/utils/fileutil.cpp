@@ -65,9 +65,5 @@ QStringList FileUtil::glob(const QString &path, const QString &pattern, bool rec
 
 QString FileUtil::fileName(const QString &file, bool ext)
 {
-    QString name = QFileInfo(file).fileName();
-    if (ext)
-        return name;
-    else
-        return name.split(".",QString::SkipEmptyParts).at(0);
+    return QFileInfo(file).baseName();
 }
