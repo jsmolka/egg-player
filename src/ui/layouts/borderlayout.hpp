@@ -44,4 +44,4 @@ private:
     QList<ItemWrapper *> m_items;
 };
 
-#endif // BORDERLAYOUT_HPPM
+#endif // BORDERLAYOUT_HPP

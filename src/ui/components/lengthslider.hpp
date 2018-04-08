@@ -3,6 +3,9 @@
 
 #include <QProxyStyle>
 #include <QSlider>
+#include <QStyle>
+#include <QStyleOption>
+#include <QPainter>
 
 class LengthSliderStyle : public QProxyStyle
 {

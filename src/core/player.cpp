@@ -141,6 +141,7 @@ void Player::play()
 void Player::pause()
 {
     pm_player->pause();
+    m_playing = false;
     emit stateChanged(false);
 }
 

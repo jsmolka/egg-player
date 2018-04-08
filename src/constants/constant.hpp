@@ -3,7 +3,7 @@
 
 #include <QString>
 
-#include "src/utils/fileutil.hpp"
+#include "fileutil.hpp"
 
 const extern QString ICO_BACK;
 const extern QString ICO_EXPAND;

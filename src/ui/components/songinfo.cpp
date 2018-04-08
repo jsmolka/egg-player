@@ -61,10 +61,8 @@ void SongInfo::showLength()
     createLabel(length, Qt::AlignRight);
 }
 
-void SongInfo::paintEvent(QPaintEvent *event)
+void SongInfo::paintEvent(QPaintEvent *)
 {
-    Q_UNUSED(event);
-
     QStyleOption option;
     option.initFrom(this);
     QPainter painter(this);

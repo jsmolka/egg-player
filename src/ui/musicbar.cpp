@@ -85,10 +85,8 @@ IconButton * MusicBar::volumeButton()
     return pm_volumeButton;
 }
 
-void MusicBar::paintEvent(QPaintEvent *event)
+void MusicBar::paintEvent(QPaintEvent *)
 {
-    Q_UNUSED(event);
-
     QStyleOption option;
     option.initFrom(this);
     QPainter painter(this);
@@ -166,7 +164,7 @@ void MusicBar::setupUi()
     layout->addWidget(pm_totalTimeLabel, 0, 4);
 
     QList<IconButton *> buttons;
-    QSize size(37, 37);
+    QSize size(35, 35);
 
     pm_backButton = new IconButton(this);
     pm_backButton->init({QIcon(ICO_BACK)}, size);

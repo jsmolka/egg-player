@@ -27,7 +27,7 @@ public:
     void showLength();
 
 protected:
-    void paintEvent(QPaintEvent *event);
+    void paintEvent(QPaintEvent *);
 
 private:
     void createLabel(const QString &string, Qt::Alignment align = Qt::AlignLeft);

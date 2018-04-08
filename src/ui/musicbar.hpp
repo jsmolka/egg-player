@@ -36,7 +36,7 @@ public:
     IconButton * volumeButton();
 
 protected:
-    void paintEvent(QPaintEvent *event);
+    void paintEvent(QPaintEvent *);
 
 private slots:
     void onPlayButtonPressed();
