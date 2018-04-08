@@ -18,18 +18,8 @@ public:
     AudioList audioList() const;
     bool isEmpty() const;
 
-    AudioList getByTitle(const QString &title, Qt::CaseSensitivity cs = Qt::CaseInsensitive);
-    AudioList getByArtist(const QString &artist, Qt::CaseSensitivity cs = Qt::CaseInsensitive);
-    AudioList getByAlbum(const QString &album, Qt::CaseSensitivity cs = Qt::CaseInsensitive);
-
-    AudioList searchByTitle(const QString &title, Qt::CaseSensitivity cs = Qt::CaseInsensitive);
-    AudioList searchByArtist(const QString &artist, Qt::CaseSensitivity cs = Qt::CaseInsensitive);
-    AudioList searchByAlbum(const QString &album, Qt::CaseSensitivity cs = Qt::CaseInsensitive);
-
+    AudioList search(const QString &string, Qt::CaseSensitivity cs = Qt::CaseInsensitive);
     void sortByTitle();
-    void sortByArtist();
-    void sortByAlbum();
-
     Audio * audioAt(int idx);
 
 private:

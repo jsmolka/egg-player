@@ -25,56 +25,13 @@ bool Library::isEmpty() const
     return m_audioList.isEmpty();
 }
 
-AudioList Library::getByTitle(const QString &title, Qt::CaseSensitivity cs)
+AudioList Library::search(const QString &string, Qt::CaseSensitivity cs)
 {
     AudioList result;
     for (Audio *audio : m_audioList)
-        if (audio->title().compare(title, cs) == 0)
-            result << audio;
-    return result;
-}
-
-AudioList Library::getByArtist(const QString &artist, Qt::CaseSensitivity cs)
-{
-    AudioList result;
-    for (Audio *audio : m_audioList)
-        if (audio->artist().compare(artist, cs) == 0)
-            result << audio;
-    return result;
-}
-
-AudioList Library::getByAlbum(const QString &album, Qt::CaseSensitivity cs)
-{
-    AudioList result;
-    for (Audio *audio : m_audioList)
-        if (audio->album().compare(album, cs) == 0)
-            result << audio;
-    return result;
-}
-
-AudioList Library::searchByTitle(const QString &title, Qt::CaseSensitivity cs)
-{
-    AudioList result;
-    for (Audio *audio : m_audioList)
-        if (audio->title().contains(title, cs))
-            result << audio;
-    return result;
-}
-
-AudioList Library::searchByArtist(const QString &artist, Qt::CaseSensitivity cs)
-{
-    AudioList result;
-    for (Audio *audio : m_audioList)
-        if (audio->artist().contains(artist, cs))
-            result << audio;
-    return result;
-}
-
-AudioList Library::searchByAlbum(const QString &album, Qt::CaseSensitivity cs)
-{
-    AudioList result;
-    for (Audio *audio : m_audioList)
-        if (audio->album().contains(album, cs))
+        if (audio->title().contains(string, cs) ||
+                audio->artist().contains(string, cs) ||
+                audio->album().contains(string, cs))
             result << audio;
     return result;
 }
@@ -82,16 +39,6 @@ AudioList Library::searchByAlbum(const QString &album, Qt::CaseSensitivity cs)
 void Library::sortByTitle()
 {
     m_audioList.sortByTitle();
-}
-
-void Library::sortByArtist()
-{
-    m_audioList.sortByArtist();
-}
-
-void Library::sortByAlbum()
-{
-    m_audioList.sortByAlbum();
 }
 
 Audio * Library::audioAt(int idx)
