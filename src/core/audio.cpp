@@ -11,6 +11,9 @@ Audio::Audio(const QString &path)
 {
     m_path = path;
     m_valid = readTags();
+
+    if (m_valid && m_title.isEmpty())
+        m_title = FileUtil::fileName(m_path);
 }
 
 Audio::~Audio()

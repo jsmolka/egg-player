@@ -1,6 +1,8 @@
 #ifndef EGGPLAYER_HPP
 #define EGGPLAYER_HPP
 
+#include <QWidget>
+
 #include "borderlayout.hpp"
 #include "library.hpp"
 #include "musiclibrary.hpp"

@@ -19,9 +19,7 @@ public:
     bool isEmpty() const;
 
     AudioList search(const QString &string, Qt::CaseSensitivity cs = Qt::CaseInsensitive);
-
     void sortByTitle();
-
     Audio * audioAt(int idx);
 
 private:

@@ -1,6 +1,7 @@
 #ifndef ICONBUTTON_HPP
 #define ICONBUTTON_HPP
 
+#include <QIcon>
 #include <QPushButton>
 #include <QStyle>
 
