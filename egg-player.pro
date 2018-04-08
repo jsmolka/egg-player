@@ -2,7 +2,7 @@ TARGET = egg-player
 TEMPLATE = app
 
 RC_ICONS += \
-    resources/images/egg/egg.ico
+    resource/images/egg/egg.ico
 
 QT += \
     core \
