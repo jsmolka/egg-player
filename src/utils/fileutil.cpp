@@ -63,7 +63,7 @@ QStringList FileUtil::glob(const QString &path, const QString &pattern, bool rec
     return result;
 }
 
-QString FileUtil::fileName(const QString &file, bool ext)
+QString FileUtil::fileName(const QString &file)
 {
     return QFileInfo(file).baseName();
 }
