@@ -24,6 +24,7 @@ class LengthSlider : public QSlider
 
 public:
     LengthSlider(QWidget *parent = 0);
+    ~LengthSlider();
 
     bool isPressed() const;
 

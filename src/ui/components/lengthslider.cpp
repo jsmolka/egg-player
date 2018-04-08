@@ -13,6 +13,11 @@ LengthSlider::LengthSlider(QWidget *parent) : QSlider(parent)
     connect(this, SIGNAL(sliderMoved(int)), this, SLOT(onSliderMoved(int)));
 }
 
+LengthSlider::~LengthSlider()
+{
+
+}
+
 bool LengthSlider::isPressed() const
 {
     return m_pressed;

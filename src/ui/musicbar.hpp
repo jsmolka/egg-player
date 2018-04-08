@@ -5,13 +5,14 @@
 #include <QLabel>
 #include <QPainter>
 #include <QStyleOption>
+#include <QWidget>
 
-#include "src/constants/constant.hpp"
-#include "src/core/cache.hpp"
-#include "src/core/player.hpp"
-#include "src/ui/components/iconbutton.hpp"
-#include "src/ui/components/lengthslider.hpp"
-#include "src/utils/colorutil.hpp"
+#include "cache.hpp"
+#include "colorutil.hpp"
+#include "constant.hpp"
+#include "iconbutton.hpp"
+#include "lengthslider.hpp"
+#include "player.hpp"
 
 class MusicBar : public QWidget
 {

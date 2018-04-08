@@ -7,7 +7,7 @@
 #include <QPainter>
 #include <QWidget>
 
-#include "src/core/audio.hpp"
+#include "audio.hpp"
 
 class SongInfo : public QWidget
 {

@@ -1,17 +1,17 @@
 #ifndef EGGPLAYER_HPP
 #define EGGPLAYER_HPP
 
-#include "src/core/library.hpp"
-#include "src/ui/musiclibrary.hpp"
-#include "src/ui/musicbar.hpp"
-#include "src/ui/layouts/borderlayout.hpp"
+#include "borderlayout.hpp"
+#include "library.hpp"
+#include "musiclibrary.hpp"
+#include "musicbar.hpp"
 
 class EggPlayer : public QWidget
 {
     Q_OBJECT
 
 public:
-    EggPlayer(QWidget *parent = 0);
+    EggPlayer();
     ~EggPlayer();
 
 private slots:

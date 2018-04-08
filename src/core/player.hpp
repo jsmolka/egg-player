@@ -3,11 +3,10 @@
 
 #include <QMediaPlayer>
 #include <QMediaPlaylist>
-#include <QTimer>
 #include <QWidget>
 
-#include "src/core/audio.hpp"
-#include "src/core/audiolist.hpp"
+#include "audio.hpp"
+#include "audiolist.hpp"
 
 class Player : public QWidget
 {
@@ -45,7 +44,7 @@ public slots:
     void setShuffled(bool shuffled);
 
     void play();
-    void pause(bool temporary = false);
+    void pause();
     void next();
     void back();
 

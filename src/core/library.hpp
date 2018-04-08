@@ -3,10 +3,10 @@
 
 #include <QStringList>
 
-#include "src/core/audio.hpp"
-#include "src/core/audiolist.hpp"
-#include "src/core/cache.hpp"
-#include "src/utils/fileutil.hpp"
+#include "audio.hpp"
+#include "audiolist.hpp"
+#include "cache.hpp"
+#include "fileutil.hpp"
 
 class Library
 {
@@ -19,7 +19,9 @@ public:
     bool isEmpty() const;
 
     AudioList search(const QString &string, Qt::CaseSensitivity cs = Qt::CaseInsensitive);
+
     void sortByTitle();
+
     Audio * audioAt(int idx);
 
 private:

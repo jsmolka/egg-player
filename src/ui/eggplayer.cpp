@@ -1,6 +1,6 @@
 #include "eggplayer.hpp"
 
-EggPlayer::EggPlayer(QWidget *parent) : QWidget(parent)
+EggPlayer::EggPlayer()
 {
     m_library = Library("D:/Backup/Compressed Music");
 

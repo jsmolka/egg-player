@@ -3,7 +3,7 @@
 
 #include <QList>
 
-#include "src/core/audio.hpp"
+#include "audio.hpp"
 
 class AudioList : public QList<Audio *>
 {

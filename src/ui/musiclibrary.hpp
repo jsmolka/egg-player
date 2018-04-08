@@ -4,9 +4,9 @@
 #include <QListWidget>
 #include <QScrollBar>
 
-#include "src/constants/constant.hpp"
-#include "src/core/library.hpp"
-#include "src/ui/components/songinfo.hpp"
+#include "constant.hpp"
+#include "library.hpp"
+#include "songinfo.hpp"
 
 class MusicLibrary : public QListWidget
 {

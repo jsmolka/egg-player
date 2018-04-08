@@ -2,6 +2,7 @@
 #define FILEUTIL_HPP
 
 #include <QDir>
+#include <QStringList>
 #include <QTextStream>
 
 class FileUtil

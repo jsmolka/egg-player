@@ -2,11 +2,12 @@
 #define CACHE_HPP
 
 #include <QBuffer>
+#include <QPixmap>
 #include <QSqlDatabase>
 #include <QSqlQuery>
 
-#include "src/core/audio.hpp"
-#include "src/constants/constant.hpp"
+#include "audio.hpp"
+#include "constant.hpp"
 
 class Cache
 {

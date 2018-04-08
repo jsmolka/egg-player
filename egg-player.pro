@@ -11,7 +11,13 @@ QT += \
     sql
 
 INCLUDEPATH += \
-    ext/taglib/include
+    ext/taglib/include \
+    src/constants \
+    src/core \
+    src/ui/components \
+    src/ui/layouts \
+    src/ui \
+    src/utils
 
 LIBS += \
     -L"$$PWD/ext/taglib/lib" -ltag.dll

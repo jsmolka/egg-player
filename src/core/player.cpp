@@ -138,11 +138,9 @@ void Player::play()
     emit stateChanged(true);
 }
 
-void Player::pause(bool temporary)
+void Player::pause()
 {
     pm_player->pause();
-    if (!temporary)
-        m_playing = false;
     emit stateChanged(false);
 }
 
