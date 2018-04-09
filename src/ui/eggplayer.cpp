@@ -2,7 +2,7 @@
 
 EggPlayer::EggPlayer()
 {
-    m_library = Library("D:/Backup/Compressed Music");
+    m_library = Library(Config::eggPlayerLibrary());
 
     setupUi();
 
@@ -49,7 +49,4 @@ void EggPlayer::createMusicLibrary()
 void EggPlayer::createMusicBar()
 {
     pm_musicBar = new MusicBar(this);
-
-    Player *player = pm_musicBar->player();
-    player->setVolume(5);
 }

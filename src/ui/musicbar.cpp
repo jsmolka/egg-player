@@ -4,6 +4,7 @@ MusicBar::MusicBar(QWidget *parent) : QWidget(parent)
 {
     m_cache.connect();
     pm_player = new Player(this);
+    pm_player->setVolume(Config::eggPlayerVolume());
 
     setupUi();
 
@@ -132,13 +133,16 @@ void MusicBar::onPlayerPositionChanged(int position)
 
 void MusicBar::setupUi()
 {
-    setFixedHeight(67);
+    int height = Config::musicBarHeight();
+    int spacing = Config::musicBarSpacing();
+
+    setFixedHeight(height);
     setStyleSheet(CSS_MUSICBAR);
     setAutoFillBackground(true);
     setColor(ColorUtil::backgroundColor(defaultCover()));
 
     QGridLayout *layout = new QGridLayout;
-    layout->setSpacing(15);
+    layout->setSpacing(spacing);
 
     pm_coverLabel = new QLabel(this);
     pm_coverLabel->setPixmap(defaultCover());
@@ -146,11 +150,11 @@ void MusicBar::setupUi()
     layout->addWidget(pm_coverLabel, 0, 0);
 
     pm_trackLabel = new QLabel(this);
-    pm_trackLabel->setFixedSize(QSize(240, 50));
+    pm_trackLabel->setFixedSize(QSize(240, height - 2 * spacing));
     layout->addWidget(pm_trackLabel, 0, 1);
 
     pm_currentTimeLabel = new QLabel(this);
-    pm_currentTimeLabel->setFixedWidth(60);
+    pm_currentTimeLabel->setFixedWidth(50);
     pm_currentTimeLabel->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
     layout->addWidget(pm_currentTimeLabel, 0, 2);
 
@@ -159,7 +163,7 @@ void MusicBar::setupUi()
     layout->addWidget(pm_lengthSlider, 0, 3);
 
     pm_totalTimeLabel = new QLabel(this);
-    pm_totalTimeLabel->setFixedWidth(60);
+    pm_totalTimeLabel->setFixedWidth(50);
     pm_totalTimeLabel->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
     layout->addWidget(pm_totalTimeLabel, 0, 4);
 

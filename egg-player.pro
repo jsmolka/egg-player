@@ -31,14 +31,14 @@ HEADERS += \
     src/ui/components/songinfo.hpp \
     src/ui/layouts/borderlayout.hpp \
     src/utils/fileutil.hpp \
-    src/constants/constant.hpp \
     src/ui/eggplayer.hpp \
     src/ui/musicbar.hpp \
     src/ui/musiclibrary.hpp \
-    src/constants/language.hpp \
     src/core/cache.hpp \
     src/utils/colorutil.hpp \
-    src/ui/components/lengthslider.hpp
+    src/ui/components/lengthslider.hpp \
+    src/constants/constants.hpp \
+    src/core/config.hpp
 
 SOURCES += \
     src/main.cpp \
@@ -50,11 +50,11 @@ SOURCES += \
     src/ui/components/songinfo.cpp \
     src/ui/layouts/borderlayout.cpp \
     src/utils/fileutil.cpp \
-    src/constants/constant.cpp \
     src/ui/eggplayer.cpp \
     src/ui/musicbar.cpp \
     src/ui/musiclibrary.cpp \
-    src/constants/language.cpp \
     src/core/cache.cpp \
     src/utils/colorutil.cpp \
-    src/ui/components/lengthslider.cpp
+    src/ui/components/lengthslider.cpp \
+    src/constants/constants.cpp \
+    src/core/config.cpp

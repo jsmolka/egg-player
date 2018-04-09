@@ -11,7 +11,8 @@
 #include <taglib/mpegfile.h>
 #include <taglib/tag.h>
 
-#include "constant.hpp"
+#include "constants.hpp"
+#include "fileutil.hpp"
 
 class Audio
 {

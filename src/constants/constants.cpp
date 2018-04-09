@@ -1,14 +1,18 @@
-#include "constant.hpp"
+#include "constants.hpp"
 
-QString documentsDir()
+QString documents()
 {
-    QString documents = QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation);
-    QString eggPlayer = documents + "/egg-player";
-    QDir().mkdir(eggPlayer);
-
-    return eggPlayer;
+    QString directory = QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation) + "/egg-player";
+    QDir().mkdir(directory);
+    return directory;
 }
 
+const QString DOCUMENTS = documents();
+
+const QString CSS_MUSICBAR     = FileUtil::read("resource/css/musicbar.css");
+const QString CSS_MUSICLIBRARY = FileUtil::read("resource/css/musiclibrary.css");
+
+const QString FONT_LATO         = "resource/fonts/Lato.ttf";
 const QString ICO_BACK          = "resource/images/icons/back.png";
 const QString ICO_EXPAND        = "resource/images/icons/expand.png";
 const QString ICO_FASTFORWARD   = "resource/images/icons/fastforward.png";
@@ -27,17 +31,20 @@ const QString ICO_STOP          = "resource/images/icons/stop.png";
 const QString ICO_VOLUME        = "resource/images/icons/volume.png";
 const QString ICO_VOLUME1       = "resource/images/icons/volume1.png";
 const QString ICO_VOLUME2       = "resource/images/icons/volume2.png";
-
 const QString IMG_DEFAULT_COVER = "resource/images/default-cover.png";
 
-const QString CSS_MUSICBAR      = FileUtil::read("resource/css/musicbar.css");
-const QString CSS_MUSICLIBRARY  = FileUtil::read("resource/css/musiclibrary.css");
+const QString LANG_APP_NAME = "Egg Player";
+const QString LANG_ORG_NAME = "Egg Inc.";
 
-const QString FONT_LATO         = "resource/fonts/Lato.ttf";
+const QString SQL_CONNECTION = "cache";
+const QString SQL_PATH       = DOCUMENTS + "/cache.db";
 
-const QString DOC_DIR           = documentsDir();
-
-const QString SQL_CONNECTION    = "cache";
-const QString SQL_PATH          = DOC_DIR + "/cache.db";
-
-const QString CFG_PATH          = DOC_DIR + "/settings.ini";
+const QString CFG_PATH              = DOCUMENTS + "/config.ini";
+const QString KEY_EGGPLAYER_LIBRARY = "Player/Library";
+const QString KEY_EGGPLAYER_VOLUME  = "Player/Volume";
+const QString KEY_MUSICBAR_HEIGHT   = "MusicBar/Height";
+const QString KEY_MUSICBAR_SPACING  = "MusicBar/Spacing";
+const QString DEF_EGGPLAYER_LIBRARY = QStandardPaths::writableLocation(QStandardPaths::MusicLocation);
+const int DEF_EGGPLAYER_VOLUME      = 10;
+const int DEF_MUSICBAR_HEIGHT       = 68;
+const int DEF_MUSICBAR_SPACING      = 10;

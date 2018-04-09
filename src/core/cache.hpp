@@ -7,7 +7,7 @@
 #include <QSqlQuery>
 
 #include "audio.hpp"
-#include "constant.hpp"
+#include "constants.hpp"
 
 class Cache
 {

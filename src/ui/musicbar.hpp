@@ -9,7 +9,8 @@
 
 #include "cache.hpp"
 #include "colorutil.hpp"
-#include "constant.hpp"
+#include "config.hpp"
+#include "constants.hpp"
 #include "iconbutton.hpp"
 #include "lengthslider.hpp"
 #include "player.hpp"

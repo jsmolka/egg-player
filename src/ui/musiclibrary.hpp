@@ -4,7 +4,7 @@
 #include <QListWidget>
 #include <QScrollBar>
 
-#include "constant.hpp"
+#include "constants.hpp"
 #include "library.hpp"
 #include "songinfo.hpp"
 
