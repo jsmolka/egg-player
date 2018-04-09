@@ -12,14 +12,14 @@ Cache::~Cache()
 
 bool Cache::connect()
 {
-    if (QSqlDatabase::contains(SQL_DATABASE))
+    if (QSqlDatabase::contains(SQL_CONNECTION))
     {
-        m_db = QSqlDatabase::database(SQL_DATABASE, false);
+        m_db = QSqlDatabase::database(SQL_CONNECTION, false);
     }
     else
     {
-        m_db = QSqlDatabase::addDatabase("QSQLITE", SQL_DATABASE);
-        m_db.setDatabaseName(SQL_DATABASE);
+        m_db = QSqlDatabase::addDatabase("QSQLITE", SQL_CONNECTION);
+        m_db.setDatabaseName(SQL_PATH);
     }
 
     if (m_db.open())

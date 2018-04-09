@@ -2,6 +2,7 @@
 #define CONSTANT_HPP
 
 #include <QString>
+#include <QStandardPaths>
 
 #include "fileutil.hpp"
 
@@ -31,6 +32,11 @@ const extern QString CSS_MUSICLIBRARY;
 
 const extern QString FONT_LATO;
 
-const extern QString SQL_DATABASE;
+const extern QString DOC_DIR;
+
+const extern QString SQL_CONNECTION;
+const extern QString SQL_PATH;
+
+const extern QString CFG_PATH;
 
 #endif // CONSTANT_HPP

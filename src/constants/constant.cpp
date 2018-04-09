@@ -1,5 +1,14 @@
 #include "constant.hpp"
 
+QString documentsDir()
+{
+    QString documents = QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation);
+    QString eggPlayer = documents + "/egg-player";
+    QDir().mkdir(eggPlayer);
+
+    return eggPlayer;
+}
+
 const QString ICO_BACK          = "resource/images/icons/back.png";
 const QString ICO_EXPAND        = "resource/images/icons/expand.png";
 const QString ICO_FASTFORWARD   = "resource/images/icons/fastforward.png";
@@ -26,4 +35,9 @@ const QString CSS_MUSICLIBRARY  = FileUtil::read("resource/css/musiclibrary.css"
 
 const QString FONT_LATO         = "resource/fonts/Lato.ttf";
 
-const QString SQL_DATABASE      = "cache.db";
+const QString DOC_DIR           = documentsDir();
+
+const QString SQL_CONNECTION    = "cache";
+const QString SQL_PATH          = DOC_DIR + "/cache.db";
+
+const QString CFG_PATH          = DOC_DIR + "/settings.ini";
