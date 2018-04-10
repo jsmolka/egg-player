@@ -12,6 +12,7 @@ Audio::Audio(const QString &path)
     m_path = path;
     m_valid = readTags();
 
+    // Use filename as title if tag is empty
     if (m_valid && m_title.isEmpty())
         m_title = FileUtil::fileName(m_path);
 }
@@ -126,6 +127,7 @@ QPixmap Audio::readCover()
 
             QPixmap image;
             image.loadFromData((const uchar *) frame->picture().data(), frame->picture().size());
+
             if (!image.isNull())
                 return image;
         }

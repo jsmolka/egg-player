@@ -21,6 +21,7 @@ QFont loadFont()
 void setup(QApplication *app)
 {
     app->setApplicationName(LANG_APP_NAME);
+    app->setOrganizationName(LANG_ORG_NAME);
     app->setFont(loadFont());
 }
 
@@ -32,7 +33,7 @@ int main(int argc, char *argv[])
     setup(&app);
 
     EggPlayer player;
-    player.showMaximized();
+    player.showSavedPosition();
 
     return app.exec();
 }

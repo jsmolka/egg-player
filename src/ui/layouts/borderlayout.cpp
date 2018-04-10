@@ -1,12 +1,12 @@
 #include "borderlayout.hpp"
 
-BorderLayout::BorderLayout(QWidget *parent, int margin, int spacing) : QLayout(parent)
+BorderLayout::BorderLayout(int margin, int spacing, QWidget *parent) : QLayout(parent)
 {
     setMargin(margin);
     setSpacing(spacing);
 }
 
-BorderLayout::BorderLayout(int spacing)
+BorderLayout::BorderLayout(int spacing, QWidget *parent) : QLayout(parent)
 {
     setSpacing(spacing);
 }

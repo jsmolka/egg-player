@@ -3,7 +3,10 @@
 QString documents()
 {
     QString directory = QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation) + "/egg-player";
-    QDir().mkdir(directory);
+
+    // Create directory if it does not exist
+    QDir().mkpath(directory);
+
     return directory;
 }
 

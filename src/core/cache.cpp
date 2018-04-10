@@ -7,11 +7,12 @@ Cache::Cache()
 
 Cache::~Cache()
 {
-
+    m_db.close();
 }
 
 bool Cache::connect()
 {
+    // Add or reopen database
     if (QSqlDatabase::contains(SQL_CONNECTION))
     {
         m_db = QSqlDatabase::database(SQL_CONNECTION, false);
@@ -22,26 +23,26 @@ bool Cache::connect()
         m_db.setDatabaseName(SQL_PATH);
     }
 
-    if (m_db.open())
-    {
-        QSqlQuery query(m_db);
-        query.exec(
-            "CREATE TABLE IF NOT EXISTS covers("
-            "  id INTEGER PRIMARY KEY,"
-            "  len INTEGER,"
-            "  cover BLOB"
-            ")"
-        );
-        query.exec(
-            "CREATE TABLE IF NOT EXISTS audios("
-            "  path TEXT PRIMARY KEY,"
-            "  coverid INTEGER,"
-            "  FOREIGN KEY (coverid) REFERENCES covers(id)"
-            ")"
-        );
-        return true;
-    }
-    return false;
+    if (!m_db.open())
+        return false;
+
+    // Create tables if they do not exist
+    QString createCovers =
+        "CREATE TABLE IF NOT EXISTS covers("
+        "  id INTEGER PRIMARY KEY,"
+        "  len INTEGER,"
+        "  cover BLOB"
+        ")";
+
+    QString createAudios =
+        "CREATE TABLE IF NOT EXISTS audios("
+        "  path TEXT PRIMARY KEY,"
+        "  coverid INTEGER,"
+        "  FOREIGN KEY (coverid) REFERENCES covers(id)"
+        ")";
+
+    QSqlQuery query(m_db);
+    return query.exec(createCovers) && query.exec(createAudios);
 }
 
 void Cache::close()
@@ -53,8 +54,10 @@ bool Cache::insert(Audio *audio)
 {
     QByteArray bytes = coverToBytes(audio->cover(200));
 
+    // Check if cache contains the cover
     int id = coverId(bytes);
     if (id == -1)
+        // Insert cover if it does not exit
         id = insertCover(bytes);
 
     QSqlQuery query(m_db);
@@ -99,7 +102,7 @@ QPixmap Cache::cover(const QString &path, int size)
 int Cache::lastCoverId()
 {
     QSqlQuery query(m_db);
-    query.exec("SELECT max(id) FROM covers LIMIT 1");
+    query.exec("SELECT max(id) FROM covers");
 
     if (query.first())
         return query.value(0).toInt();
@@ -121,6 +124,8 @@ QByteArray Cache::coverToBytes(const QPixmap &cover)
 int Cache::coverId(const QByteArray &bytes)
 {
     QSqlQuery query(m_db);
+
+    // Try to get cover by byte array length for higher speed
     query.prepare("SELECT id FROM covers WHERE len = :LEN");
     query.bindValue(":LEN", bytes.length());
     query.exec();
@@ -131,10 +136,12 @@ int Cache::coverId(const QByteArray &bytes)
 
         if (!query.next())
         {
+            // Return if id if there is only one result
             return id;
         }
         else
         {
+            // Get cover by blob comparison if there are multiple results
             query.prepare("SELECT id FROM covers WHERE cover = :COVER LIMIT 1");
             query.bindValue(":COVER", bytes);
             query.exec();
@@ -143,6 +150,7 @@ int Cache::coverId(const QByteArray &bytes)
                 return query.value(0).toInt();
         }
     }
+    // Cover does not exist
     return -1;
 }
 

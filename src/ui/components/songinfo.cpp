@@ -12,14 +12,14 @@ SongInfo::~SongInfo()
 
 void SongInfo::init(const QList<int> &stretches)
 {
-    QGridLayout *layout = new QGridLayout;
+    QGridLayout *layout = new QGridLayout(this);
+    setLayout(layout);
 
     for (int i = 0; i < m_labels.size(); i++)
     {
         layout->addWidget(m_labels.at(i), 0, i);
         layout->setColumnStretch(i, stretches.at(i));
     }
-    setLayout(layout);
 }
 
 void SongInfo::showTrack()

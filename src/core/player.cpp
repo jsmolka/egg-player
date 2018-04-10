@@ -120,15 +120,12 @@ void Player::setLoop(bool loop)
 
 void Player::setShuffled(bool shuffled)
 {
-    if (m_shuffled != shuffled)
+    if (m_shuffled != shuffled && m_index != -1)
     {
-        if (m_index != -1)
-        {
-            if (shuffled)
-                shuffle();
-            else
-                unshuffle();
-        }
+        if (shuffled)
+            shuffle();
+        else
+            unshuffle();
     }
 }
 
@@ -191,6 +188,7 @@ void Player::shuffle()
 
     std::random_shuffle(m_playlist.begin(), m_playlist.end());
 
+    // Put current audio at the front
     for (int i = 0; i < m_playlist.size(); i++)
     {
         if (audio == audioAt(i))
@@ -210,6 +208,7 @@ void Player::unshuffle()
     std::sort(m_playlist.begin(), m_playlist.end(),
         [](const AudioPosition &ap1, const AudioPosition &ap2) {return ap1.index < ap2.index;});
 
+    // Find index of current audio
     for (int i = 0; i < m_playlist.size(); i++)
     {
         if (audio == audioAt(i))

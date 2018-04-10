@@ -9,6 +9,7 @@ This has something to do with the audio codec / backend Qt is using for Windows.
 
 #### General
 - black window
+- good scaling without config
 - documentation
 - recompile with different audio backend
 
@@ -19,7 +20,6 @@ This has something to do with the audio codec / backend Qt is using for Windows.
 - add slots and signals
 - splash screen while caching
 - artist / album maps
-- proper destructor for audio pointer
 
 #### LengthSlider
 - custom css with repaint event

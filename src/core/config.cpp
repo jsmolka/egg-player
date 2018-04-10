@@ -29,22 +29,32 @@ void Config::load()
     QCoreApplication *app = QApplication::instance();
 
     cfg = new QSettings(CFG_PATH, QSettings::IniFormat, app);
+
+    // Set default values in config if they do not exist
     if (!contains(kEpLibrary))
         setEpLibrary(dEpLibrary);
+
     if (!contains(kEpVolume))
         setEpVolume(dEpVolume);
+
     if (!contains(kMlSongInfoHeight))
         setMlSongInfoHeight(dMlSongInfoHeight);
+
     if (!contains(kMbHeight))
         setMbHeight(dMbHeight);
+
     if (!contains(kMbSpacing))
         setMbSpacing(dMbSpacing);
+
     if (!contains(kMbCoverSize))
         setMbCoverSize(dMbCoverSize);
+
     if (!contains(kMbIconSize))
         setMbIconSize(dMbIconSize);
+
     if (!contains(kMbTrackLabelWidth))
         setMbTrackLabelWidth(dMbTrackLabelWidth);
+
     if (!contains(kMbTimeLabelWidth))
         setMbTimeLabelWidth(dMbTimeLabelWidth);
 }

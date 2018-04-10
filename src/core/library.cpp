@@ -1,5 +1,5 @@
 #include "library.hpp"
-
+#include <QDebug>
 Library::Library()
 {
 
@@ -12,7 +12,8 @@ Library::Library(const QString &path)
 
 Library::~Library()
 {
-
+    for (Audio *audio : m_audioList)
+        delete audio;
 }
 
 AudioList Library::audioList() const

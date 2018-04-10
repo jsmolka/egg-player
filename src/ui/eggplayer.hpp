@@ -18,16 +18,22 @@ public:
     EggPlayer();
     ~EggPlayer();
 
+    void showSavedPosition();
+
+protected:
+    void closeEvent(QCloseEvent *event);
+
 private slots:
     void onLibraryDoubleClicked(const QModelIndex &index);
 
 private:
     void setupUi();
+    void savePosition();
 
     void createMusicLibrary();
     void createMusicBar();
 
-    Library m_library;
+    Library *pm_library;
     MusicLibrary *pm_musicLibrary;
     MusicBar *pm_musicBar;
 };

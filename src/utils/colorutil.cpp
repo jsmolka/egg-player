@@ -5,6 +5,7 @@ QColor ColorUtil::darker(const QColor &color, qreal factor)
     qreal r = (qreal) color.red() * (1 - factor);
     qreal g = (qreal) color.green() * (1 - factor);
     qreal b = (qreal) color.blue() * (1 - factor);
+
     return QColor(r, g, b);
 }
 
@@ -31,6 +32,7 @@ QColor ColorUtil::averageColor(const QImage &image)
     red = red / pixelCount;
     green = green / pixelCount;
     blue = blue / pixelCount;
+
     return QColor(red, green, blue);
 }
 
@@ -118,6 +120,7 @@ QColor ColorUtil::dominantColor(const QImage &image)
         quint32 hue = cHues[index] / cCounts[index];
         quint32 saturation = cSaturations[index] / cCounts[index];
         quint32 value = cValues[index] / cCounts[index];
+
         return QColor::fromHsv(hue, saturation, value);
     }
     else
@@ -138,20 +141,21 @@ QColor ColorUtil::dominantColor(const QImage &image)
         quint32 hue = gHues[index] / gCounts[index];
         quint32 saturation = gSaturations[index] / gCounts[index];
         quint32 value = gValues[index] / gCounts[index];
+
         return QColor::fromHsv(hue, saturation, value);
     }
 }
 
-QColor ColorUtil::backgroundColor(const QImage &image, quint32 width, quint32 height)
+QColor ColorUtil::backgroundColor(const QImage &image, quint32 size)
 {
     // Get dominant color of scaled picture
-    QColor color = dominantColor(image.scaled(width, height));
+    QColor color = dominantColor(image.scaled(size, size));
 
     // Darken the color to prevent too bright colors
     return darker(color.toRgb(), 0.4);
 }
 
-QColor ColorUtil::backgroundColor(const QPixmap &image, quint32 width, quint32 height)
+QColor ColorUtil::backgroundColor(const QPixmap &image, quint32 size)
 {
-    return backgroundColor(image.toImage(), height, width);
+    return backgroundColor(image.toImage(), size);
 }

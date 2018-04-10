@@ -33,16 +33,6 @@ QDir FileUtil::dir(const QString &path)
     return QDir();
 }
 
-QString FileUtil::join(const QDir &dir, const QString &path)
-{
-    return dir.filePath(path);
-}
-
-QString FileUtil::join(const QString &path1, const QString &path2)
-{
-    return join(FileUtil::dir(path1), path2);
-}
-
 QStringList FileUtil::glob(const QString &path, const QString &pattern, bool recursive)
 {
     QDir dir = FileUtil::dir(path);
@@ -51,7 +41,6 @@ QStringList FileUtil::glob(const QString &path, const QString &pattern, bool rec
     QStringList result;
 
     QFileInfoList infos = dir.entryInfoList(filter, QDir::NoDotAndDotDot | QDir::AllDirs | QDir::Files);
-
     for (const QFileInfo &info : infos)
     {
         if (info.isDir() && recursive)

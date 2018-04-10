@@ -1,9 +1,9 @@
 #include "eggplayer.hpp"
 
-EggPlayer::EggPlayer()
+EggPlayer::EggPlayer() : QWidget()
 {
-    m_library = Library(Config::epLibrary());
-    m_library.sortByTitle();
+    pm_library = new Library(Config::epLibrary());
+    pm_library->sortByTitle();
 
     setupUi();
 
@@ -12,7 +12,28 @@ EggPlayer::EggPlayer()
 
 EggPlayer::~EggPlayer()
 {
+    delete pm_library;
+}
 
+void EggPlayer::showSavedPosition()
+{
+    QSettings settings;
+
+    // Retrieve and show saved registry position
+    restoreGeometry(settings.value("geometry", saveGeometry()).toByteArray());
+    move(settings.value("pos", pos()).toPoint());
+    resize(settings.value("size", size()).toSize());
+
+    if (settings.value("maximized", isMaximized()).toBool())
+        showMaximized();
+    else
+        show();
+}
+
+void EggPlayer::closeEvent(QCloseEvent *event)
+{
+    savePosition();
+    QWidget::closeEvent(event);
 }
 
 void EggPlayer::onLibraryDoubleClicked(const QModelIndex &index)
@@ -20,7 +41,7 @@ void EggPlayer::onLibraryDoubleClicked(const QModelIndex &index)
     Player *player = pm_musicBar->player();
     IconButton *shuffleButton = pm_musicBar->shuffleButton();
 
-    player->setAudioList(m_library.audioList());
+    player->setAudioList(pm_library->audioList());
     player->setIndex(index.row());
     player->setShuffled(shuffleButton->isLocked());
     player->play();
@@ -31,20 +52,34 @@ void EggPlayer::setupUi()
     createMusicLibrary();
     createMusicBar();
 
-    QLabel *west = new QLabel;
+    QLabel *west = new QLabel(this);
     west->setFixedWidth(315);
     west->setStyleSheet("QLabel {background-color: #666666;}");
 
-    BorderLayout *layout = new BorderLayout(0);
+    BorderLayout *layout = new BorderLayout(0, this);
     layout->addWidget(pm_musicLibrary, BorderLayout::Center);
     layout->addWidget(west, BorderLayout::West);
     layout->addWidget(pm_musicBar, BorderLayout::South);
     setLayout(layout);
 }
 
+void EggPlayer::savePosition()
+{
+    QSettings settings;
+
+    // Save position in registry instead of config
+    settings.setValue("geometry", saveGeometry());
+    settings.setValue("maximized", isMaximized());
+    if (!isMaximized())
+    {
+        settings.setValue("pos", pos());
+        settings.setValue("size", size());
+    }
+}
+
 void EggPlayer::createMusicLibrary()
 {
-    pm_musicLibrary = new MusicLibrary(&m_library, this);
+    pm_musicLibrary = new MusicLibrary(pm_library, this);
 }
 
 void EggPlayer::createMusicBar()

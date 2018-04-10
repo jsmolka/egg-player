@@ -24,7 +24,7 @@ MusicBar::MusicBar(QWidget *parent) : QWidget(parent)
 
 MusicBar::~MusicBar()
 {
-
+    m_cache.close();
 }
 
 Player * MusicBar::player()
