@@ -110,7 +110,8 @@ void Player::setVolume(int volume)
 
 void Player::setPosition(int position)
 {
-    pm_player->setPosition(position * 1000);
+    if (m_index != -1)
+        pm_player->setPosition(position * 1000);
 }
 
 void Player::setLoop(bool loop)

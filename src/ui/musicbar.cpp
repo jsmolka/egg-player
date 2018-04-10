@@ -116,6 +116,7 @@ void MusicBar::onPlayerAudioChanged(Audio *audio)
     pm_totalTimeLabel->setText(lengthString(audio->length()));
     pm_currentTimeLabel->setText(lengthString(0));
     pm_lengthSlider->setRange(0, audio->length());
+    pm_lengthSlider->setEnabled(true);
 
     setColor(ColorUtil::backgroundColor(cover));
 }
@@ -158,7 +159,6 @@ void MusicBar::setupUi()
 
     pm_coverLabel = new QLabel(this);
     pm_coverLabel->setPixmap(defaultCover());
-    pm_coverLabel->setFixedSize(Config::mbCoverSize(), Config::mbCoverSize());
     layout->addWidget(pm_coverLabel, 0, 0);
 
     pm_trackLabel = new QLabel(this);
@@ -171,7 +171,8 @@ void MusicBar::setupUi()
     layout->addWidget(pm_currentTimeLabel, 0, 2);
 
     pm_lengthSlider = new LengthSlider(this);
-    pm_lengthSlider->setFixedHeight(height() - 2 * layout->spacing() - 2);
+    pm_lengthSlider->setEnabled(false);
+    pm_lengthSlider->setFixedHeight(height() - 2 * layout->spacing());
     layout->addWidget(pm_lengthSlider, 0, 3);
 
     pm_totalTimeLabel = new QLabel(this);

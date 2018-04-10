@@ -8,7 +8,7 @@ This has something to do with the audio codec / backend Qt is using for Windows.
 ## Things to do
 
 #### General
-- black window
+- [black title bar](https://msdn.microsoft.com/en-us/library/windows/desktop/ms724940%28v=vs.85%29.aspx)
 - good scaling without config
 - documentation
 - recompile with different audio backend
