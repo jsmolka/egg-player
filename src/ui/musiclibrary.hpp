@@ -5,6 +5,7 @@
 #include <QScrollBar>
 
 #include "constants.hpp"
+#include "config.hpp"
 #include "library.hpp"
 #include "songinfo.hpp"
 

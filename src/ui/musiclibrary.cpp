@@ -34,7 +34,7 @@ void MusicLibrary::setupUi()
         info->setProperty("even", i % 2 == 0);
 
         QListWidgetItem *item = new QListWidgetItem(this);
-        item->setSizeHint(QSize(0, 50));
+        item->setSizeHint(QSize(0, Config::mlSongInfoHeight()));
         addItem(item);
         setItemWidget(item, info);
     }

@@ -7,7 +7,7 @@ QString documents()
     return directory;
 }
 
-const QString DOCUMENTS = documents();
+const QString DOCUMENTS        = documents();
 
 const QString CSS_MUSICBAR     = FileUtil::read("resource/css/musicbar.css");
 const QString CSS_MUSICLIBRARY = FileUtil::read("resource/css/musiclibrary.css");
@@ -33,18 +33,10 @@ const QString ICO_VOLUME1       = "resource/images/icons/volume1.png";
 const QString ICO_VOLUME2       = "resource/images/icons/volume2.png";
 const QString IMG_DEFAULT_COVER = "resource/images/default-cover.png";
 
-const QString LANG_APP_NAME = "Egg Player";
-const QString LANG_ORG_NAME = "Egg Inc.";
+const QString LANG_APP_NAME     = "Egg Player";
+const QString LANG_ORG_NAME     = "Egg Inc.";
 
-const QString SQL_CONNECTION = "cache";
-const QString SQL_PATH       = DOCUMENTS + "/cache.db";
+const QString SQL_CONNECTION    = "cache";
+const QString SQL_PATH          = DOCUMENTS + "/cache.db";
 
-const QString CFG_PATH              = DOCUMENTS + "/config.ini";
-const QString KEY_EGGPLAYER_LIBRARY = "Player/Library";
-const QString KEY_EGGPLAYER_VOLUME  = "Player/Volume";
-const QString KEY_MUSICBAR_HEIGHT   = "MusicBar/Height";
-const QString KEY_MUSICBAR_SPACING  = "MusicBar/Spacing";
-const QString DEF_EGGPLAYER_LIBRARY = QStandardPaths::writableLocation(QStandardPaths::MusicLocation);
-const int DEF_EGGPLAYER_VOLUME      = 10;
-const int DEF_MUSICBAR_HEIGHT       = 68;
-const int DEF_MUSICBAR_SPACING      = 10;
+const QString CFG_PATH          = DOCUMENTS + "/config.ini";

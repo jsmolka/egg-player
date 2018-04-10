@@ -37,13 +37,5 @@ const extern QString SQL_CONNECTION;
 const extern QString SQL_PATH;
 
 const extern QString CFG_PATH;
-const extern QString KEY_EGGPLAYER_LIBRARY;
-const extern QString KEY_EGGPLAYER_VOLUME;
-const extern QString KEY_MUSICBAR_HEIGHT;
-const extern QString KEY_MUSICBAR_SPACING;
-const extern QString DEF_EGGPLAYER_LIBRARY;
-const extern int DEF_EGGPLAYER_VOLUME;
-const extern int DEF_MUSICBAR_HEIGHT;
-const extern int DEF_MUSICBAR_SPACING;
 
 #endif // CONSTANTS_HPP

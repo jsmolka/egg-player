@@ -52,6 +52,7 @@ signals:
     void audioChanged(Audio *audio);
     void stateChanged(bool playing);
     void positionChanged(int position);
+    void volumeChanged(int volume);
 
 private slots:
     void onIndexChanged(int index);

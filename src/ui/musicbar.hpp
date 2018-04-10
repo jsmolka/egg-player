@@ -44,6 +44,8 @@ private slots:
     void onPlayerAudioChanged(Audio *audio);
     void onPlayerStateChanged(bool playing);
     void onPlayerPositionChanged(int position);
+    void onPlayerVolumeChanged(int volume);
+    void onLengthSliderMoved(int position);
 
 private:
     void setupUi();

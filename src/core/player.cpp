@@ -14,6 +14,7 @@ Player::Player(QWidget *parent) : QWidget(parent)
 
     connect(pm_player->playlist(), SIGNAL(currentIndexChanged(int)), this, SLOT(onIndexChanged(int)));
     connect(pm_player, SIGNAL(positionChanged(qint64)), this, SLOT(onPositionChanged(qint64)));
+    connect(pm_player, SIGNAL(volumeChanged(int)), this, SIGNAL(volumeChanged(int)));
 }
 
 Player::~Player()

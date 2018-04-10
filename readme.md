@@ -15,9 +15,6 @@ This has something to do with the audio codec / backend Qt is using for Windows.
 #### Cache
 - faster caching
 
-#### Config
-- put cfg into class
-
 #### Library
 - add slots and signals
 - splash screen while caching
@@ -32,7 +29,6 @@ This has something to do with the audio codec / backend Qt is using for Windows.
 
 #### MusicBar
 - fix problems with long songs
-- change time when using slider
 
 #### MusicLibrary
 - songs / albums / artists tabs

@@ -27,7 +27,7 @@ public:
     void setLockable(bool lockable);
     bool isLockable() const;
 
-    void init(const QList<QIcon> &icons, const QSize &size, bool lockable = false);
+    void init(const QList<QIcon> &icons, int size, bool lockable = false);
 
 signals:
     void locked(bool locked);

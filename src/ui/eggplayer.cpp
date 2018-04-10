@@ -2,7 +2,8 @@
 
 EggPlayer::EggPlayer()
 {
-    m_library = Library(Config::eggPlayerLibrary());
+    m_library = Library(Config::epLibrary());
+    m_library.sortByTitle();
 
     setupUi();
 

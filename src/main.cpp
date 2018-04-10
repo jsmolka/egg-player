@@ -10,9 +10,11 @@ QFont loadFont()
 {
     int id = QFontDatabase::addApplicationFont(FONT_LATO);
     QString family = QFontDatabase::applicationFontFamilies(id).at(0);
+
     QFont font(family);
-    font.setPointSizeF(10.25);
+    font.setPointSizeF(Config::epFontSize());
     font.setWeight(QFont::Weight::Medium);
+
     return font;
 }
 
@@ -26,8 +28,8 @@ int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
 
-    setup(&app);
     Config::load();
+    setup(&app);
 
     EggPlayer player;
     player.showMaximized();

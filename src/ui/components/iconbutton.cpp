@@ -56,14 +56,16 @@ bool IconButton::isLockable() const
     return m_lockable;
 }
 
-void IconButton::init(const QList<QIcon> &icons, const QSize &size, bool lockable)
+void IconButton::init(const QList<QIcon> &icons, int size, bool lockable)
 {
     m_icons = icons;
     m_lockable = lockable;
 
+    QSize iconSize = QSize(size, size);
+
     setIcon(icons[0]);
-    setIconSize(size);
-    setFixedSize(size);
+    setIconSize(iconSize);
+    setFixedSize(iconSize);
 }
 
 void IconButton::onClicked()
