@@ -59,6 +59,11 @@ void Config::load()
         setMbTimeLabelWidth(dMbTimeLabelWidth);
 }
 
+void Config::destroy()
+{
+    delete cfg;
+}
+
 bool Config::contains(const QString &key)
 {
     return cfg->contains(key);

@@ -11,6 +11,7 @@ class Config
 {
 public:
     static void load();
+    static void destroy();
 
     static bool contains(const QString &key);
 

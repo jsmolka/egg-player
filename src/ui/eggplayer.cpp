@@ -1,6 +1,6 @@
 #include "eggplayer.hpp"
 
-EggPlayer::EggPlayer() : QWidget()
+EggPlayer::EggPlayer()
 {
     pm_library = new Library(Config::epLibrary());
     pm_library->sortByTitle();
@@ -13,6 +13,7 @@ EggPlayer::EggPlayer() : QWidget()
 EggPlayer::~EggPlayer()
 {
     delete pm_library;
+    Config::destroy();
 }
 
 void EggPlayer::showSavedPosition()

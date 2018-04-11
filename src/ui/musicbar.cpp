@@ -150,6 +150,7 @@ void MusicBar::setupUi()
 {
     QGridLayout *layout = new QGridLayout(this);
     layout->setSpacing(Config::mbSpacing());
+    layout->setContentsMargins(layout->spacing(), 0, layout->spacing(), 0);
 
     setFixedHeight(Config::mbHeight());
     setStyleSheet(CSS_MUSICBAR);
@@ -159,6 +160,7 @@ void MusicBar::setupUi()
 
     pm_coverLabel = new QLabel(this);
     pm_coverLabel->setPixmap(defaultCover());
+    pm_coverLabel->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
     layout->addWidget(pm_coverLabel, 0, 0);
 
     pm_trackLabel = new QLabel(this);
@@ -167,17 +169,18 @@ void MusicBar::setupUi()
 
     pm_currentTimeLabel = new QLabel(this);
     pm_currentTimeLabel->setFixedWidth(Config::mbTimeLabelWidth());
-    pm_currentTimeLabel->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
+    pm_currentTimeLabel->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Maximum);
+    pm_currentTimeLabel->setAlignment(Qt::AlignRight);
     layout->addWidget(pm_currentTimeLabel, 0, 2);
 
     pm_lengthSlider = new LengthSlider(this);
     pm_lengthSlider->setEnabled(false);
-    pm_lengthSlider->setFixedHeight(height() - 2 * layout->spacing());
+    pm_lengthSlider->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
     layout->addWidget(pm_lengthSlider, 0, 3);
 
     pm_totalTimeLabel = new QLabel(this);
     pm_totalTimeLabel->setFixedWidth(Config::mbTimeLabelWidth());
-    pm_totalTimeLabel->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
+    pm_totalTimeLabel->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Maximum);
     layout->addWidget(pm_totalTimeLabel, 0, 4);
 
     QList<IconButton *> buttons;
