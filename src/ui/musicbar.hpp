@@ -46,6 +46,7 @@ private slots:
     void onPlayerPositionChanged(int position);
     void onPlayerVolumeChanged(int volume);
     void onLengthSliderMoved(int position);
+    void onLengthSliderPositionChanged(int position);
 
 private:
     void setupUi();

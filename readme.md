@@ -25,7 +25,9 @@ This has something to do with the audio codec / backend Qt is using for Windows.
 - custom css with repaint event
 
 #### Player
-- change position emit / receive
+- more precise time
+- end correctly
+- emit duration
 
 #### MusicBar
 - fix problems with long songs

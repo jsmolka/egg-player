@@ -38,7 +38,8 @@ HEADERS += \
     src/utils/colorutil.hpp \
     src/ui/components/lengthslider.hpp \
     src/constants/constants.hpp \
-    src/core/config.hpp
+    src/core/config.hpp \
+    src/core/timer.hpp
 
 SOURCES += \
     src/main.cpp \
@@ -57,4 +58,5 @@ SOURCES += \
     src/utils/colorutil.cpp \
     src/ui/components/lengthslider.cpp \
     src/constants/constants.cpp \
-    src/core/config.cpp
+    src/core/config.cpp \
+    src/core/timer.cpp

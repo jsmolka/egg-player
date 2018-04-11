@@ -14,8 +14,8 @@ MusicBar::MusicBar(QWidget *parent) : QWidget(parent)
     connect(pm_shuffleButton, SIGNAL(locked(bool)), pm_player, SLOT(setShuffled(bool)));    
     connect(pm_playButton, SIGNAL(pressed()), this, SLOT(onPlayButtonPressed()));
 
-    connect(pm_lengthSlider, SIGNAL(positionChanged(int)), pm_player, SLOT(setPosition(int)));
     connect(pm_lengthSlider, SIGNAL(sliderMoved(int)), this, SLOT(onLengthSliderMoved(int)));
+    connect(pm_lengthSlider, SIGNAL(positionChanged(int)), this, SLOT(onLengthSliderPositionChanged(int)));
 
     connect(pm_player, SIGNAL(audioChanged(Audio *)), this, SLOT(onPlayerAudioChanged(Audio *)));
     connect(pm_player, SIGNAL(stateChanged(bool)), this, SLOT(onPlayerStateChanged(bool)));
@@ -110,11 +110,12 @@ void MusicBar::onPlayerAudioChanged(Audio *audio)
 {
     QPixmap cover = m_cache.cover(audio->path(), Config::mbCoverSize());
 
-    pm_trackLabel->setText(QString("%1\n%2").arg(audio->title(), audio->artist()));
     pm_coverLabel->setPixmap(cover);
+    pm_trackLabel->setText(QString("%1\n%2").arg(audio->title(), audio->artist()));
 
-    pm_totalTimeLabel->setText(lengthString(audio->length()));
     pm_currentTimeLabel->setText(lengthString(0));
+    pm_totalTimeLabel->setText(lengthString(audio->length()));
+
     pm_lengthSlider->setRange(0, audio->length());
     pm_lengthSlider->setEnabled(true);
 
@@ -142,8 +143,13 @@ void MusicBar::onPlayerVolumeChanged(int volume)
 
 void MusicBar::onLengthSliderMoved(int position)
 {
-    if (pm_lengthSlider->isPressed())
-        pm_currentTimeLabel->setText(lengthString(position));
+    pm_currentTimeLabel->setText(lengthString(position));
+}
+
+void MusicBar::onLengthSliderPositionChanged(int position)
+{
+    pm_currentTimeLabel->setText(lengthString(position));
+    pm_player->setPosition(position);
 }
 
 void MusicBar::setupUi()
@@ -219,8 +225,7 @@ void MusicBar::setupUi()
 
 QPixmap MusicBar::defaultCover()
 {
-    QPixmap image(IMG_DEFAULT_COVER);
-    return image.scaled(Config::mbCoverSize(), Config::mbCoverSize(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
+    return QPixmap(IMG_DEFAULT_COVER).scaled(Config::mbCoverSize(), Config::mbCoverSize(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
 }
 
 QString MusicBar::lengthString(int length)

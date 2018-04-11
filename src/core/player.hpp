@@ -7,6 +7,7 @@
 
 #include "audio.hpp"
 #include "audiolist.hpp"
+#include "timer.hpp"
 
 class Player : public QWidget
 {
@@ -15,6 +16,8 @@ class Player : public QWidget
 public:
     Player(QWidget *parent = 0);
     ~Player();
+
+    Timer * timer();
 
     void setIndex(int index);
     int index() const;
@@ -56,7 +59,7 @@ signals:
 
 private slots:
     void onIndexChanged(int index);
-    void onPositionChanged(qint64 position);
+    void onTimeout(qint64 total);
 
 private:
     struct AudioPosition
@@ -78,6 +81,7 @@ private:
 
     QMediaPlayer *pm_player;
     QList<AudioPosition> m_playlist;
+    Timer *pm_timer;
     int m_index;
     bool m_loop;
     bool m_shuffled;

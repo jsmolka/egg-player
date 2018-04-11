@@ -6,6 +6,7 @@ Player::Player(QWidget *parent) : QWidget(parent)
 
     pm_player = new QMediaPlayer(this);
     pm_player->setPlaylist(new QMediaPlaylist(this));
+    pm_timer = new Timer(1000, this);
 
     m_index = -1;
     m_loop = false;
@@ -13,13 +14,19 @@ Player::Player(QWidget *parent) : QWidget(parent)
     m_playing = false;
 
     connect(pm_player->playlist(), SIGNAL(currentIndexChanged(int)), this, SLOT(onIndexChanged(int)));
-    connect(pm_player, SIGNAL(positionChanged(qint64)), this, SLOT(onPositionChanged(qint64)));
     connect(pm_player, SIGNAL(volumeChanged(int)), this, SIGNAL(volumeChanged(int)));
+
+    connect(pm_timer, SIGNAL(timeout(qint64)), this, SLOT(onTimeout(qint64)));
 }
 
 Player::~Player()
 {
 
+}
+
+Timer * Player::timer()
+{
+    return pm_timer;
 }
 
 void Player::setIndex(int index)
@@ -51,7 +58,7 @@ int Player::volume() const
 
 int Player::position() const
 {
-    return pm_player->position();
+    return pm_timer->total() + (pm_timer->interval() - pm_timer->remaining());
 }
 
 bool Player::isPlaying() const
@@ -111,7 +118,10 @@ void Player::setVolume(int volume)
 void Player::setPosition(int position)
 {
     if (m_index != -1)
+    {
         pm_player->setPosition(position * 1000);
+        pm_timer->setTotal(position * 1000);
+    }
 }
 
 void Player::setLoop(bool loop)
@@ -133,6 +143,7 @@ void Player::setShuffled(bool shuffled)
 void Player::play()
 {
     pm_player->play();
+    pm_timer->start();
     m_playing = true;
     emit stateChanged(true);
 }
@@ -140,6 +151,7 @@ void Player::play()
 void Player::pause()
 {
     pm_player->pause();
+    pm_timer->pause();
     m_playing = false;
     emit stateChanged(false);
 }
@@ -178,9 +190,9 @@ void Player::onIndexChanged(int index)
         emit audioChanged(audioAt(m_index));
 }
 
-void Player::onPositionChanged(qint64 position)
+void Player::onTimeout(qint64 total)
 {
-    emit positionChanged(position / 1000);
+    emit positionChanged(total / 1000);
 }
 
 void Player::shuffle()
@@ -228,6 +240,8 @@ void Player::setActiveAudio(int index)
     playlist->clear();
     playlist->addMedia(audioAt(index)->url());
     playlist->setCurrentIndex(0);
+
+    pm_timer->restart();
 
     if (m_playing)
         play();
