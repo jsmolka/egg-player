@@ -241,6 +241,7 @@ void Player::setActiveAudio(int index)
     playlist->addMedia(audioAt(index)->url());
     playlist->setCurrentIndex(0);
 
+    emit positionChanged(0);
     pm_timer->restart();
 
     if (m_playing)

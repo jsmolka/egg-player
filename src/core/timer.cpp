@@ -61,10 +61,9 @@ void Timer::restart()
 
 void Timer::setTotal(qint64 total)
 {
-    // Assume total is multiple of interval
+    // Assume there is no remaining time
     m_total = total;
     m_remaining = m_interval;
-    start();
 }
 
 void Timer::onTimeout()

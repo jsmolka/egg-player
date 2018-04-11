@@ -26,6 +26,7 @@ This has something to do with the audio codec / backend Qt is using for Windows.
 
 #### Player
 - more precise time
+- start instantly / preload next()?
 - end correctly
 - emit duration
 
