@@ -58,8 +58,8 @@ signals:
     void volumeChanged(int volume);
 
 private slots:
-    void onIndexChanged(int index);
     void onTimeout(qint64 total);
+    void onMediaStatusChanged(QMediaPlayer::MediaStatus status);
 
 private:
     struct AudioPosition
@@ -78,6 +78,7 @@ private:
     void unshuffle();
 
     void setActiveAudio(int index);
+    void setState(bool playing);
 
     QMediaPlayer *pm_player;
     QList<AudioPosition> m_playlist;

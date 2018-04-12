@@ -25,10 +25,7 @@ This has something to do with the audio codec / backend Qt is using for Windows.
 - custom css with repaint event
 
 #### Player
-- more precise time
-- start instantly / preload next()?
-- end correctly
-- emit duration
+- remove time delay at start / overhead at end -> prebuffer?
 
 #### MusicBar
 - fix problems with long songs

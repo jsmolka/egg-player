@@ -4,8 +4,7 @@ Player::Player(QWidget *parent) : QWidget(parent)
 {
     qsrand(time(0));
 
-    pm_player = new QMediaPlayer(this);
-    pm_player->setPlaylist(new QMediaPlaylist(this));
+    pm_player = new QMediaPlayer(this, QMediaPlayer::LowLatency);
     pm_timer = new Timer(1000, this);
 
     m_index = -1;
@@ -13,8 +12,8 @@ Player::Player(QWidget *parent) : QWidget(parent)
     m_shuffled = false;
     m_playing = false;
 
-    connect(pm_player->playlist(), SIGNAL(currentIndexChanged(int)), this, SLOT(onIndexChanged(int)));
     connect(pm_player, SIGNAL(volumeChanged(int)), this, SIGNAL(volumeChanged(int)));
+    connect(pm_player, SIGNAL(mediaStatusChanged(QMediaPlayer::MediaStatus)), this, SLOT(onMediaStatusChanged(QMediaPlayer::MediaStatus)));
 
     connect(pm_timer, SIGNAL(timeout(qint64)), this, SLOT(onTimeout(qint64)));
 }
@@ -58,7 +57,7 @@ int Player::volume() const
 
 int Player::position() const
 {
-    return pm_timer->total() + (pm_timer->interval() - pm_timer->remaining());
+    return pm_timer->total() / 1000;
 }
 
 bool Player::isPlaying() const
@@ -119,8 +118,11 @@ void Player::setPosition(int position)
 {
     if (m_index != -1)
     {
-        pm_player->setPosition(position * 1000);
-        pm_timer->setTotal(position * 1000);
+        emit positionChanged(position);
+
+        position *= (qint64) 1000;
+        pm_player->setPosition(position);
+        pm_timer->setTotal(position);
     }
 }
 
@@ -144,16 +146,14 @@ void Player::play()
 {
     pm_player->play();
     pm_timer->start();
-    m_playing = true;
-    emit stateChanged(true);
+    setState(true);
 }
 
 void Player::pause()
 {
     pm_player->pause();
     pm_timer->pause();
-    m_playing = false;
-    emit stateChanged(false);
+    setState(false);
 }
 
 void Player::next()
@@ -181,18 +181,28 @@ void Player::back()
     }
 }
 
-void Player::onIndexChanged(int index)
-{
-    if (index == -1)
-        next();
-
-    if (m_index != -1)
-        emit audioChanged(audioAt(m_index));
-}
-
 void Player::onTimeout(qint64 total)
 {
     emit positionChanged(total / 1000);
+}
+
+void Player::onMediaStatusChanged(QMediaPlayer::MediaStatus status)
+{
+    if (status == QMediaPlayer::LoadingMedia)
+    {
+        if (m_index != -1)
+            emit audioChanged(currentAudio());
+    }
+    else if (status == QMediaPlayer::LoadedMedia)
+    {
+        pm_timer->restart();
+        if (m_playing)
+            play();
+    }
+    else if (status == QMediaPlayer::EndOfMedia)
+    {
+        next();
+    }
 }
 
 void Player::shuffle()
@@ -235,15 +245,12 @@ void Player::unshuffle()
 
 void Player::setActiveAudio(int index)
 {
-    QMediaPlaylist *playlist = pm_player->playlist();
+    pm_player->setMedia(QMediaContent(audioAt(index)->url()));
+    setPosition(0);
+}
 
-    playlist->clear();
-    playlist->addMedia(audioAt(index)->url());
-    playlist->setCurrentIndex(0);
-
-    emit positionChanged(0);
-    pm_timer->restart();
-
-    if (m_playing)
-        play();
+void Player::setState(bool playing)
+{
+    m_playing = playing;
+    emit stateChanged(playing);
 }
