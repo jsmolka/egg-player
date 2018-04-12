@@ -23,11 +23,6 @@ Player::~Player()
 
 }
 
-Timer * Player::timer()
-{
-    return pm_timer;
-}
-
 void Player::setIndex(int index)
 {
     m_index = index;

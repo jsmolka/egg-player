@@ -17,8 +17,6 @@ public:
     Player(QWidget *parent = 0);
     ~Player();
 
-    Timer * timer();
-
     void setIndex(int index);
     int index() const;
 
@@ -29,7 +27,6 @@ public:
     int position() const;
 
     bool isPlaying() const;
-    bool isTempPaused();
 
     void setAudioList(const AudioList &audioList);
 

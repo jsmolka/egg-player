@@ -30,9 +30,6 @@ private:
     void setupUi();
     void savePosition();
 
-    void createMusicLibrary();
-    void createMusicBar();
-
     Library *pm_library;
     MusicLibrary *pm_musicLibrary;
     MusicBar *pm_musicBar;

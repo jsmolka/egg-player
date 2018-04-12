@@ -50,8 +50,8 @@ void EggPlayer::onLibraryDoubleClicked(const QModelIndex &index)
 
 void EggPlayer::setupUi()
 {
-    createMusicLibrary();
-    createMusicBar();
+    pm_musicLibrary = new MusicLibrary(pm_library, this);
+    pm_musicBar = new MusicBar(this);
 
     QLabel *west = new QLabel(this);
     west->setFixedWidth(315);
@@ -76,14 +76,4 @@ void EggPlayer::savePosition()
         settings.setValue("pos", pos());
         settings.setValue("size", size());
     }
-}
-
-void EggPlayer::createMusicLibrary()
-{
-    pm_musicLibrary = new MusicLibrary(pm_library, this);
-}
-
-void EggPlayer::createMusicBar()
-{
-    pm_musicBar = new MusicBar(this);
 }
