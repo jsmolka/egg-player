@@ -11,52 +11,52 @@ QT += \
     sql
 
 INCLUDEPATH += \
-    ext/taglib/include \
-    src/constants \
-    src/core \
-    src/ui/components \
-    src/ui/layouts \
-    src/ui \
-    src/utils
+    $$PWD/ext/taglib-1.11.1/include \
+    $$PWD/src/constants \
+    $$PWD/src/core \
+    $$PWD/src/ui/components \
+    $$PWD/src/ui/layouts \
+    $$PWD/src/ui \
+    $$PWD/src/utils
 
 LIBS += \
-    -L"$$PWD/ext/taglib/lib" -ltag.dll
+    -L"$$PWD/ext/taglib-1.11.1/lib" -ltag.dll
 
 HEADERS += \
-    src/core/audio.hpp \
-    src/core/audiolist.hpp \
-    src/core/library.hpp \
-    src/core/player.hpp \
-    src/ui/components/iconbutton.hpp \
-    src/ui/components/songinfo.hpp \
-    src/ui/layouts/borderlayout.hpp \
-    src/utils/fileutil.hpp \
-    src/ui/eggplayer.hpp \
-    src/ui/musicbar.hpp \
-    src/ui/musiclibrary.hpp \
-    src/core/cache.hpp \
-    src/utils/colorutil.hpp \
-    src/ui/components/lengthslider.hpp \
-    src/constants/constants.hpp \
-    src/core/config.hpp \
-    src/core/timer.hpp
+    $$PWD/src/core/audio.hpp \
+    $$PWD/src/core/audiolist.hpp \
+    $$PWD/src/core/cache.hpp \
+    $$PWD/src/core/config.hpp \
+    $$PWD/src/core/library.hpp \
+    $$PWD/src/core/player.hpp \
+    $$PWD/src/core/timer.hpp \
+    $$PWD/src/constants/constants.hpp \
+    $$PWD/src/ui/eggplayer.hpp \
+    $$PWD/src/ui/musicbar.hpp \
+    $$PWD/src/ui/musiclibrary.hpp \
+    $$PWD/src/ui/components/iconbutton.hpp \
+    $$PWD/src/ui/components/lengthslider.hpp \
+    $$PWD/src/ui/components/songinfo.hpp \
+    $$PWD/src/ui/layouts/borderlayout.hpp \
+    $$PWD/src/utils/fileutil.hpp \
+    $$PWD/src/utils/colorutil.hpp
 
 SOURCES += \
-    src/main.cpp \
-    src/core/audio.cpp \
-    src/core/audiolist.cpp \
-    src/core/library.cpp \
-    src/core/player.cpp \
-    src/ui/components/iconbutton.cpp \
-    src/ui/components/songinfo.cpp \
-    src/ui/layouts/borderlayout.cpp \
-    src/utils/fileutil.cpp \
-    src/ui/eggplayer.cpp \
-    src/ui/musicbar.cpp \
-    src/ui/musiclibrary.cpp \
-    src/core/cache.cpp \
-    src/utils/colorutil.cpp \
-    src/ui/components/lengthslider.cpp \
-    src/constants/constants.cpp \
-    src/core/config.cpp \
-    src/core/timer.cpp
+    $$PWD/src/main.cpp \
+    $$PWD/src/core/audio.cpp \
+    $$PWD/src/core/audiolist.cpp \
+    $$PWD/src/core/cache.cpp \
+    $$PWD/src/core/config.cpp \
+    $$PWD/src/core/library.cpp \
+    $$PWD/src/core/player.cpp \
+    $$PWD/src/core/timer.cpp \
+    $$PWD/src/constants/constants.cpp \
+    $$PWD/src/ui/eggplayer.cpp \
+    $$PWD/src/ui/musicbar.cpp \
+    $$PWD/src/ui/musiclibrary.cpp \
+    $$PWD/src/ui/components/iconbutton.cpp \
+    $$PWD/src/ui/components/lengthslider.cpp \
+    $$PWD/src/ui/components/songinfo.cpp \
+    $$PWD/src/ui/layouts/borderlayout.cpp \
+    $$PWD/src/utils/fileutil.cpp \
+    $$PWD/src/utils/colorutil.cpp

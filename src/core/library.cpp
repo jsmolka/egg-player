@@ -1,5 +1,5 @@
 #include "library.hpp"
-#include <QDebug>
+
 Library::Library()
 {
 

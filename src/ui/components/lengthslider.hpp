@@ -32,7 +32,7 @@ public:
     bool isPressed() const;
 
 signals:
-    positionChanged(int position);
+    void positionChanged(int position);
 
 private slots:
     void onSliderPressed();

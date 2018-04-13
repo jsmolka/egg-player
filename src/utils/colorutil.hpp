@@ -1,6 +1,8 @@
 #ifndef COLORUTIL_HPP
 #define COLORUTIL_HPP
 
+#include <array>
+
 #include <QColor>
 #include <QImage>
 #include <QPixmap>
