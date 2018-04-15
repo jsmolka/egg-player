@@ -20,7 +20,7 @@ INCLUDEPATH += \
     $$PWD/src/utils
 
 LIBS += \
-    -L"$$PWD/ext/taglib-1.11.1/lib" -ltag.dll
+    -L"$$PWD/ext/taglib-1.11.1/lib" -ltag
 
 HEADERS += \
     $$PWD/src/core/audio.hpp \
