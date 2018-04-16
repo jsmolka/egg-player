@@ -5,6 +5,8 @@
 #include <QStringList>
 #include <QTextStream>
 
+#include "logger.hpp"
+
 class FileUtil
 {
 public:

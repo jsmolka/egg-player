@@ -2,7 +2,11 @@
 
 EggPlayer::EggPlayer()
 {
-    pm_library = new Library(Config::epLibrary());
+    QString path = Config::epLibrary();
+    if (!FileUtil::exists(path))
+        Logger::log(QString("Library path '%1' does not exist").arg(path));
+
+    pm_library = new Library(path);
     pm_library->sortByTitle();
 
     setupUi();
@@ -13,14 +17,11 @@ EggPlayer::EggPlayer()
 EggPlayer::~EggPlayer()
 {
     delete pm_library;
-    Config::destroy();
 }
 
 void EggPlayer::showSavedPosition()
 {
     QSettings settings;
-
-    // Retrieve and show saved registry position
     restoreGeometry(settings.value("geometry", saveGeometry()).toByteArray());
     move(settings.value("pos", pos()).toPoint());
     resize(settings.value("size", size()).toSize());
@@ -67,8 +68,6 @@ void EggPlayer::setupUi()
 void EggPlayer::savePosition()
 {
     QSettings settings;
-
-    // Save position in registry instead of config
     settings.setValue("geometry", saveGeometry());
     settings.setValue("maximized", isMaximized());
     if (!isMaximized())

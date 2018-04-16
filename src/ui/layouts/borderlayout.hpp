@@ -11,8 +11,8 @@ class BorderLayout : public QLayout
 public:
     enum Position {North, East, South, West, Center};
 
-    BorderLayout(int margin = 0, int spacing = -1, QWidget *parent = 0);
-    BorderLayout(int spacing = -1, QWidget *parent = 0);
+    BorderLayout(int margin = 0, int spacing = -1, QWidget *parent = nullptr);
+    BorderLayout(int spacing = -1, QWidget *parent = nullptr);
     ~BorderLayout();
 
     void addItem(QLayoutItem *item) override;

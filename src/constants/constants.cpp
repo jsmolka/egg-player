@@ -43,3 +43,5 @@ const QString SQL_CONNECTION    = "cache";
 const QString SQL_PATH          = DOCUMENTS + "/cache.db";
 
 const QString CFG_PATH          = DOCUMENTS + "/config.ini";
+
+const QString LOG_PATH          = DOCUMENTS + "/egg.log";

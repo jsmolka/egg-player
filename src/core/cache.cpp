@@ -12,7 +12,6 @@ Cache::~Cache()
 
 bool Cache::connect()
 {
-    // Add or reopen database
     if (QSqlDatabase::contains(SQL_CONNECTION))
     {
         m_db = QSqlDatabase::database(SQL_CONNECTION, false);
@@ -24,25 +23,37 @@ bool Cache::connect()
     }
 
     if (!m_db.open())
+    {
+        Logger::log(QString("Failed opening database"));
         return false;
+    }
 
-    // Create tables if they do not exist
     QString createCovers =
         "CREATE TABLE IF NOT EXISTS covers("
-        "  id INTEGER PRIMARY KEY,"
-        "  len INTEGER,"
-        "  cover BLOB"
+        " id INTEGER PRIMARY KEY,"
+        " len INTEGER,"
+        " cover BLOB"
         ")";
 
     QString createAudios =
         "CREATE TABLE IF NOT EXISTS audios("
-        "  path TEXT PRIMARY KEY,"
-        "  coverid INTEGER,"
-        "  FOREIGN KEY (coverid) REFERENCES covers(id)"
+        " path TEXT PRIMARY KEY,"
+        " coverid INTEGER,"
+        " FOREIGN KEY (coverid) REFERENCES covers(id)"
         ")";
 
     QSqlQuery query(m_db);
-    return query.exec(createCovers) && query.exec(createAudios);
+    if (!query.exec(createCovers))
+    {
+        handleError(query);
+        return false;
+    }
+    if (!query.exec(createAudios))
+    {
+        handleError((query));
+        return false;
+    }
+    return true;
 }
 
 void Cache::close()
@@ -54,27 +65,36 @@ bool Cache::insert(Audio *audio)
 {
     QByteArray bytes = coverToBytes(audio->cover(200));
 
-    // Check if cache contains the cover
     int id = coverId(bytes);
     if (id == -1)
-        // Insert cover if it does not exit
         id = insertCover(bytes);
 
-    QSqlQuery query(m_db);
-    query.prepare("INSERT INTO audios VALUES (:PATH, :COVERID)");
-    query.bindValue(":PATH", audio->path());
-    query.bindValue(":COVERID", id);
-
-    return query.exec();
+    if (id != -1)
+    {
+        QSqlQuery query(m_db);
+        query.prepare("INSERT INTO audios VALUES (:PATH, :COVERID)");
+        query.bindValue(":PATH", audio->path());
+        query.bindValue(":COVERID", id);
+        if (!query.exec())
+        {
+            handleError(query);
+            return false;
+        }
+        return true;
+    }
+    return false;
 }
 
 bool Cache::exists(Audio *audio)
 {
     QSqlQuery query(m_db);
-    query.prepare("SELECT 1 FROM audios WHERE path = :PATH LIMIT 1");
+    query.prepare("SELECT 1 FROM audios WHERE path = :PATH");
     query.bindValue(":PATH", audio->path());
-    query.exec();
-
+    if (!query.exec())
+    {
+        handleError(query);
+        return true;
+    }
     return query.first();
 }
 
@@ -84,11 +104,11 @@ QPixmap Cache::cover(const QString &path, int size)
     query.prepare(
         "SELECT covers.cover FROM audios "
         "JOIN covers ON audios.coverid = covers.id "
-        "WHERE path = :PATH LIMIT 1"
+        "WHERE path = :PATH"
     );
     query.bindValue(":PATH", path);
-    query.exec();
-
+    if (!query.exec())
+        handleError(query);
     if (query.first())
     {
         QByteArray bytes = query.value(0).toByteArray();
@@ -96,44 +116,32 @@ QPixmap Cache::cover(const QString &path, int size)
         image.loadFromData(bytes);
         return scale(image, size);
     }
+    Logger::log(QString("Failed loading cover of '%1'").arg(path));
     return scale(QPixmap(IMG_DEFAULT_COVER), size);
 }
 
 int Cache::lastCoverId()
 {
     QSqlQuery query(m_db);
-    query.exec("SELECT max(id) FROM covers");
-
+    query.prepare("SELECT max(id) FROM covers");
+    if (!query.exec())
+        handleError(query);
     if (query.first())
         return query.value(0).toInt();
-
     return 0;
-}
-
-QByteArray Cache::coverToBytes(const QPixmap &cover)
-{
-    QByteArray bytes;
-
-    QBuffer buffer(&bytes);
-    buffer.open(QIODevice::WriteOnly);
-    cover.save(&buffer, "PNG");
-
-    return bytes;
 }
 
 int Cache::coverId(const QByteArray &bytes)
 {
-    QSqlQuery query(m_db);
-
     // Try to get cover by byte array length for higher speed
+    QSqlQuery query(m_db);
     query.prepare("SELECT id FROM covers WHERE len = :LEN");
     query.bindValue(":LEN", bytes.length());
-    query.exec();
-
+    if (!query.exec())
+        handleError(query);
     if (query.first())
     {
         int id = query.value(0).toInt();
-
         if (!query.next())
         {
             // Return if id if there is only one result
@@ -142,15 +150,14 @@ int Cache::coverId(const QByteArray &bytes)
         else
         {
             // Get cover by blob comparison if there are multiple results
-            query.prepare("SELECT id FROM covers WHERE cover = :COVER LIMIT 1");
+            query.prepare("SELECT id FROM covers WHERE cover = :COVER");
             query.bindValue(":COVER", bytes);
-            query.exec();
-
+            if (!query.exec())
+                handleError(query);
             if (query.first())
                 return query.value(0).toInt();
         }
     }
-    // Cover does not exist
     return -1;
 }
 
@@ -163,9 +170,46 @@ int Cache::insertCover(const QByteArray &bytes)
     query.bindValue(":ID", id);
     query.bindValue(":LEN", bytes.length());
     query.bindValue(":COVER", bytes);
-    query.exec();
-
+    if (!query.exec())
+    {
+        handleError(query);
+        return -1;
+    }
     return id;
+}
+
+void Cache::handleError(const QSqlQuery &query)
+{
+    QSqlError error = query.lastError();
+    if (error.isValid())
+    {
+        QString message = "Failed querying '%1' with error '%2'";
+        Logger::log(message.arg(lastQuery(query)).arg(error.databaseText()));
+    }
+}
+
+QString Cache::lastQuery(const QSqlQuery &query)
+{
+    QString string = query.lastQuery();
+    QMapIterator<QString, QVariant> iter(query.boundValues());
+
+    while (iter.hasNext())
+    {
+        iter.next();
+        string.replace(iter.key(), iter.value().toString());
+    }
+    return string;
+}
+
+QByteArray Cache::coverToBytes(const QPixmap &cover)
+{
+    QByteArray bytes;
+
+    QBuffer buffer(&bytes);
+    buffer.open(QIODevice::WriteOnly);
+    cover.save(&buffer, "PNG");
+
+    return bytes;
 }
 
 QPixmap Cache::scale(const QPixmap &pixmap, int size)

@@ -1,10 +1,5 @@
 #include "library.hpp"
 
-Library::Library()
-{
-
-}
-
 Library::Library(const QString &path)
 {
     loadFiles(path);
@@ -13,7 +8,8 @@ Library::Library(const QString &path)
 Library::~Library()
 {
     for (Audio *audio : m_audioList)
-        delete audio;
+        if (audio)
+            delete audio;
 }
 
 AudioList Library::audioList() const
@@ -53,6 +49,7 @@ void Library::loadFiles(const QString &path)
     cache.connect();
 
     QStringList files = FileUtil::glob(path, "*.mp3");
+    Logger::log(QString("FileUtil globbed %1 files").arg(files.size()));
     if (!files.isEmpty())
     {
         for (const QString &file : files)
@@ -65,7 +62,12 @@ void Library::loadFiles(const QString &path)
 
                 m_audioList << audio;
             }
+            else
+            {
+                delete audio;
+            }
         }
     }
+    Logger::log(QString("Library contains %1 audios").arg(m_audioList.size()));
     cache.close();
 }

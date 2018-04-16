@@ -14,7 +14,7 @@ class MusicLibrary : public QListWidget
     Q_OBJECT
 
 public:
-    MusicLibrary(Library *library, QWidget *parent = 0);
+    MusicLibrary(Library *library, QWidget *parent = nullptr);
     ~MusicLibrary();
 
 private:

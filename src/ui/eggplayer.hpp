@@ -6,6 +6,7 @@
 
 #include "borderlayout.hpp"
 #include "config.hpp"
+#include "fileutil.hpp"
 #include "library.hpp"
 #include "musiclibrary.hpp"
 #include "musicbar.hpp"

@@ -26,7 +26,7 @@ class LengthSlider : public QSlider
     Q_OBJECT
 
 public:
-    LengthSlider(QWidget *parent = 0);
+    LengthSlider(QWidget *parent = nullptr);
     ~LengthSlider();
 
     bool isPressed() const;

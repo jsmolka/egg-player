@@ -10,19 +10,21 @@
 class Config
 {
 public:
-    static void load();
-    static void destroy();
+    static void create();
 
     static bool contains(const QString &key);
+
+    static void setLog(bool log);
+    static bool log();
+
+    static void setFontSize(double size);
+    static double fontSize();
 
     static void setEpLibrary(const QString &string);
     static QString epLibrary();
 
     static void setEpVolume(int volume);
     static int epVolume();
-
-    static void setEpFontSize(double size);
-    static double epFontSize();
 
     static void setMlSongInfoHeight(int height);
     static int mlSongInfoHeight();
@@ -46,9 +48,10 @@ public:
     static int mbTimeLabelWidth();
 
 private:
+    static const QString kLog;
+    static const QString kFontSize;
     static const QString kEpLibrary;
     static const QString kEpVolume;
-    static const QString kEpFontSize;
     static const QString kMlSongInfoHeight;
     static const QString kMbHeight;
     static const QString kMbSpacing;
@@ -57,9 +60,10 @@ private:
     static const QString kMbTrackLabelWidth;
     static const QString kMbTimeLabelWidth;
 
+    static const bool dLog;
+    static const double dFontSize;
     static const QString dEpLibrary;
     static const int dEpVolume;
-    static const double dEpFontSize;
     static const int dMlSongInfoHeight;
     static const int dMbHeight;
     static const int dMbSpacing;

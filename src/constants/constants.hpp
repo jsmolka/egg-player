@@ -38,4 +38,6 @@ const extern QString SQL_PATH;
 
 const extern QString CFG_PATH;
 
+const extern QString LOG_PATH;
+
 #endif // CONSTANTS_HPP

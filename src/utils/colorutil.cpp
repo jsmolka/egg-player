@@ -15,20 +15,17 @@ QColor ColorUtil::averageColor(const QImage &image)
     quint32 green = 0;
     quint32 blue = 0;
 
-    // Iterate over every pixel
     QRgb *pixels = (QRgb *) image.bits();
     quint32 pixelCount = image.height() * image.width();
     for (quint32 i = 0; i < pixelCount; i++)
     {
         QColor pixel = QColor(pixels[i]);
 
-        // Add current rgb value to total value
         red += pixel.red();
         green += pixel.green();
         blue += pixel.blue();
     }
 
-    // Divide total value by pixel count
     red = red / pixelCount;
     green = green / pixelCount;
     blue = blue / pixelCount;
@@ -63,18 +60,15 @@ QColor ColorUtil::dominantColor(const QImage &image)
     gSaturations.fill(0);
     gValues.fill(0);
 
-    // Iterate over every pixel
     QRgb *pixels = (QRgb *) image.bits();
     quint32 pixelCount = image.height() * image.width();
     for (quint32 i = 0; i < pixelCount; i++)
     {
-        // Get rgb values
         QColor rgb = QColor(pixels[i]);
         quint32 red = rgb.red();
         quint32 green = rgb.green();
         quint32 blue = rgb.blue();
 
-        // Get hsv values
         QColor hsv = rgb.toHsv();
         quint32 hue = hsv.hsvHue() == -1 ? 0 : rgb.hsvHue();
         quint32 saturation = hsv.hsvSaturation();
@@ -85,7 +79,6 @@ QColor ColorUtil::dominantColor(const QImage &image)
         // Check if color is 'colorful' or a grey scale
         if (qAbs(red - green) < 25 && qAbs(green - blue) < 25 && qAbs(red - blue) < 25)
         {
-            // Current color is a grey scale
             gCounts[index]++;
             gHues[index] += hue;
             gSaturations[index] += saturation;
@@ -93,7 +86,6 @@ QColor ColorUtil::dominantColor(const QImage &image)
         }
         else
         {
-            // Current color is 'colorful'
             cCounts[index]++;
             cHues[index] += hue;
             cSaturations[index] += saturation;
@@ -116,7 +108,6 @@ QColor ColorUtil::dominantColor(const QImage &image)
 
     if (cCounts[index] != 0)
     {
-        // Return dominant 'colorful' color
         quint32 hue = cHues[index] / cCounts[index];
         quint32 saturation = cSaturations[index] / cCounts[index];
         quint32 value = cValues[index] / cCounts[index];
@@ -137,7 +128,7 @@ QColor ColorUtil::dominantColor(const QImage &image)
                 max = temp;
             }
         }
-        // Return dominant grey scale
+
         quint32 hue = gHues[index] / gCounts[index];
         quint32 saturation = gSaturations[index] / gCounts[index];
         quint32 value = gValues[index] / gCounts[index];
@@ -148,7 +139,6 @@ QColor ColorUtil::dominantColor(const QImage &image)
 
 QColor ColorUtil::backgroundColor(const QImage &image, quint32 size)
 {
-    // Get dominant color of scaled picture
     QColor color = dominantColor(image.scaled(size, size));
 
     // Darken the color to prevent too bright colors

@@ -2,19 +2,21 @@
 
 using namespace TagLib;
 
-Audio::Audio()
-{
-
-}
-
 Audio::Audio(const QString &path)
 {
     m_path = path;
     m_valid = readTags();
 
-    // Use filename as title if tag is empty
-    if (m_valid && m_title.isEmpty())
-        m_title = FileUtil::fileName(m_path);
+    if (m_valid)
+    {
+        // Use filename as title if tag is empty
+        if (m_title.isEmpty())
+            m_title = FileUtil::fileName(m_path);
+    }
+    else
+    {
+        Logger::log(QString("Failed reading tags of '%1'").arg(m_path));
+    }
 }
 
 Audio::~Audio()
@@ -132,5 +134,6 @@ QPixmap Audio::readCover()
                 return image;
         }
     }
+    Logger::log(QString("Failed reading cover of '%1'").arg(m_path));
     return QPixmap(IMG_DEFAULT_COVER);
 }

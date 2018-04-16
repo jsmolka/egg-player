@@ -4,10 +4,12 @@
 #include <QBuffer>
 #include <QPixmap>
 #include <QSqlDatabase>
+#include <QSqlError>
 #include <QSqlQuery>
 
 #include "audio.hpp"
 #include "constants.hpp"
+#include "logger.hpp"
 
 class Cache
 {
@@ -23,9 +25,13 @@ public:
 
 private:
     int lastCoverId();
-    QByteArray coverToBytes(const QPixmap &cover);
     int coverId(const QByteArray &bytes);
     int insertCover(const QByteArray &bytes);
+
+    void handleError(const QSqlQuery &query);
+
+    QString lastQuery(const QSqlQuery &query);
+    QByteArray coverToBytes(const QPixmap &cover);
     QPixmap scale(const QPixmap &pixmap, int size);
 
     QSqlDatabase m_db;

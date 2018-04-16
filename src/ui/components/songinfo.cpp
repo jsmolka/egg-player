@@ -56,7 +56,7 @@ void SongInfo::showLength()
 {
     QString seconds = QString("%1").arg(pm_audio->seconds(), 2, 10, QChar('0'));
     QString minutes = QString::number(pm_audio->minutes());
-    QString length = QString("%1:%2").arg(minutes, seconds);
+    QString length = QString("%1:%2").arg(minutes).arg(seconds);
 
     createLabel(length, Qt::AlignRight);
 }
@@ -64,7 +64,7 @@ void SongInfo::showLength()
 void SongInfo::paintEvent(QPaintEvent *)
 {
     QStyleOption option;
-    option.initFrom(this);
+    option.init(this);
     QPainter painter(this);
     style()->drawPrimitive(QStyle::PE_Widget, &option, &painter, this);
 }

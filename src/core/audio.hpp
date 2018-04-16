@@ -13,11 +13,11 @@
 
 #include "constants.hpp"
 #include "fileutil.hpp"
+#include "logger.hpp"
 
 class Audio
 {
 public:
-    Audio();
     Audio(const QString &path);
     ~Audio();
 

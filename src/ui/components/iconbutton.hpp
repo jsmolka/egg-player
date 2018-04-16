@@ -12,7 +12,7 @@ class IconButton : public QPushButton
     Q_PROPERTY(bool locked READ isLocked WRITE setLocked)
 
 public:
-    IconButton(QWidget *parent = 0);
+    IconButton(QWidget *parent = nullptr);
     ~IconButton();
 
     void setIcons(const QList<QIcon> &icons);

@@ -20,7 +20,7 @@ class MusicBar : public QWidget
     Q_OBJECT
 
 public:
-    MusicBar(QWidget *parent = 0);
+    MusicBar(QWidget *parent = nullptr);
     ~MusicBar();
 
     Player * player();

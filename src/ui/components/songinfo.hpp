@@ -14,7 +14,7 @@ class SongInfo : public QWidget
     Q_OBJECT
 
 public:
-    SongInfo(Audio *audio, QWidget *parent = 0);
+    SongInfo(Audio *audio, QWidget *parent = nullptr);
     ~SongInfo();
 
     void init(const QList<int> &stretches);

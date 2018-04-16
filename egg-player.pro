@@ -14,9 +14,9 @@ INCLUDEPATH += \
     $$PWD/ext/taglib-1.11.1/include \
     $$PWD/src/constants \
     $$PWD/src/core \
+    $$PWD/src/ui \
     $$PWD/src/ui/components \
     $$PWD/src/ui/layouts \
-    $$PWD/src/ui \
     $$PWD/src/utils
 
 LIBS += \
@@ -26,7 +26,6 @@ HEADERS += \
     $$PWD/src/core/audio.hpp \
     $$PWD/src/core/audiolist.hpp \
     $$PWD/src/core/cache.hpp \
-    $$PWD/src/core/config.hpp \
     $$PWD/src/core/library.hpp \
     $$PWD/src/core/player.hpp \
     $$PWD/src/core/timer.hpp \
@@ -38,15 +37,16 @@ HEADERS += \
     $$PWD/src/ui/components/lengthslider.hpp \
     $$PWD/src/ui/components/songinfo.hpp \
     $$PWD/src/ui/layouts/borderlayout.hpp \
+    $$PWD/src/utils/colorutil.hpp \
+    $$PWD/src/utils/config.hpp \
     $$PWD/src/utils/fileutil.hpp \
-    $$PWD/src/utils/colorutil.hpp
+    $$PWD/src/utils/logger.hpp
 
 SOURCES += \
     $$PWD/src/main.cpp \
     $$PWD/src/core/audio.cpp \
     $$PWD/src/core/audiolist.cpp \
     $$PWD/src/core/cache.cpp \
-    $$PWD/src/core/config.cpp \
     $$PWD/src/core/library.cpp \
     $$PWD/src/core/player.cpp \
     $$PWD/src/core/timer.cpp \
@@ -58,5 +58,7 @@ SOURCES += \
     $$PWD/src/ui/components/lengthslider.cpp \
     $$PWD/src/ui/components/songinfo.cpp \
     $$PWD/src/ui/layouts/borderlayout.cpp \
+    $$PWD/src/utils/colorutil.cpp \
+    $$PWD/src/utils/config.cpp \
     $$PWD/src/utils/fileutil.cpp \
-    $$PWD/src/utils/colorutil.cpp
+    $$PWD/src/utils/logger.cpp

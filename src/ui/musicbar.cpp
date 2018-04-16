@@ -90,7 +90,7 @@ IconButton * MusicBar::volumeButton()
 void MusicBar::paintEvent(QPaintEvent *)
 {
     QStyleOption option;
-    option.initFrom(this);
+    option.init(this);
     QPainter painter(this);
     style()->drawPrimitive(QStyle::PE_Widget, &option, &painter, this);
 }

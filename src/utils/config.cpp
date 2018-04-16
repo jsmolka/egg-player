@@ -1,10 +1,11 @@
 #include "config.hpp"
 
-QSettings *cfg = 0;
+QSettings *cfg = nullptr;
 
+const QString Config::kLog               = "App/Log";
+const QString Config::kFontSize          = "App/FontSize";
 const QString Config::kEpLibrary         = "Player/Library";
 const QString Config::kEpVolume          = "Player/Volume";
-const QString Config::kEpFontSize        = "Player/FontSize";
 const QString Config::kMlSongInfoHeight  = "MusicLibrary/SongInfoHeight";
 const QString Config::kMbHeight          = "MusicBar/Height";
 const QString Config::kMbSpacing         = "MusicBar/Spacing";
@@ -13,9 +14,10 @@ const QString Config::kMbIconSize        = "MusicBar/IconSize";
 const QString Config::kMbTrackLabelWidth = "MusicBar/TrackLabelWidth";
 const QString Config::kMbTimeLabelWidth  = "MusicBar/TimeLabelWidth";
 
+const bool Config::dLog                  = true;
+const double Config::dFontSize           = 10.25;
 const QString Config::dEpLibrary         = QStandardPaths::writableLocation(QStandardPaths::MusicLocation);
 const int Config::dEpVolume              = 10;
-const double Config::dEpFontSize         = 10.25;
 const int Config::dMlSongInfoHeight      = 50;
 const int Config::dMbHeight              = 68;
 const int Config::dMbSpacing             = 10;
@@ -24,49 +26,71 @@ const int Config::dMbIconSize            = 35;
 const int Config::dMbTrackLabelWidth     = 240;
 const int Config::dMbTimeLabelWidth      = 50;
 
-void Config::load()
+void Config::create()
 {
-    QCoreApplication *app = QApplication::instance();
+    if (!cfg)
+    {
+        cfg = new QSettings(CFG_PATH, QSettings::IniFormat, QApplication::instance());
 
-    cfg = new QSettings(CFG_PATH, QSettings::IniFormat, app);
+        // Set default values in config if they do not exist
+        if (!contains(kLog))
+            setLog(dLog);
 
-    // Set default values in config if they do not exist
-    if (!contains(kEpLibrary))
-        setEpLibrary(dEpLibrary);
+        if (!contains(kFontSize))
+            setFontSize(dFontSize);
 
-    if (!contains(kEpVolume))
-        setEpVolume(dEpVolume);
+        if (!contains(kEpLibrary))
+            setEpLibrary(dEpLibrary);
 
-    if (!contains(kMlSongInfoHeight))
-        setMlSongInfoHeight(dMlSongInfoHeight);
+        if (!contains(kEpVolume))
+            setEpVolume(dEpVolume);
 
-    if (!contains(kMbHeight))
-        setMbHeight(dMbHeight);
+        if (!contains(kMlSongInfoHeight))
+            setMlSongInfoHeight(dMlSongInfoHeight);
 
-    if (!contains(kMbSpacing))
-        setMbSpacing(dMbSpacing);
+        if (!contains(kMbHeight))
+            setMbHeight(dMbHeight);
 
-    if (!contains(kMbCoverSize))
-        setMbCoverSize(dMbCoverSize);
+        if (!contains(kMbSpacing))
+            setMbSpacing(dMbSpacing);
 
-    if (!contains(kMbIconSize))
-        setMbIconSize(dMbIconSize);
+        if (!contains(kMbCoverSize))
+            setMbCoverSize(dMbCoverSize);
 
-    if (!contains(kMbTrackLabelWidth))
-        setMbTrackLabelWidth(dMbTrackLabelWidth);
+        if (!contains(kMbIconSize))
+            setMbIconSize(dMbIconSize);
 
-    if (!contains(kMbTimeLabelWidth))
-        setMbTimeLabelWidth(dMbTimeLabelWidth);
-}
+        if (!contains(kMbTrackLabelWidth))
+            setMbTrackLabelWidth(dMbTrackLabelWidth);
 
-void Config::destroy()
-{
-    delete cfg;
+        if (!contains(kMbTimeLabelWidth))
+            setMbTimeLabelWidth(dMbTimeLabelWidth);
+    }
 }
 
 bool Config::contains(const QString &key)
 {
     return cfg->contains(key);
+}
+
+void Config::setLog(bool log)
+{
+    cfg->setValue(kLog, log);
+}
+
+bool Config::log()
+{
+    return cfg->value(kLog, dLog).toBool();
+}
+
+void Config::setFontSize(double size)
+{
+    cfg->setValue(kFontSize, size);
+}
+
+double Config::fontSize()
+{
+    return cfg->value(kFontSize, dFontSize).toDouble();
 }
 
 void Config::setEpLibrary(const QString &string)
@@ -87,16 +111,6 @@ void Config::setEpVolume(int volume)
 int Config::epVolume()
 {
     return cfg->value(kEpVolume, dEpVolume).toInt();
-}
-
-void Config::setEpFontSize(double size)
-{
-    cfg->setValue(kEpFontSize, size);
-}
-
-double Config::epFontSize()
-{
-    return cfg->value(kEpFontSize, dEpFontSize).toDouble();
 }
 
 void Config::setMlSongInfoHeight(int height)

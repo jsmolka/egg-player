@@ -7,11 +7,11 @@
 #include "audiolist.hpp"
 #include "cache.hpp"
 #include "fileutil.hpp"
+#include "logger.hpp"
 
 class Library
 {
 public:
-    Library();
     Library(const QString &path);
     ~Library();
 
