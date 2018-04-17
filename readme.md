@@ -21,7 +21,7 @@ This has something to do with the default mediaplayer backend Qt is using under 
 
 Possible fixes:
 - switch Qt mediaplayer backend to WMF with the configuration option ```-mediaplayer-backend wmf```
-- download a different audio backend like [K-Lite](https://www.codecguide.com/download_kl.htm).
+- download a different audio backend like [K-Lite](https://www.codecguide.com/download_kl.htm)
 - replace covers of not playing songs with smaller ones
 
 ### Songs play longer than displayed
@@ -31,16 +31,8 @@ Possible fixes:
 - switch Qt mediaplayer backend to WMF with the configuration option ```-mediaplayer-backend wmf```
 
 ## Things to do
-
-#### General
 - black title bar through [Windows API](https://msdn.microsoft.com/en-us/library/windows/desktop/ms724940%28v=vs.85%29.aspx)
-
-#### Cache
 - faster caching
-
-#### Library
-- add slots and signals
 - splash screen while caching
-
-#### LengthSlider
-- custom css with repaint event
+- add slots and signals for Library
+- custom css with repaint event for LengthSlider
