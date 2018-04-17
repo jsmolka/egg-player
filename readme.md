@@ -7,8 +7,6 @@ A Groove Music like music player.
 - error logs
 
 ## Roadmap
-- play audio formats apart from mp3
-- use a different audio backend like [bass.dll](http://www.un4seen.com/)
 - playlist support
 - write own tag library to support unicode characters based on [libmp3](https://github.com/TheOnlyCaky/libmp3)
 - proper scaling on different maschines
@@ -17,22 +15,23 @@ A Groove Music like music player.
 - reactive cache
 
 ## Known issues
-#### Songs do not play
+### Songs do not play
 This has something to do with the default audio backend Qt is using for Windows. It is called DirectShow and for some reason it is not able to play mp3 files with large covers (around 100kb).
 Possible fixes:
-- replace covers of not playing songs with smaller covers (everything lower than 100kb should be ok)
-- swtich Qt mediaplayer backend to WMF with the configuration option ```-mediaplayer-backend wmf```
+- switch Qt mediaplayer backend to WMF with the configuration option ```-mediaplayer-backend wmf```
 - downloading a different audio backend like [K-Lite](https://www.codecguide.com/download_kl.htm).
+- replace covers of not playing songs with smaller covers (everything lower than 100kb should be ok)
 
-#### Songs play longer than displayed
-todo: write
+### Songs play longer than displayed
+This, again, has something to do with the DirectShow backend. The duration it uses is usually some seconds longer than the actual duration and as a result of that the audio is slighty strechted.
+Possible fixed:
+- switch Qt mediaplayer backend to WMF with the configuration option ```-mediaplayer-backend wmf```
 
 ## Things to do
 
 #### General
-- [black title bar](https://msdn.microsoft.com/en-us/library/windows/desktop/ms724940%28v=vs.85%29.aspx)
+- black title bar through [Windows API](https://msdn.microsoft.com/en-us/library/windows/desktop/ms724940%28v=vs.85%29.aspx)
 - documentation
-- recompile with different audio backend
 
 #### Cache
 - faster caching
@@ -44,12 +43,6 @@ todo: write
 
 #### LengthSlider
 - custom css with repaint event
-
-#### Player
-- remove time delay at start / overhead at end
-
-#### MusicBar
-- fix problems with long songs
 
 #### MusicLibrary
 - songs / albums / artists tabs
