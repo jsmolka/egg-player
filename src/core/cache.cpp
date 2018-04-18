@@ -68,21 +68,20 @@ bool Cache::insert(Audio *audio)
     int id = coverId(bytes);
     if (id == -1)
         id = insertCover(bytes);
+    if (id == -1)
+        // Unable to insert cover
+        return false;
 
-    if (id != -1)
+    QSqlQuery query(m_db);
+    query.prepare("INSERT INTO audios VALUES (:PATH, :COVERID)");
+    query.bindValue(":PATH", audio->path());
+    query.bindValue(":COVERID", id);
+    if (!query.exec())
     {
-        QSqlQuery query(m_db);
-        query.prepare("INSERT INTO audios VALUES (:PATH, :COVERID)");
-        query.bindValue(":PATH", audio->path());
-        query.bindValue(":COVERID", id);
-        if (!query.exec())
-        {
-            handleError(query);
-            return false;
-        }
-        return true;
+        handleError(query);
+        return false;
     }
-    return false;
+    return true;
 }
 
 bool Cache::exists(Audio *audio)
@@ -93,6 +92,7 @@ bool Cache::exists(Audio *audio)
     if (!query.exec())
     {
         handleError(query);
+        // Assume audio exists to prevent duplicate primary key
         return true;
     }
     return query.first();
@@ -109,15 +109,20 @@ QPixmap Cache::cover(const QString &path, int size)
     query.bindValue(":PATH", path);
     if (!query.exec())
         handleError(query);
+
+    QPixmap image;
     if (query.first())
     {
         QByteArray bytes = query.value(0).toByteArray();
-        QPixmap image;
         image.loadFromData(bytes);
-        return scale(image, size);
     }
-    Logger::log(QString("Failed loading cover of '%1'").arg(path));
-    return scale(QPixmap(IMG_DEFAULT_COVER), size);
+
+    if (image.isNull())
+    {
+        image = QPixmap(IMG_DEFAULT_COVER);
+        Logger::log(QString("Failed loading cover of '%1'").arg(path));
+    }
+    return scale(image, size);
 }
 
 int Cache::lastCoverId()
@@ -133,7 +138,7 @@ int Cache::lastCoverId()
 
 int Cache::coverId(const QByteArray &bytes)
 {
-    // Try to get cover by byte array length for higher speed
+    // Try to get cover by byte array length for better performance
     QSqlQuery query(m_db);
     query.prepare("SELECT id FROM covers WHERE len = :LEN");
     query.bindValue(":LEN", bytes.length());
@@ -143,20 +148,16 @@ int Cache::coverId(const QByteArray &bytes)
     {
         int id = query.value(0).toInt();
         if (!query.next())
-        {
             // Return if id if there is only one result
             return id;
-        }
-        else
-        {
-            // Get cover by blob comparison if there are multiple results
-            query.prepare("SELECT id FROM covers WHERE cover = :COVER");
-            query.bindValue(":COVER", bytes);
-            if (!query.exec())
-                handleError(query);
-            if (query.first())
-                return query.value(0).toInt();
-        }
+
+        // Get cover by blob comparison if there are multiple results
+        query.prepare("SELECT id FROM covers WHERE cover = :COVER");
+        query.bindValue(":COVER", bytes);
+        if (!query.exec())
+            handleError(query);
+        if (query.first())
+            return query.value(0).toInt();
     }
     return -1;
 }

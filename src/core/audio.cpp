@@ -119,6 +119,7 @@ QPixmap Audio::readCover()
 {
     MPEG::File file(m_path.toLatin1().data());
     ID3v2::Tag *tag = file.ID3v2Tag();
+    QPixmap image;
 
     if (tag)
     {
@@ -126,14 +127,14 @@ QPixmap Audio::readCover()
         if (!frameList.isEmpty())
         {
             ID3v2::AttachedPictureFrame *frame = static_cast<ID3v2::AttachedPictureFrame *>(frameList.front());
-
-            QPixmap image;
             image.loadFromData((const uchar *) frame->picture().data(), frame->picture().size());
-
-            if (!image.isNull())
-                return image;
         }
     }
-    Logger::log(QString("Failed reading cover of '%1'").arg(m_path));
-    return QPixmap(IMG_DEFAULT_COVER);
+
+    if (image.isNull())
+    {
+        image = QPixmap(IMG_DEFAULT_COVER);
+        Logger::log(QString("Failed reading cover of '%1'").arg(m_path));
+    }
+    return image;
 }

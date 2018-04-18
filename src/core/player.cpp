@@ -178,7 +178,10 @@ void Player::back()
 
 void Player::onTimeout(qint64 total)
 {
-    emit positionChanged(total / 1000);
+    total = total / 1000;
+    // Prevent showing one extra second after end
+    if (total <= currentAudio()->length())
+        emit positionChanged(total);
 }
 
 void Player::onMediaStatusChanged(QMediaPlayer::MediaStatus status)

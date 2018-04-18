@@ -25,7 +25,7 @@ Possible fixes:
 - replace covers of not playing songs with smaller ones
 
 ### Songs play longer than displayed
-This, again, has something to do with the DirectShow backend. The duration it uses is usually some seconds longer than the actual duration. As a result of that the audio is slighty strechted and the songs play longer than they should be.
+This, again, has something to do with the DirectShow backend. The duration it uses is usually some seconds longer than the actual duration. As a result of that the audio is slighty strechted and plays longer than it should.
 
 Possible fixes:
 - switch Qt mediaplayer backend to WMF with the configuration option ```-mediaplayer-backend wmf```
@@ -36,3 +36,4 @@ Possible fixes:
 - splash screen while caching
 - add slots and signals for Library
 - custom css with repaint event for LengthSlider
+- fill cover to always get square

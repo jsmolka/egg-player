@@ -55,17 +55,16 @@ void Library::loadFiles(const QString &path)
         for (const QString &file : files)
         {
             Audio *audio = new Audio(file);
-            if (audio->isValid())
-            {
-                if (!cache.exists(audio))
-                    cache.insert(audio);
-
-                m_audioList << audio;
-            }
-            else
+            if (!audio->isValid())
             {
                 delete audio;
+                continue;
             }
+
+            if (!cache.exists(audio))
+                cache.insert(audio);
+
+            m_audioList << audio;
         }
     }
     Logger::log(QString("Library contains %1 audios").arg(m_audioList.size()));
