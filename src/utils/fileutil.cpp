@@ -3,10 +3,9 @@
 QString FileUtil::read(const QString &path)
 {
     QFile file(path);
-
     if (!file.open(QFile::ReadOnly | QFile::Text))
     {
-        Logger::log("Could not read file " + path);
+        Logger::log(QString("Failed reading file: '%1'").arg(path));
         return QString();
     }
 

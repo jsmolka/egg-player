@@ -28,7 +28,9 @@ const extern QString ICO_STOP;
 const extern QString ICO_VOLUME;
 const extern QString ICO_VOLUME1;
 const extern QString ICO_VOLUME2;
+
 const extern QString IMG_DEFAULT_COVER;
+const extern QString IMG_EGGPLAYER;
 
 const extern QString LANG_APP_NAME;
 const extern QString LANG_ORG_NAME;

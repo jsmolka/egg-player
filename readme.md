@@ -36,4 +36,3 @@ Possible fixes:
 - splash screen while caching
 - add slots and signals for Library
 - custom css with repaint event for LengthSlider
-- fill cover to always get square

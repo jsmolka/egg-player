@@ -159,7 +159,7 @@ void MusicBar::setupUi()
     layout->setContentsMargins(layout->spacing(), 0, layout->spacing(), 0);
 
     setFixedHeight(Config::mbHeight());
-    setStyleSheet(CSS_MUSICBAR);
+    setStyleSheet(FileUtil::read(CSS_MUSICBAR));
     setAutoFillBackground(true);
     setColor(ColorUtil::backgroundColor(defaultCover()));
     setLayout(layout);

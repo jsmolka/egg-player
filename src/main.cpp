@@ -1,11 +1,28 @@
 #include <QApplication>
 #include <QFont>
 #include <QFontDatabase>
+#include <QStringList>
 
 #include "config.hpp"
 #include "constants.hpp"
 #include "eggplayer.hpp"
+#include "fileutil.hpp"
 #include "logger.hpp"
+
+void checkResources()
+{
+    QStringList resources =
+    {
+        CSS_MUSICBAR, CSS_MUSICLIBRARY, FONT_LATO, ICO_BACK, ICO_EXPAND, ICO_FASTFORWARD,
+        ICO_FASTREWIND, ICO_FORWARD, ICO_HEART, ICO_MINIMIZE, ICO_MUTE, ICO_NEXT, ICO_PAUSE,
+        ICO_PLAY, ICO_REPLAY, ICO_REWIND, ICO_SHUFFLE, ICO_STOP, ICO_VOLUME, ICO_VOLUME1,
+        ICO_VOLUME2, IMG_DEFAULT_COVER, IMG_EGGPLAYER
+    };
+
+    for (QString resource : resources)
+        if (!FileUtil::exists(resource))
+            Logger::log(QString("Resource not found: '%1'").arg(resource));
+}
 
 QFont loadFont()
 {
@@ -23,6 +40,8 @@ void setup(QApplication *app)
 {
     Config::create();
     Logger::create();
+
+    checkResources();
 
     app->setApplicationName(LANG_APP_NAME);
     app->setOrganizationName(LANG_ORG_NAME);

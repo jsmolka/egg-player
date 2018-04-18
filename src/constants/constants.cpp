@@ -12,8 +12,8 @@ QString documents()
 
 const QString DOCUMENTS        = documents();
 
-const QString CSS_MUSICBAR     = FileUtil::read("resource/css/musicbar.css");
-const QString CSS_MUSICLIBRARY = FileUtil::read("resource/css/musiclibrary.css");
+const QString CSS_MUSICBAR     = "resource/css/musicbar.css";
+const QString CSS_MUSICLIBRARY = "resource/css/musiclibrary.css";
 
 const QString FONT_LATO         = "resource/fonts/Lato.ttf";
 const QString ICO_BACK          = "resource/images/icons/back.png";
@@ -34,7 +34,9 @@ const QString ICO_STOP          = "resource/images/icons/stop.png";
 const QString ICO_VOLUME        = "resource/images/icons/volume.png";
 const QString ICO_VOLUME1       = "resource/images/icons/volume1.png";
 const QString ICO_VOLUME2       = "resource/images/icons/volume2.png";
+
 const QString IMG_DEFAULT_COVER = "resource/images/default-cover.png";
+const QString IMG_EGGPLAYER     = "resource/images/egg/egg.png";
 
 const QString LANG_APP_NAME     = "Egg Player";
 const QString LANG_ORG_NAME     = "Egg Inc.";

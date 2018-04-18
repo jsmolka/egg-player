@@ -2,11 +2,7 @@
 
 EggPlayer::EggPlayer()
 {
-    QString path = Config::epLibrary();
-    if (!FileUtil::exists(path))
-        Logger::log(QString("Library path '%1' does not exist").arg(path));
-
-    pm_library = new Library(path);
+    pm_library = new Library(Config::epLibrary());
     pm_library->sortByTitle();
 
     setupUi();

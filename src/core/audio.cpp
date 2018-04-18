@@ -15,7 +15,7 @@ Audio::Audio(const QString &path)
     }
     else
     {
-        Logger::log(QString("Failed reading tags of '%1'").arg(m_path));
+        Logger::log(QString("Failed reading tags: '%1'").arg(m_path));
     }
 }
 
@@ -148,7 +148,7 @@ QPixmap Audio::readCover()
     if (image.isNull())
     {
         image = QPixmap(IMG_DEFAULT_COVER);
-        Logger::log(QString("Failed reading cover of '%1'").arg(m_path));
+        Logger::log(QString("Failed reading cover: '%1'").arg(m_path));
     }
     return image;
 }

@@ -2,7 +2,10 @@
 
 Library::Library(const QString &path)
 {
-    loadFiles(path);
+    if (FileUtil::exists(path))
+        loadFiles(path);
+    else
+        Logger::log(QString("Library path does not exist: %1").arg(path));
 }
 
 Library::~Library()
@@ -45,28 +48,29 @@ Audio * Library::audioAt(int idx)
 
 void Library::loadFiles(const QString &path)
 {
+    QStringList files = FileUtil::glob(path, "*.mp3");
+    if (files.isEmpty())
+    {
+        Logger::log(QString("Library path contains no files: %1").arg(path));
+        return;
+    }
+
     Cache cache;
     cache.connect();
 
-    QStringList files = FileUtil::glob(path, "*.mp3");
-    Logger::log(QString("FileUtil globbed %1 files").arg(files.size()));
-    if (!files.isEmpty())
+    for (const QString &file : files)
     {
-        for (const QString &file : files)
+        Audio *audio = new Audio(file);
+        if (!audio->isValid())
         {
-            Audio *audio = new Audio(file);
-            if (!audio->isValid())
-            {
-                delete audio;
-                continue;
-            }
-
-            if (!cache.exists(audio))
-                cache.insert(audio);
-
-            m_audioList << audio;
+            delete audio;
+            continue;
         }
+
+        if (!cache.exists(audio))
+            cache.insert(audio);
+
+        m_audioList << audio;
     }
-    Logger::log(QString("Library contains %1 audios").arg(m_audioList.size()));
     cache.close();
 }
