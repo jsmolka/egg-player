@@ -1,10 +1,10 @@
 #include "player.hpp"
 
-Player::Player(QWidget *parent) : QWidget(parent)
+Player::Player(QObject *parent) : QObject(parent)
 {
     qsrand(time(0));
 
-    pm_player = new QMediaPlayer(this, QMediaPlayer::LowLatency);
+    pm_player = new QMediaPlayer(this);
     pm_timer = new Timer(1000, this);
 
     m_index = -1;

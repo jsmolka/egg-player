@@ -3,18 +3,18 @@
 
 #include <QMediaPlayer>
 #include <QMediaPlaylist>
-#include <QWidget>
+#include <QObject>
 
 #include "audio.hpp"
 #include "audiolist.hpp"
 #include "timer.hpp"
 
-class Player : public QWidget
+class Player : public QObject
 {
     Q_OBJECT
 
 public:
-    Player(QWidget *parent = nullptr);
+    Player(QObject *parent = nullptr);
     ~Player();
 
     void setIndex(int index);
