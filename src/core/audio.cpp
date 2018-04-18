@@ -128,6 +128,20 @@ QPixmap Audio::readCover()
         {
             ID3v2::AttachedPictureFrame *frame = static_cast<ID3v2::AttachedPictureFrame *>(frameList.front());
             image.loadFromData((const uchar *) frame->picture().data(), frame->picture().size());
+
+            // Fill non square cover
+            if (image.height() != image.width())
+            {
+                int size = std::max(image.height(), image.width());
+                QPixmap background(size, size);
+                background.fill(Qt::transparent);
+
+                QPainter painter(&background);
+                int x = (size - image.height()) / 2;
+                int y = (size - image.width()) / 2;
+                painter.drawPixmap(x, y, image);
+                image = background;
+            }
         }
     }
 

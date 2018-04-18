@@ -1,6 +1,7 @@
 #ifndef AUDIO_HPP
 #define AUDIO_HPP
 
+#include <QPainter>
 #include <QPixmap>
 #include <QUrl>
 
