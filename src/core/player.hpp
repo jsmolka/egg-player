@@ -5,6 +5,8 @@
 #include <QMediaPlaylist>
 #include <QObject>
 
+#include <bass/bass.h>
+
 #include "audio.hpp"
 #include "audiolist.hpp"
 #include "timer.hpp"
@@ -43,7 +45,7 @@ public slots:
     void setLoop(bool loop);
     void setShuffled(bool shuffled);
 
-    void play();
+    void play(bool restart = false);
     void pause();
     void next();
     void back();
@@ -77,10 +79,14 @@ private:
     void setActiveAudio(int index);
     void setState(bool playing);
 
-    QMediaPlayer *pm_player;
+    const int VOLUME_FACTOR = 500;
+
     QList<AudioPosition> m_playlist;
     Timer *pm_timer;
+    HSTREAM m_stream;
+    HCHANNEL m_channel;
     int m_index;
+    int m_volume;
     bool m_loop;
     bool m_shuffled;
     bool m_playing;

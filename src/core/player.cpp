@@ -4,23 +4,26 @@ Player::Player(QObject *parent) : QObject(parent)
 {
     qsrand(time(0));
 
-    pm_player = new QMediaPlayer(this);
-    pm_timer = new Timer(1000, this);
+    if (!BASS_Init(-1, 44100, 0, 0, NULL))
+        Logger::log("Failed initializing BASS");
 
+    m_stream = 0;
+    m_channel = 0;
     m_index = -1;
+    m_volume = 0;
     m_loop = false;
     m_shuffled = false;
     m_playing = false;
 
-    connect(pm_player, SIGNAL(volumeChanged(int)), this, SIGNAL(volumeChanged(int)));
-    connect(pm_player, SIGNAL(mediaStatusChanged(QMediaPlayer::MediaStatus)), this, SLOT(onMediaStatusChanged(QMediaPlayer::MediaStatus)));
+    pm_timer = new Timer(1000, this);
 
     connect(pm_timer, SIGNAL(timeout(qint64)), this, SLOT(onTimeout(qint64)));
 }
 
 Player::~Player()
 {
-
+    if (!BASS_Free())
+        Logger::log("Failed freeing BASS");
 }
 
 void Player::setIndex(int index)
@@ -45,9 +48,16 @@ bool Player::isShuffled() const
     return m_shuffled;
 }
 
+/*
+ * Getter for player volume.
+ *
+ * :return: volume
+ */
 int Player::volume() const
 {
-    return pm_player->volume();
+    float volume;
+    BASS_ChannelGetAttribute(m_stream, BASS_ATTRIB_VOL, &volume);
+    return (int) volume * VOLUME_FACTOR;
 }
 
 int Player::position() const
@@ -104,9 +114,20 @@ int Player::backIndex()
     return --m_index;
 }
 
+/*
+ * Setter for player volume. Should be between 0 and 100.
+ * The volume gets divided by VOLUME_FACTOR to get the
+ * float value necessary for BASS.
+ *
+ * :param volume: volume
+ * :emit: volumeChanged
+ */
 void Player::setVolume(int volume)
 {
-    pm_player->setVolume(volume);
+    m_volume = volume;
+    volume = qMin(100, qMax(volume, 0));
+    BASS_ChannelSetAttribute(m_stream, BASS_ATTRIB_VOL, (float) volume / VOLUME_FACTOR);
+    emit volumeChanged(volume);
 }
 
 void Player::setPosition(int position)
@@ -116,7 +137,7 @@ void Player::setPosition(int position)
         emit positionChanged(position);
 
         position *= (qint64) 1000;
-        pm_player->setPosition(position);
+        //pm_player->setPosition(position);
         pm_timer->setTotal(position);
     }
 }
@@ -137,16 +158,29 @@ void Player::setShuffled(bool shuffled)
     }
 }
 
-void Player::play()
+/*
+ * Plays or resumes the current audio.
+ *
+ * :param restart: restart stream, default false
+ * :emit: TODO: What does it emit?
+ */
+void Player::play(bool restart)
 {
-    pm_player->play();
+    if (!BASS_ChannelPlay(m_stream, restart))
+        Logger::log("Player: Cannot play stream");
     pm_timer->start();
     setState(true);
 }
 
+/*
+ * Pauses the current stream.
+ *
+ * :emit: TODO: What does it emit?
+ */
 void Player::pause()
 {
-    pm_player->pause();
+    if (!BASS_ChannelPause(m_stream))
+        Logger::log("Player: Cannot pause stream");
     pm_timer->pause();
     setState(false);
 }
@@ -243,7 +277,18 @@ void Player::unshuffle()
 
 void Player::setActiveAudio(int index)
 {
-    pm_player->setMedia(QMediaContent(audioAt(index)->url()));
+    // Free old stream if it exists
+    if (m_stream != 0)  // TODO: Check differently
+        if (!BASS_StreamFree(m_stream))
+            Logger::log("Failed freeing BASS stream");
+
+    // Create stream and get current channel
+    m_stream = BASS_StreamCreateFile(false, audioAt(index)->path().toLatin1(), 0, 0, 0);
+    m_channel = BASS_SampleGetChannel(m_stream, false);  // TODO: not needed???
+
+    // Set volume for newly created stream
+    setVolume(m_volume);
+
     setPosition(0);
 }
 

@@ -11,6 +11,7 @@ QT += \
     sql
 
 INCLUDEPATH += \
+    $$PWD/ext/bass-2.4/include \
     $$PWD/ext/taglib-1.11.1/include \
     $$PWD/src/constants \
     $$PWD/src/core \
@@ -20,6 +21,7 @@ INCLUDEPATH += \
     $$PWD/src/utils
 
 LIBS += \
+    -L"$$PWD/ext/bass-2.4/lib" -lbass \
     -L"$$PWD/ext/taglib-1.11.1/lib" -ltag
 
 HEADERS += \
