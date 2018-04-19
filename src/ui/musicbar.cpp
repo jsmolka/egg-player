@@ -4,7 +4,7 @@ MusicBar::MusicBar(QWidget *parent) : QWidget(parent)
 {
     m_cache.connect();
     pm_player = new Player(this);
-    pm_player->setVolume(Config::epVolume());
+    pm_player->setVolume(0);//Config::epVolume());
 
     setupUi();
 
@@ -18,7 +18,7 @@ MusicBar::MusicBar(QWidget *parent) : QWidget(parent)
     connect(pm_lengthSlider, SIGNAL(positionChanged(int)), this, SLOT(onLengthSliderPositionChanged(int)));
 
     connect(pm_player, SIGNAL(audioChanged(Audio *)), this, SLOT(onPlayerAudioChanged(Audio *)));
-    connect(pm_player, SIGNAL(stateChanged(bool)), this, SLOT(onPlayerStateChanged(bool)));
+    connect(pm_player, SIGNAL(stateChanged(Player::State)), this, SLOT(onPlayerStateChanged(Player::State)));
     connect(pm_player, SIGNAL(positionChanged(int)), this, SLOT(onPlayerPositionChanged(int)));
 }
 
@@ -122,9 +122,9 @@ void MusicBar::onPlayerAudioChanged(Audio *audio)
     setColor(ColorUtil::backgroundColor(cover));
 }
 
-void MusicBar::onPlayerStateChanged(bool playing)
+void MusicBar::onPlayerStateChanged(Player::State state)
 {
-    pm_playButton->setSelectedIcon(playing ? 1 : 0);
+    pm_playButton->setSelectedIcon(state == Player::State::Playing ? 1 : 0);
 }
 
 void MusicBar::onPlayerPositionChanged(int position)

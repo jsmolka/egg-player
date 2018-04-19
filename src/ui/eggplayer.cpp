@@ -39,7 +39,7 @@ void EggPlayer::onLibraryDoubleClicked(const QModelIndex &index)
     Player *player = pm_musicBar->player();
     IconButton *shuffleButton = pm_musicBar->shuffleButton();
 
-    player->setAudioList(pm_library->audioList());
+    player->setPlaylist(pm_library->audioList());
     player->setIndex(index.row());
     player->setShuffled(shuffleButton->isLocked());
     player->play();

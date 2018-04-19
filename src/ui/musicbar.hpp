@@ -43,7 +43,7 @@ protected:
 private slots:
     void onPlayButtonPressed();
     void onPlayerAudioChanged(Audio *audio);
-    void onPlayerStateChanged(bool playing);
+    void onPlayerStateChanged(Player::State state);
     void onPlayerPositionChanged(int position);
     void onPlayerVolumeChanged(int volume);
     void onLengthSliderMoved(int position);

@@ -13,7 +13,7 @@ class Logger
 {
 public:
     static void create();
-    static void log(const QString &message);
+    static void log(const QString &message, const QString &arg1 = "", const QString &arg2 = "");
 };
 
 #endif // LOGGER_HPP

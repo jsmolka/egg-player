@@ -21,7 +21,7 @@ int Timer::interval() const
     return m_interval;
 }
 
-int Timer::total() const
+qint64 Timer::total() const
 {
     return m_total;
 }

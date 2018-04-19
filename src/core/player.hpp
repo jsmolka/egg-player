@@ -19,6 +19,8 @@ public:
     Player(QObject *parent = nullptr);
     ~Player();
 
+    enum State {Playing, Paused};
+
     void setIndex(int index);
     int index() const;
 
@@ -30,10 +32,10 @@ public:
 
     bool isPlaying() const;
 
-    void setAudioList(const AudioList &audioList);
+    void setPlaylist(const AudioList &playlist);
 
-    Audio * audioAt(int index);
-    Audio * currentAudio();
+    Audio * audioAt(int index) const;
+    Audio * currentAudio() const;
 
     int nextIndex();
     int backIndex();
@@ -45,14 +47,14 @@ public slots:
     void setLoop(bool loop);
     void setShuffled(bool shuffled);
 
-    void play(bool restart = false);
+    void play();
     void pause();
     void next();
     void back();
 
 signals:
     void audioChanged(Audio *audio);
-    void stateChanged(bool playing);
+    void stateChanged(Player::State state);
     void positionChanged(int position);
     void volumeChanged(int volume);
 
@@ -76,6 +78,7 @@ private:
     void shuffle();
     void unshuffle();
 
+    void freeStream();
     void setActiveAudio(int index);
     void setState(bool playing);
 
@@ -84,7 +87,6 @@ private:
     QList<AudioPosition> m_playlist;
     Timer *pm_timer;
     HSTREAM m_stream;
-    HCHANNEL m_channel;
     int m_index;
     int m_volume;
     bool m_loop;

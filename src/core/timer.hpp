@@ -13,7 +13,7 @@ public:
     ~Timer();
 
     int interval() const;
-    int total() const;
+    qint64 total() const;
     int remaining() const;
 
     void start();
