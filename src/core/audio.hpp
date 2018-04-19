@@ -3,7 +3,6 @@
 
 #include <QPainter>
 #include <QPixmap>
-#include <QUrl>
 
 #include <taglib/attachedpictureframe.h>
 #include <taglib/fileref.h>
@@ -31,7 +30,6 @@ public:
     int year() const;
     int track() const;
     int length() const;
-    QUrl url() const;
 
     int seconds() const;
     int minutes() const;

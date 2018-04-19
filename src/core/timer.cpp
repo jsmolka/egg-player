@@ -61,10 +61,13 @@ void Timer::restart()
 
 void Timer::setTotal(qint64 total)
 {
-    // Assume there is no remaining time
     m_total = total;
-    m_remaining = m_interval;
-    start();
+    m_remaining = total % m_interval;
+
+    if (m_remaining == 0)
+        m_remaining = m_interval;
+    if (pm_timer->isActive())
+        start();
 }
 
 void Timer::onTimeout()

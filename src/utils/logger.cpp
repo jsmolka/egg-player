@@ -17,23 +17,23 @@ void Logger::log(const QString &message, const QString &arg1, const QString &arg
 {
     if (Config::log())
     {
-        QString argMessage;
+        QString log = message;
 
         if (!arg1.isEmpty())
-            argMessage = message.arg(arg1);
+            log = log.arg(arg1);
         if (!arg2.isEmpty())
-            argMessage = argMessage.arg(arg2);
+            log = log.arg(arg2);
 
         QString dateTime = QDateTime::currentDateTime().toString("dd-MM-yyyy hh:mm:ss");
-        QString text = QString("[%1] %2\n").arg(dateTime).arg(argMessage);
+        QString text = QString("[%1] %2").arg(dateTime).arg(log);
 
 #ifdef QT_DEBUG
-        qDebug().noquote() << text.left(text.indexOf("\n"));
+        qDebug().noquote() << text;
 #endif
 
         QTextStream out(file);
         out.setCodec("UTF-8");
-        out << text;
+        out << text << "\n";
         out.flush();
     }
 }

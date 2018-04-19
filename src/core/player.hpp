@@ -35,9 +35,6 @@ public:
     Audio * audioAt(int index) const;
     Audio * currentAudio() const;
 
-    int nextIndex();
-    int backIndex();
-
 public slots:
     void setVolume(int volume);
     void setPosition(int position);
@@ -72,12 +69,14 @@ private:
         Audio *audio;
     };
 
+    int nextIndex();
+    int backIndex();
+
     void shuffle();
     void unshuffle();
 
     void freeStream();
-    void setActiveAudio(int index);
-    void setState(bool playing);
+    void setAudio(int index);
 
     QList<AudioPosition> m_playlist;
     Timer *pm_timer;

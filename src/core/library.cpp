@@ -29,9 +29,9 @@ AudioList Library::search(const QString &string, Qt::CaseSensitivity cs)
 {
     AudioList result;
     for (Audio *audio : m_audioList)
-        if (audio->title().contains(string, cs) ||
-                audio->artist().contains(string, cs) ||
-                audio->album().contains(string, cs))
+        if (audio->title().contains(string, cs)
+                || audio->artist().contains(string, cs)
+                || audio->album().contains(string, cs))
             result << audio;
     return result;
 }
