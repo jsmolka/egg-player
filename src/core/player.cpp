@@ -1,11 +1,16 @@
 #include "player.hpp"
 
+/*
+ * Constructor.
+ *
+ * :param parent: pointer of parent object
+ */
 Player::Player(QObject *parent) : QObject(parent)
 {
     qsrand(time(0));
 
     if (!BASS_Init(-1, 44100, 0, 0, NULL))
-        Logger::log("Failed initializing BASS");
+        Logger::log("Player: Cannot initialize BASS");
 
     m_stream = 0;
     m_channel = 0;
@@ -20,10 +25,13 @@ Player::Player(QObject *parent) : QObject(parent)
     connect(pm_timer, SIGNAL(timeout(qint64)), this, SLOT(onTimeout(qint64)));
 }
 
+/*
+ * Destructor.
+ */
 Player::~Player()
 {
     if (!BASS_Free())
-        Logger::log("Failed freeing BASS");
+        Logger::log("Player: Cannot free BASS");
 }
 
 void Player::setIndex(int index)
@@ -92,6 +100,13 @@ Audio * Player::currentAudio()
     return audioAt(m_index);
 }
 
+/*
+ * Calculates the next playlist index based
+ * on playlist size and loop property. Returns
+ * -1 if there is no next index.
+ *
+ * :return: next index
+ */
 int Player::nextIndex()
 {
     if (m_index == -1)
@@ -103,6 +118,13 @@ int Player::nextIndex()
     return ++m_index;
 }
 
+/*
+ * Calculates the previous playlist index based
+ * on playlist size and loop property. Returns
+ * -1 if there is no previuos index.
+ *
+ * :return: previous index
+ */
 int Player::backIndex()
 {
     if (m_index == -1)
@@ -142,11 +164,23 @@ void Player::setPosition(int position)
     }
 }
 
+/*
+ * Setter for loop property.
+ *
+ * :param loop: player loop
+ */
 void Player::setLoop(bool loop)
 {
     m_loop = loop;
 }
 
+/*
+ * Setter for shuffle property. Shuffles
+ * or unshuffles (sorts) the playlist
+ * if an index is set.
+ *
+ * :param shuffled: shuffle or unshuffle
+ */
 void Player::setShuffled(bool shuffled)
 {
     if (m_shuffled != shuffled && m_index != -1)
@@ -167,7 +201,7 @@ void Player::setShuffled(bool shuffled)
 void Player::play(bool restart)
 {
     if (!BASS_ChannelPlay(m_stream, restart))
-        Logger::log("Player: Cannot play stream");
+        Logger::log(QString("Player: Cannot play stream: '%1'").arg(currentAudio()->path()));
     pm_timer->start();
     setState(true);
 }
@@ -180,7 +214,7 @@ void Player::play(bool restart)
 void Player::pause()
 {
     if (!BASS_ChannelPause(m_stream))
-        Logger::log("Player: Cannot pause stream");
+        Logger::log(QString("Player: Cannot pause stream: '%1'").arg(currentAudio()->path()));
     pm_timer->pause();
     setState(false);
 }
