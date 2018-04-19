@@ -27,6 +27,10 @@ void Logger::log(const QString &message, const QString &arg1, const QString &arg
         QString dateTime = QDateTime::currentDateTime().toString("dd-MM-yyyy hh:mm:ss");
         QString text = QString("[%1] %2\n").arg(dateTime).arg(argMessage);
 
+#ifdef QT_DEBUG
+        qDebug().noquote() << text.left(text.indexOf("\n"));
+#endif
+
         QTextStream out(file);
         out.setCodec("UTF-8");
         out << text;

@@ -4,7 +4,7 @@ MusicBar::MusicBar(QWidget *parent) : QWidget(parent)
 {
     m_cache.connect();
     pm_player = new Player(this);
-    pm_player->setVolume(0);//Config::epVolume());
+    pm_player->setVolume(Config::epVolume());
 
     setupUi();
 

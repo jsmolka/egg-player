@@ -260,9 +260,9 @@ void Player::setShuffled(bool shuffled)
  */
 void Player::play()
 {
-    int active = BASS_ChannelIsActive(m_stream);
+    /*int active = BASS_ChannelIsActive(m_stream);
     if (active == BASS_ACTIVE_STOPPED || active == BASS_ACTIVE_PLAYING)
-        return;
+        return;*/
 
     if (!BASS_ChannelPlay(m_stream, false))
         Logger::log("Player: Cannot play stream <%1>", currentAudio()->path());
@@ -279,7 +279,7 @@ void Player::play()
 void Player::pause()
 {
     int active = BASS_ChannelIsActive(m_stream);
-    if (active == BASS_ACTIVE_STOPPED || active == BASS_ACTIVE_PAUSED)
+    if (active == BASS_ACTIVE_PAUSED)
         return;
 
     if (!BASS_ChannelPause(m_stream))
@@ -423,7 +423,8 @@ void Player::setActiveAudio(int index)
     if (m_playing)
         play();
     else
-        pause();
+        // Stream is paused by default, just pause timer
+        pm_timer->pause();
 
     emit audioChanged(currentAudio());
     emit positionChanged(0);

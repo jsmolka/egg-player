@@ -6,6 +6,10 @@
 #include <QFile>
 #include <QTextStream>
 
+#ifdef QT_DEBUG
+#include <QDebug>
+#endif
+
 #include "config.hpp"
 #include "constants.hpp"
 
