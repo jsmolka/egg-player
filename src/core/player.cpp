@@ -77,16 +77,17 @@ bool Player::isShuffled() const
 
 /*
  * Getter for player volume. Volume is
- * an integer between 0 and 100.
+ * an integer between 0 and 100. The factor
+ * of 500 is an empricial value.
  *
  * :return: volume
  */
 int Player::volume() const
 {
-    float volume;
+    float volume = 0;
     if (!BASS_ChannelGetAttribute(m_stream, BASS_ATTRIB_VOL, &volume))
         Logger::log("Player: Cannot get volume <%1>", currentAudio()->path());
-    return (int) volume * VOLUME_FACTOR;
+    return (int) volume * 500;
 }
 
 /*
@@ -97,7 +98,7 @@ int Player::volume() const
 int Player::position() const
 {
     // Could use interval and remaining time aswell
-    // but they would be removed by the division
+    // but they would be removed by the division anyway
     return pm_timer->total() / 1000;
 }
 
@@ -120,9 +121,7 @@ bool Player::isPlaying() const
  */
 void Player::setPlaylist(const AudioList &playlist)
 {
-    if (m_stream != 0)
-        if (!BASS_StreamFree(m_stream))
-            Logger::log("Player: Cannot free BASS stream");
+    freeStream();
 
     m_stream = 0;
     m_index = -1;
@@ -193,7 +192,7 @@ int Player::backIndex()
 
 /*
  * Setter for player volume. Should be between 0 and 100.
- * The volume gets divided by VOLUME_FACTOR to get the
+ * The volume gets divided by 500 (empirical) to get the
  * float value necessary for BASS.
  *
  * :param volume: volume
@@ -203,7 +202,7 @@ void Player::setVolume(int volume)
 {
     m_volume = volume;
     volume = qMin(100, qMax(volume, 0));
-    BASS_ChannelSetAttribute(m_stream, BASS_ATTRIB_VOL, (float) volume / VOLUME_FACTOR);
+    BASS_ChannelSetAttribute(m_stream, BASS_ATTRIB_VOL, (float) volume / 500);
     emit volumeChanged(volume);
 }
 
@@ -261,6 +260,10 @@ void Player::setShuffled(bool shuffled)
  */
 void Player::play()
 {
+    int active = BASS_ChannelIsActive(m_stream);
+    if (active == BASS_ACTIVE_STOPPED || active == BASS_ACTIVE_PLAYING)
+        return;
+
     if (!BASS_ChannelPlay(m_stream, false))
         Logger::log("Player: Cannot play stream <%1>", currentAudio()->path());
     m_playing = true;
@@ -275,6 +278,10 @@ void Player::play()
  */
 void Player::pause()
 {
+    int active = BASS_ChannelIsActive(m_stream);
+    if (active == BASS_ACTIVE_STOPPED || active == BASS_ACTIVE_PAUSED)
+        return;
+
     if (!BASS_ChannelPause(m_stream))
         Logger::log("Player: Cannot pause stream <%1>", currentAudio()->path());
     m_playing = false;
@@ -317,12 +324,15 @@ void Player::back()
     else
     {
         m_index = 0;
+        pause();
         setActiveAudio(0);
     }
 }
 
 /*
- * Slot for timer timeout.
+ * Slot for timer timeout. It also manages
+ * playing the next audio if the current
+ * one finishes.
  *
  * :param total: elapsed time in ms
  * :emit: positionChanged
@@ -330,11 +340,11 @@ void Player::back()
 void Player::onTimeout(qint64 total)
 {
     total = total / 1000;
-    // Prevent showing extra second after end
-    if (total <= currentAudio()->length())
+
+    if (total < currentAudio()->length())
         emit positionChanged(total);
-
-
+    else
+        next();
 }
 
 /*
@@ -400,6 +410,7 @@ void Player::freeStream()
  *
  * :param index: index of audio
  * :emit audioChanged: current audio
+ * :emit positionChanged: reset position
  */
 void Player::setActiveAudio(int index)
 {
@@ -408,8 +419,12 @@ void Player::setActiveAudio(int index)
 
     setVolume(m_volume);
     pm_timer->restart();
+
     if (m_playing)
         play();
+    else
+        pause();
 
     emit audioChanged(currentAudio());
+    emit positionChanged(0);
 }

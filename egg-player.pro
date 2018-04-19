@@ -7,7 +7,6 @@ RC_ICONS += \
 QT += \
     core \
     widgets \
-    multimedia \
     sql
 
 INCLUDEPATH += \

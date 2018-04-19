@@ -1,8 +1,6 @@
 #ifndef PLAYER_HPP
 #define PLAYER_HPP
 
-#include <QMediaPlayer>
-#include <QMediaPlaylist>
 #include <QObject>
 
 #include <bass/bass.h>
@@ -60,7 +58,6 @@ signals:
 
 private slots:
     void onTimeout(qint64 total);
-    void onMediaStatusChanged(QMediaPlayer::MediaStatus status);
 
 private:
     struct AudioPosition
@@ -81,8 +78,6 @@ private:
     void freeStream();
     void setActiveAudio(int index);
     void setState(bool playing);
-
-    const int VOLUME_FACTOR = 500;
 
     QList<AudioPosition> m_playlist;
     Timer *pm_timer;
