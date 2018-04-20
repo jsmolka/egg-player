@@ -9,6 +9,10 @@
 #include "fileutil.hpp"
 #include "logger.hpp"
 
+/*
+ * Checks if all needed resources are
+ * available.
+ */
 void checkResources()
 {
     QStringList resources =
@@ -21,9 +25,14 @@ void checkResources()
 
     for (QString resource : resources)
         if (!FileUtil::exists(resource))
-            Logger::log(QString("Resource not found: '%1'").arg(resource));
+            Logger::log("Resource not found '%1'", resource);
 }
 
+/*
+ * Loads custom font.
+ *
+ * :return: custom font
+ */
 QFont loadFont()
 {
     int id = QFontDatabase::addApplicationFont(FONT_LATO);
@@ -36,6 +45,11 @@ QFont loadFont()
     return font;
 }
 
+/*
+ * Sets application up.
+ *
+ * :param app: pointer to application
+ */
 void setup(QApplication *app)
 {
     Config::create();
@@ -48,6 +62,13 @@ void setup(QApplication *app)
     app->setFont(loadFont());
 }
 
+/*
+ * Main function.
+ *
+ * :param argc: argc
+ * :param argv: argv
+ * :return: exit code
+ */
 int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);

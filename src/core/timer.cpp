@@ -1,5 +1,11 @@
 #include "timer.hpp"
 
+/*
+ * Constructor.
+ *
+ * :param interval: interval in milliseconds
+ * :param parent: parent object pointer
+ */
 Timer::Timer(int interval, QObject *parent) : QObject(parent)
 {
     pm_timer = new QTimer(parent);
@@ -11,41 +17,68 @@ Timer::Timer(int interval, QObject *parent) : QObject(parent)
     connect(pm_timer, SIGNAL(timeout()), this, SLOT(onTimeout()));
 }
 
+/*
+ * Destructor.
+ */
 Timer::~Timer()
 {
 
 }
 
+/*
+ * Getter for interval property.
+ *
+ * :return: interval
+ */
 int Timer::interval() const
 {
     return m_interval;
 }
 
+/*
+ * Getter for total time property.
+ *
+ * :return: total elapsed time
+ */
 qint64 Timer::total() const
 {
     return m_total;
 }
 
+/*
+ * Getter for remaining time property.
+ *
+ * :return: remaining time
+ */
 int Timer::remaining() const
 {
     return m_remaining;
 }
 
+/*
+ * Starts the timer using the remaining time. This one is either smaller
+ * than the interval which means that there is remaining time left. After
+ * the next timeout the remaining time is equal to the interval again.
+ * Otherwise they are equal which means that there is no remaining time
+ * left.
+ */
 void Timer::start()
 {
-    // The remaining time is either equal to the interval or it is smaller
-    // which means that the timer has been paused and there is a smaller time
-    // span to the next timeout than the interval. After the next timeout the
-    // remaining time will be equal to the inteval again.
     pm_timer->start(m_remaining);
 }
 
+/*
+ * Stop the timer and sets the remaining time.
+ */
 void Timer::pause()
 {
     m_remaining = pm_timer->remainingTime();
     pm_timer->stop();
 }
 
+/*
+ * Stops the timer
+ */
 void Timer::stop()
 {
     m_total = 0;
@@ -53,12 +86,22 @@ void Timer::stop()
     pm_timer->stop();
 }
 
+/*
+ * Restarts the timer.
+ */
 void Timer::restart()
 {
     stop();
     start();
 }
 
+/*
+ * Set total value of timer. The remaining
+ * time get calculated and the timer starts
+ * immediately if it was active.
+ *
+ * :param total: new total
+ */
 void Timer::setTotal(qint64 total)
 {
     m_total = total;
@@ -70,6 +113,11 @@ void Timer::setTotal(qint64 total)
         start();
 }
 
+/*
+ * Slot for timer timeout. It increments
+ * the total time and resets the remaining
+ * time to interval time.
+ */
 void Timer::onTimeout()
 {
     if (m_remaining != m_interval)

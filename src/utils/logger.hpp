@@ -18,6 +18,9 @@ class Logger
 public:
     static void create();
     static void log(const QString &message, const QString &arg1 = "", const QString &arg2 = "");
+
+private:
+    static QFile *file;
 };
 
 #endif // LOGGER_HPP

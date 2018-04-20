@@ -18,7 +18,7 @@ public:
     void setIcons(const QList<QIcon> &icons);
     QList<QIcon> icons() const;
 
-    void setSelectedIcon(int selected);
+    void setSelectedIcon(int index);
     int selectedIcon() const;
 
     void setLocked(bool locked);
@@ -37,7 +37,7 @@ private slots:
 
 private:
     QList<QIcon> m_icons;
-    bool m_selected;
+    bool m_index;
     bool m_lockable;
     bool m_locked;
 };

@@ -7,17 +7,14 @@ A Groove Music like music player.
 - error logs
 
 ## Roadmap
-- documentation
-- playlist support
+- [ ]documentation
+- [ ] playlist support
 - [x] use [bass.dll](http://www.un4seen.com/) as audio backend
-- write own tag library to support unicode characters based on [libmp3](https://github.com/TheOnlyCaky/libmp3)
-- proper scaling on different machines
-- proper multithreading
-- system wide shortcuts
-- reactive cache
-- :heavy_check_mark: test
-:heavy_check_mark: test2
-- yay
+- [ ] write own tag library to support unicode characters based on [libmp3](https://github.com/TheOnlyCaky/libmp3)
+- [ ] proper scaling on different machines
+- [ ] proper multithreading
+- [ ] system wide shortcuts
+- [ ] reactive cache
 
 ## Things to do
 - black title bar through [Windows API](https://msdn.microsoft.com/en-us/library/windows/desktop/ms724940%28v=vs.85%29.aspx)

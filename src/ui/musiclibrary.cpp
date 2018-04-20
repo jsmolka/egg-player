@@ -1,5 +1,11 @@
 #include "musiclibrary.hpp"
 
+/*
+ * Constructor.
+ *
+ * :param library: library pointer
+ * :param parent: parent widget pointer
+ */
 MusicLibrary::MusicLibrary(Library *library, QWidget *parent) : QListWidget(parent)
 {
     pm_library = library;
@@ -7,11 +13,17 @@ MusicLibrary::MusicLibrary(Library *library, QWidget *parent) : QListWidget(pare
     setupUi();
 }
 
+/*
+ * Destructor.
+ */
 MusicLibrary::~MusicLibrary()
 {
 
 }
 
+/*
+ * Sets up all user interface related things.
+ */
 void MusicLibrary::setupUi()
 {
     setStyleSheet(FileUtil::read(CSS_MUSICLIBRARY));

@@ -1,18 +1,25 @@
 #include "logger.hpp"
 
-QFile *file = nullptr;
-
+/*
+ * Open and clear logger file.
+ */
 void Logger::create()
 {
     if (!file)
     {
-        // Open and clear file
         file = new QFile(LOG_PATH, QApplication::instance());
         file->open(QIODevice::Append | QIODevice::Text);
         file->resize(0);
     }
 }
 
+/*
+ * Logs a message with two possible args.
+ *
+ * :param message: message
+ * :param arg1: first arg
+ * :param arg2: seconds arg
+ */
 void Logger::log(const QString &message, const QString &arg1, const QString &arg2)
 {
     if (Config::log())
@@ -37,3 +44,8 @@ void Logger::log(const QString &message, const QString &arg1, const QString &arg
         out.flush();
     }
 }
+
+/*
+ * Files used for logging.
+ */
+QFile * Logger::file = nullptr;

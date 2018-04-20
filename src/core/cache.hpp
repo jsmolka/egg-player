@@ -19,7 +19,7 @@ public:
 
     bool connect();
     void close();
-    bool insert(Audio *audio);
+    bool insert(Audio *audio, int size = 200);
     bool exists(Audio *audio);
     QPixmap cover(const QString &path, int size);
 

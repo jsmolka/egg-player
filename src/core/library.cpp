@@ -1,30 +1,54 @@
 #include "library.hpp"
 
+/*
+ * Constructor.
+ *
+ * :param path: library path
+ */
 Library::Library(const QString &path)
 {
     if (FileUtil::exists(path))
         loadFiles(path);
     else
-        Logger::log(QString("Library path does not exist: %1").arg(path));
+        Logger::log("Library: Path does not exist '%1'", path);
 }
 
+/*
+ * Destructor.
+ */
 Library::~Library()
 {
     for (Audio *audio : m_audioList)
-        if (audio)
-            delete audio;
+        delete audio;
 }
 
+/*
+ * Getter for audio list property.
+ *
+ * :return: audio list
+ */
 AudioList Library::audioList() const
 {
     return m_audioList;
 }
 
+/*
+ * Checks if library is empty.
+ *
+ * :return: is empty
+ */
 bool Library::isEmpty() const
 {
     return m_audioList.isEmpty();
 }
 
+/*
+ * Searches for string in library.
+ *
+ * :param string: string to search for
+ * :param cs: case sensive
+ * :return: list of audio pointer
+ */
 AudioList Library::search(const QString &string, Qt::CaseSensitivity cs)
 {
     AudioList result;
@@ -36,22 +60,36 @@ AudioList Library::search(const QString &string, Qt::CaseSensitivity cs)
     return result;
 }
 
+/*
+ * Sorts by title.
+ */
 void Library::sortByTitle()
 {
     m_audioList.sortByTitle();
 }
 
-Audio * Library::audioAt(int idx)
+/*
+ * Returns audio at index.
+ *
+ * :param index: index
+ * :return: audio pointer
+ */
+Audio * Library::audioAt(int index)
 {
-    return m_audioList[idx];
+    return m_audioList[index];
 }
 
+/*
+ * Loads library files.
+ *
+ * :param path: path with files
+ */
 void Library::loadFiles(const QString &path)
 {
     QStringList files = FileUtil::glob(path, "*.mp3");
     if (files.isEmpty())
     {
-        Logger::log(QString("Library path contains no files: %1").arg(path));
+        Logger::log("Library: Path contains no files '%1'", path);
         return;
     }
 

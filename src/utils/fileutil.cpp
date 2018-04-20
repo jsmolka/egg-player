@@ -1,11 +1,17 @@
 #include "fileutil.hpp"
 
+/*
+ * Read a  file.
+ *
+ * :param path: file
+ * :return: file content or empty string
+ */
 QString FileUtil::read(const QString &path)
 {
     QFile file(path);
     if (!file.open(QFile::ReadOnly | QFile::Text))
     {
-        Logger::log(QString("Failed reading file: '%1'").arg(path));
+        Logger::log("FileUtil: Cannot read file '%1'", path);
         return QString();
     }
 
@@ -17,11 +23,24 @@ QString FileUtil::read(const QString &path)
     return text;
 }
 
+/*
+ * Checks if file exists.
+ *
+ * :param path: file
+ * :return: file exists
+ */
 bool FileUtil::exists(const QString &path)
 {
     return QFileInfo(path).exists();
 }
 
+/*
+ * Gets either dir of dir or
+ * dir of file.
+ *
+ * :param path: file
+ * :return: directory
+ */
 QDir FileUtil::dir(const QString &path)
 {
     QFileInfo info(path);
@@ -35,6 +54,15 @@ QDir FileUtil::dir(const QString &path)
     return QDir();
 }
 
+/*
+ * Globbes files with a certain pattern.
+ * Behaves simular to Pythons glob function.
+ *
+ * :param path: path to search in
+ * :param pattern: patter to apply
+ * :param recursive: search dir resursively
+ * :return: list of paths
+ */
 QStringList FileUtil::glob(const QString &path, const QString &pattern, bool recursive)
 {
     QDir dir = FileUtil::dir(path);
@@ -54,6 +82,12 @@ QStringList FileUtil::glob(const QString &path, const QString &pattern, bool rec
     return result;
 }
 
+/*
+ * Returns file name of file.
+ *
+ * :param file: file
+ * :return: file name
+ */
 QString FileUtil::fileName(const QString &file)
 {
     return QFileInfo(file).baseName();

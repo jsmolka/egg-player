@@ -20,7 +20,7 @@ public:
     static void setFontSize(double size);
     static double fontSize();
 
-    static void setEpLibrary(const QString &string);
+    static void setEpLibrary(const QString &path);
     static QString epLibrary();
 
     static void setEpVolume(int volume);
@@ -48,6 +48,8 @@ public:
     static int mbTimeLabelWidth();
 
 private:
+    static QSettings *settings;
+
     static const QString kLog;
     static const QString kFontSize;
     static const QString kEpLibrary;

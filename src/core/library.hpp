@@ -20,7 +20,7 @@ public:
 
     AudioList search(const QString &string, Qt::CaseSensitivity cs = Qt::CaseInsensitive);
     void sortByTitle();
-    Audio * audioAt(int idx);
+    Audio * audioAt(int index);
 
 private:
     void loadFiles(const QString &path);

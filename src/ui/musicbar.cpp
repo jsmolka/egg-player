@@ -1,5 +1,10 @@
 #include "musicbar.hpp"
 
+/*
+ * Constructor.
+ *
+ * :param parent: parent widget
+ */
 MusicBar::MusicBar(QWidget *parent) : QWidget(parent)
 {
     m_cache.connect();
@@ -22,71 +27,138 @@ MusicBar::MusicBar(QWidget *parent) : QWidget(parent)
     connect(pm_player, SIGNAL(positionChanged(int)), this, SLOT(onPlayerPositionChanged(int)));
 }
 
+/*
+ * Destructor.
+ */
 MusicBar::~MusicBar()
 {
     m_cache.close();
 }
 
+/*
+ * Getter for player.
+ *
+ * :return: player pointer
+ */
 Player * MusicBar::player()
 {
     return pm_player;
 }
 
+/*
+ * Getter for cover label.
+ *
+ * :return: cover label pointer
+ */
 QLabel * MusicBar::coverLabel()
 {
     return pm_coverLabel;
 }
 
+/*
+ * Getter for track label.
+ *
+ * :return: track label pointer
+ */
 QLabel * MusicBar::trackLabel()
 {
     return pm_trackLabel;
 }
 
+/*
+ * Getter for time label.
+ *
+ * :return: time label pointer
+ */
 QLabel * MusicBar::currentTimeLabel()
 {
     return pm_currentTimeLabel;
 }
 
+/*
+ * Getter for time label.
+ *
+ * :return: time label pointer
+ */
 QLabel * MusicBar::totalTimeLabel()
 {
     return pm_totalTimeLabel;
 }
 
+/*
+ * Getter for length slider.
+ *
+ * :return: length slider pointer
+ */
 LengthSlider * MusicBar::lengthSlider()
 {
     return pm_lengthSlider;
 }
 
+/*
+ * Getter for play button.
+ *
+ * :return: play button pointer
+ */
 IconButton * MusicBar::playButton()
 {
     return pm_playButton;
 }
 
+/*
+ * Getter for next button.
+ *
+ * :return: next button pointer
+ */
 IconButton * MusicBar::nextButton()
 {
     return pm_nextButton;
 }
 
+/*
+ * Getter for back button.
+ *
+ * :return: back button pointer
+ */
 IconButton * MusicBar::backButton()
 {
     return pm_backButton;
 }
 
+/*
+ * Getter for shuffle button.
+ *
+ * :return: shuffle button pointer
+ */
 IconButton * MusicBar::shuffleButton()
 {
     return pm_shuffleButton;
 }
 
+/*
+ * Getter for loop button.
+ *
+ * :return: loop button pointer
+ */
 IconButton * MusicBar::loopButton()
 {
     return pm_loopButton;
 }
 
+/*
+ * Getter for volume button.
+ *
+ * :return: volume button pointer
+ */
 IconButton * MusicBar::volumeButton()
 {
     return pm_volumeButton;
 }
 
+/*
+ * Custom repaint event. Subclassing
+ * allows custom css.
+ */
 void MusicBar::paintEvent(QPaintEvent *)
 {
     QStyleOption option;
@@ -95,6 +167,10 @@ void MusicBar::paintEvent(QPaintEvent *)
     style()->drawPrimitive(QStyle::PE_Widget, &option, &painter, this);
 }
 
+/*
+ * Slot for play button press. Plays
+ * or pauses player.
+ */
 void MusicBar::onPlayButtonPressed()
 {
     if (pm_player->index() != -1)
@@ -106,6 +182,12 @@ void MusicBar::onPlayButtonPressed()
     }
 }
 
+/*
+ * Slot for audio change. Sets up cover,
+ * track label, time labels and length slider.
+ *
+ * :param audio: audio pointer
+ */
 void MusicBar::onPlayerAudioChanged(Audio *audio)
 {
     QPixmap cover = m_cache.cover(audio->path(), Config::mbCoverSize());
@@ -122,11 +204,23 @@ void MusicBar::onPlayerAudioChanged(Audio *audio)
     setColor(ColorUtil::backgroundColor(cover));
 }
 
+/*
+ * Slot for player state change. Sets corresponding
+ * icon of play button.
+ *
+ * :param state: current player state
+ */
 void MusicBar::onPlayerStateChanged(Player::State state)
 {
     pm_playButton->setSelectedIcon(state == Player::State::Playing ? 1 : 0);
 }
 
+/*
+ * Slot for player position change. Sets
+ * slider position if it is not pressed.
+ *
+ * :param position: current position in seconds
+ */
 void MusicBar::onPlayerPositionChanged(int position)
 {
     if (!pm_lengthSlider->isPressed())
@@ -136,22 +230,43 @@ void MusicBar::onPlayerPositionChanged(int position)
     }
 }
 
+/*
+ * Slot for player volume change. Saves
+ * the saved volume in config for later use.
+ *
+ * :param volume: volume
+ */
 void MusicBar::onPlayerVolumeChanged(int volume)
 {
     Config::setEpVolume(volume);
 }
 
+/*
+ * Slot for slider move. Set the value
+ * of current time label to reflect change.
+ *
+ * :param position: position in seconds
+ */
 void MusicBar::onLengthSliderMoved(int position)
 {
     pm_currentTimeLabel->setText(lengthString(position));
 }
 
+/*
+ * Slot for slider position change. Updates the current
+ * time and player position accordingly.
+ *
+ * :param position: position in seconds
+ */
 void MusicBar::onLengthSliderPositionChanged(int position)
 {
     pm_currentTimeLabel->setText(lengthString(position));
     pm_player->setPosition(position);
 }
 
+/*
+ * Sets up all user inferface related things.
+ */
 void MusicBar::setupUi()
 {
     QGridLayout *layout = new QGridLayout(this);
@@ -223,11 +338,21 @@ void MusicBar::setupUi()
     }
 }
 
+/*
+ * Returns default cover.
+ *
+ * :return: default cover
+ */
 QPixmap MusicBar::defaultCover()
 {
     return QPixmap(IMG_DEFAULT_COVER).scaled(Config::mbCoverSize(), Config::mbCoverSize(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
 }
 
+/*
+ * Converts seconds into time string.
+ *
+ * :param length: seconds
+ */
 QString MusicBar::lengthString(int length)
 {
     int seconds = length % 60;
@@ -239,6 +364,11 @@ QString MusicBar::lengthString(int length)
     return QString("%1:%2").arg(minutesString, secondsString);
 }
 
+/*
+ * Sets music bar color.
+ *
+ * :param color: color
+ */
 void MusicBar::setColor(const QColor &color)
 {
     QPalette palette;

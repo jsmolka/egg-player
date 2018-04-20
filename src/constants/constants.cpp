@@ -1,10 +1,15 @@
 #include "constants.hpp"
 
+/*
+ * This function returns the egg player
+ * documents directory and creates it if
+ * it does not exist already.
+ *
+ * :return: path
+ */
 QString documents()
 {
     QString directory = QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation) + "/egg-player";
-
-    // Create directory if it does not exist
     QDir().mkpath(directory);
 
     return directory;

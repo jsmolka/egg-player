@@ -1,5 +1,12 @@
 #include "colorutil.hpp"
 
+/*
+ * Darkens a rgb cover.
+ *
+ * :param color: color to darken
+ * :param factor: factor to darken with (1 - factor)
+ * :return: darkened color
+ */
 QColor ColorUtil::darker(const QColor &color, qreal factor)
 {
     qreal r = (qreal) color.red() * (1 - factor);
@@ -9,6 +16,14 @@ QColor ColorUtil::darker(const QColor &color, qreal factor)
     return QColor(r, g, b);
 }
 
+/*
+ * Calculates average color by iterating
+ * over every pixel, adding them and then
+ * dividing by the pixel count.
+ *
+ * :param image: image to process
+ * :return: average color
+ */
 QColor ColorUtil::averageColor(const QImage &image)
 {
     quint32 red = 0;
@@ -33,6 +48,19 @@ QColor ColorUtil::averageColor(const QImage &image)
     return QColor(red, green, blue);
 }
 
+/*
+ * Calculates dominent color of an image. The algorithm
+ * iterates over every pixel, converts them into the
+ * HSV color space and creates a mapped heuristic out of
+ * them.
+ * There are always two heuristics. One holds all
+ * 'colorful' colors and the other one holds grey scale
+ * colors. If there are no 'colorful' colors the grey scale
+ * gets chosen.
+ *
+ * :param image: image to process
+ * :return: dominant color
+ */
 QColor ColorUtil::dominantColor(const QImage &image)
 {
     // Map 360 hues to RANGE
@@ -137,14 +165,29 @@ QColor ColorUtil::dominantColor(const QImage &image)
     }
 }
 
+/*
+ * Calculates background color by darkening
+ * the dominant color to prevent too bright
+ * colors.
+ *
+ * :param image: image to process
+ * :param size: image size to scale to
+ * :return: background color
+ */
 QColor ColorUtil::backgroundColor(const QImage &image, quint32 size)
 {
     QColor color = dominantColor(image.scaled(size, size));
 
-    // Darken the color to prevent too bright colors
     return darker(color.toRgb(), 0.4);
 }
 
+/*
+ * Overloaded function.
+ *
+ * :param image: image to process
+ * :param size: image size to scale to
+ * :return: background color
+ */
 QColor ColorUtil::backgroundColor(const QPixmap &image, quint32 size)
 {
     return backgroundColor(image.toImage(), size);
