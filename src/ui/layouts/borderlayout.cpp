@@ -35,9 +35,9 @@ BorderLayout::~BorderLayout()
 }
 
 /*
- * Adds item to layout.
+ * Adds item to layout west position.
  *
- * :param item: item to add
+ * :param item: item
  */
 void BorderLayout::addItem(QLayoutItem *item)
 {
@@ -56,7 +56,7 @@ void BorderLayout::addWidget(QWidget *widget, Position position)
 }
 
 /*
- * Gets amout of items.
+ * Returns item count.
  *
  * :return: item count
  */
@@ -66,9 +66,10 @@ int BorderLayout::count() const
 }
 
 /*
- * Gets item at index.
+ * Returns item pointer at index. Returns
+ * nullptr if there is not item at the index.
  *
- * :param index: index to get
+ * :param index: index
  * :return: wrapper pointer or nullptr
  */
 QLayoutItem * BorderLayout::itemAt(int index) const
@@ -80,7 +81,7 @@ QLayoutItem * BorderLayout::itemAt(int index) const
 /*
  * Returns minimum size.
  *
- * :return: size
+ * :return: minimum size
  */
 QSize BorderLayout::minimumSize() const
 {
@@ -90,7 +91,7 @@ QSize BorderLayout::minimumSize() const
 /*
  * Sets geometry.
  *
- * :param rect: rectangle for geometry.
+ * :param rect: rectangle for geometry
  */
 void BorderLayout::setGeometry(const QRect &rect)
 {
@@ -188,10 +189,11 @@ QSize BorderLayout::sizeHint() const
 }
 
 /*
- * Takes item at index.
+ * Takes item at index. Returns item pointer
+ * if the index exists else a nullptr.
  *
- * :param index: index of item
- * :return: pointer to item at index or nullptr
+ * :param index: index
+ * :return: item pointer or nullptr
  */
 QLayoutItem * BorderLayout::takeAt(int index)
 {
@@ -206,8 +208,8 @@ QLayoutItem * BorderLayout::takeAt(int index)
 /*
  * Adds layout item at position.
  *
- * :param item: item to add
- * :param position: item position
+ * :param item: item
+ * :param position: position
  */
 void BorderLayout::add(QLayoutItem *item, Position position)
 {
@@ -217,7 +219,7 @@ void BorderLayout::add(QLayoutItem *item, Position position)
 /*
  * Calculates size.
  *
- * :param sizeType: type of size
+ * :param sizeType: size type
  * :return: calculated size
  */
 QSize BorderLayout::calculateSize(SizeType sizeType) const

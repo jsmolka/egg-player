@@ -1,7 +1,7 @@
 #include "audiolist.hpp"
 
 /*
- * Sorts audio list by title
+ * Sorts audio list by title.
  */
 void AudioList::sortByTitle()
 {
@@ -10,7 +10,7 @@ void AudioList::sortByTitle()
 }
 
 /*
- * Sorts audio list by artist
+ * Sorts audio list by artist.
  */
 void AudioList::sortByArtist()
 {
@@ -19,7 +19,7 @@ void AudioList::sortByArtist()
 }
 
 /*
- * Sorts audio list by album
+ * Sorts audio list by album.
  */
 void AudioList::sortByAlbum()
 {
@@ -28,7 +28,7 @@ void AudioList::sortByAlbum()
 }
 
 /*
- * Sorts audio list by track
+ * Sorts audio list by track.
  */
 void AudioList::sortByTrack()
 {

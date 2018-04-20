@@ -4,7 +4,7 @@
  * Constructor.
  *
  * :param library: library pointer
- * :param parent: parent widget pointer
+ * :param parent: parent pointer
  */
 MusicLibrary::MusicLibrary(Library *library, QWidget *parent) : QListWidget(parent)
 {
@@ -22,7 +22,7 @@ MusicLibrary::~MusicLibrary()
 }
 
 /*
- * Sets up all user interface related things.
+ * Sets up user interface.
  */
 void MusicLibrary::setupUi()
 {

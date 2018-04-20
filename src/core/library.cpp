@@ -1,7 +1,8 @@
 #include "library.hpp"
 
 /*
- * Constructor.
+ * Constructor. Loads file from the
+ * library path.
  *
  * :param path: library path
  */
@@ -35,7 +36,7 @@ AudioList Library::audioList() const
 /*
  * Checks if library is empty.
  *
- * :return: is empty
+ * :return: empty
  */
 bool Library::isEmpty() const
 {
@@ -43,9 +44,9 @@ bool Library::isEmpty() const
 }
 
 /*
- * Searches for string in library.
+ * Searches for a string in the library.
  *
- * :param string: string to search for
+ * :param string: string
  * :param cs: case sensive
  * :return: list of audio pointer
  */
@@ -80,7 +81,8 @@ Audio * Library::audioAt(int index)
 }
 
 /*
- * Loads library files.
+ * Loads library files. Inserts cover into
+ * cache if they do not exist already.
  *
  * :param path: path with files
  */

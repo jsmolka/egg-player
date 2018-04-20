@@ -5,7 +5,7 @@
  * documents directory and creates it if
  * it does not exist already.
  *
- * :return: path
+ * :return: directory
  */
 QString documents()
 {

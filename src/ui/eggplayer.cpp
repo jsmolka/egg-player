@@ -10,7 +10,7 @@ EggPlayer::EggPlayer()
 
     setupUi();
 
-    connect(pm_musicLibrary, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(onLibraryDoubleClicked(QModelIndex)));
+    connect(pm_musicLibrary, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(onMusicLibraryDoubleClicked(QModelIndex)));
 }
 
 /*
@@ -23,7 +23,7 @@ EggPlayer::~EggPlayer()
 
 /*
  * Loads the saved registry position
- * and shows the windows. Should be called
+ * and shows the window. Should be called
  * instead of show().
  */
 void EggPlayer::showSavedPosition()
@@ -40,10 +40,10 @@ void EggPlayer::showSavedPosition()
 }
 
 /*
- * Close event. Reimplemented to save
+ * Implemented close event to save
  * current position before closing.
  *
- * :param event: event pointer
+ * :param event: event
  */
 void EggPlayer::closeEvent(QCloseEvent *event)
 {
@@ -52,13 +52,12 @@ void EggPlayer::closeEvent(QCloseEvent *event)
 }
 
 /*
- * Slot for library double clicked event.
- * It starts the player with the clicked
- * audio.
+ * Slot for music library double clicked event.
+ * It starts the player with the clicked audio.
  *
- * :param index: index of audio in library.
+ * :param index: music library index
  */
-void EggPlayer::onLibraryDoubleClicked(const QModelIndex &index)
+void EggPlayer::onMusicLibraryDoubleClicked(const QModelIndex &index)
 {
     Player *player = pm_musicBar->player();
     IconButton *shuffleButton = pm_musicBar->shuffleButton();
@@ -70,8 +69,7 @@ void EggPlayer::onLibraryDoubleClicked(const QModelIndex &index)
 }
 
 /*
- * Creates user interface by initializing
- * all necessary components.
+ * Sets up user interface.
  */
 void EggPlayer::setupUi()
 {

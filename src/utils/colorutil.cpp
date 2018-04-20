@@ -3,8 +3,8 @@
 /*
  * Darkens a rgb cover.
  *
- * :param color: color to darken
- * :param factor: factor to darken with (1 - factor)
+ * :param color: color
+ * :param factor: factor
  * :return: darkened color
  */
 QColor ColorUtil::darker(const QColor &color, qreal factor)
@@ -21,7 +21,7 @@ QColor ColorUtil::darker(const QColor &color, qreal factor)
  * over every pixel, adding them and then
  * dividing by the pixel count.
  *
- * :param image: image to process
+ * :param image: image
  * :return: average color
  */
 QColor ColorUtil::averageColor(const QImage &image)
@@ -51,14 +51,13 @@ QColor ColorUtil::averageColor(const QImage &image)
 /*
  * Calculates dominent color of an image. The algorithm
  * iterates over every pixel, converts them into the
- * HSV color space and creates a mapped heuristic out of
+ * HSV color space and creates two mapped heuristics out of
  * them.
- * There are always two heuristics. One holds all
- * 'colorful' colors and the other one holds grey scale
- * colors. If there are no 'colorful' colors the grey scale
- * gets chosen.
+ * Those hold colorful and grey scale colors. The algorithm
+ * tries to return a colorful color. If there is none a grey
+ * scale gets returned.
  *
- * :param image: image to process
+ * :param image: image
  * :return: dominant color
  */
 QColor ColorUtil::dominantColor(const QImage &image)
@@ -66,7 +65,7 @@ QColor ColorUtil::dominantColor(const QImage &image)
     // Map 360 hues to RANGE
     const quint32 RANGE = 18;
 
-    // Initialize arrays for 'colorful' colors
+    // Initialize arrays for colorful colors
     std::array<quint32, RANGE> cCounts;
     std::array<quint32, RANGE> cHues;
     std::array<quint32, RANGE> cSaturations;
@@ -104,7 +103,7 @@ QColor ColorUtil::dominantColor(const QImage &image)
 
         quint32 index = hue / (360 / RANGE);
 
-        // Check if color is 'colorful' or a grey scale
+        // Check if color is a grey scale or colorful
         if (qAbs(red - green) < 25 && qAbs(green - blue) < 25 && qAbs(red - blue) < 25)
         {
             gCounts[index]++;
@@ -121,7 +120,7 @@ QColor ColorUtil::dominantColor(const QImage &image)
         }
     }
 
-    // Try to get the dominant 'colorful' color
+    // Try to get the dominant colorful color
     quint32 index = 0;
     quint32 max = 0;
     for (quint32 i = 0; i < RANGE; i++)
@@ -144,7 +143,7 @@ QColor ColorUtil::dominantColor(const QImage &image)
     }
     else
     {
-        // Choose a grey scale if there is no 'colorful' color
+        // Choose a grey scale instead
         index = 0;
         max = 0;
         for (quint32 i = 0; i < RANGE; i++)
@@ -168,10 +167,11 @@ QColor ColorUtil::dominantColor(const QImage &image)
 /*
  * Calculates background color by darkening
  * the dominant color to prevent too bright
- * colors.
+ * colors. It also scales the picture to prevent
+ * too long run times to large images.
  *
- * :param image: image to process
- * :param size: image size to scale to
+ * :param image: image
+ * :param size: size for scaling
  * :return: background color
  */
 QColor ColorUtil::backgroundColor(const QImage &image, quint32 size)
@@ -184,8 +184,8 @@ QColor ColorUtil::backgroundColor(const QImage &image, quint32 size)
 /*
  * Overloaded function.
  *
- * :param image: image to process
- * :param size: image size to scale to
+ * :param image: image
+ * :param size: size for scaling
  * :return: background color
  */
 QColor ColorUtil::backgroundColor(const QPixmap &image, quint32 size)

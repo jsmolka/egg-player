@@ -17,8 +17,9 @@ Cache::~Cache()
 }
 
 /*
- * Connects to database. Either adds it
- * to sql database or opens it from there.
+ * Connects to the database by either adding it to
+ * the sql database or reopening it from there. It
+ * also creates the tables if they do not exist already.
  *
  * :return: success
  */
@@ -83,8 +84,8 @@ void Cache::close()
  * stored inside the cache because taglib is
  * fast enough to reload tags at every startup.
  *
- * :param audio: pointer to audio
- * :param size: size of inserted cover, default 200
+ * :param audio: audio pointer
+ * :param size: cover size, default 200
  * :return: success
  */
 bool Cache::insert(Audio *audio, int size)
@@ -95,7 +96,6 @@ bool Cache::insert(Audio *audio, int size)
     if (id == -1)
         id = insertCover(bytes);
     if (id == -1)
-        // Unable to insert cover
         return false;
 
     QSqlQuery query(m_db);
@@ -114,7 +114,7 @@ bool Cache::insert(Audio *audio, int size)
  * Checks if audio exists inside
  * audios table.
  *
- * :param audio: pointer to audio
+ * :param audio: audio pointer
  * :return: exists
  */
 bool Cache::exists(Audio *audio)
@@ -125,18 +125,19 @@ bool Cache::exists(Audio *audio)
     if (!query.exec())
     {
         handleError(query);
-        // Assume audio exists to prevent duplicate primary key
         return true;
     }
     return query.first();
 }
 
 /*
- * Retrieves cover from database.
+ * Retrieves cover from database. If the
+ * cover cannot be found it returns the
+ * default cover.
  *
- * :param path: path of audio
- * :param size: size of cover
- * :return: db cover or default cover
+ * :param path: audiopath
+ * :param size: cover size
+ * :return: db or default cover
  */
 QPixmap Cache::cover(const QString &path, int size)
 {
@@ -166,10 +167,10 @@ QPixmap Cache::cover(const QString &path, int size)
 }
 
 /*
- * Gets last cover id by getting
- * the max id values.
+ * Returns last cover id or -1 if the
+ * covers table is empty.
  *
- * :return: last cover id
+ * :return: id
  */
 int Cache::lastCoverId()
 {
@@ -179,23 +180,23 @@ int Cache::lastCoverId()
         handleError(query);
     if (query.first())
         return query.value(0).toInt();
-    return 0;
+    return -1;
 }
 
 /*
- * Finds cover id of cover in form of
- * byte array. First it tries to query by
- * byte array length instead of blob comparison
- * for performance purposes. If there are multiple
- * results it uses blob comparison to query for
- * the exact cover.
+ * Returns cover id for cover in byte array form.
+ * For performance reasons it first tries to query
+ * based on the byte array length. If it only returns
+ * one result it can be returned.
+ * Otherwise there are mulitple cover with the same
+ * length and the query uses blob comparison instead.
+ * If the cover id cannot be retrieved it returns -1.
  *
- * :param bytes: cover in byte array form
+ * :param bytes: cover byte array
  * :return: cover id or -1
  */
 int Cache::coverId(const QByteArray &bytes)
 {
-    // Try to get cover by byte array length for better performance
     QSqlQuery query(m_db);
     query.prepare("SELECT id FROM covers WHERE len = :LEN");
     query.bindValue(":LEN", bytes.length());
@@ -205,10 +206,8 @@ int Cache::coverId(const QByteArray &bytes)
     {
         int id = query.value(0).toInt();
         if (!query.next())
-            // Return if id if there is only one result
             return id;
 
-        // Get cover by blob comparison if there are multiple results
         query.prepare("SELECT id FROM covers WHERE cover = :COVER");
         query.bindValue(":COVER", bytes);
         if (!query.exec())
@@ -223,7 +222,7 @@ int Cache::coverId(const QByteArray &bytes)
  * Inserts cover into database. Assumes
  * that the cover does not exist already.
  *
- * :param bytes: cover in byte array form
+ * :param bytes: cover byte array
  * :return: cover id or -1
  */
 int Cache::insertCover(const QByteArray &bytes)
@@ -245,9 +244,9 @@ int Cache::insertCover(const QByteArray &bytes)
 
 /*
  * Handles query errors by logging the
- * used query with binded values.
+ * used query with bound values.
  *
- * :param query: failed query
+ * :param query: query
  */
 void Cache::handleError(const QSqlQuery &query)
 {
@@ -265,8 +264,8 @@ void Cache::handleError(const QSqlQuery &query)
  * binding all used values to show them
  * properly.
  *
- * :param query: used query
- * :return: string with bound values
+ * :param query: query
+ * :return: query string
  */
 QString Cache::lastQuery(const QSqlQuery &query)
 {
@@ -284,8 +283,8 @@ QString Cache::lastQuery(const QSqlQuery &query)
 /*
  * Converts cover to bytes.
  *
- * :param cover: cover to convert
- * :return: converted cover
+ * :param cover: cover
+ * :return: cover byte array
  */
 QByteArray Cache::coverToBytes(const QPixmap &cover)
 {
@@ -301,9 +300,9 @@ QByteArray Cache::coverToBytes(const QPixmap &cover)
 /*
  * Scales pixmap.
  *
- * :param pixmap: pixmap to scale
- * :param size: size to scale to
- * :return: scales pixmap
+ * :param pixmap: pixmap
+ * :param size: size
+ * :return: scaled pixmap
  */
 QPixmap Cache::scale(const QPixmap &pixmap, int size)
 {

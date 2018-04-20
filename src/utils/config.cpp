@@ -46,9 +46,9 @@ void Config::create()
 }
 
 /*
- * Checks if config contains keys.
+ * Checks if config contains key.
  *
- * :param key: key to look up
+ * :param key: key
  * :return: exists
  */
 bool Config::contains(const QString &key)
@@ -57,9 +57,9 @@ bool Config::contains(const QString &key)
 }
 
 /*
- * Log setter.
+ * Setter for log.
  *
- * :param log: store logs
+ * :param log: log
  */
 void Config::setLog(bool log)
 {
@@ -67,9 +67,9 @@ void Config::setLog(bool log)
 }
 
 /*
- * Log getter.
+ * Getter for log.
  *
- * :return: store logs or default
+ * :return: log or default
  */
 bool Config::log()
 {
@@ -77,9 +77,9 @@ bool Config::log()
 }
 
 /*
- * Font size setter.
+ * Setter for font size.
  *
- * :param size: font size
+ * :param size: size
  */
 void Config::setFontSize(double size)
 {
@@ -87,9 +87,9 @@ void Config::setFontSize(double size)
 }
 
 /*
- * Font size getter.
+ * Getter for font size.
  *
- * :return: font size or default
+ * :return: size or default
  */
 double Config::fontSize()
 {
@@ -97,7 +97,7 @@ double Config::fontSize()
 }
 
 /*
- * Egg player libaray setter.
+ * Setter for egg player library.
  *
  * :param string: path
  */
@@ -107,7 +107,7 @@ void Config::setEpLibrary(const QString &path)
 }
 
 /*
- * Egg player library getter.
+ * Getter for egg player library.
  *
  * :return: path or default
  */
@@ -117,7 +117,7 @@ QString Config::epLibrary()
 }
 
 /*
- * Egg player volume setter.
+ * Setter for egg player volume.
  *
  * :param volume: volume
  */
@@ -127,7 +127,7 @@ void Config::setEpVolume(int volume)
 }
 
 /*
- * Egg player volume getter.
+ * Getter for egg player volume.
  *
  * :return: volume or default
  */
@@ -137,7 +137,7 @@ int Config::epVolume()
 }
 
 /*
- * Music library song info height setter.
+ * Setter for music library song info height.
  *
  * :param height: height
  */
@@ -147,9 +147,9 @@ void Config::setMlSongInfoHeight(int height)
 }
 
 /*
- * Music library song infor height getter.
+ * Getter for music library song info height.
  *
- * :return: height or default.
+ * :return: height or default
  */
 int Config::mlSongInfoHeight()
 {
@@ -157,7 +157,7 @@ int Config::mlSongInfoHeight()
 }
 
 /*
- * Music bar height setter.
+ * Setter for music bar height.
  *
  * :param height: height
  */
@@ -167,7 +167,7 @@ void Config::setMbHeight(int height)
 }
 
 /*
- * Music bar height getter.
+ * Getter for music bar height.
  *
  * :result: height or default
  */
@@ -177,7 +177,7 @@ int Config::mbHeight()
 }
 
 /*
- * Music bar spacing setter.
+ * Setter for music bar spacing.
  *
  * :param spacing: spacing
  */
@@ -187,7 +187,7 @@ void Config::setMbSpacing(int spacing)
 }
 
 /*
- * Music bar spacing getter.
+ * Getter for music bar spacing.
  *
  * :return: spacing or default
  */
@@ -197,7 +197,7 @@ int Config::mbSpacing()
 }
 
 /*
- * Music bar cover size setter.
+ * Setter for music bar cover size.
  *
  * :param size: size
  */
@@ -207,7 +207,7 @@ void Config::setMbCoverSize(int size)
 }
 
 /*
- * Music bar cover size getter.
+ * Getter for music bar cover size.
  *
  * :return: size or default
  */
@@ -217,7 +217,7 @@ int Config::mbCoverSize()
 }
 
 /*
- * Music bar icon size setter.
+ * Setter for music bar icon size.
  *
  * :param size: size
  */
@@ -227,7 +227,7 @@ void Config::setMbIconSize(int size)
 }
 
 /*
- * Music bar icon size getter.
+ * Getter for music bar icon size.
  *
  * :return: size or default
  */
@@ -237,7 +237,7 @@ int Config::mbIconSize()
 }
 
 /*
- * Music bar track label width setter.
+ * Setter for music bar track label width.
  *
  * :param width: width
  */
@@ -247,7 +247,7 @@ void Config::setMbTrackLabelWidth(int width)
 }
 
 /*
- * Music bar track label width getter.
+ * Getter for music bar track label width.
  *
  * :return: width or default
  */
@@ -257,7 +257,7 @@ int Config::mbTrackLabelWidth()
 }
 
 /*
- * Music bar time label width setter.
+ * Setter for music bar time label width.
  *
  * :param width: width
  */
@@ -267,7 +267,7 @@ void Config::setMbTimeLabelWidth(int width)
 }
 
 /*
- * Music bar time label width getter.
+ * Getter for music bar time label width.
  *
  * :return: width or default
  */
@@ -277,16 +277,16 @@ int Config::mbTimeLabelWidth()
 }
 
 /*
- * Settings pointer which gets
- * creates one time. Its parent is
- * the application so we do not have
- * to worry about freeing.
+ * Settings pointer which gets created
+ * in create() function. Its parent will
+ * be the application so we do not have to
+ * worry about freeing it.
  */
 QSettings * Config::settings             = nullptr;
 
 /*
- * The following values with k
- * prefix are key used in config.
+ * The following variables with k prefix
+ * are keys used in config.
  */
 const QString Config::kLog               = "App/Log";
 const QString Config::kFontSize          = "App/FontSize";
@@ -301,8 +301,8 @@ const QString Config::kMbTrackLabelWidth = "MusicBar/TrackLabelWidth";
 const QString Config::kMbTimeLabelWidth  = "MusicBar/TimeLabelWidth";
 
 /*
- * The following values with d prefix
- * are default values use in config.
+ * The following variables with d prefix
+ * are default values used in config.
  */
 const bool Config::dLog                  = true;
 const double Config::dFontSize           = 10.25;

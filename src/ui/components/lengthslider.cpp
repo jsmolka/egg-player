@@ -1,9 +1,11 @@
 #include "lengthslider.hpp"
 
 /*
- * Constructor.
+ * Constructor. Sets slider style to
+ * LengthSliderStyle to make the slider
+ * clickable.
  *
- * :param parent: parent widget
+ * :param parent: parent pointer
  */
 LengthSlider::LengthSlider(QWidget *parent) : QSlider(parent)
 {
@@ -11,11 +13,9 @@ LengthSlider::LengthSlider(QWidget *parent) : QSlider(parent)
     setStyle(new LengthSliderStyle(style()));
 
     m_pressed = false;
-    m_value = 0;
 
     connect(this, SIGNAL(sliderPressed()), this, SLOT(onSliderPressed()));
     connect(this, SIGNAL(sliderReleased()), this, SLOT(onSliderReleased()));
-    connect(this, SIGNAL(sliderMoved(int)), this, SLOT(onSliderMoved(int)));
 }
 
 /*
@@ -29,7 +29,7 @@ LengthSlider::~LengthSlider()
 /*
  * Getter for pressed property.
  *
- * :return: is pressed
+ * :return: pressed
  */
 bool LengthSlider::isPressed() const
 {
@@ -42,26 +42,16 @@ bool LengthSlider::isPressed() const
 void LengthSlider::onSliderPressed()
 {
     m_pressed = true;
-    m_value = value();
 }
 
 /*
- * Slot for slider released.
+ * Slot for slider released. It sets the pressed
+ * property and emits the current value.
  *
- * :emit positionChanged: last value
+ * :emit positionChanged: value
  */
 void LengthSlider::onSliderReleased()
 {
     m_pressed = false;
-    emit positionChanged(m_value);
-}
-
-/*
- * SLot for slider moved.
- *
- * :param value: current position
- */
-void LengthSlider::onSliderMoved(int value)
-{
-    m_value = value;
+    emit positionChanged(value());
 }

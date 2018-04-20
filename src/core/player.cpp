@@ -3,7 +3,7 @@
 /*
  * Constructor.
  *
- * :param parent: pointer of parent object
+ * :param parent: parent pointer
  */
 Player::Player(QObject *parent) : QObject(parent)
 {
@@ -34,9 +34,11 @@ Player::~Player()
 }
 
 /*
- * Setter for current index. It also
+ * Setter for index property. It also
  * changes the active audio if the index
  * is valid.
+ *
+ * :param index: index
  */
 void Player::setIndex(int index)
 {
@@ -46,7 +48,7 @@ void Player::setIndex(int index)
 }
 
 /*
- * Getter for current index.
+ * Getter for index property.
  *
  * :return: current index
  */
@@ -58,7 +60,7 @@ int Player::index() const
 /*
  * Getter for loop property.
  *
- * :return: player is looping
+ * :return: loop
  */
 bool Player::isLoop() const
 {
@@ -68,7 +70,7 @@ bool Player::isLoop() const
 /*
  * Getter for shuffled property.
  *
- * :return: player is shuffled
+ * :return: shuffled
  */
 bool Player::isShuffled() const
 {
@@ -76,7 +78,7 @@ bool Player::isShuffled() const
 }
 
 /*
- * Getter for player volume.
+ * Getter for volume property.
  *
  * :return: volume
  */
@@ -86,9 +88,9 @@ int Player::volume() const
 }
 
 /*
- * Getter for player position.
+ * Getter for position.
  *
- * :return: current position in seconds
+ * :return: position in seconds
  */
 int Player::position() const
 {
@@ -100,7 +102,7 @@ int Player::position() const
 /*
  * Getter for playing property.
  *
- * :return: is player playing
+ * :return: playing
  */
 bool Player::isPlaying() const
 {
@@ -108,9 +110,11 @@ bool Player::isPlaying() const
 }
 
 /*
- * Sets playlist for player.
+ * Sets playlist for player. Iterates over
+ * playlist and create audio position to make
+ * unshuffeling possible
  *
- * :param playlist: playlist to use
+ * :param playlist: playlist
  */
 void Player::setPlaylist(const AudioList &playlist)
 {
@@ -129,7 +133,7 @@ void Player::setPlaylist(const AudioList &playlist)
 /*
  * Gets audio for index.
  *
- * :return: pointer to audio
+ * :return: audio pointer
  */
 Audio * Player::audioAt(int index) const
 {
@@ -139,7 +143,7 @@ Audio * Player::audioAt(int index) const
 /*
  * Gets current audio.
  *
- * :return: pointer to current audio
+ * :return: audio pointer
  */
 Audio * Player::currentAudio() const
 {
@@ -147,7 +151,7 @@ Audio * Player::currentAudio() const
 }
 
 /*
- * Setter for player volume. Should be between 0 and 100.
+ * Setter for volume property. Should be between 0 and 100.
  * The volume gets divided by 1000 (empirical) to get the
  * float value necessary for BASS.
  *
@@ -168,10 +172,10 @@ void Player::setVolume(int volume)
 }
 
 /*
- * Setter for player position.
+ * Setter for position.
  *
  * :param position: position in seconds
- * :emit: positionChanged
+ * :emit positionChanged: position in seconds
  */
 void Player::setPosition(int position)
 {
@@ -189,7 +193,7 @@ void Player::setPosition(int position)
 /*
  * Setter for loop property.
  *
- * :param loop: player loop
+ * :param loop: loop
  */
 void Player::setLoop(bool loop)
 {
@@ -198,8 +202,7 @@ void Player::setLoop(bool loop)
 
 /*
  * Setter for shuffle property. Shuffles
- * or unshuffles (sorts) the playlist
- * if an index is set.
+ * or unshuffles (sorts) the playlist.
  *
  * :param shuffled: shuffled
  */
@@ -217,7 +220,7 @@ void Player::setShuffled(bool shuffled)
 /*
  * Plays or resumes the current audio.
  *
- * :emit stateChanged: current state
+ * :emit stateChanged: state
  */
 void Player::play()
 {
@@ -237,7 +240,7 @@ void Player::play()
 /*
  * Pauses the current stream.
  *
- * :emit stateChanged: current state
+ * :emit stateChanged: state
  */
 void Player::pause()
 {
@@ -294,12 +297,12 @@ void Player::back()
 }
 
 /*
- * Slot for timer timeout. It also manages
- * playing the next audio if the current
- * one finishes.
+ * Slot for timer timeout. It emits the current
+ * position and manages automatically playing
+ * the next song if the current one finishes.
  *
- * :param total: elapsed time in ms
- * :emit: positionChanged
+ * :param total: current time in milliseconds
+ * :emit positionChanged: position in seconds
  */
 void Player::onTimeout(qint64 total)
 {
@@ -316,7 +319,7 @@ void Player::onTimeout(qint64 total)
  * on playlist size and loop property. Returns
  * -1 if there is no next index.
  *
- * :return: next index
+ * :return: index
  */
 int Player::nextIndex()
 {
@@ -334,7 +337,7 @@ int Player::nextIndex()
  * on playlist size and loop property. Returns
  * -1 if there is no previuos index.
  *
- * :return: previous index
+ * :return: index
  */
 int Player::backIndex()
 {
@@ -357,7 +360,6 @@ void Player::shuffle()
 
     std::random_shuffle(m_playlist.begin(), m_playlist.end());
 
-    // Put current audio at the front
     for (int i = 0; i < m_playlist.size(); i++)
     {
         if (audio == audioAt(i))
@@ -381,7 +383,6 @@ void Player::unshuffle()
     std::sort(m_playlist.begin(), m_playlist.end(),
         [](const AudioPosition &ap1, const AudioPosition &ap2) {return ap1.index < ap2.index;});
 
-    // Find index of current audio
     for (int i = 0; i < m_playlist.size(); i++)
     {
         if (audio == audioAt(i))
@@ -408,7 +409,10 @@ void Player::freeStream()
 }
 
 /*
- * Sets active audio.
+ * Sets active audio. The current stream get freed and a
+ * new one get created. The volume for the stream gets set
+ * and the timer gets restarded. If the player is in the
+ * playing state it player, otherwise it pauses.
  *
  * :param index: index of audio
  * :emit audioChanged: current audio

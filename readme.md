@@ -7,7 +7,7 @@ A Groove Music like music player.
 - error logs
 
 ## Roadmap
-- [ ]documentation
+- [x] documentation
 - [ ] playlist support
 - [x] use [bass.dll](http://www.un4seen.com/) as audio backend
 - [ ] write own tag library to support unicode characters based on [libmp3](https://github.com/TheOnlyCaky/libmp3)

@@ -37,11 +37,9 @@ signals:
 private slots:
     void onSliderPressed();
     void onSliderReleased();
-    void onSliderMoved(int value);
 
 private:
     bool m_pressed;
-    int m_value;
 };
 
 #endif // LENGTHSLIDER_HPP

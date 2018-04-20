@@ -10,8 +10,7 @@
 #include "logger.hpp"
 
 /*
- * Checks if all needed resources are
- * available.
+ * Checks if all needed resources are available.
  */
 void checkResources()
 {
@@ -31,7 +30,7 @@ void checkResources()
 /*
  * Loads custom font.
  *
- * :return: custom font
+ * :return: font
  */
 QFont loadFont()
 {
@@ -46,9 +45,9 @@ QFont loadFont()
 }
 
 /*
- * Sets application up.
+ * Sets up application.
  *
- * :param app: pointer to application
+ * :param app: application pointer
  */
 void setup(QApplication *app)
 {

@@ -3,7 +3,7 @@
 /*
  * Constructor.
  *
- * :param parent: parent widget
+ * :param parent: parent pointer
  */
 MusicBar::MusicBar(QWidget *parent) : QWidget(parent)
 {
@@ -36,7 +36,7 @@ MusicBar::~MusicBar()
 }
 
 /*
- * Getter for player.
+ * Getter for player property.
  *
  * :return: player pointer
  */
@@ -56,7 +56,7 @@ QLabel * MusicBar::coverLabel()
 }
 
 /*
- * Getter for track label.
+ * Getter for track label property.
  *
  * :return: track label pointer
  */
@@ -66,7 +66,7 @@ QLabel * MusicBar::trackLabel()
 }
 
 /*
- * Getter for time label.
+ * Getter for time label property.
  *
  * :return: time label pointer
  */
@@ -76,7 +76,7 @@ QLabel * MusicBar::currentTimeLabel()
 }
 
 /*
- * Getter for time label.
+ * Getter for time label property.
  *
  * :return: time label pointer
  */
@@ -86,7 +86,7 @@ QLabel * MusicBar::totalTimeLabel()
 }
 
 /*
- * Getter for length slider.
+ * Getter for length slider property.
  *
  * :return: length slider pointer
  */
@@ -96,7 +96,7 @@ LengthSlider * MusicBar::lengthSlider()
 }
 
 /*
- * Getter for play button.
+ * Getter for play button property.
  *
  * :return: play button pointer
  */
@@ -106,7 +106,7 @@ IconButton * MusicBar::playButton()
 }
 
 /*
- * Getter for next button.
+ * Getter for next button property.
  *
  * :return: next button pointer
  */
@@ -116,7 +116,7 @@ IconButton * MusicBar::nextButton()
 }
 
 /*
- * Getter for back button.
+ * Getter for back button property.
  *
  * :return: back button pointer
  */
@@ -126,7 +126,7 @@ IconButton * MusicBar::backButton()
 }
 
 /*
- * Getter for shuffle button.
+ * Getter for shuffle button property.
  *
  * :return: shuffle button pointer
  */
@@ -136,7 +136,7 @@ IconButton * MusicBar::shuffleButton()
 }
 
 /*
- * Getter for loop button.
+ * Getter for loop button property.
  *
  * :return: loop button pointer
  */
@@ -146,7 +146,7 @@ IconButton * MusicBar::loopButton()
 }
 
 /*
- * Getter for volume button.
+ * Getter for volume button property.
  *
  * :return: volume button pointer
  */
@@ -156,8 +156,7 @@ IconButton * MusicBar::volumeButton()
 }
 
 /*
- * Custom repaint event. Subclassing
- * allows custom css.
+ * Paint event for custom css.
  */
 void MusicBar::paintEvent(QPaintEvent *)
 {
@@ -168,8 +167,8 @@ void MusicBar::paintEvent(QPaintEvent *)
 }
 
 /*
- * Slot for play button press. Plays
- * or pauses player.
+ * Slot for play button pressed. Starts or
+ * pauses player.
  */
 void MusicBar::onPlayButtonPressed()
 {
@@ -183,7 +182,7 @@ void MusicBar::onPlayButtonPressed()
 }
 
 /*
- * Slot for audio change. Sets up cover,
+ * Slot for audio changed. Sets up cover,
  * track label, time labels and length slider.
  *
  * :param audio: audio pointer
@@ -205,7 +204,7 @@ void MusicBar::onPlayerAudioChanged(Audio *audio)
 }
 
 /*
- * Slot for player state change. Sets corresponding
+ * Slot for player state changed. Sets corresponding
  * icon of play button.
  *
  * :param state: current player state
@@ -216,7 +215,7 @@ void MusicBar::onPlayerStateChanged(Player::State state)
 }
 
 /*
- * Slot for player position change. Sets
+ * Slot for player position changed. Sets
  * slider position if it is not pressed.
  *
  * :param position: current position in seconds
@@ -242,7 +241,7 @@ void MusicBar::onPlayerVolumeChanged(int volume)
 }
 
 /*
- * Slot for slider move. Set the value
+ * Slot for slider moved. Set the value
  * of current time label to reflect change.
  *
  * :param position: position in seconds
@@ -253,7 +252,7 @@ void MusicBar::onLengthSliderMoved(int position)
 }
 
 /*
- * Slot for slider position change. Updates the current
+ * Slot for slider position changed. Updates the current
  * time and player position accordingly.
  *
  * :param position: position in seconds
@@ -265,7 +264,7 @@ void MusicBar::onLengthSliderPositionChanged(int position)
 }
 
 /*
- * Sets up all user inferface related things.
+ * Sets up user interface.
  */
 void MusicBar::setupUi()
 {
@@ -341,7 +340,7 @@ void MusicBar::setupUi()
 /*
  * Returns default cover.
  *
- * :return: default cover
+ * :return: cover
  */
 QPixmap MusicBar::defaultCover()
 {

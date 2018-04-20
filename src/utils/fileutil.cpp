@@ -1,7 +1,8 @@
 #include "fileutil.hpp"
 
 /*
- * Read a  file.
+ * Reads a file. Returns an empty string
+ * if the file cannot be read.
  *
  * :param path: file
  * :return: file content or empty string
@@ -35,11 +36,12 @@ bool FileUtil::exists(const QString &path)
 }
 
 /*
- * Gets either dir of dir or
- * dir of file.
+ * Returns directory for a given path.
+ * Returns an empty dir if the file is
+ * neither a dir nor a file.
  *
- * :param path: file
- * :return: directory
+ * :param path: path
+ * :return: directory or empty dir
  */
 QDir FileUtil::dir(const QString &path)
 {
@@ -58,9 +60,9 @@ QDir FileUtil::dir(const QString &path)
  * Globbes files with a certain pattern.
  * Behaves simular to Pythons glob function.
  *
- * :param path: path to search in
- * :param pattern: patter to apply
- * :param recursive: search dir resursively
+ * :param path: path
+ * :param pattern: pattern
+ * :param recursive: glob resursively
  * :return: list of paths
  */
 QStringList FileUtil::glob(const QString &path, const QString &pattern, bool recursive)

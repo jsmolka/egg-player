@@ -1,7 +1,7 @@
 #include "logger.hpp"
 
 /*
- * Open and clear logger file.
+ * Creates and clears logger file.
  */
 void Logger::create()
 {
@@ -14,7 +14,9 @@ void Logger::create()
 }
 
 /*
- * Logs a message with two possible args.
+ * Logs a message with two possible args. Also
+ * writes the message into the console if Qt is
+ * in debug mode.
  *
  * :param message: message
  * :param arg1: first arg
@@ -46,6 +48,6 @@ void Logger::log(const QString &message, const QString &arg1, const QString &arg
 }
 
 /*
- * Files used for logging.
+ * File used for logging.
  */
 QFile * Logger::file = nullptr;

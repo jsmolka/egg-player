@@ -4,7 +4,7 @@
  * Constructor.
  *
  * :param audio: audio pointer
- * :param parent: parent widget pointer
+ * :param parent: parent pointer
  */
 SongInfo::SongInfo(Audio *audio, QWidget *parent) : QWidget(parent)
 {
@@ -99,8 +99,7 @@ void SongInfo::showLength()
 }
 
 /*
- * Implement paint event. Subclass widget
- * for custom css.
+ * Paint event for custom css.
  */
 void SongInfo::paintEvent(QPaintEvent *)
 {

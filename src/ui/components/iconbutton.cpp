@@ -3,7 +3,7 @@
 /*
  * Constructor.
  *
- * :param parent: parent object
+ * :param parent: parent
  */
 IconButton::IconButton(QWidget *parent) : QPushButton(parent)
 {
@@ -23,7 +23,7 @@ IconButton::~IconButton()
 }
 
 /*
- * Icons setter.
+ * Setter for icons property.
  *
  * :param icons: list of icons
  */
@@ -33,7 +33,7 @@ void IconButton::setIcons(const QList<QIcon> &icons)
 }
 
 /*
- * Icons getter.
+ * Getter for icons property.
  *
  * :return: list of icons
  */
@@ -43,19 +43,18 @@ QList<QIcon> IconButton::icons() const
 }
 
 /*
- * Changes icon based on index.
+ * Setter for index property.
  *
  * :param index: index
  */
 void IconButton::setSelectedIcon(int index)
 {
     m_index = index;
-
     setIcon(m_icons[index]);
 }
 
 /*
- * Returns selected index.
+ * Getter for index property.
  *
  * :return: index
  */
@@ -65,7 +64,8 @@ int IconButton::selectedIcon() const
 }
 
 /*
- * Setter for locked property.
+ * Setter for locked property. Locking button
+ * will only take effect if the button is lockable.
  *
  * :param locked: locked
  */
@@ -77,7 +77,7 @@ void IconButton::setLocked(bool locked)
 /*
  * Getter for locked property.
  *
- * :return: is locked
+ * :return: locked
  */
 bool IconButton::isLocked() const
 {
@@ -85,7 +85,10 @@ bool IconButton::isLocked() const
 }
 
 /*
- * Make button lockable.
+ * Setter for lockable property. If the
+ * button is lockable it will update
+ * based on locked property if it gets
+ * clicked.
  *
  * :param lockable: lockable
  */
@@ -105,7 +108,9 @@ bool IconButton::isLockable() const
 }
 
 /*
- * Initialize function for button.
+ * Initialize function for button. It sets the
+ * button icon to the first item in icons and
+ * resizes it.
  *
  * :param icons: list of possible icons
  * :param size: icon size
@@ -125,8 +130,9 @@ void IconButton::init(const QList<QIcon> &icons, int size, bool lockable)
 
 /*
  * Slot for clicked event. If the button
- * is lockable the property get switched
- * and the stylesheet gets reloaded.
+ * is lockable the locked property get
+ * switched  * and the style sheet gets
+ * reloaded.
  */
 void IconButton::onClicked()
 {

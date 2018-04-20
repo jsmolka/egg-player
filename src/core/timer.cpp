@@ -4,7 +4,7 @@
  * Constructor.
  *
  * :param interval: interval in milliseconds
- * :param parent: parent object pointer
+ * :param parent: parent pointer
  */
 Timer::Timer(int interval, QObject *parent) : QObject(parent)
 {
@@ -38,7 +38,7 @@ int Timer::interval() const
 /*
  * Getter for total time property.
  *
- * :return: total elapsed time
+ * :return: elapsed time
  */
 qint64 Timer::total() const
 {
@@ -117,6 +117,8 @@ void Timer::setTotal(qint64 total)
  * Slot for timer timeout. It increments
  * the total time and resets the remaining
  * time to interval time.
+ *
+ * :emit timeout: elapsed time
  */
 void Timer::onTimeout()
 {
