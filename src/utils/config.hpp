@@ -15,37 +15,37 @@ public:
     static bool contains(const QString &key);
 
     static void setLog(bool log);
-    static bool log() const;
+    static bool log();
 
     static void setFontSize(double size);
-    static double fontSize() const;
+    static double fontSize();
 
     static void setEpLibrary(const QString &path);
-    static QString epLibrary() const;
+    static QString epLibrary();
 
     static void setEpVolume(int volume);
-    static int epVolume() const;
+    static int epVolume();
 
     static void setMlSongInfoHeight(int height);
-    static int mlSongInfoHeight() const;
+    static int mlSongInfoHeight();
 
     static void setMbHeight(int height);
-    static int mbHeight() const;
+    static int mbHeight();
 
     static void setMbSpacing(int spacing);
-    static int mbSpacing() const;
+    static int mbSpacing();
 
     static void setMbCoverSize(int size);
-    static int mbCoverSize() const;
+    static int mbCoverSize();
 
     static void setMbIconSize(int size);
-    static int mbIconSize() const;
+    static int mbIconSize();
 
     static void setMbTrackLabelWidth(int width);
-    static int mbTrackLabelWidth() const;
+    static int mbTrackLabelWidth();
 
     static void setMbTimeLabelWidth(int width);
-    static int mbTimeLabelWidth() const;
+    static int mbTimeLabelWidth();
 
 private:
     static QSettings *config;

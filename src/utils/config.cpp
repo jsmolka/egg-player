@@ -71,7 +71,7 @@ void Config::setLog(bool log)
  *
  * :return: log or default
  */
-bool Config::log() const
+bool Config::log()
 {
     return config->value(kLog, dLog).toBool();
 }
@@ -91,7 +91,7 @@ void Config::setFontSize(double size)
  *
  * :return: size or default
  */
-double Config::fontSize() const
+double Config::fontSize()
 {
     return config->value(kFontSize, dFontSize).toDouble();
 }
@@ -111,7 +111,7 @@ void Config::setEpLibrary(const QString &path)
  *
  * :return: path or default
  */
-QString Config::epLibrary() const
+QString Config::epLibrary()
 {
     return config->value(kEpLibrary, dEpLibrary).toString();
 }
@@ -131,7 +131,7 @@ void Config::setEpVolume(int volume)
  *
  * :return: volume or default
  */
-int Config::epVolume() const
+int Config::epVolume()
 {
     return config->value(kEpVolume, dEpVolume).toInt();
 }
@@ -151,7 +151,7 @@ void Config::setMlSongInfoHeight(int height)
  *
  * :return: height or default
  */
-int Config::mlSongInfoHeight() const
+int Config::mlSongInfoHeight()
 {
     return config->value(kMlSongInfoHeight, dMlSongInfoHeight).toDouble();
 }
@@ -171,7 +171,7 @@ void Config::setMbHeight(int height)
  *
  * :result: height or default
  */
-int Config::mbHeight() const
+int Config::mbHeight()
 {
     return config->value(kMbHeight, dMbHeight).toInt();
 }
@@ -191,7 +191,7 @@ void Config::setMbSpacing(int spacing)
  *
  * :return: spacing or default
  */
-int Config::mbSpacing() const
+int Config::mbSpacing()
 {
     return config->value(kMbSpacing, dMbSpacing).toInt();
 }
@@ -211,7 +211,7 @@ void Config::setMbCoverSize(int size)
  *
  * :return: size or default
  */
-int Config::mbCoverSize() const
+int Config::mbCoverSize()
 {
     return config->value(kMbCoverSize, dMbCoverSize).toInt();
 }
@@ -231,7 +231,7 @@ void Config::setMbIconSize(int size)
  *
  * :return: size or default
  */
-int Config::mbIconSize() const
+int Config::mbIconSize()
 {
     return config->value(kMbIconSize, dMbIconSize).toInt();
 }
@@ -251,7 +251,7 @@ void Config::setMbTrackLabelWidth(int width)
  *
  * :return: width or default
  */
-int Config::mbTrackLabelWidth() const
+int Config::mbTrackLabelWidth()
 {
     return config->value(kMbTrackLabelWidth, dMbTrackLabelWidth).toInt();
 }
@@ -271,7 +271,7 @@ void Config::setMbTimeLabelWidth(int width)
  *
  * :return: width or default
  */
-int Config::mbTimeLabelWidth() const
+int Config::mbTimeLabelWidth()
 {
     return config->value(kMbTimeLabelWidth, dMbTimeLabelWidth).toInt();
 }
