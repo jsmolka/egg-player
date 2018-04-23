@@ -11,7 +11,6 @@ class Config
 {
 public:
     static void create();
-
     static bool contains(const QString &key);
 
     static void setLog(bool log);

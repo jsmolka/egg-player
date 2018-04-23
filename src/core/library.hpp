@@ -14,8 +14,6 @@
 
 class CacheBuilder : public QThread
 {
-    Q_OBJECT
-
 public:
     CacheBuilder(const AudioList &audioList, QObject *parent = nullptr);
 
@@ -28,8 +26,6 @@ private:
 
 class Library : public QObject
 {
-    Q_OBJECT
-
 public:
     Library(const QString &path, QObject *parent = nullptr);
     ~Library();

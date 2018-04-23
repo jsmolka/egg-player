@@ -5,7 +5,7 @@
  */
 EggPlayer::EggPlayer()
 {
-    pm_library = new Library(Config::epLibrary());
+    pm_library = new Library(Config::epLibrary(), this);
     pm_library->sortByTitle();
 
     setupUi();
@@ -18,7 +18,7 @@ EggPlayer::EggPlayer()
  */
 EggPlayer::~EggPlayer()
 {
-    delete pm_library;
+
 }
 
 /*

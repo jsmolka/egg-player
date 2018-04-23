@@ -92,9 +92,9 @@ QColor ColorUtil::dominantColor(const QImage &image)
     for (quint32 i = 0; i < pixelCount; i++)
     {
         QColor rgb = QColor(pixels[i]);
-        quint32 red = rgb.red();
-        quint32 green = rgb.green();
-        quint32 blue = rgb.blue();
+        qint32 red = rgb.red();
+        qint32 green = rgb.green();
+        qint32 blue = rgb.blue();
 
         QColor hsv = rgb.toHsv();
         quint32 hue = hsv.hsvHue() == -1 ? 0 : rgb.hsvHue();
