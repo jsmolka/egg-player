@@ -1,11 +1,35 @@
 #include "cache.hpp"
 
 /*
- * Constructor.
+ * Constructor. If the QSqlDatabase does not contain
+ * the database it gets added and its tables get created.
  */
 Cache::Cache()
 {
+    if (!QSqlDatabase::contains(SQL_CONNECTION))
+    {
+        QSqlDatabase::addDatabase("QSQLITE", SQL_CONNECTION);
 
+        QString createCovers =
+           "CREATE TABLE IF NOT EXISTS covers("
+           " id INTEGER PRIMARY KEY,"
+           " len INTEGER,"
+           " cover BLOB"
+           ")";
+
+        QString createAudios =
+           "CREATE TABLE IF NOT EXISTS audios("
+           " path TEXT PRIMARY KEY,"
+           " coverid INTEGER,"
+           " FOREIGN KEY (coverid) REFERENCES covers(id)"
+           ")";
+
+        QSqlQuery query(db());
+        if (!query.exec(createCovers))
+            handleError(query);
+        if (!query.exec(createAudios))
+            handleError((query));
+    }
 }
 
 /*
@@ -13,76 +37,16 @@ Cache::Cache()
  */
 Cache::~Cache()
 {
-    m_db.close();
-}
 
-/*
- * Connects to the database by either adding it to
- * the sql database or reopening it from there. It
- * also creates the tables if they do not exist already.
- *
- * :return: success
- */
-bool Cache::connect()
-{
-    if (QSqlDatabase::contains(SQL_CONNECTION))
-    {
-        m_db = QSqlDatabase::database(SQL_CONNECTION, false);
-    }
-    else
-    {
-        m_db = QSqlDatabase::addDatabase("QSQLITE", SQL_CONNECTION);
-        m_db.setDatabaseName(SQL_PATH);
-    }
-
-    if (!m_db.open())
-    {
-        Logger::log("Cache: Cannot open database");
-        return false;
-    }
-
-    QString createCovers =
-        "CREATE TABLE IF NOT EXISTS covers("
-        " id INTEGER PRIMARY KEY,"
-        " len INTEGER,"
-        " cover BLOB"
-        ")";
-
-    QString createAudios =
-        "CREATE TABLE IF NOT EXISTS audios("
-        " path TEXT PRIMARY KEY,"
-        " coverid INTEGER,"
-        " FOREIGN KEY (coverid) REFERENCES covers(id)"
-        ")";
-
-    QSqlQuery query(m_db);
-    if (!query.exec(createCovers))
-    {
-        handleError(query);
-        return false;
-    }
-    if (!query.exec(createAudios))
-    {
-        handleError((query));
-        return false;
-    }
-    return true;
-}
-
-/*
- * Closes database connection.
- */
-void Cache::close()
-{
-    m_db.close();
 }
 
 /*
  * Inserts audio into cache. It adds the cover
  * into the covers table and the path with a
- * cover id into the audios table. No tags are
- * stored inside the cache because taglib is
- * fast enough to reload tags at every startup.
+ * cover id into the audios table.
+ * No tags are stored inside the cache because
+ * taglib is fast enough to reload tags at
+ * every startup.
  *
  * :param audio: audio pointer
  * :param size: cover size, default 200
@@ -98,7 +62,7 @@ bool Cache::insert(Audio *audio, int size)
     if (id == -1)
         return false;
 
-    QSqlQuery query(m_db);
+    QSqlQuery query(db());
     query.prepare("INSERT INTO audios VALUES (:PATH, :COVERID)");
     query.bindValue(":PATH", audio->path());
     query.bindValue(":COVERID", id);
@@ -111,15 +75,14 @@ bool Cache::insert(Audio *audio, int size)
 }
 
 /*
- * Checks if audio exists inside
- * audios table.
+ * Checks if database contains audio.
  *
  * :param audio: audio pointer
- * :return: exists
+ * :return: contains
  */
-bool Cache::exists(Audio *audio)
+bool Cache::contains(Audio *audio)
 {
-    QSqlQuery query(m_db);
+    QSqlQuery query(db());
     query.prepare("SELECT 1 FROM audios WHERE path = :PATH");
     query.bindValue(":PATH", audio->path());
     if (!query.exec())
@@ -141,7 +104,7 @@ bool Cache::exists(Audio *audio)
  */
 QPixmap Cache::cover(const QString &path, int size)
 {
-    QSqlQuery query = QSqlQuery(m_db);
+    QSqlQuery query = QSqlQuery(db());
     query.prepare(
         "SELECT covers.cover FROM audios "
         "JOIN covers ON audios.coverid = covers.id "
@@ -167,6 +130,21 @@ QPixmap Cache::cover(const QString &path, int size)
 }
 
 /*
+ * Returns the current database.
+ *
+ * :return: current database
+ */
+QSqlDatabase Cache::db()
+{
+    QSqlDatabase db = QSqlDatabase::database(SQL_CONNECTION, false);
+    db.setDatabaseName(SQL_PATH);
+    if (!db.isOpen())
+        if (!db.open())
+            Logger::log("Cache: Cannot open database");
+    return db;
+}
+
+/*
  * Returns last cover id or -1 if the
  * covers table is empty.
  *
@@ -174,7 +152,7 @@ QPixmap Cache::cover(const QString &path, int size)
  */
 int Cache::lastCoverId()
 {
-    QSqlQuery query(m_db);
+    QSqlQuery query(db());
     query.prepare("SELECT max(id) FROM covers");
     if (!query.exec())
         handleError(query);
@@ -197,7 +175,7 @@ int Cache::lastCoverId()
  */
 int Cache::coverId(const QByteArray &bytes)
 {
-    QSqlQuery query(m_db);
+    QSqlQuery query(db());
     query.prepare("SELECT id FROM covers WHERE len = :LEN");
     query.bindValue(":LEN", bytes.length());
     if (!query.exec())
@@ -229,7 +207,7 @@ int Cache::insertCover(const QByteArray &bytes)
 {
     int id = lastCoverId() + 1;
 
-    QSqlQuery query(m_db);
+    QSqlQuery query(db());
     query.prepare("INSERT INTO covers VALUES (:ID, :LEN, :COVER)");
     query.bindValue(":ID", id);
     query.bindValue(":LEN", bytes.length());
@@ -253,7 +231,7 @@ void Cache::handleError(const QSqlQuery &query)
     QSqlError error = query.lastError();
     if (error.isValid())
         Logger::log(
-            "Cache: Query '%1' failed with error '%2'",
+            "Cache: Querying '%1' failed with error '%2'",
             lastQuery(query),
             error.databaseText()
         );

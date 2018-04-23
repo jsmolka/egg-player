@@ -17,13 +17,13 @@ public:
     Cache();
     ~Cache();
 
-    bool connect();
-    void close();
     bool insert(Audio *audio, int size = 200);
-    bool exists(Audio *audio);
+    bool contains(Audio *audio);
     QPixmap cover(const QString &path, int size);
 
 private:
+    QSqlDatabase db();
+
     int lastCoverId();
     int coverId(const QByteArray &bytes);
     int insertCover(const QByteArray &bytes);
@@ -33,8 +33,6 @@ private:
     QString lastQuery(const QSqlQuery &query);
     QByteArray coverToBytes(const QPixmap &cover);
     QPixmap scale(const QPixmap &pixmap, int size);
-
-    QSqlDatabase m_db;
 };
 
 #endif // CACHE_HPP

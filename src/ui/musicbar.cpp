@@ -7,7 +7,6 @@
  */
 MusicBar::MusicBar(QWidget *parent) : QWidget(parent)
 {
-    m_cache.connect();
     pm_player = new Player(this);
     pm_player->setVolume(Config::epVolume());
 
@@ -32,7 +31,7 @@ MusicBar::MusicBar(QWidget *parent) : QWidget(parent)
  */
 MusicBar::~MusicBar()
 {
-    m_cache.close();
+
 }
 
 /*
@@ -189,7 +188,7 @@ void MusicBar::onPlayButtonPressed()
  */
 void MusicBar::onPlayerAudioChanged(Audio *audio)
 {
-    QPixmap cover = m_cache.cover(audio->path(), Config::mbCoverSize());
+    QPixmap cover = Cache().cover(audio->path(), Config::mbCoverSize());
 
     pm_coverLabel->setPixmap(cover);
     pm_trackLabel->setText(QString("%1\n%2").arg(audio->title(), audio->artist()));
@@ -344,7 +343,8 @@ void MusicBar::setupUi()
  */
 QPixmap MusicBar::defaultCover()
 {
-    return QPixmap(IMG_DEFAULT_COVER).scaled(Config::mbCoverSize(), Config::mbCoverSize(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
+    QPixmap image(IMG_DEFAULT_COVER);
+    return image.scaled(Config::mbCoverSize(), Config::mbCoverSize(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
 }
 
 /*

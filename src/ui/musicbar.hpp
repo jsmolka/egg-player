@@ -55,7 +55,6 @@ private:
     QString lengthString(int length);
     void setColor(const QColor &color);
 
-    Cache m_cache;
     Player *pm_player;
     QLabel *pm_coverLabel;
     QLabel *pm_trackLabel;

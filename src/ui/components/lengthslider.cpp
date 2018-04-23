@@ -38,10 +38,13 @@ bool LengthSlider::isPressed() const
 
 /*
  * Slot for slider pressed.
+ *
+ * :emit sliderMoved: position
  */
 void LengthSlider::onSliderPressed()
 {
     m_pressed = true;
+    emit sliderMoved(value());
 }
 
 /*

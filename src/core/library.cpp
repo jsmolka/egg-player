@@ -1,17 +1,49 @@
 #include "library.hpp"
 
 /*
- * Constructor. Loads file from the
- * library path.
+ * Constructor.
  *
- * :param path: library path
+ * :param audioList: audio list
+ * :param parent: parent pointer
  */
-Library::Library(const QString &path)
+CacheBuilder::CacheBuilder(const AudioList &audioList, QObject *parent) : QThread(parent)
+{
+    m_audioList = audioList;
+}
+
+/*
+ * Overridden run function. This is
+ * the main function of the thread.
+ */
+void CacheBuilder::run()
+{
+    Cache cache;
+    for (Audio *audio : m_audioList)
+        if (!cache.contains(audio))
+            cache.insert(audio);
+}
+
+/*
+ * Constructor. Loads files from library
+ * path and creates thread for cover caching.
+ *
+ * :param path: path
+ * :param parent: parent pointer
+ */
+Library::Library(const QString &path, QObject *parent) : QObject(parent)
 {
     if (FileUtil::exists(path))
+    {
         loadFiles(path);
+
+        CacheBuilder *builder = new CacheBuilder(m_audioList, this);
+        connect(QApplication::instance(), SIGNAL(aboutToQuit()), builder, SLOT(terminate()));
+        builder->start();
+    }
     else
+    {
         Logger::log("Library: Path does not exist '%1'", path);
+    }
 }
 
 /*
@@ -44,6 +76,14 @@ bool Library::isEmpty() const
 }
 
 /*
+ * Sorts by title.
+ */
+void Library::sortByTitle()
+{
+    m_audioList.sortByTitle();
+}
+
+/*
  * Searches for a string in the library.
  *
  * :param string: string
@@ -62,14 +102,6 @@ AudioList Library::search(const QString &string, Qt::CaseSensitivity cs)
 }
 
 /*
- * Sorts by title.
- */
-void Library::sortByTitle()
-{
-    m_audioList.sortByTitle();
-}
-
-/*
  * Returns audio at index.
  *
  * :param index: index
@@ -81,10 +113,9 @@ Audio * Library::audioAt(int index)
 }
 
 /*
- * Loads library files. Inserts cover into
- * cache if they do not exist already.
+ * Loads library files.
  *
- * :param path: path with files
+ * :param path: path
  */
 void Library::loadFiles(const QString &path)
 {
@@ -95,9 +126,6 @@ void Library::loadFiles(const QString &path)
         return;
     }
 
-    Cache cache;
-    cache.connect();
-
     for (const QString &file : files)
     {
         Audio *audio = new Audio(file);
@@ -107,10 +135,6 @@ void Library::loadFiles(const QString &path)
             continue;
         }
 
-        if (!cache.exists(audio))
-            cache.insert(audio);
-
         m_audioList << audio;
     }
-    cache.close();
 }

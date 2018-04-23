@@ -10,10 +10,8 @@ using namespace TagLib;
  * and tries to read tags.
  * If the title tag is empty it gets set
  * to the file name of the read file.
- * Success can be checked via the isValid
- * function.
  *
- * :param path: path of audio
+ * :param path: audio path
  */
 Audio::Audio(const QString &path)
 {

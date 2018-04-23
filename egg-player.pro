@@ -22,13 +22,11 @@ INCLUDEPATH += \
 LIBS += \
     -L"$$PWD/ext/bass-2.4/lib" -lbass
 
-CONFIG(debug, debug|release)
-{
+CONFIG(debug, debug|release) {
     LIBS += -L"$$PWD/ext/taglib-1.11.1/lib" -ltagd
     DESTDIR = $$PWD/bin/debug
 }
-CONFIG(release, debug|release)
-{
+CONFIG(release, debug|release) {
     LIBS += -L"$$PWD/ext/taglib-1.11.1/lib" -ltag
     DESTDIR = $$PWD/bin/release
 }

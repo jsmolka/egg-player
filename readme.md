@@ -10,15 +10,13 @@ A Groove Music like music player.
 - [x] documentation
 - [ ] playlist support
 - [x] use [bass.dll](http://www.un4seen.com/) as audio backend
-- [ ] write own tag library to support unicode characters based on [libmp3](https://github.com/TheOnlyCaky/libmp3)
+- [ ] own tag library based on [libmp3](https://github.com/TheOnlyCaky/libmp3) to support unicode characters
 - [ ] proper scaling on different machines
-- [ ] proper multithreading
+- [x] proper multithreading
 - [ ] system wide shortcuts
 - [ ] reactive cache
 
 ## Things to do
 - black title bar through [Windows API](https://msdn.microsoft.com/en-us/library/windows/desktop/ms724940%28v=vs.85%29.aspx)
-- faster caching
-- splash screen while caching
-- add slots and signals for Library
 - custom css with repaint event for LengthSlider
+- use exact milliseconds time in timer, signal at song end
