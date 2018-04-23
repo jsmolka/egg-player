@@ -2,47 +2,47 @@
 
 /*
  * Creates settings and sets all non
- * existing keys to default value.
+ * existing keys to their default value.
  */
 void Config::create()
 {
-    if (!settings)
-    {
-        settings = new QSettings(CFG_PATH, QSettings::IniFormat, QApplication::instance());
+    if (config)
+        return;
 
-        if (!contains(kLog))
-            setLog(dLog);
+    config = new QSettings(CFG_PATH, QSettings::IniFormat, QApplication::instance());
 
-        if (!contains(kFontSize))
-            setFontSize(dFontSize);
+    if (!contains(kLog))
+        setLog(dLog);
 
-        if (!contains(kEpLibrary))
-            setEpLibrary(dEpLibrary);
+    if (!contains(kFontSize))
+        setFontSize(dFontSize);
 
-        if (!contains(kEpVolume))
-            setEpVolume(dEpVolume);
+    if (!contains(kEpLibrary))
+        setEpLibrary(dEpLibrary);
 
-        if (!contains(kMlSongInfoHeight))
-            setMlSongInfoHeight(dMlSongInfoHeight);
+    if (!contains(kEpVolume))
+        setEpVolume(dEpVolume);
 
-        if (!contains(kMbHeight))
-            setMbHeight(dMbHeight);
+    if (!contains(kMlSongInfoHeight))
+        setMlSongInfoHeight(dMlSongInfoHeight);
 
-        if (!contains(kMbSpacing))
-            setMbSpacing(dMbSpacing);
+    if (!contains(kMbHeight))
+        setMbHeight(dMbHeight);
 
-        if (!contains(kMbCoverSize))
-            setMbCoverSize(dMbCoverSize);
+    if (!contains(kMbSpacing))
+        setMbSpacing(dMbSpacing);
 
-        if (!contains(kMbIconSize))
-            setMbIconSize(dMbIconSize);
+    if (!contains(kMbCoverSize))
+        setMbCoverSize(dMbCoverSize);
 
-        if (!contains(kMbTrackLabelWidth))
-            setMbTrackLabelWidth(dMbTrackLabelWidth);
+    if (!contains(kMbIconSize))
+        setMbIconSize(dMbIconSize);
 
-        if (!contains(kMbTimeLabelWidth))
-            setMbTimeLabelWidth(dMbTimeLabelWidth);
-    }
+    if (!contains(kMbTrackLabelWidth))
+        setMbTrackLabelWidth(dMbTrackLabelWidth);
+
+    if (!contains(kMbTimeLabelWidth))
+        setMbTimeLabelWidth(dMbTimeLabelWidth);
 }
 
 /*
@@ -53,7 +53,7 @@ void Config::create()
  */
 bool Config::contains(const QString &key)
 {
-    return settings->contains(key);
+    return config->contains(key);
 }
 
 /*
@@ -63,7 +63,7 @@ bool Config::contains(const QString &key)
  */
 void Config::setLog(bool log)
 {
-    settings->setValue(kLog, log);
+    config->setValue(kLog, log);
 }
 
 /*
@@ -71,9 +71,9 @@ void Config::setLog(bool log)
  *
  * :return: log or default
  */
-bool Config::log()
+bool Config::log() const
 {
-    return settings->value(kLog, dLog).toBool();
+    return config->value(kLog, dLog).toBool();
 }
 
 /*
@@ -83,7 +83,7 @@ bool Config::log()
  */
 void Config::setFontSize(double size)
 {
-    settings->setValue(kFontSize, size);
+    config->setValue(kFontSize, size);
 }
 
 /*
@@ -91,189 +91,189 @@ void Config::setFontSize(double size)
  *
  * :return: size or default
  */
-double Config::fontSize()
+double Config::fontSize() const
 {
-    return settings->value(kFontSize, dFontSize).toDouble();
+    return config->value(kFontSize, dFontSize).toDouble();
 }
 
 /*
- * Setter for egg player library.
+ * Setter for EggPlayer library.
  *
  * :param string: path
  */
 void Config::setEpLibrary(const QString &path)
 {
-    settings->setValue(kEpLibrary, path);
+    config->setValue(kEpLibrary, path);
 }
 
 /*
- * Getter for egg player library.
+ * Getter for EggPlayer library.
  *
  * :return: path or default
  */
-QString Config::epLibrary()
+QString Config::epLibrary() const
 {
-    return settings->value(kEpLibrary, dEpLibrary).toString();
+    return config->value(kEpLibrary, dEpLibrary).toString();
 }
 
 /*
- * Setter for egg player volume.
+ * Setter for EggPlayer volume.
  *
  * :param volume: volume
  */
 void Config::setEpVolume(int volume)
 {
-    settings->setValue(kEpVolume, volume);
+    config->setValue(kEpVolume, volume);
 }
 
 /*
- * Getter for egg player volume.
+ * Getter for EggPlayer volume.
  *
  * :return: volume or default
  */
-int Config::epVolume()
+int Config::epVolume() const
 {
-    return settings->value(kEpVolume, dEpVolume).toInt();
+    return config->value(kEpVolume, dEpVolume).toInt();
 }
 
 /*
- * Setter for music library song info height.
+ * Setter for MusicLibrary SongInfo height.
  *
  * :param height: height
  */
 void Config::setMlSongInfoHeight(int height)
 {
-    settings->setValue(kMlSongInfoHeight, height);
+    config->setValue(kMlSongInfoHeight, height);
 }
 
 /*
- * Getter for music library song info height.
+ * Getter for MusicLibrary SongInfo height.
  *
  * :return: height or default
  */
-int Config::mlSongInfoHeight()
+int Config::mlSongInfoHeight() const
 {
-    return settings->value(kMlSongInfoHeight, dMlSongInfoHeight).toDouble();
+    return config->value(kMlSongInfoHeight, dMlSongInfoHeight).toDouble();
 }
 
 /*
- * Setter for music bar height.
+ * Setter for MusicBar height.
  *
  * :param height: height
  */
 void Config::setMbHeight(int height)
 {
-    settings->setValue(kMbHeight, height);
+    config->setValue(kMbHeight, height);
 }
 
 /*
- * Getter for music bar height.
+ * Getter for MusicBar height.
  *
  * :result: height or default
  */
-int Config::mbHeight()
+int Config::mbHeight() const
 {
-    return settings->value(kMbHeight, dMbHeight).toInt();
+    return config->value(kMbHeight, dMbHeight).toInt();
 }
 
 /*
- * Setter for music bar spacing.
+ * Setter for MusicBar spacing.
  *
  * :param spacing: spacing
  */
 void Config::setMbSpacing(int spacing)
 {
-    settings->setValue(kMbSpacing, spacing);
+    config->setValue(kMbSpacing, spacing);
 }
 
 /*
- * Getter for music bar spacing.
+ * Getter for MusicBar spacing.
  *
  * :return: spacing or default
  */
-int Config::mbSpacing()
+int Config::mbSpacing() const
 {
-    return settings->value(kMbSpacing, dMbSpacing).toInt();
+    return config->value(kMbSpacing, dMbSpacing).toInt();
 }
 
 /*
- * Setter for music bar cover size.
+ * Setter for MusicBar cover size.
  *
  * :param size: size
  */
 void Config::setMbCoverSize(int size)
 {
-    settings->setValue(kMbCoverSize, size);
+    config->setValue(kMbCoverSize, size);
 }
 
 /*
- * Getter for music bar cover size.
+ * Getter for MusicBar cover size.
  *
  * :return: size or default
  */
-int Config::mbCoverSize()
+int Config::mbCoverSize() const
 {
-    return settings->value(kMbCoverSize, dMbCoverSize).toInt();
+    return config->value(kMbCoverSize, dMbCoverSize).toInt();
 }
 
 /*
- * Setter for music bar icon size.
+ * Setter for MusicBar icon size.
  *
  * :param size: size
  */
 void Config::setMbIconSize(int size)
 {
-    settings->setValue(kMbIconSize, size);
+    config->setValue(kMbIconSize, size);
 }
 
 /*
- * Getter for music bar icon size.
+ * Getter for MusicBar icon size.
  *
  * :return: size or default
  */
-int Config::mbIconSize()
+int Config::mbIconSize() const
 {
-    return settings->value(kMbIconSize, dMbIconSize).toInt();
+    return config->value(kMbIconSize, dMbIconSize).toInt();
 }
 
 /*
- * Setter for music bar track label width.
+ * Setter for MusicBar track label width.
  *
  * :param width: width
  */
 void Config::setMbTrackLabelWidth(int width)
 {
-    settings->setValue(kMbTrackLabelWidth, width);
+    config->setValue(kMbTrackLabelWidth, width);
 }
 
 /*
- * Getter for music bar track label width.
+ * Getter for MusicBar track label width.
  *
  * :return: width or default
  */
-int Config::mbTrackLabelWidth()
+int Config::mbTrackLabelWidth() const
 {
-    return settings->value(kMbTrackLabelWidth, dMbTrackLabelWidth).toInt();
+    return config->value(kMbTrackLabelWidth, dMbTrackLabelWidth).toInt();
 }
 
 /*
- * Setter for music bar time label width.
+ * Setter for MusicBar time label width.
  *
  * :param width: width
  */
 void Config::setMbTimeLabelWidth(int width)
 {
-    settings->setValue(kMbTimeLabelWidth, width);
+    config->setValue(kMbTimeLabelWidth, width);
 }
 
 /*
- * Getter for music bar time label width.
+ * Getter for MusicBar time label width.
  *
  * :return: width or default
  */
-int Config::mbTimeLabelWidth()
+int Config::mbTimeLabelWidth() const
 {
-    return settings->value(kMbTimeLabelWidth, dMbTimeLabelWidth).toInt();
+    return config->value(kMbTimeLabelWidth, dMbTimeLabelWidth).toInt();
 }
 
 /*
@@ -282,7 +282,7 @@ int Config::mbTimeLabelWidth()
  * be the application so we do not have to
  * worry about freeing it.
  */
-QSettings * Config::settings             = nullptr;
+QSettings * Config::config             = nullptr;
 
 /*
  * The following variables with k prefix

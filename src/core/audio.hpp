@@ -37,7 +37,7 @@ public:
 
 private:
     bool readTags();
-    QPixmap resizeCover(const QPixmap &cover, int size);
+    QPixmap resize(const QPixmap &cover, int size);
     QPixmap readCover();
 
     bool m_valid;

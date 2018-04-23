@@ -22,8 +22,8 @@ EggPlayer::~EggPlayer()
 }
 
 /*
- * Loads the saved registry position
- * and shows the window. Should be called
+ * Loads the saved registry position and
+ * shows the window. Should be called
  * instead of show().
  */
 void EggPlayer::showSavedPosition()
@@ -40,8 +40,8 @@ void EggPlayer::showSavedPosition()
 }
 
 /*
- * Implemented close event to save
- * current position before closing.
+ * Implemented close event to save current
+ * position before closing.
  *
  * :param event: event
  */
@@ -52,7 +52,7 @@ void EggPlayer::closeEvent(QCloseEvent *event)
 }
 
 /*
- * Slot for music library double clicked event.
+ * Slot for MusicLibrary double clicked event.
  * It starts the player with the clicked audio.
  *
  * :param index: music library index

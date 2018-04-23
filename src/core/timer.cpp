@@ -36,9 +36,9 @@ int Timer::interval() const
 }
 
 /*
- * Getter for total time property.
+ * Getter for total property.
  *
- * :return: elapsed time
+ * :return: total
  */
 qint64 Timer::total() const
 {
@@ -46,9 +46,9 @@ qint64 Timer::total() const
 }
 
 /*
- * Getter for remaining time property.
+ * Getter for remaining property.
  *
- * :return: remaining time
+ * :return: remaining
  */
 int Timer::remaining() const
 {
@@ -100,7 +100,7 @@ void Timer::restart()
  * time get calculated and the timer starts
  * immediately if it was active.
  *
- * :param total: new total
+ * :param total: total
  */
 void Timer::setTotal(qint64 total)
 {
@@ -118,7 +118,7 @@ void Timer::setTotal(qint64 total)
  * the total time and resets the remaining
  * time to interval time.
  *
- * :emit timeout: elapsed time
+ * :emit timeout: total
  */
 void Timer::onTimeout()
 {

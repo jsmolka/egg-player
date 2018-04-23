@@ -91,7 +91,7 @@ QSize BorderLayout::minimumSize() const
 /*
  * Sets geometry.
  *
- * :param rect: rectangle for geometry
+ * :param rect: rectangle
  */
 void BorderLayout::setGeometry(const QRect &rect)
 {

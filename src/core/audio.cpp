@@ -1,15 +1,15 @@
 #include "audio.hpp"
 
 /*
- * Use taglib namespace for whole class
+ * Use TagLib namespace for whole class.
  */
 using namespace TagLib;
 
 /*
  * Constructor. Creates an audio object
  * and tries to read tags.
- * If the title tag is empty it gets set
- * to the file name of the read file.
+ * If the title tag is empty it will be
+ * set to the file name of the read file.
  *
  * :param path: audio path
  */
@@ -18,15 +18,14 @@ Audio::Audio(const QString &path)
     m_path = path;
     m_valid = readTags();
 
-    if (m_valid)
-    {
-        if (m_title.isEmpty())
-            m_title = FileUtil::fileName(m_path);
-    }
-    else
+    if (!m_valid)
     {
         Logger::log("Audio: Cannot read tags '%1'", m_path);
+        return;
     }
+
+    if (m_title.isEmpty())
+        m_title = FileUtil::fileName(m_path);
 }
 
 /*
@@ -40,7 +39,7 @@ Audio::~Audio()
 /*
  * Getter for valid property.
  *
- * :return: audio is valid
+ * :return: valid
  */
 bool Audio::isValid() const
 {
@@ -50,7 +49,7 @@ bool Audio::isValid() const
 /*
  * Getter for path property.
  *
- * :return: audio path
+ * :return: path
  */
 QString Audio::path() const
 {
@@ -60,7 +59,7 @@ QString Audio::path() const
 /*
  * Getter for title property.
  *
- * :return: audio title
+ * :return: title
  */
 QString Audio::title() const
 {
@@ -70,7 +69,7 @@ QString Audio::title() const
 /*
  * Getter for artist property.
  *
- * :return: audio artist
+ * :return: artist
  */
 QString Audio::artist() const
 {
@@ -80,7 +79,7 @@ QString Audio::artist() const
 /*
  * Getter for album property.
  *
- * :return: audio album
+ * :return: album
  */
 QString Audio::album() const
 {
@@ -90,7 +89,7 @@ QString Audio::album() const
 /*
  * Getter for genre property.
  *
- * :return: audio genre
+ * :return: genre
  */
 QString Audio::genre() const
 {
@@ -100,7 +99,7 @@ QString Audio::genre() const
 /*
  * Getter for year property.
  *
- * :return: audio year
+ * :return: year
  */
 int Audio::year() const
 {
@@ -110,7 +109,7 @@ int Audio::year() const
 /*
  * Getter for track property.
  *
- * :return: audio track
+ * :return: track
  */
 int Audio::track() const
 {
@@ -120,7 +119,7 @@ int Audio::track() const
 /*
  * Getter for length property.
  *
- * :return: audio length in seconds
+ * :return: length in seconds
  */
 int Audio::length() const
 {
@@ -154,7 +153,7 @@ int Audio::minutes() const
  */
 QPixmap Audio::cover(int size)
 {
-    return resizeCover(readCover(), size);
+    return resize(readCover(), size);
 }
 
 /*
@@ -194,7 +193,7 @@ bool Audio::readTags()
  * :param size: size
  * :return: resized cover
  */
-QPixmap Audio::resizeCover(const QPixmap &cover, int size)
+QPixmap Audio::resize(const QPixmap &cover, int size)
 {
     return cover.scaled(size, size, Qt::KeepAspectRatio, Qt::SmoothTransformation);
 }

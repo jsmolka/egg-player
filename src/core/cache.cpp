@@ -6,30 +6,30 @@
  */
 Cache::Cache()
 {
-    if (!QSqlDatabase::contains(SQL_CONNECTION))
-    {
-        QSqlDatabase::addDatabase("QSQLITE", SQL_CONNECTION);
+    if (QSqlDatabase::contains(SQL_CONNECTION))
+        return;
 
-        QString createCovers =
-           "CREATE TABLE IF NOT EXISTS covers("
-           " id INTEGER PRIMARY KEY,"
-           " len INTEGER,"
-           " cover BLOB"
-           ")";
+    QSqlDatabase::addDatabase("QSQLITE", SQL_CONNECTION);
 
-        QString createAudios =
-           "CREATE TABLE IF NOT EXISTS audios("
-           " path TEXT PRIMARY KEY,"
-           " coverid INTEGER,"
-           " FOREIGN KEY (coverid) REFERENCES covers(id)"
-           ")";
+    QString createCovers =
+       "CREATE TABLE IF NOT EXISTS covers("
+       " id INTEGER PRIMARY KEY,"
+       " len INTEGER,"
+       " cover BLOB"
+       ")";
 
-        QSqlQuery query(db());
-        if (!query.exec(createCovers))
-            handleError(query);
-        if (!query.exec(createAudios))
-            handleError((query));
-    }
+    QString createAudios =
+       "CREATE TABLE IF NOT EXISTS audios("
+       " path TEXT PRIMARY KEY,"
+       " coverid INTEGER,"
+       " FOREIGN KEY (coverid) REFERENCES covers(id)"
+       ")";
+
+    QSqlQuery query(db());
+    if (!query.exec(createCovers))
+        handleError(query);
+    if (!query.exec(createAudios))
+        handleError((query));
 }
 
 /*
@@ -45,7 +45,7 @@ Cache::~Cache()
  * into the covers table and the path with a
  * cover id into the audios table.
  * No tags are stored inside the cache because
- * taglib is fast enough to reload tags at
+ * TagLib is fast enough to reload tags at
  * every startup.
  *
  * :param audio: audio pointer
@@ -98,7 +98,7 @@ bool Cache::contains(Audio *audio)
  * cover cannot be found it returns the
  * default cover.
  *
- * :param path: audiopath
+ * :param path: audio path
  * :param size: cover size
  * :return: db or default cover
  */
@@ -126,7 +126,7 @@ QPixmap Cache::cover(const QString &path, int size)
         image = QPixmap(IMG_DEFAULT_COVER);
         Logger::log("Cache: Cannot load cover '%1'", path);
     }
-    return scale(image, size);
+    return resize(image, size);
 }
 
 /*
@@ -148,7 +148,7 @@ QSqlDatabase Cache::db()
  * Returns last cover id or -1 if the
  * covers table is empty.
  *
- * :return: id
+ * :return: cover id or -1
  */
 int Cache::lastCoverId()
 {
@@ -166,7 +166,7 @@ int Cache::lastCoverId()
  * For performance reasons it first tries to query
  * based on the byte array length. If it only returns
  * one result it can be returned.
- * Otherwise there are mulitple cover with the same
+ * Otherwise there are mulitple covers with the same
  * length and the query uses blob comparison instead.
  * If the cover id cannot be retrieved it returns -1.
  *
@@ -282,7 +282,7 @@ QByteArray Cache::coverToBytes(const QPixmap &cover)
  * :param size: size
  * :return: scaled pixmap
  */
-QPixmap Cache::scale(const QPixmap &pixmap, int size)
+QPixmap Cache::resize(const QPixmap &pixmap, int size)
 {
     return pixmap.scaled(size, size, Qt::KeepAspectRatio, Qt::SmoothTransformation);
 }

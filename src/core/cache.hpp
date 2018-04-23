@@ -32,7 +32,7 @@ private:
 
     QString lastQuery(const QSqlQuery &query);
     QByteArray coverToBytes(const QPixmap &cover);
-    QPixmap scale(const QPixmap &pixmap, int size);
+    QPixmap resize(const QPixmap &pixmap, int size);
 };
 
 #endif // CACHE_HPP

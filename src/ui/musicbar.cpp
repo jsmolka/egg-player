@@ -350,7 +350,7 @@ QPixmap MusicBar::defaultCover()
 /*
  * Converts seconds into time string.
  *
- * :param length: seconds
+ * :param length: length in seconds
  */
 QString MusicBar::lengthString(int length)
 {

@@ -112,7 +112,7 @@ bool IconButton::isLockable() const
  * button icon to the first item in icons and
  * resizes it.
  *
- * :param icons: list of possible icons
+ * :param icons: list of icons
  * :param size: icon size
  * :param lockable: is lockable
  */

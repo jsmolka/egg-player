@@ -20,3 +20,4 @@ A Groove Music like music player.
 - black title bar through [Windows API](https://msdn.microsoft.com/en-us/library/windows/desktop/ms724940%28v=vs.85%29.aspx)
 - custom css with repaint event for LengthSlider
 - use exact milliseconds time in timer, signal at song end
+- lengthString function into Util class

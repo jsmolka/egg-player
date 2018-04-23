@@ -50,7 +50,7 @@ void Player::setIndex(int index)
 /*
  * Getter for index property.
  *
- * :return: current index
+ * :return: index
  */
 int Player::index() const
 {

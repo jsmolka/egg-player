@@ -12,7 +12,7 @@ CacheBuilder::CacheBuilder(const AudioList &audioList, QObject *parent) : QThrea
 }
 
 /*
- * Overridden run function. This is
+ * Implemented run function. This is
  * the main function of the thread.
  */
 void CacheBuilder::run()
@@ -32,18 +32,17 @@ void CacheBuilder::run()
  */
 Library::Library(const QString &path, QObject *parent) : QObject(parent)
 {
-    if (FileUtil::exists(path))
-    {
-        loadFiles(path);
-
-        CacheBuilder *builder = new CacheBuilder(m_audioList, this);
-        connect(QApplication::instance(), SIGNAL(aboutToQuit()), builder, SLOT(terminate()));
-        builder->start();
-    }
-    else
+    if (!FileUtil::exists(path))
     {
         Logger::log("Library: Path does not exist '%1'", path);
+        return;
     }
+
+    loadFiles(path);
+
+    CacheBuilder *builder = new CacheBuilder(m_audioList, this);
+    connect(QApplication::instance(), SIGNAL(aboutToQuit()), builder, SLOT(terminate()));
+    builder->start();
 }
 
 /*
