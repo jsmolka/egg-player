@@ -96,7 +96,7 @@ int Player::position() const
 {
     // Could use interval and remaining time aswell
     // but they would be removed by the division anyway
-    return pm_timer->total() / 1000;
+    return pm_timer->elapsed() / 1000;
 }
 
 /*
@@ -185,7 +185,7 @@ void Player::setPosition(int position)
     QWORD bytes = BASS_ChannelSeconds2Bytes(m_stream, double (position));
     if (!BASS_ChannelSetPosition(m_stream, bytes, 0))
         Logger::log("Player: Cannot set position");
-    pm_timer->setTotal(position * 1000);
+    pm_timer->setElapsed(position * 1000);
 
     emit positionChanged(position);
 }

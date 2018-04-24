@@ -12,8 +12,8 @@ public:
     Timer(int interval, QObject *parent = nullptr);
     ~Timer();
 
+    qint64 elapsed() const;
     int interval() const;
-    qint64 total() const;
     int remaining() const;
 
     void start();
@@ -22,7 +22,7 @@ public:
     void restart();
 
 public slots:
-    void setTotal(qint64 total);
+    void setElapsed(qint64 elapsed);
 
 signals:
     void timeout(qint64);
@@ -32,8 +32,8 @@ private slots:
 
 private:
     QTimer *pm_timer;
+    qint64 m_elapsed;
     int m_interval;
-    qint64 m_total;
     int m_remaining;
 };
 
