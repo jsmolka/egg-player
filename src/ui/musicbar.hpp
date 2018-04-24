@@ -15,6 +15,7 @@
 #include "iconbutton.hpp"
 #include "lengthslider.hpp"
 #include "player.hpp"
+#include "util.hpp"
 
 class MusicBar : public QWidget
 {
@@ -52,7 +53,6 @@ private slots:
 private:
     void setupUi();
     QPixmap defaultCover();
-    QString lengthString(int length);
     void setColor(const QColor &color);
 
     Player *pm_player;

@@ -91,11 +91,7 @@ void SongInfo::showGenre()
  */
 void SongInfo::showLength()
 {
-    QString seconds = QString("%1").arg(pm_audio->seconds(), 2, 10, QChar('0'));
-    QString minutes = QString::number(pm_audio->minutes());
-    QString length = QString("%1:%2").arg(minutes).arg(seconds);
-
-    createLabel(length, Qt::AlignRight);
+    createLabel(Util::timeString(pm_audio->length()), Qt::AlignRight);
 }
 
 /*

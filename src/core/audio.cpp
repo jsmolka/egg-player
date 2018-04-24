@@ -127,26 +127,6 @@ int Audio::length() const
 }
 
 /*
- * Returns seconds without minutes.
- *
- * :return: seconds
- */
-int Audio::seconds() const
-{
-    return m_length % 60;
-}
-
-/*
- * Returns minutes without seconds.
- *
- * :return: minutes
- */
-int Audio::minutes() const
-{
-    return (m_length - seconds()) / 60;
-}
-
-/*
  * Returns audio cover.
  *
  * :param size: cover size

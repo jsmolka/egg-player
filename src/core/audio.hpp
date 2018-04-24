@@ -31,8 +31,6 @@ public:
     int track() const;
     int length() const;
 
-    int seconds() const;
-    int minutes() const;
     QPixmap cover(int size);
 
 private:

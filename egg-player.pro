@@ -35,6 +35,7 @@ HEADERS += \
     $$PWD/src/core/audio.hpp \
     $$PWD/src/core/audiolist.hpp \
     $$PWD/src/core/cache.hpp \
+    $$PWD/src/core/cachebuilder.hpp \
     $$PWD/src/core/library.hpp \
     $$PWD/src/core/player.hpp \
     $$PWD/src/core/timer.hpp \
@@ -50,13 +51,14 @@ HEADERS += \
     $$PWD/src/utils/config.hpp \
     $$PWD/src/utils/fileutil.hpp \
     $$PWD/src/utils/logger.hpp \
-    src/core/cachebuilder.hpp
+    $$PWD/src/utils/util.hpp
 
 SOURCES += \
     $$PWD/src/main.cpp \
     $$PWD/src/core/audio.cpp \
     $$PWD/src/core/audiolist.cpp \
     $$PWD/src/core/cache.cpp \
+    $$PWD/src/core/cachebuilder.cpp \
     $$PWD/src/core/library.cpp \
     $$PWD/src/core/player.cpp \
     $$PWD/src/core/timer.cpp \
@@ -72,4 +74,4 @@ SOURCES += \
     $$PWD/src/utils/config.cpp \
     $$PWD/src/utils/fileutil.cpp \
     $$PWD/src/utils/logger.cpp \
-    src/core/cachebuilder.cpp
+    $$PWD/src/utils/util.cpp
