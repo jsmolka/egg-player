@@ -8,8 +8,8 @@
 #include "audiolist.hpp"
 #include "cache.hpp"
 #include "cachebuilder.hpp"
-#include "fileutil.hpp"
 #include "logger.hpp"
+#include "utils.hpp"
 
 class Library
 {

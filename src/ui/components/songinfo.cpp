@@ -91,7 +91,7 @@ void SongInfo::showGenre()
  */
 void SongInfo::showLength()
 {
-    createLabel(Util::timeString(pm_audio->length()), Qt::AlignRight);
+    createLabel(Utils::timeString(pm_audio->length()), Qt::AlignRight);
 }
 
 /*

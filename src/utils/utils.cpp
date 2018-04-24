@@ -1,4 +1,123 @@
-#include "colorutil.hpp"
+#include "utils.hpp"
+
+/*
+ * Converts a length in seconds
+ * into a time string.
+ *
+ * :param length: length in seconds
+ * :return: time string
+ */
+QString Utils::timeString(int length)
+{
+    int seconds = length % 60;
+    int minutes = (length / 60) % 60;
+    int hours = (length / 3600) % 60;
+
+    QString pattern = "m:ss";
+    if (minutes > 9)
+        pattern = "mm:ss";
+    if (hours > 0)
+        pattern = "h:mm:ss";
+    if (hours > 9)
+        pattern = "hh:mm:ss";
+
+    return QTime(hours, minutes, seconds).toString(pattern);
+}
+
+/*
+ * Reads a file. Returns an empty string
+ * if the file cannot be read.
+ *
+ * :param path: file
+ * :return: file content or empty string
+ */
+QString Utils::read(const QString &path)
+{
+    QFile file(path);
+    if (!file.open(QFile::ReadOnly | QFile::Text))
+    {
+        Logger::log("FileUtil: Cannot read file '%1'", path);
+        return QString();
+    }
+
+    QTextStream stream(&file);
+    QString text = stream.readAll();
+
+    file.close();
+
+    return text;
+}
+
+/*
+ * Checks if file exists.
+ *
+ * :param path: file
+ * :return: file exists
+ */
+bool Utils::exists(const QString &path)
+{
+    return QFileInfo(path).exists();
+}
+
+/*
+ * Returns directory for a given path.
+ * Returns an empty dir if the file is
+ * neither a dir nor a file.
+ *
+ * :param path: path
+ * :return: directory or empty dir
+ */
+QDir Utils::dir(const QString &path)
+{
+    QFileInfo info(path);
+
+    if (info.isDir())
+        return QDir(path);
+
+    if (info.isFile())
+        return info.absoluteDir();
+
+    return QDir();
+}
+
+/*
+ * Globbes files with a certain pattern.
+ * Behaves simular to Pythons glob function.
+ *
+ * :param path: path
+ * :param pattern: pattern
+ * :param recursive: glob resursively
+ * :return: list of paths
+ */
+QStringList Utils::glob(const QString &path, const QString &pattern, bool recursive)
+{
+    QDir dir = Utils::dir(path);
+    QStringList filter;
+    filter << pattern;
+    QStringList result;
+
+    QFileInfoList infos = dir.entryInfoList(filter, QDir::NoDotAndDotDot | QDir::AllDirs | QDir::Files);
+    for (const QFileInfo &info : infos)
+    {
+        if (info.isDir() && recursive)
+            result << glob(info.absoluteFilePath(), pattern, recursive);
+
+        if (info.isFile())
+            result << info.absoluteFilePath();
+    }
+    return result;
+}
+
+/*
+ * Returns file name of file.
+ *
+ * :param file: file
+ * :return: file name
+ */
+QString Utils::fileName(const QString &file)
+{
+    return QFileInfo(file).baseName();
+}
 
 /*
  * Darkens a rgb cover.
@@ -7,7 +126,7 @@
  * :param factor: factor
  * :return: darkened color
  */
-QColor ColorUtil::darker(const QColor &color, qreal factor)
+QColor Utils::darker(const QColor &color, qreal factor)
 {
     qreal r = (qreal) color.red() * (1 - factor);
     qreal g = (qreal) color.green() * (1 - factor);
@@ -24,7 +143,7 @@ QColor ColorUtil::darker(const QColor &color, qreal factor)
  * :param image: image
  * :return: average color
  */
-QColor ColorUtil::averageColor(const QImage &image)
+QColor Utils::averageColor(const QImage &image)
 {
     quint32 red = 0;
     quint32 green = 0;
@@ -60,7 +179,7 @@ QColor ColorUtil::averageColor(const QImage &image)
  * :param image: image
  * :return: dominant color
  */
-QColor ColorUtil::dominantColor(const QImage &image)
+QColor Utils::dominantColor(const QImage &image)
 {
     // Map 360 hues to RANGE
     const quint32 RANGE = 18;
@@ -174,7 +293,7 @@ QColor ColorUtil::dominantColor(const QImage &image)
  * :param size: size for scaling
  * :return: background color
  */
-QColor ColorUtil::backgroundColor(const QImage &image, quint32 size)
+QColor Utils::backgroundColor(const QImage &image, quint32 size)
 {
     QColor color = dominantColor(image.scaled(size, size));
 
@@ -188,7 +307,7 @@ QColor ColorUtil::backgroundColor(const QImage &image, quint32 size)
  * :param size: size for scaling
  * :return: background color
  */
-QColor ColorUtil::backgroundColor(const QPixmap &image, quint32 size)
+QColor Utils::backgroundColor(const QPixmap &image, quint32 size)
 {
     return backgroundColor(image.toImage(), size);
 }

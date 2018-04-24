@@ -8,7 +8,7 @@
 #include <QWidget>
 
 #include "audio.hpp"
-#include "util.hpp"
+#include "utils.hpp"
 
 class SongInfo : public QWidget
 {

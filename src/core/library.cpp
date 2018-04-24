@@ -8,7 +8,7 @@
  */
 Library::Library(const QString &path)
 {
-    if (!FileUtil::exists(path))
+    if (!Utils::exists(path))
     {
         Logger::log("Library: Path does not exist '%1'", path);
         return;
@@ -93,7 +93,7 @@ Audio * Library::audioAt(int index)
  */
 void Library::loadFiles(const QString &path)
 {
-    QStringList files = FileUtil::glob(path, "*.mp3");
+    QStringList files = Utils::glob(path, "*.mp3");
     if (files.isEmpty())
     {
         Logger::log("Library: Path contains no files '%1'", path);

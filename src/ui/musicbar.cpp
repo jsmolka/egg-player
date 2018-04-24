@@ -193,13 +193,13 @@ void MusicBar::onPlayerAudioChanged(Audio *audio)
     pm_coverLabel->setPixmap(cover);
     pm_trackLabel->setText(QString("%1\n%2").arg(audio->title(), audio->artist()));
 
-    pm_currentTimeLabel->setText(Util::timeString(0));
-    pm_totalTimeLabel->setText(Util::timeString(audio->length()));
+    pm_currentTimeLabel->setText(Utils::timeString(0));
+    pm_totalTimeLabel->setText(Utils::timeString(audio->length()));
 
     pm_lengthSlider->setRange(0, audio->length());
     pm_lengthSlider->setEnabled(true);
 
-    setColor(ColorUtil::backgroundColor(cover));
+    setColor(Utils::backgroundColor(cover));
 }
 
 /*
@@ -223,7 +223,7 @@ void MusicBar::onPlayerPositionChanged(int position)
 {
     if (!pm_lengthSlider->isPressed())
     {
-        pm_currentTimeLabel->setText(Util::timeString(position));
+        pm_currentTimeLabel->setText(Utils::timeString(position));
         pm_lengthSlider->setValue(position);
     }
 }
@@ -247,7 +247,7 @@ void MusicBar::onPlayerVolumeChanged(int volume)
  */
 void MusicBar::onLengthSliderMoved(int position)
 {
-    pm_currentTimeLabel->setText(Util::timeString(position));
+    pm_currentTimeLabel->setText(Utils::timeString(position));
 }
 
 /*
@@ -258,7 +258,7 @@ void MusicBar::onLengthSliderMoved(int position)
  */
 void MusicBar::onLengthSliderPositionChanged(int position)
 {
-    pm_currentTimeLabel->setText(Util::timeString(position));
+    pm_currentTimeLabel->setText(Utils::timeString(position));
     pm_player->setPosition(position);
 }
 
@@ -272,9 +272,9 @@ void MusicBar::setupUi()
     layout->setContentsMargins(layout->spacing(), 0, layout->spacing(), 0);
 
     setFixedHeight(Config::mbHeight());
-    setStyleSheet(FileUtil::read(CSS_MUSICBAR));
+    setStyleSheet(Utils::read(CSS_MUSICBAR));
     setAutoFillBackground(true);
-    setColor(ColorUtil::backgroundColor(defaultCover()));
+    setColor(Utils::backgroundColor(defaultCover()));
     setLayout(layout);
 
     pm_coverLabel = new QLabel(this);

@@ -25,7 +25,7 @@ Audio::Audio(const QString &path)
     }
 
     if (m_title.isEmpty())
-        m_title = FileUtil::fileName(m_path);
+        m_title = Utils::fileName(m_path);
 }
 
 /*

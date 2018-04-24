@@ -12,8 +12,8 @@
 #include <taglib/tag.h>
 
 #include "constants.hpp"
-#include "fileutil.hpp"
 #include "logger.hpp"
+#include "utils.hpp"
 
 class Audio
 {

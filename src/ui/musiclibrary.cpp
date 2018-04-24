@@ -26,7 +26,7 @@ MusicLibrary::~MusicLibrary()
  */
 void MusicLibrary::setupUi()
 {
-    setStyleSheet(FileUtil::read(CSS_MUSICLIBRARY));
+    setStyleSheet(Utils::read(CSS_MUSICLIBRARY));
     setVerticalScrollMode(QAbstractItemView::ScrollPerPixel);
     setFrameStyle(QFrame::NoFrame);
 

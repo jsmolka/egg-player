@@ -6,8 +6,8 @@
 #include "config.hpp"
 #include "constants.hpp"
 #include "eggplayer.hpp"
-#include "fileutil.hpp"
 #include "logger.hpp"
+#include "utils.hpp"
 
 /*
  * Checks if all needed resources are available.
@@ -23,7 +23,7 @@ void checkResources()
     };
 
     for (QString resource : resources)
-        if (!FileUtil::exists(resource))
+        if (!Utils::exists(resource))
             Logger::log("Resource not found '%1'", resource);
 }
 

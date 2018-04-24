@@ -8,6 +8,7 @@
 #include "config.hpp"
 #include "library.hpp"
 #include "songinfo.hpp"
+#include "utils.hpp"
 
 class MusicLibrary : public QListWidget
 {

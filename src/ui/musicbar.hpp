@@ -8,14 +8,12 @@
 #include <QWidget>
 
 #include "cache.hpp"
-#include "colorutil.hpp"
 #include "config.hpp"
 #include "constants.hpp"
-#include "fileutil.hpp"
 #include "iconbutton.hpp"
 #include "lengthslider.hpp"
 #include "player.hpp"
-#include "util.hpp"
+#include "utils.hpp"
 
 class MusicBar : public QWidget
 {
