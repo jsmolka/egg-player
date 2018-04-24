@@ -1,18 +1,18 @@
 #ifndef LENGTHSLIDER_HPP
 #define LENGTHSLIDER_HPP
 
+#include <QPainter>
 #include <QProxyStyle>
 #include <QSlider>
 #include <QStyle>
 #include <QStyleOption>
-#include <QPainter>
 
 class LengthSliderStyle : public QProxyStyle
 {
 public:
     using QProxyStyle::QProxyStyle;
 
-    int styleHint(QStyle::StyleHint hint, const QStyleOption* option = 0, const QWidget* widget = 0, QStyleHintReturn* returnData = 0) const
+    int styleHint(QStyle::StyleHint hint, const QStyleOption* option = nullptr, const QWidget* widget = nullptr, QStyleHintReturn* returnData = nullptr) const
     {
         if (hint == QStyle::SH_Slider_AbsoluteSetButtons)
             return Qt::LeftButton;

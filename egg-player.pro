@@ -49,7 +49,8 @@ HEADERS += \
     $$PWD/src/utils/colorutil.hpp \
     $$PWD/src/utils/config.hpp \
     $$PWD/src/utils/fileutil.hpp \
-    $$PWD/src/utils/logger.hpp
+    $$PWD/src/utils/logger.hpp \
+    src/core/cachebuilder.hpp
 
 SOURCES += \
     $$PWD/src/main.cpp \
@@ -70,4 +71,5 @@ SOURCES += \
     $$PWD/src/utils/colorutil.cpp \
     $$PWD/src/utils/config.cpp \
     $$PWD/src/utils/fileutil.cpp \
-    $$PWD/src/utils/logger.cpp
+    $$PWD/src/utils/logger.cpp \
+    src/core/cachebuilder.cpp

@@ -1,36 +1,12 @@
 #include "library.hpp"
 
 /*
- * Constructor.
- *
- * :param audioList: audio list
- * :param parent: parent pointer
- */
-CacheBuilder::CacheBuilder(const AudioList &audioList, QObject *parent) : QThread(parent)
-{
-    m_audioList = audioList;
-}
-
-/*
- * Implemented run function. This is
- * the main function of the thread.
- */
-void CacheBuilder::run()
-{
-    Cache cache;
-    for (Audio *audio : m_audioList)
-        if (!cache.contains(audio))
-            cache.insert(audio);
-}
-
-/*
  * Constructor. Loads files from library
  * path and creates thread for cover caching.
  *
  * :param path: path
- * :param parent: parent pointer
  */
-Library::Library(const QString &path, QObject *parent) : QObject(parent)
+Library::Library(const QString &path)
 {
     if (!FileUtil::exists(path))
     {
@@ -40,8 +16,7 @@ Library::Library(const QString &path, QObject *parent) : QObject(parent)
 
     loadFiles(path);
 
-    CacheBuilder *builder = new CacheBuilder(m_audioList, this);
-    connect(QApplication::instance(), SIGNAL(aboutToQuit()), builder, SLOT(terminate()));
+    CacheBuilder *builder = new CacheBuilder(m_audioList);
     builder->start();
 }
 

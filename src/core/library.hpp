@@ -1,33 +1,20 @@
 #ifndef LIBRARY_HPP
 #define LIBRARY_HPP
 
-#include <QApplication>
 #include <QObject>
 #include <QStringList>
-#include <QThread>
 
 #include "audio.hpp"
 #include "audiolist.hpp"
 #include "cache.hpp"
+#include "cachebuilder.hpp"
 #include "fileutil.hpp"
 #include "logger.hpp"
 
-class CacheBuilder : public QThread
+class Library
 {
 public:
-    CacheBuilder(const AudioList &audioList, QObject *parent = nullptr);
-
-protected:
-    void run() override;
-
-private:
-    AudioList m_audioList;
-};
-
-class Library : public QObject
-{
-public:
-    Library(const QString &path, QObject *parent = nullptr);
+    Library(const QString &path);
     ~Library();
 
     AudioList audioList() const;
