@@ -11,7 +11,6 @@ class Config
 {
 public:
     static void create();
-    static bool contains(const QString &key);
 
     static void ALog(bool log);
     static bool ALog();
@@ -53,7 +52,14 @@ public:
     static int BTimeWidth();
 
 private:
+    static bool sectionContains(const QString &section, const QString &key);
+
     static QSettings *config;
+
+    static const QString kApp;
+    static const QString kPlayer;
+    static const QString kLibrary;
+    static const QString kBar;
 
     static const QString kALog;
     static const QString kAFontSize;

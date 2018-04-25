@@ -11,55 +11,44 @@ void Config::create()
 
     config = new QSettings(CFG_PATH, QSettings::IniFormat, QApplication::instance());
 
-    if (!contains(kALog))
+    if (!sectionContains(kApp, kALog))
         ALog(dALog);
 
-    if (!contains(kAFontSize))
+    if (!sectionContains(kApp, kAFontSize))
         AFontSize(dAFontSize);
 
-    if (!contains(kPVolume))
+    if (!sectionContains(kPlayer, kPVolume))
         PVolume(dPVolume);
 
-    if (!contains(kPShuffle))
+    if (!sectionContains(kPlayer, kPShuffle))
         PShuffle(dPShuffle);
 
-    if (!contains(kPLoop))
+    if (!sectionContains(kPlayer, kPLoop))
         PLoop(dPLoop);
 
-    if (!contains(kLPath))
+    if (!sectionContains(kLibrary, kLPath))
         LPath(dLPath);
 
-    if (!contains(kLItemHeight))
+    if (!sectionContains(kLibrary, kLItemHeight))
         LItemHeight(dLItemHeight);
 
-    if (!contains(kBHeight))
+    if (!sectionContains(kBar, kBHeight))
         BHeight(dBHeight);
 
-    if (!contains(kBSpacing))
+    if (!sectionContains(kBar, kBSpacing))
         BSpacing(dBSpacing);
 
-    if (!contains(kBCoverSize))
+    if (!sectionContains(kBar, kBCoverSize))
         BCoverSize(dBCoverSize);
 
-    if (!contains(kBIconSize))
+    if (!sectionContains(kBar, kBIconSize))
         BIconSize(dBIconSize);
 
-    if (!contains(kBTrackWidth))
+    if (!sectionContains(kBar, kBTrackWidth))
         BTrackWidth(dBTrackWidth);
 
-    if (!contains(kBTimeWidth))
+    if (!sectionContains(kBar, kBTimeWidth))
         BTimeWidth(dBTimeWidth);
-}
-
-/*
- * Checks if config contains key.
- *
- * :param key: key
- * :return: exists
- */
-bool Config::contains(const QString &key)
-{
-    return config->contains(key);
 }
 
 /*
@@ -69,7 +58,9 @@ bool Config::contains(const QString &key)
  */
 void Config::ALog(bool log)
 {
+    config->beginGroup(kApp);
     config->setValue(kALog, log);
+    config->endGroup();
 }
 
 /*
@@ -79,7 +70,11 @@ void Config::ALog(bool log)
  */
 bool Config::ALog()
 {
-    return config->value(kALog, dALog).toBool();
+    config->beginGroup(kApp);
+    bool log = config->value(kALog, dALog).toBool();
+    config->endGroup();
+
+    return log;
 }
 
 /*
@@ -89,7 +84,9 @@ bool Config::ALog()
  */
 void Config::AFontSize(double size)
 {
+    config->beginGroup(kApp);
     config->setValue(kAFontSize, size);
+    config->endGroup();
 }
 
 /*
@@ -99,7 +96,11 @@ void Config::AFontSize(double size)
  */
 double Config::AFontSize()
 {
-    return config->value(kAFontSize, dAFontSize).toDouble();
+    config->beginGroup(kApp);
+    double size = config->value(kAFontSize, dAFontSize).toDouble();
+    config->endGroup();
+
+    return size;
 }
 
 /*
@@ -109,7 +110,9 @@ double Config::AFontSize()
  */
 void Config::PVolume(int volume)
 {
-    config->setValue(dLPath, volume);
+    config->beginGroup(kPlayer);
+    config->setValue(kPVolume, volume);
+    config->endGroup();
 }
 
 /*
@@ -119,7 +122,11 @@ void Config::PVolume(int volume)
  */
 int Config::PVolume()
 {
-    return config->value(kPVolume, dPVolume).toInt();
+    config->beginGroup(kPlayer);
+    int volume = config->value(kPVolume, dPVolume).toInt();
+    config->endGroup();
+
+    return volume;
 }
 
 /*
@@ -129,7 +136,9 @@ int Config::PVolume()
  */
 void Config::PShuffle(bool shuffle)
 {
+    config->beginGroup(kPlayer);
     config->setValue(kPShuffle, shuffle);
+    config->endGroup();
 }
 
 /*
@@ -139,7 +148,11 @@ void Config::PShuffle(bool shuffle)
  */
 bool Config::PShuffle()
 {
-    return config->value(kPShuffle, dPShuffle).toBool();
+    config->beginGroup(kPlayer);
+    bool shuffle = config->value(kPShuffle, dPShuffle).toBool();
+    config->endGroup();
+
+    return shuffle;
 }
 
 /*
@@ -149,7 +162,9 @@ bool Config::PShuffle()
  */
 void Config::PLoop(bool loop)
 {
+    config->beginGroup(kPlayer);
     config->setValue(kPLoop, loop);
+    config->endGroup();
 }
 
 /*
@@ -159,7 +174,11 @@ void Config::PLoop(bool loop)
  */
 bool Config::PLoop()
 {
-    return config->value(kPLoop, dPLoop).toBool();
+    config->beginGroup(kPlayer);
+    bool loop = config->value(kPLoop, dPLoop).toBool();
+    config->endGroup();
+
+    return loop;
 }
 
 /*
@@ -169,7 +188,9 @@ bool Config::PLoop()
  */
 void Config::LPath(const QString &path)
 {
-    config->setValue(kLPath, path);
+    config->beginGroup(kLibrary);
+    config->setValue("Path", path);
+    config->endGroup();
 }
 
 /*
@@ -179,7 +200,11 @@ void Config::LPath(const QString &path)
  */
 QString Config::LPath()
 {
-    return config->value(kLPath, dLPath).toString();
+    config->beginGroup(kLibrary);
+    QString path = config->value(kLPath, dLPath).toString();
+    config->endGroup();
+
+    return path;
 }
 
 /*
@@ -189,7 +214,9 @@ QString Config::LPath()
  */
 void Config::LItemHeight(int height)
 {
+    config->beginGroup(kLibrary);
     config->setValue(kLItemHeight, height);
+    config->endGroup();
 }
 
 /*
@@ -199,7 +226,11 @@ void Config::LItemHeight(int height)
  */
 int Config::LItemHeight()
 {
-    return config->value(kLItemHeight, dLItemHeight).toDouble();
+    config->beginGroup(kLibrary);
+    int height = config->value(kLItemHeight, dLItemHeight).toInt();
+    config->endGroup();
+
+    return height;
 }
 
 /*
@@ -209,7 +240,9 @@ int Config::LItemHeight()
  */
 void Config::BHeight(int height)
 {
+    config->beginGroup(kBar);
     config->setValue(kBHeight, height);
+    config->endGroup();
 }
 
 /*
@@ -219,7 +252,11 @@ void Config::BHeight(int height)
  */
 int Config::BHeight()
 {
-    return config->value(kBHeight, dBHeight).toInt();
+    config->beginGroup(kBar);
+    int height = config->value(kBHeight, dBHeight).toInt();
+    config->endGroup();
+
+    return height;
 }
 
 /*
@@ -229,7 +266,9 @@ int Config::BHeight()
  */
 void Config::BSpacing(int spacing)
 {
+    config->beginGroup(kBar);
     config->setValue(kBSpacing, spacing);
+    config->endGroup();
 }
 
 /*
@@ -239,7 +278,11 @@ void Config::BSpacing(int spacing)
  */
 int Config::BSpacing()
 {
-    return config->value(kBSpacing, dBSpacing).toInt();
+    config->beginGroup(kBar);
+    int spacing = config->value(kBSpacing, dBSpacing).toInt();
+    config->endGroup();
+
+    return spacing;
 }
 
 /*
@@ -249,7 +292,9 @@ int Config::BSpacing()
  */
 void Config::BCoverSize(int size)
 {
+    config->beginGroup(kBar);
     config->setValue(kBCoverSize, size);
+    config->endGroup();
 }
 
 /*
@@ -259,7 +304,11 @@ void Config::BCoverSize(int size)
  */
 int Config::BCoverSize()
 {
-    return config->value(kBCoverSize, dBCoverSize).toInt();
+    config->beginGroup(kBar);
+    int size = config->value(kBCoverSize, dBCoverSize).toInt();
+    config->endGroup();
+
+    return size;
 }
 
 /*
@@ -269,7 +318,9 @@ int Config::BCoverSize()
  */
 void Config::BIconSize(int size)
 {
+    config->beginGroup(kBar);
     config->setValue(kBIconSize, size);
+    config->endGroup();
 }
 
 /*
@@ -279,7 +330,11 @@ void Config::BIconSize(int size)
  */
 int Config::BIconSize()
 {
-    return config->value(kBIconSize, dBIconSize).toInt();
+    config->beginGroup(kBar);
+    int size = config->value(kBIconSize, dBIconSize).toInt();
+    config->endGroup();
+
+    return size;
 }
 
 /*
@@ -289,7 +344,9 @@ int Config::BIconSize()
  */
 void Config::BTrackWidth(int width)
 {
+    config->beginGroup(kBar);
     config->setValue(kBTrackWidth, width);
+    config->endGroup();
 }
 
 /*
@@ -299,7 +356,11 @@ void Config::BTrackWidth(int width)
  */
 int Config::BTrackWidth()
 {
-    return config->value(kBTrackWidth, dBTrackWidth).toInt();
+    config->beginGroup(kBar);
+    int width = config->value(kBTrackWidth, dBTrackWidth).toInt();
+    config->endGroup();
+
+    return width;
 }
 
 /*
@@ -309,7 +370,9 @@ int Config::BTrackWidth()
  */
 void Config::BTimeWidth(int width)
 {
+    config->beginGroup(kBar);
     config->setValue(kBTimeWidth, width);
+    config->endGroup();
 }
 
 /*
@@ -319,7 +382,27 @@ void Config::BTimeWidth(int width)
  */
 int Config::BTimeWidth()
 {
-    return config->value(kBTimeWidth, dBTimeWidth).toInt();
+    config->beginGroup(kBar);
+    int width = config->value(kBTimeWidth, dBTimeWidth).toInt();
+    config->endGroup();
+
+    return width;
+}
+
+/*
+ * Checks if section contains key.
+ *
+ * :param section: section
+ * :param key: key
+ * :return: exists
+ */
+bool Config::sectionContains(const QString &section, const QString &key)
+{
+    config->beginGroup(section);
+    bool contains = config->contains(key);
+    config->endGroup();
+
+    return contains;
 }
 
 /*
@@ -331,22 +414,31 @@ int Config::BTimeWidth()
 QSettings * Config::config         = nullptr;
 
 /*
+ * The following variables are groups
+ * within the config.
+ */
+const QString Config::kApp         = "App";
+const QString Config::kPlayer      = "Player";
+const QString Config::kLibrary     = "Library";
+const QString Config::kBar         = "Bar";
+
+/*
  * The following variables with k prefix
  * are keys used in config.
  */
-const QString Config::kALog        = "App/Log";
-const QString Config::kAFontSize   = "App/FontSize";
-const QString Config::kPVolume     = "Player/Volume";
-const QString Config::kPShuffle    = "Player/Shuffle";
-const QString Config::kPLoop       = "Player/Loop";
-const QString Config::kLPath       = "Library/Path";
-const QString Config::kLItemHeight = "Library/ItemHeight";
-const QString Config::kBHeight     = "Bar/Height";
-const QString Config::kBSpacing    = "Bar/Spacing";
-const QString Config::kBCoverSize  = "Bar/CoverSize";
-const QString Config::kBIconSize   = "Bar/IconSize";
-const QString Config::kBTrackWidth = "Bar/TrackWidth";
-const QString Config::kBTimeWidth  = "Bar/TimeWidth";
+const QString Config::kALog        = "Log";
+const QString Config::kAFontSize   = "FontSize";
+const QString Config::kPVolume     = "Volume";
+const QString Config::kPShuffle    = "Shuffle";
+const QString Config::kPLoop       = "Loop";
+const QString Config::kLPath       = "Path";
+const QString Config::kLItemHeight = "ItemHeight";
+const QString Config::kBHeight     = "Height";
+const QString Config::kBSpacing    = "Spacing";
+const QString Config::kBCoverSize  = "CoverSize";
+const QString Config::kBIconSize   = "IconSize";
+const QString Config::kBTrackWidth = "TrackWidth";
+const QString Config::kBTimeWidth  = "TimeWidth";
 
 /*
  * The following variables with d prefix
@@ -362,6 +454,6 @@ const int Config::dLItemHeight     = 50;
 const int Config::dBHeight         = 68;
 const int Config::dBSpacing        = 10;
 const int Config::dBCoverSize      = 48;
-const int Config::dBIconSize       = 35;
+const int Config::dBIconSize       = 33;
 const int Config::dBTrackWidth     = 240;
 const int Config::dBTimeWidth      = 50;
