@@ -23,14 +23,14 @@ public:
     int index() const;
 
     bool isLoop() const;
-    bool isShuffled() const;
+    bool isShuffle() const;
 
     int volume() const;
     int position() const;
 
     bool isPlaying() const;
 
-    void setPlaylist(const AudioList &playlist);
+    void loadPlaylist(const AudioList &playlist, int index = -1);
 
     Audio * audioAt(int index) const;
     Audio * currentAudio() const;
@@ -40,7 +40,7 @@ public slots:
     void setPosition(int position);
 
     void setLoop(bool loop);
-    void setShuffled(bool shuffled);
+    void setShuffle(bool shuffle);
 
     void play();
     void pause();
@@ -84,7 +84,7 @@ private:
     int m_index;
     int m_volume;
     bool m_loop;
-    bool m_shuffled;
+    bool m_shuffle;
     bool m_playing;
 };
 

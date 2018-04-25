@@ -9,6 +9,8 @@ MusicBar::MusicBar(QWidget *parent) : QWidget(parent)
 {
     pm_player = new Player(this);
     pm_player->setVolume(Config::PVolume());
+    pm_player->setShuffle(Config::PShuffle());
+    pm_player->setLoop(Config::PLoop());
 
     setupUi();
 
@@ -245,7 +247,7 @@ void MusicBar::onPlayerVolumeChanged(int volume)
  */
 void MusicBar::onShuffleButtonLocked(bool locked)
 {
-    pm_player->setShuffled(locked);
+    pm_player->setShuffle(locked);
     Config::PShuffle(locked);
 }
 

@@ -16,7 +16,7 @@ Player::Player(QObject *parent) : QObject(parent)
     m_index = -1;
     m_volume = 0;
     m_loop = false;
-    m_shuffled = false;
+    m_shuffle = false;
     m_playing = false;
 
     pm_timer = new Timer(1000, this);
@@ -35,16 +35,14 @@ Player::~Player()
 
 /*
  * Setter for index property. It also
- * changes the active audio if the index
- * is valid.
+ * changes the active audio.
  *
  * :param index: index
  */
 void Player::setIndex(int index)
 {
     m_index = index;
-    if (index != -1)
-        setAudio(index);
+    setAudio(m_index);
 }
 
 /*
@@ -68,13 +66,13 @@ bool Player::isLoop() const
 }
 
 /*
- * Getter for shuffled property.
+ * Getter for shuffle property.
  *
- * :return: shuffled
+ * :return: shuffle
  */
-bool Player::isShuffled() const
+bool Player::isShuffle() const
 {
-    return m_shuffled;
+    return m_shuffle;
 }
 
 /*
@@ -110,24 +108,30 @@ bool Player::isPlaying() const
 }
 
 /*
- * Sets playlist for player. Iterates over
- * playlist and create audio position to make
- * unshuffeling possible
+ * Loads playlist for player. Iterates over the
+ * playlist and create an AudioPosition for each
+ * element to make unshuffeling possible.
+ * If the player is in shuffle mode the new playlist
+ * gets shuffled automatically.
  *
  * :param playlist: playlist
+ * :param index: index, default -1
  */
-void Player::setPlaylist(const AudioList &playlist)
+void Player::loadPlaylist(const AudioList &playlist, int index)
 {
     freeStream();
 
-    m_index = -1;
-    m_shuffled = false;
-    m_playing = false;
-
     m_playlist.clear();
-
     for (int i = 0; i < playlist.size(); i++)
         m_playlist << AudioPosition(i, playlist[i]);
+
+    setIndex(index);
+    m_playing = false;
+
+    if (m_shuffle && m_index != -1)
+        shuffle();
+    else
+        m_shuffle = false;
 }
 
 /*
@@ -137,6 +141,9 @@ void Player::setPlaylist(const AudioList &playlist)
  */
 Audio * Player::audioAt(int index) const
 {
+    if (m_index == -1)
+        return nullptr;
+
     return m_playlist[index].audio;
 }
 
@@ -202,19 +209,22 @@ void Player::setLoop(bool loop)
 
 /*
  * Setter for shuffle property. Shuffles
- * or unshuffles (sorts) the playlist.
+ * or unshuffles (sorts) the playlist
+ * accordingly.
  *
  * :param shuffled: shuffled
  */
-void Player::setShuffled(bool shuffled)
+void Player::setShuffle(bool shuffle)
 {
-    if (m_shuffled == shuffled || m_index == -1)
+    if (m_shuffle == shuffle)
         return;
 
-    if (shuffled)
-        shuffle();
+    if (shuffle)
+        this->shuffle();
     else
         unshuffle();
+
+    m_shuffle = shuffle;
 }
 
 /*
@@ -267,8 +277,7 @@ void Player::next()
     int index = nextIndex();
     if (index != -1)
     {
-        m_index = index;
-        setAudio(index);
+        setIndex(index);
     }
     else
     {
@@ -286,8 +295,7 @@ void Player::back()
     int index = backIndex();
     if (index != -1)
     {
-        m_index = index;
-        setAudio(index);
+        setIndex(index);
     }
     else
     {
@@ -356,10 +364,13 @@ int Player::backIndex()
  */
 void Player::shuffle()
 {
-    Audio * audio = currentAudio();
+    if (m_index == -1)
+        return;
 
+    Audio *audio = currentAudio();
     std::random_shuffle(m_playlist.begin(), m_playlist.end());
 
+    m_index = 0;
     for (int i = 0; i < m_playlist.size(); i++)
     {
         if (audio == audioAt(i))
@@ -368,8 +379,6 @@ void Player::shuffle()
             break;
         }
     }
-    m_index = 0;
-    m_shuffled = true;
 }
 
 /*
@@ -378,8 +387,10 @@ void Player::shuffle()
  */
 void Player::unshuffle()
 {
-    Audio *audio = currentAudio();
+    if (m_index == -1)
+        return;
 
+    Audio *audio = currentAudio();
     std::sort(m_playlist.begin(), m_playlist.end(),
         [](const AudioPosition &ap1, const AudioPosition &ap2) {return ap1.index < ap2.index;});
 
@@ -391,7 +402,6 @@ void Player::unshuffle()
             break;
         }
     }
-    m_shuffled = false;
 }
 
 /*
@@ -420,6 +430,9 @@ void Player::freeStream()
  */
 void Player::setAudio(int index)
 {
+    if (index == -1)
+        return;
+
     freeStream();
     m_stream = BASS_StreamCreateFile(false, audioAt(index)->path().toLatin1(), 0, 0, 0);
 

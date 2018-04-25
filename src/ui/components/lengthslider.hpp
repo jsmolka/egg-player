@@ -7,10 +7,6 @@
 #include <QStyle>
 #include <QStyleOption>
 
-/*
- * The LengthSliderStyle class is a custom QSlider
- * style which makes a slider clickable.
- */
 class LengthSliderStyle : public QProxyStyle
 {
 public:
