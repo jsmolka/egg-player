@@ -212,7 +212,7 @@ void Player::setLoop(bool loop)
  * or unshuffles (sorts) the playlist
  * accordingly.
  *
- * :param shuffled: shuffled
+ * :param shuffle: shuffle
  */
 void Player::setShuffle(bool shuffle)
 {
@@ -437,7 +437,7 @@ void Player::setAudio(int index)
     m_stream = BASS_StreamCreateFile(false, audioAt(index)->path().toLatin1(), 0, 0, 0);
 
     if (m_stream == 0)
-        Logger::log("Player: Cannot create stream '%1'", currentAudio()->path());
+        Logger::log("Player: Cannot create stream '%1'", audioAt(index)->path());
 
     setVolume(m_volume);
     pm_timer->restart();
@@ -447,6 +447,6 @@ void Player::setAudio(int index)
     else
         pause();
 
-    emit audioChanged(currentAudio());
+    emit audioChanged(audioAt(index));
     emit positionChanged(0);
 }
