@@ -14,6 +14,11 @@
 
 #include "logger.hpp"
 
+/*
+ * The Utils class contains utility functions which get
+ * used a lot and do not belong into the classes. It
+ * consists of general, file and color related functions.
+ */
 class Utils
 {
 public:

@@ -10,6 +10,10 @@
 #include "songinfo.hpp"
 #include "utils.hpp"
 
+/*
+ * The MusicLibrary class is responsible for
+ * displaying the library.
+ */
 class MusicLibrary : public QListWidget
 {
     Q_OBJECT

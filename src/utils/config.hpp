@@ -7,71 +7,89 @@
 
 #include "constants.hpp"
 
+/*
+ * The Config class manages all user editable settings
+ * and is globally available in form of static functions.
+ * Those have a special nameing scheme and are a combination
+ * of the capital letter of the section and the key.
+ * Notice that getters and setter have a same name, start with
+ * a capital letter and just differ in having a parameter or not.
+ */
 class Config
 {
 public:
     static void create();
     static bool contains(const QString &key);
 
-    static void setLog(bool log);
-    static bool log();
+    static void ALog(bool log);
+    static bool ALog();
 
-    static void setFontSize(double size);
-    static double fontSize();
+    static void AFontSize(double size);
+    static double AFontSize();
 
-    static void setEpLibrary(const QString &path);
-    static QString epLibrary();
+    static void PVolume(int volume);
+    static int PVolume();
 
-    static void setEpVolume(int volume);
-    static int epVolume();
+    static void PShuffle(bool shuffle);
+    static bool PShuffle();
 
-    static void setMlSongInfoHeight(int height);
-    static int mlSongInfoHeight();
+    static void PLoop(bool loop);
+    static bool PLoop();
 
-    static void setMbHeight(int height);
-    static int mbHeight();
+    static void LPath(const QString &path);
+    static QString LPath();
 
-    static void setMbSpacing(int spacing);
-    static int mbSpacing();
+    static void LItemHeight(int height);
+    static int LItemHeight();
 
-    static void setMbCoverSize(int size);
-    static int mbCoverSize();
+    static void BHeight(int height);
+    static int BHeight();
 
-    static void setMbIconSize(int size);
-    static int mbIconSize();
+    static void BSpacing(int spacing);
+    static int BSpacing();
 
-    static void setMbTrackLabelWidth(int width);
-    static int mbTrackLabelWidth();
+    static void BCoverSize(int size);
+    static int BCoverSize();
 
-    static void setMbTimeLabelWidth(int width);
-    static int mbTimeLabelWidth();
+    static void BIconSize(int size);
+    static int BIconSize();
+
+    static void BTrackWidth(int width);
+    static int BTrackWidth();
+
+    static void BTimeWidth(int width);
+    static int BTimeWidth();
 
 private:
     static QSettings *config;
 
-    static const QString kLog;
-    static const QString kFontSize;
-    static const QString kEpLibrary;
-    static const QString kEpVolume;
-    static const QString kMlSongInfoHeight;
-    static const QString kMbHeight;
-    static const QString kMbSpacing;
-    static const QString kMbCoverSize;
-    static const QString kMbIconSize;
-    static const QString kMbTrackLabelWidth;
-    static const QString kMbTimeLabelWidth;
+    static const QString kALog;
+    static const QString kAFontSize;
+    static const QString kPVolume;
+    static const QString kPShuffle;
+    static const QString kPLoop;
+    static const QString kLPath;
+    static const QString kLItemHeight;
+    static const QString kBHeight;
+    static const QString kBSpacing;
+    static const QString kBCoverSize;
+    static const QString kBIconSize;
+    static const QString kBTrackWidth;
+    static const QString kBTimeWidth;
 
-    static const bool dLog;
-    static const double dFontSize;
-    static const QString dEpLibrary;
-    static const int dEpVolume;
-    static const int dMlSongInfoHeight;
-    static const int dMbHeight;
-    static const int dMbSpacing;
-    static const int dMbCoverSize;
-    static const int dMbIconSize;
-    static const int dMbTrackLabelWidth;
-    static const int dMbTimeLabelWidth;
+    static const bool dALog;
+    static const double dAFontSize;
+    static const int dPVolume;
+    static const bool dPShuffle;
+    static const bool dPLoop;
+    static const QString dLPath;
+    static const int dLItemHeight;
+    static const int dBHeight;
+    static const int dBSpacing;
+    static const int dBCoverSize;
+    static const int dBIconSize;
+    static const int dBTrackWidth;
+    static const int dBTimeWidth;
 };
 
 #endif // CONFIG_HPP

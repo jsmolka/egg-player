@@ -24,7 +24,7 @@ void Logger::create()
  */
 void Logger::log(const QString &message, const QString &arg1, const QString &arg2)
 {
-    if (!Config::log())
+    if (!Config::ALog())
         return;
 
     QString log = message;

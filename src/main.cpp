@@ -38,7 +38,7 @@ QFont loadFont()
     QString family = QFontDatabase::applicationFontFamilies(id).at(0);
 
     QFont font(family);
-    font.setPointSizeF(Config::fontSize());
+    font.setPointSizeF(Config::AFontSize());
     font.setWeight(QFont::Weight::Medium);
 
     return font;

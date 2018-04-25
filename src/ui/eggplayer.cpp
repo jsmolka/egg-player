@@ -5,7 +5,7 @@
  */
 EggPlayer::EggPlayer()
 {
-    pm_library = new Library(Config::epLibrary());
+    pm_library = new Library(Config::LPath());
     pm_library->sortByTitle();
 
     setupUi();

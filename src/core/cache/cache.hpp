@@ -11,6 +11,11 @@
 #include "constants.hpp"
 #include "logger.hpp"
 
+/*
+ * The Cache class is responsible for caching and later
+ * loading all audio covers. This is necessary because loading
+ * the cover while playing the song is not possible.
+ */
 class Cache
 {
 public:

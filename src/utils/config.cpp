@@ -11,38 +11,44 @@ void Config::create()
 
     config = new QSettings(CFG_PATH, QSettings::IniFormat, QApplication::instance());
 
-    if (!contains(kLog))
-        setLog(dLog);
+    if (!contains(kALog))
+        ALog(dALog);
 
-    if (!contains(kFontSize))
-        setFontSize(dFontSize);
+    if (!contains(kAFontSize))
+        AFontSize(dAFontSize);
 
-    if (!contains(kEpLibrary))
-        setEpLibrary(dEpLibrary);
+    if (!contains(kPVolume))
+        PVolume(dPVolume);
 
-    if (!contains(kEpVolume))
-        setEpVolume(dEpVolume);
+    if (!contains(kPShuffle))
+        PShuffle(dPShuffle);
 
-    if (!contains(kMlSongInfoHeight))
-        setMlSongInfoHeight(dMlSongInfoHeight);
+    if (!contains(kPLoop))
+        PLoop(dPLoop);
 
-    if (!contains(kMbHeight))
-        setMbHeight(dMbHeight);
+    if (!contains(kLPath))
+        LPath(dLPath);
 
-    if (!contains(kMbSpacing))
-        setMbSpacing(dMbSpacing);
+    if (!contains(kLItemHeight))
+        LItemHeight(dLItemHeight);
 
-    if (!contains(kMbCoverSize))
-        setMbCoverSize(dMbCoverSize);
+    if (!contains(kBHeight))
+        BHeight(dBHeight);
 
-    if (!contains(kMbIconSize))
-        setMbIconSize(dMbIconSize);
+    if (!contains(kBSpacing))
+        BSpacing(dBSpacing);
 
-    if (!contains(kMbTrackLabelWidth))
-        setMbTrackLabelWidth(dMbTrackLabelWidth);
+    if (!contains(kBCoverSize))
+        BCoverSize(dBCoverSize);
 
-    if (!contains(kMbTimeLabelWidth))
-        setMbTimeLabelWidth(dMbTimeLabelWidth);
+    if (!contains(kBIconSize))
+        BIconSize(dBIconSize);
+
+    if (!contains(kBTrackWidth))
+        BTrackWidth(dBTrackWidth);
+
+    if (!contains(kBTimeWidth))
+        BTimeWidth(dBTimeWidth);
 }
 
 /*
@@ -57,223 +63,263 @@ bool Config::contains(const QString &key)
 }
 
 /*
- * Setter for log.
+ * Setter for app log.
  *
  * :param log: log
  */
-void Config::setLog(bool log)
+void Config::ALog(bool log)
 {
-    config->setValue(kLog, log);
+    config->setValue(kALog, log);
 }
 
 /*
- * Getter for log.
+ * Getter for app log.
  *
- * :return: log or default
+ * :return: log
  */
-bool Config::log()
+bool Config::ALog()
 {
-    return config->value(kLog, dLog).toBool();
+    return config->value(kALog, dALog).toBool();
 }
 
 /*
- * Setter for font size.
+ * Setter for app font size.
  *
  * :param size: size
  */
-void Config::setFontSize(double size)
+void Config::AFontSize(double size)
 {
-    config->setValue(kFontSize, size);
+    config->setValue(kAFontSize, size);
 }
 
 /*
- * Getter for font size.
+ * Getter for app font size.
  *
- * :return: size or default
+ * :return: size
  */
-double Config::fontSize()
+double Config::AFontSize()
 {
-    return config->value(kFontSize, dFontSize).toDouble();
+    return config->value(kAFontSize, dAFontSize).toDouble();
 }
 
 /*
- * Setter for EggPlayer library.
- *
- * :param string: path
- */
-void Config::setEpLibrary(const QString &path)
-{
-    config->setValue(kEpLibrary, path);
-}
-
-/*
- * Getter for EggPlayer library.
- *
- * :return: path or default
- */
-QString Config::epLibrary()
-{
-    return config->value(kEpLibrary, dEpLibrary).toString();
-}
-
-/*
- * Setter for EggPlayer volume.
+ * Setter for player volume.
  *
  * :param volume: volume
  */
-void Config::setEpVolume(int volume)
+void Config::PVolume(int volume)
 {
-    config->setValue(kEpVolume, volume);
+    config->setValue(dLPath, volume);
 }
 
 /*
- * Getter for EggPlayer volume.
+ * Getter for player volume.
  *
- * :return: volume or default
+ * :return: volume
  */
-int Config::epVolume()
+int Config::PVolume()
 {
-    return config->value(kEpVolume, dEpVolume).toInt();
+    return config->value(kPVolume, dPVolume).toInt();
 }
 
 /*
- * Setter for MusicLibrary SongInfo height.
+ * Setter for player shuffle.
+ *
+ * :param shuffle: shuffle
+ */
+void Config::PShuffle(bool shuffle)
+{
+    config->setValue(kPShuffle, shuffle);
+}
+
+/*
+ * Getter for player shuffle.
+ *
+ * :return: shuffle
+ */
+bool Config::PShuffle()
+{
+    return config->value(kPShuffle, dPShuffle).toBool();
+}
+
+/*
+ * Setter for player loop.
+ *
+ * :param loop: loop
+ */
+void Config::PLoop(bool loop)
+{
+    config->setValue(kPLoop, loop);
+}
+
+/*
+ * Getter for player loop.
+ *
+ * :return: loop
+ */
+bool Config::PLoop()
+{
+    return config->value(kPLoop, dPLoop).toBool();
+}
+
+/*
+ * Setter for library path.
+ *
+ * :param string: path
+ */
+void Config::LPath(const QString &path)
+{
+    config->setValue(kLPath, path);
+}
+
+/*
+ * Getter for library path.
+ *
+ * :return: path
+ */
+QString Config::LPath()
+{
+    return config->value(kLPath, dLPath).toString();
+}
+
+/*
+ * Setter for library item height.
  *
  * :param height: height
  */
-void Config::setMlSongInfoHeight(int height)
+void Config::LItemHeight(int height)
 {
-    config->setValue(kMlSongInfoHeight, height);
+    config->setValue(kLItemHeight, height);
 }
 
 /*
- * Getter for MusicLibrary SongInfo height.
+ * Getter for library item height.
  *
- * :return: height or default
+ * :return: height
  */
-int Config::mlSongInfoHeight()
+int Config::LItemHeight()
 {
-    return config->value(kMlSongInfoHeight, dMlSongInfoHeight).toDouble();
+    return config->value(kLItemHeight, dLItemHeight).toDouble();
 }
 
 /*
- * Setter for MusicBar height.
+ * Setter for bar height.
  *
  * :param height: height
  */
-void Config::setMbHeight(int height)
+void Config::BHeight(int height)
 {
-    config->setValue(kMbHeight, height);
+    config->setValue(kBHeight, height);
 }
 
 /*
- * Getter for MusicBar height.
+ * Getter for bar height.
  *
- * :result: height or default
+ * :result: height
  */
-int Config::mbHeight()
+int Config::BHeight()
 {
-    return config->value(kMbHeight, dMbHeight).toInt();
+    return config->value(kBHeight, dBHeight).toInt();
 }
 
 /*
- * Setter for MusicBar spacing.
+ * Setter for bar spacing.
  *
  * :param spacing: spacing
  */
-void Config::setMbSpacing(int spacing)
+void Config::BSpacing(int spacing)
 {
-    config->setValue(kMbSpacing, spacing);
+    config->setValue(kBSpacing, spacing);
 }
 
 /*
- * Getter for MusicBar spacing.
+ * Getter for bar spacing.
  *
- * :return: spacing or default
+ * :return: spacing
  */
-int Config::mbSpacing()
+int Config::BSpacing()
 {
-    return config->value(kMbSpacing, dMbSpacing).toInt();
+    return config->value(kBSpacing, dBSpacing).toInt();
 }
 
 /*
- * Setter for MusicBar cover size.
- *
- * :param size: size
- */
-void Config::setMbCoverSize(int size)
-{
-    config->setValue(kMbCoverSize, size);
-}
-
-/*
- * Getter for MusicBar cover size.
- *
- * :return: size or default
- */
-int Config::mbCoverSize()
-{
-    return config->value(kMbCoverSize, dMbCoverSize).toInt();
-}
-
-/*
- * Setter for MusicBar icon size.
+ * Setter for bar cover size.
  *
  * :param size: size
  */
-void Config::setMbIconSize(int size)
+void Config::BCoverSize(int size)
 {
-    config->setValue(kMbIconSize, size);
+    config->setValue(kBCoverSize, size);
 }
 
 /*
- * Getter for MusicBar icon size.
+ * Getter for bar cover size.
  *
- * :return: size or default
+ * :return: size
  */
-int Config::mbIconSize()
+int Config::BCoverSize()
 {
-    return config->value(kMbIconSize, dMbIconSize).toInt();
+    return config->value(kBCoverSize, dBCoverSize).toInt();
 }
 
 /*
- * Setter for MusicBar track label width.
+ * Setter for bar icon size.
+ *
+ * :param size: size
+ */
+void Config::BIconSize(int size)
+{
+    config->setValue(kBIconSize, size);
+}
+
+/*
+ * Getter for bar icon size.
+ *
+ * :return: size
+ */
+int Config::BIconSize()
+{
+    return config->value(kBIconSize, dBIconSize).toInt();
+}
+
+/*
+ * Setter for bar track width.
  *
  * :param width: width
  */
-void Config::setMbTrackLabelWidth(int width)
+void Config::BTrackWidth(int width)
 {
-    config->setValue(kMbTrackLabelWidth, width);
+    config->setValue(kBTrackWidth, width);
 }
 
 /*
- * Getter for MusicBar track label width.
+ * Getter for bar track width.
  *
- * :return: width or default
+ * :return: width
  */
-int Config::mbTrackLabelWidth()
+int Config::BTrackWidth()
 {
-    return config->value(kMbTrackLabelWidth, dMbTrackLabelWidth).toInt();
+    return config->value(kBTrackWidth, dBTrackWidth).toInt();
 }
 
 /*
- * Setter for MusicBar time label width.
+ * Setter for bar time width.
  *
  * :param width: width
  */
-void Config::setMbTimeLabelWidth(int width)
+void Config::BTimeWidth(int width)
 {
-    config->setValue(kMbTimeLabelWidth, width);
+    config->setValue(kBTimeWidth, width);
 }
 
 /*
- * Getter for MusicBar time label width.
+ * Getter for bar time width.
  *
- * :return: width or default
+ * :return: width
  */
-int Config::mbTimeLabelWidth()
+int Config::BTimeWidth()
 {
-    return config->value(kMbTimeLabelWidth, dMbTimeLabelWidth).toInt();
+    return config->value(kBTimeWidth, dBTimeWidth).toInt();
 }
 
 /*
@@ -282,36 +328,40 @@ int Config::mbTimeLabelWidth()
  * be the application so we do not have to
  * worry about freeing it.
  */
-QSettings * Config::config             = nullptr;
+QSettings * Config::config         = nullptr;
 
 /*
  * The following variables with k prefix
  * are keys used in config.
  */
-const QString Config::kLog               = "App/Log";
-const QString Config::kFontSize          = "App/FontSize";
-const QString Config::kEpLibrary         = "Player/Library";
-const QString Config::kEpVolume          = "Player/Volume";
-const QString Config::kMlSongInfoHeight  = "MusicLibrary/SongInfoHeight";
-const QString Config::kMbHeight          = "MusicBar/Height";
-const QString Config::kMbSpacing         = "MusicBar/Spacing";
-const QString Config::kMbCoverSize       = "MusicBar/CoverSize";
-const QString Config::kMbIconSize        = "MusicBar/IconSize";
-const QString Config::kMbTrackLabelWidth = "MusicBar/TrackLabelWidth";
-const QString Config::kMbTimeLabelWidth  = "MusicBar/TimeLabelWidth";
+const QString Config::kALog        = "App/Log";
+const QString Config::kAFontSize   = "App/FontSize";
+const QString Config::kPVolume     = "Player/Volume";
+const QString Config::kPShuffle    = "Player/Shuffle";
+const QString Config::kPLoop       = "Player/Loop";
+const QString Config::kLPath       = "Library/Path";
+const QString Config::kLItemHeight = "Library/ItemHeight";
+const QString Config::kBHeight     = "Bar/Height";
+const QString Config::kBSpacing    = "Bar/Spacing";
+const QString Config::kBCoverSize  = "Bar/CoverSize";
+const QString Config::kBIconSize   = "Bar/IconSize";
+const QString Config::kBTrackWidth = "Bar/TrackWidth";
+const QString Config::kBTimeWidth  = "Bar/TimeWidth";
 
 /*
  * The following variables with d prefix
  * are default values used in config.
  */
-const bool Config::dLog                  = true;
-const double Config::dFontSize           = 10.25;
-const QString Config::dEpLibrary         = QStandardPaths::writableLocation(QStandardPaths::MusicLocation);
-const int Config::dEpVolume              = 25;
-const int Config::dMlSongInfoHeight      = 50;
-const int Config::dMbHeight              = 68;
-const int Config::dMbSpacing             = 10;
-const int Config::dMbCoverSize           = 48;
-const int Config::dMbIconSize            = 35;
-const int Config::dMbTrackLabelWidth     = 240;
-const int Config::dMbTimeLabelWidth      = 50;
+const bool Config::dALog           = true;
+const double Config::dAFontSize    = 10.25;
+const int Config::dPVolume         = 25;
+const bool Config::dPShuffle       = false;
+const bool Config::dPLoop          = false;
+const QString Config::dLPath       = QStandardPaths::writableLocation(QStandardPaths::MusicLocation);
+const int Config::dLItemHeight     = 50;
+const int Config::dBHeight         = 68;
+const int Config::dBSpacing        = 10;
+const int Config::dBCoverSize      = 48;
+const int Config::dBIconSize       = 35;
+const int Config::dBTrackWidth     = 240;
+const int Config::dBTimeWidth      = 50;

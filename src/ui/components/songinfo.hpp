@@ -10,6 +10,10 @@
 #include "audio.hpp"
 #include "utils.hpp"
 
+/*
+ * The SongInfo class allows custom display
+ * of Audios.
+ */
 class SongInfo : public QWidget
 {
     Q_OBJECT

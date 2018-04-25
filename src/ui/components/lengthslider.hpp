@@ -7,6 +7,10 @@
 #include <QStyle>
 #include <QStyleOption>
 
+/*
+ * The LengthSliderStyle class is a custom QSlider
+ * style which makes a slider clickable.
+ */
 class LengthSliderStyle : public QProxyStyle
 {
 public:
@@ -21,6 +25,10 @@ public:
     }
 };
 
+/*
+ * The LengthSlider class is a custom QSlider which is
+ * designed for displaying and changing audio progression.
+ */
 class LengthSlider : public QSlider
 {
     Q_OBJECT

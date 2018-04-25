@@ -15,6 +15,11 @@
 #include "logger.hpp"
 #include "utils.hpp"
 
+/*
+ * The audio class is responsible for reading and
+ * storing all relevant audio tags and information.
+ * It is also able to read the cover.
+ */
 class Audio
 {
 public:

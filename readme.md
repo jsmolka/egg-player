@@ -19,4 +19,4 @@ A Groove Music like music player.
 ## Things to do
 - black title bar through [Windows API](https://msdn.microsoft.com/en-us/library/windows/desktop/ms724940%28v=vs.85%29.aspx)
 - custom css with repaint event for LengthSlider
-- use exact milliseconds time in timer, signal at song end
+- default cover and resize functions into utils

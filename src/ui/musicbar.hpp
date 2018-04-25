@@ -15,6 +15,10 @@
 #include "player.hpp"
 #include "utils.hpp"
 
+/*
+ * The MusicBar class is the widget responsible for
+ * displaying and managing the player.
+ */
 class MusicBar : public QWidget
 {
     Q_OBJECT
@@ -45,6 +49,8 @@ private slots:
     void onPlayerStateChanged(Player::State state);
     void onPlayerPositionChanged(int position);
     void onPlayerVolumeChanged(int volume);
+    void onShuffleButtonLocked(bool locked);
+    void onLoopButtonLocked(bool locked);
     void onLengthSliderMoved(int position);
     void onLengthSliderPositionChanged(int position);
 

@@ -5,6 +5,10 @@
 
 #include "audio.hpp"
 
+/*
+ * The AudioList class is just a QList<Audio *>
+ * with some extra functions.
+ */
 class AudioList : public QList<Audio *>
 {
 public:
