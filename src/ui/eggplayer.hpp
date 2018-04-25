@@ -9,10 +9,6 @@
 #include "musiclibrary.hpp"
 #include "musicbar.hpp"
 
-/*
- * The EggPlayer class is the main widget and
- * contains a user interface things.
- */
 class EggPlayer : public QWidget
 {
     Q_OBJECT

@@ -15,11 +15,6 @@
 #include "logger.hpp"
 #include "utils.hpp"
 
-/*
- * The audio class is responsible for reading and
- * storing all relevant audio tags and information.
- * It is also able to read the cover.
- */
 class Audio
 {
 public:
@@ -40,7 +35,6 @@ public:
 
 private:
     bool readTags();
-    QPixmap resize(const QPixmap &cover, int size);
     QPixmap readCover();
 
     bool m_valid;

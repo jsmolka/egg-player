@@ -5,11 +5,6 @@
 #include <QPushButton>
 #include <QStyle>
 
-/*
- * The IconButton class is a extension of QPushButton
- * and adds some extra functionality for displaying
- * buttons with icons.
- */
 class IconButton : public QPushButton
 {
     Q_OBJECT

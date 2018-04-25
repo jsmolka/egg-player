@@ -294,11 +294,11 @@ void MusicBar::setupUi()
     setFixedHeight(Config::BHeight());
     setStyleSheet(Utils::read(CSS_MUSICBAR));
     setAutoFillBackground(true);
-    setColor(Utils::backgroundColor(defaultCover()));
+    setColor(Utils::backgroundColor(Utils::defaultCover(Config::BCoverSize())));
     setLayout(layout);
 
     pm_coverLabel = new QLabel(this);
-    pm_coverLabel->setPixmap(defaultCover());
+    pm_coverLabel->setPixmap(Utils::defaultCover(Config::BCoverSize()));
     pm_coverLabel->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
     layout->addWidget(pm_coverLabel, 0, 0);
 
@@ -356,17 +356,6 @@ void MusicBar::setupUi()
         layout->addWidget(button, 0, column);
         column++;
     }
-}
-
-/*
- * Returns default cover.
- *
- * :return: cover
- */
-QPixmap MusicBar::defaultCover()
-{
-    QPixmap image(IMG_DEFAULT_COVER);
-    return image.scaled(Config::BCoverSize(), Config::BCoverSize(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
 }
 
 /*

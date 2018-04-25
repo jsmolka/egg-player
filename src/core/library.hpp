@@ -11,10 +11,6 @@
 #include "logger.hpp"
 #include "utils.hpp"
 
-/*
- * The Library class is used to load and store
- * Audio pointers and provides some extra functions.
- */
 class Library
 {
 public:

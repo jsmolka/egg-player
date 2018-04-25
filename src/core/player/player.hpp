@@ -9,10 +9,6 @@
 #include "audiolist.hpp"
 #include "timer.hpp"
 
-/*
- * The player class is responsible for playing
- * Audios and managing playlists.
- */
 class Player : public QObject
 {
     Q_OBJECT

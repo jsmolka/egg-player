@@ -25,6 +25,46 @@ QString Utils::timeString(int length)
 }
 
 /*
+ * Loads the default cover and resizes it
+ * if the size is unequal to -1.
+ *
+ * :param size: size, default -1
+ * :return: default cover
+ */
+QPixmap Utils::defaultCover(int size)
+{
+    QPixmap pixmap(IMG_DEFAULT_COVER);
+    if (size != -1)
+        return Utils::resize(pixmap, size);
+    else
+        return pixmap;
+}
+
+/*
+ * Resizes pixmap.
+ *
+ * :param pixmap: pixmap
+ * :param size: size
+ * :return: scaled pixmap
+ */
+QPixmap Utils::resize(const QPixmap &pixmap, int size)
+{
+    return pixmap.scaled(size, size, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+}
+
+/*
+ * Resizes image.
+ *
+ * :param image: image
+ * :param size: size
+ * :return: scaled image
+ */
+QImage Utils::resize(const QImage &image, int size)
+{
+    return image.scaled(size, size, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+}
+
+/*
  * Reads a file. Returns an empty string
  * if the file cannot be read.
  *

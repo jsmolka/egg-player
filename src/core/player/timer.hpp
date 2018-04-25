@@ -4,10 +4,6 @@
 #include <QTimer>
 #include <QObject>
 
-/*
- * The Timer class is a pausable QTimer
- * implementation.
- */
 class Timer : public QObject
 {
     Q_OBJECT

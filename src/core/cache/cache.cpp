@@ -123,10 +123,10 @@ QPixmap Cache::cover(const QString &path, int size)
 
     if (image.isNull())
     {
-        image = QPixmap(IMG_DEFAULT_COVER);
+        image = Utils::defaultCover();
         Logger::log("Cache: Cannot load cover '%1'", path);
     }
-    return resize(image, size);
+    return Utils::resize(image, size);
 }
 
 /*
@@ -273,16 +273,4 @@ QByteArray Cache::coverToBytes(const QPixmap &cover)
     cover.save(&buffer, "PNG");
 
     return bytes;
-}
-
-/*
- * Scales pixmap.
- *
- * :param pixmap: pixmap
- * :param size: size
- * :return: scaled pixmap
- */
-QPixmap Cache::resize(const QPixmap &pixmap, int size)
-{
-    return pixmap.scaled(size, size, Qt::KeepAspectRatio, Qt::SmoothTransformation);
 }

@@ -13,10 +13,6 @@
 #include "config.hpp"
 #include "constants.hpp"
 
-/*
- * The Logger class is a really simple implementation
- * of a logger which write to a file and to the console.
- */
 class Logger
 {
 public:

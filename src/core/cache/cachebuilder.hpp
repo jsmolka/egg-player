@@ -7,11 +7,6 @@
 #include "audiolist.hpp"
 #include "cache.hpp"
 
-/*
- * The CacheBuilder class is a thread which gets
- * started after loading the library. It caches
- * all audio covers in the background for later use.
- */
 class CacheBuilder : public QThread
 {
     Q_OBJECT

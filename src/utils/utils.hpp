@@ -14,16 +14,14 @@
 
 #include "logger.hpp"
 
-/*
- * The Utils class contains utility functions which get
- * used a lot and do not belong into the classes. It
- * consists of general, file and color related functions.
- */
 class Utils
 {
 public:
     // General
     static QString timeString(int length);
+    static QPixmap defaultCover(int size = -1);
+    static QPixmap resize(const QPixmap &pixmap, int size);
+    static QImage resize(const QImage &image, int size);
 
     // File
     static QString read(const QString &path);

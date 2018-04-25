@@ -4,10 +4,6 @@
 #include <QLayout>
 #include <QRect>
 
-/*
- * The BorderLayout class is the classic border layout. It
- * is taken from the Qt examples and slightly modified.
- */
 class BorderLayout : public QLayout
 {
 public:

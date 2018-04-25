@@ -11,11 +11,6 @@
 #include "constants.hpp"
 #include "logger.hpp"
 
-/*
- * The Cache class is responsible for caching and later
- * loading all audio covers. This is necessary because loading
- * the cover while playing the song is not possible.
- */
 class Cache
 {
 public:
@@ -37,7 +32,6 @@ private:
 
     QString lastQuery(const QSqlQuery &query);
     QByteArray coverToBytes(const QPixmap &cover);
-    QPixmap resize(const QPixmap &pixmap, int size);
 };
 
 #endif // CACHE_HPP

@@ -7,14 +7,6 @@
 
 #include "constants.hpp"
 
-/*
- * The Config class manages all user editable settings
- * and is globally available in form of static functions.
- * Those have a special nameing scheme and are a combination
- * of the capital letter of the section and the key.
- * Notice that getters and setter have a same name, start with
- * a capital letter and just differ in having a parameter or not.
- */
 class Config
 {
 public:

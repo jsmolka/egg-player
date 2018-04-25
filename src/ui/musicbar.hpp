@@ -15,10 +15,6 @@
 #include "player.hpp"
 #include "utils.hpp"
 
-/*
- * The MusicBar class is the widget responsible for
- * displaying and managing the player.
- */
 class MusicBar : public QWidget
 {
     Q_OBJECT
