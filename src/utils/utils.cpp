@@ -222,7 +222,7 @@ QColor Utils::averageColor(const QImage &image)
 QColor Utils::dominantColor(const QImage &image)
 {
     // Map 360 hues to RANGE
-    const quint32 RANGE = 45;
+    const quint32 RANGE = 60;
 
     // Initialize arrays for colorful colors
     std::array<quint32, RANGE> cCounts;
@@ -343,7 +343,9 @@ QColor Utils::backgroundColor(const QImage &image, quint32 size)
     qreal saturation = color.hsvSaturationF();
     qreal value = color.valueF();
 
-    value = qMin(value, 0.35);
+    value = qMin(value, 0.36);
+    saturation = qMin(saturation, 0.8);
+
     color = QColor::fromHsvF(hue, saturation, value);
 
     return color.toRgb();
