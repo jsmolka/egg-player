@@ -24,16 +24,15 @@ public:
 
     bool isLoop() const;
     bool isShuffle() const;
+    bool isPlaying() const;
 
     int volume() const;
     int position() const;
 
-    bool isPlaying() const;
+    void loadPlaylist(const AudioList &playlist, int index = 0);
 
-    void loadPlaylist(const AudioList &playlist, int index = -1);
-
-    Audio * audioAt(int index) const;
-    Audio * currentAudio() const;
+    Audio * audioAt(int index);
+    Audio * currentAudio();
 
 public slots:
     void setVolume(int volume);
@@ -44,6 +43,7 @@ public slots:
 
     void play();
     void pause();
+
     void next();
     void back();
 
@@ -69,13 +69,27 @@ private:
         Audio *audio;
     };
 
+    bool bassCreate();
+    bool bassFree();
+    bool bassCreateStream(Audio *audio);
+    bool bassFreeStream();
+    bool bassValidStream();
+    bool bassSetVolume(int volume);
+    bool bassSetPosition(int position);
+    bool bassPlay();
+    bool bassPause();
+
+    void log(const QString &message);
+
+    bool validIndex(int index);
+
+    void switchOrPause(int index);
     int nextIndex();
     int backIndex();
 
     void shuffle();
     void unshuffle();
 
-    void freeStream();
     void setAudio(int index);
 
     QList<AudioPosition> m_playlist;

@@ -100,6 +100,7 @@ void Library::loadFiles(const QString &path)
         return;
     }
 
+    m_audioList.reserve(files.size());
     for (const QString &file : files)
     {
         Audio *audio = new Audio(file);

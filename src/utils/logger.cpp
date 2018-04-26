@@ -20,7 +20,7 @@ void Logger::create()
  *
  * :param message: message
  * :param arg1: first arg
- * :param arg2: seconds arg
+ * :param arg2: second arg
  */
 void Logger::log(const QString &message, const QString &arg1, const QString &arg2)
 {
