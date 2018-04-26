@@ -79,7 +79,7 @@ private:
     bool bassPlay();
     bool bassPause();
 
-    void log(const QString &message);
+    void logAudio(const QString &message);
 
     bool validIndex(int index);
 

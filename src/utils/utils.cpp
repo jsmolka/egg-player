@@ -222,7 +222,7 @@ QColor Utils::averageColor(const QImage &image)
 QColor Utils::dominantColor(const QImage &image)
 {
     // Map 360 hues to RANGE
-    const quint32 RANGE = 18;
+    const quint32 RANGE = 45;
 
     // Initialize arrays for colorful colors
     std::array<quint32, RANGE> cCounts;
@@ -230,21 +230,25 @@ QColor Utils::dominantColor(const QImage &image)
     std::array<quint32, RANGE> cSaturations;
     std::array<quint32, RANGE> cValues;
 
-    cCounts.fill(0);
-    cHues.fill(0);
-    cSaturations.fill(0);
-    cValues.fill(0);
-
     // Initialize arrays for grey scale colors
     std::array<quint32, RANGE> gCounts;
     std::array<quint32, RANGE> gHues;
     std::array<quint32, RANGE> gSaturations;
     std::array<quint32, RANGE> gValues;
 
-    gCounts.fill(0);
-    gHues.fill(0);
-    gSaturations.fill(0);
-    gValues.fill(0);
+    // Fill arrays
+    for (quint32 i = 0; i < RANGE; i++)
+    {
+        cCounts[i] = 0;
+        cHues[i] = 0;
+        cSaturations[i] = 0;
+        cValues[i] = 0;
+
+        gCounts[i] = 0;
+        gHues[i] = 0;
+        gSaturations[i] = 0;
+        gValues[i] = 0;
+    }
 
     QRgb *pixels = (QRgb *) image.bits();
     quint32 pixelCount = image.height() * image.width();
@@ -324,20 +328,25 @@ QColor Utils::dominantColor(const QImage &image)
 }
 
 /*
- * Calculates background color by darkening
- * the dominant color to prevent too bright
- * colors. It also scales the picture to prevent
- * too long run times to large images.
+ * Gets the dominant color and edits some values
+ * to prevent too bright values.
  *
  * :param image: image
- * :param size: size for scaling
+ * :param size: size for scaling, default 25
  * :return: background color
  */
 QColor Utils::backgroundColor(const QImage &image, quint32 size)
 {
     QColor color = dominantColor(image.scaled(size, size));
 
-    return darker(color.toRgb(), 0.4);
+    qreal hue = color.hsvHueF();
+    qreal saturation = color.hsvSaturationF();
+    qreal value = color.valueF();
+
+    value = qMin(value, 0.35);
+    color = QColor::fromHsvF(hue, saturation, value);
+
+    return color.toRgb();
 }
 
 /*

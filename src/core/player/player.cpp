@@ -294,22 +294,23 @@ void Player::onTimeout(qint64 total)
 }
 
 /*
- * Initializes bass.
+ * Initializes BASS.
  *
  * :return: success
  */
 bool Player::bassCreate()
 {
+
     if (!BASS_Init(-1, 44100, 0, 0, NULL))
     {
-        log("Player: Cannot initialize BASS");
+        logAudio("Player: Cannot initialize BASS");
         return false;
     }
     return true;
 }
 
 /*
- * Frees bass.
+ * Frees BASS.
  *
  * :return: success
  */
@@ -317,14 +318,14 @@ bool Player::bassFree()
 {
     if (!BASS_Free())
     {
-        log("Player: Cannot free BASS");
+        logAudio("Player: Cannot free BASS");
         return false;
     }
     return true;
 }
 
 /*
- * Creates a bass stream from an audio pointer.
+ * Creates a BASS stream from an audio pointer.
  * If the stream is currently occupied it gets
  * freed before reassigning.
  *
@@ -353,7 +354,7 @@ bool Player::bassFreeStream()
 
     if (!BASS_StreamFree(m_stream))
     {
-        log("Player: Cannot free stream");
+        logAudio("Player: Cannot free stream");
         return false;
     }
 
@@ -374,7 +375,7 @@ bool Player::bassValidStream()
 /*
  * Sets the volume of the current channel.
  * The volume gets divided to get the float
- * value bass needs. The quotient is 1000
+ * value BASS needs. The quotient is 1000
  * which seems to be a reasonable value.
  *
  * :return: success
@@ -386,7 +387,7 @@ bool Player::bassSetVolume(int volume)
 
     if (!BASS_ChannelSetAttribute(m_stream, BASS_ATTRIB_VOL, (float) volume / 1000))
     {
-        log("Player: Cannot set volume");
+        logAudio("Player: Cannot set volume");
         return false;
     }
     return true;
@@ -406,7 +407,7 @@ bool Player::bassSetPosition(int position)
     QWORD bytes = BASS_ChannelSeconds2Bytes(m_stream, double (position));
     if (!BASS_ChannelSetPosition(m_stream, bytes, 0))
     {
-        log("Player: Cannot set position");
+        logAudio("Player: Cannot set position");
         return false;
     }
     return true;
@@ -425,7 +426,7 @@ bool Player::bassPlay()
 
     if (!BASS_ChannelPlay(m_stream, false))
     {
-        log("Player: Cannot play stream");
+        logAudio("Player: Cannot play stream");
         return false;
     }
     return true;
@@ -445,7 +446,7 @@ bool Player::bassPause()
 
     if (!BASS_ChannelPause(m_stream))
     {
-        log("Player: Cannot pause stream");
+        logAudio("Player: Cannot pause stream");
         return false;
     }
     return true;
@@ -458,12 +459,14 @@ bool Player::bassPause()
  *
  * :param message: message
  */
-void Player::log(const QString &message)
+void Player::logAudio(const QString &message)
 {
     QString log = message;
+
     Audio *audio = currentAudio();
     if (audio)
         log.append(QString(" '%1'").arg(audio->path()));
+
     Logger::log(log);
 }
 
