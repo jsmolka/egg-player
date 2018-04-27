@@ -31,8 +31,6 @@ public:
     static QString fileName(const QString &file);
 
     // Color
-    static QColor darker(const QColor &color, qreal factor);
-    static QColor averageColor(const QImage &image);
     static QColor dominantColor(const QImage &image);
     static QColor backgroundColor(const QImage &image, quint32 size = 25);
     static QColor backgroundColor(const QPixmap &image, quint32 size = 25);

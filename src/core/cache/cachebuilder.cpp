@@ -35,10 +35,10 @@ void CacheBuilder::abort()
 }
 
 /*
- * Implemented run function. This is
- * the main function of the thread. It
- * loads the cover files and aborts the
- * thread if necessary.
+ * Implemented run function. This is the
+ * main function of the thread. It loads
+ * the cover files and aborts the thread
+ * if necessary.
  */
 void CacheBuilder::run()
 {

@@ -203,8 +203,8 @@ QPixmap Audio::readCover()
             background.fill(Qt::transparent);
 
             QPainter painter(&background);
-            int x = (size - image.height()) / 2;
-            int y = (size - image.width()) / 2;
+            int x = (size - image.width()) / 2;
+            int y = (size - image.height()) / 2;
             painter.drawPixmap(x, y, image);
             image = background;
         }

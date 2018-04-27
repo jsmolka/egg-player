@@ -1,9 +1,8 @@
 #include "lengthslider.hpp"
 
 /*
- * Constructor. Sets slider style to
- * LengthSliderStyle to make the slider
- * clickable.
+ * Constructor. Sets slider style to LengthSliderStyle
+ * to make the slider clickable.
  *
  * :param parent: parent pointer
  */
@@ -59,6 +58,4 @@ void LengthSlider::onSliderReleased()
 {
     m_pressed = false;
     emit positionChanged(value());
-    clearFocus();
-
 }

@@ -9,6 +9,8 @@
 #include "logger.hpp"
 #include "player.hpp"
 
+#include <QDebug>
+
 class Shortcut
 {
 public:
@@ -17,15 +19,7 @@ public:
 private:
     struct Keyboard
     {
-        Keyboard()
-        {
-            vk = 0;
-            shift = false;
-            ctrl = false;
-            alt = false;
-        }
-
-        Keyboard(DWORD vk, bool shift, bool ctrl, bool alt)
+        Keyboard(DWORD vk = 0, bool shift = false, bool ctrl = false, bool alt = false)
         {
             this->vk = vk;
             this->shift = shift;
@@ -35,7 +29,14 @@ private:
 
         bool operator ==(const Keyboard kb)
         {
-            return vk == kb.vk && shift == kb.shift && ctrl == kb.ctrl && alt == kb.alt;
+            bool result = vk == kb.vk;
+            if (shift)
+                result = result && shift == kb.shift;
+            if (ctrl)
+                result = result && ctrl == kb.ctrl;
+            if (alt)
+                result = result && alt == kb.alt;
+            return result;
         }
 
         DWORD vk;

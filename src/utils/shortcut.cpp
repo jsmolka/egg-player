@@ -10,7 +10,7 @@ void Shortcut::create()
 
     scPlayPause = parseShortcut(Config::SPlayPause(), PlayPause);
     scNext = parseShortcut(Config::SNext(), Next);
-    scBack = parseShortcut(Config::SBack(), Back);
+    scBack = parseShortcut(Config::SPrevious(), Back);
     scVolumeUp = parseShortcut(Config::SVolumeUp(), VolumeUp);
     scVolumeDown = parseShortcut(Config::SVolumeDown()), VolumeDown;
 
@@ -32,7 +32,7 @@ Shortcut::Keyboard Shortcut::parseShortcut(const QString &shortcut, Media media)
     bool ctrl = false;
     bool alt = false;
 
-    QStringList keys = shortcut.toUpper().split("+");
+    QStringList keys = shortcut.toUpper().replace(" ", "").split("+");
     if (keys.isEmpty())
         Logger::log("Shortcut: Shortcut is empty");
 
@@ -98,12 +98,12 @@ Shortcut::Keyboard Shortcut::parseShortcut(const QString &shortcut, Media media)
  *
  * :param nCode: information about wParam and lParam
  * :param wParam: identifier of keyboard message
- * :param lParam: pointer to KBDLLHOOKSTRUCT
+ * :param lParam: KBDLLHOOKSTRUCT pointer
  * :return: exit code
  */
 LRESULT CALLBACK Shortcut::LowLevelKeyboardProc(int nCode, WPARAM wParam, LPARAM lParam)
 {
-    if (nCode == HC_ACTION && wParam == WM_KEYDOWN || wParam == WM_SYSKEYDOWN)
+    if (nCode == HC_ACTION && wParam == WM_KEYDOWN)
     {
         KBDLLHOOKSTRUCT *kbdStruct = reinterpret_cast<KBDLLHOOKSTRUCT *>(lParam);
 
@@ -117,15 +117,16 @@ LRESULT CALLBACK Shortcut::LowLevelKeyboardProc(int nCode, WPARAM wParam, LPARAM
         Player *player = Player::currentInstance();
         if (player)
         {
-            if (current == scPlayPause)
+            // Make sure the shortcut is first because of the way equals works
+            if (scPlayPause == current)
                 player->isPlaying() ? player->pause() : player->play();
-            if (current == scNext)
+            if (scNext == current)
                 player->next();
-            if (current == scBack)
-                player->back();
-            if (current == scVolumeUp)
+            if (scBack == current)
+                player->previous();
+            if (scVolumeUp == current)
                 player->setVolume(player->volume() + 1);
-            if (current == scVolumeDown)
+            if (scVolumeDown == current)
                 player->setVolume(player->volume() - 1);
         }
     }

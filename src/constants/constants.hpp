@@ -9,7 +9,6 @@ const extern QString CSS_MUSICBAR;
 const extern QString CSS_MUSICLIBRARY;
 
 const extern QString FONT_LATO;
-const extern QString ICO_BACK;
 const extern QString ICO_EXPAND;
 const extern QString ICO_FASTFORWARD;
 const extern QString ICO_FASTREWIND;
@@ -20,6 +19,7 @@ const extern QString ICO_MUTE;
 const extern QString ICO_NEXT;
 const extern QString ICO_PAUSE;
 const extern QString ICO_PLAY;
+const extern QString ICO_PREVIOUS;
 const extern QString ICO_REPLAY;
 const extern QString ICO_REWIND;
 const extern QString ICO_SHUFFLE;

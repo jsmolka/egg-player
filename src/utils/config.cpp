@@ -1,8 +1,8 @@
 #include "config.hpp"
 
 /*
- * Creates settings and sets all non
- * existing keys to their default value.
+ * Creates settings and sets all non existing
+ * keys to their default value.
  */
 void Config::create()
 {
@@ -23,8 +23,8 @@ void Config::create()
     if (!sectionContains(kShortcut, kSNext))
         SNext(dSNext);
 
-    if (!sectionContains(kShortcut, kSBack))
-        SBack(dSBack);
+    if (!sectionContains(kShortcut, kSPrevious))
+        SPrevious(dSPrevious);
 
     if (!sectionContains(kShortcut, kSVolumeUp))
         SVolumeUp(dSVolumeUp);
@@ -171,26 +171,26 @@ QString Config::SNext()
 }
 
 /*
- * Setter for back shortcut.
+ * Setter for previous shortcut.
  *
  * :param shortcut: shortcut
  */
-void Config::SBack(const QString &shortcut)
+void Config::SPrevious(const QString &shortcut)
 {
     config->beginGroup(kShortcut);
-    config->setValue(kSBack, shortcut);
+    config->setValue(kSPrevious, shortcut);
     config->endGroup();
 }
 
 /*
- * Getter for back shortcut
+ * Getter for previous shortcut
  *
  * :return: shortcut
  */
-QString Config::SBack()
+QString Config::SPrevious()
 {
     config->beginGroup(kShortcut);
-    QString shortcut = config->value(kSBack, dSBack).toString();
+    QString shortcut = config->value(kSPrevious, dSPrevious).toString();
     config->endGroup();
 
     return shortcut;
@@ -334,7 +334,7 @@ bool Config::PLoop()
 void Config::LPath(const QString &path)
 {
     config->beginGroup(kLibrary);
-    config->setValue("Path", path);
+    config->setValue(kLPath, path);
     config->endGroup();
 }
 
@@ -576,7 +576,7 @@ const QString Config::kALog        = "Log";
 const QString Config::kAFontSize   = "FontSize";
 const QString Config::kSPlayPause  = "PlayPause";
 const QString Config::kSNext       = "Next";
-const QString Config::kSBack       = "Back";
+const QString Config::kSPrevious   = "Previous";
 const QString Config::kSVolumeUp   = "VolumeUp";
 const QString Config::kSVolumeDown = "VolumeDown";
 const QString Config::kPVolume     = "Volume";
@@ -597,11 +597,11 @@ const QString Config::kBTimeWidth  = "TimeWidth";
  */
 const bool Config::dALog           = true;
 const double Config::dAFontSize    = 10.25;
-const QString Config::dSPlayPause  = "Media";
-const QString Config::dSNext       = "Media";
-const QString Config::dSBack       = "Media";
-const QString Config::dSVolumeUp   = "Media";
-const QString Config::dSVolumeDown = "Media";
+const QString Config::dSPlayPause  = "Ctrl+F11";
+const QString Config::dSNext       = "Ctrl+F12";
+const QString Config::dSPrevious   = "Ctrl+F10";
+const QString Config::dSVolumeUp   = "Ctrl+F8";
+const QString Config::dSVolumeDown = "Ctrl+F7";
 const int Config::dPVolume         = 25;
 const bool Config::dPShuffle       = false;
 const bool Config::dPLoop          = false;

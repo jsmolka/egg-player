@@ -281,9 +281,9 @@ void Player::next()
 /*
  * Switches to the previous song in the playlist.
  */
-void Player::back()
+void Player::previous()
 {
-    switchOrPause(backIndex());
+    switchOrPause(previousIndex());
 }
 
 /*
@@ -434,9 +434,11 @@ bool Player::bassSetPosition(int position)
  */
 bool Player::bassPlay()
 {
-    if (!bassValidStream()
-            || BASS_ChannelIsActive(m_stream) == BASS_ACTIVE_PLAYING)
+    if (!bassValidStream())
         return false;
+
+    if (BASS_ChannelIsActive(m_stream) == BASS_ACTIVE_PLAYING)
+        return true;
 
     if (!BASS_ChannelPlay(m_stream, false))
     {
@@ -453,10 +455,12 @@ bool Player::bassPlay()
  */
 bool Player::bassPause()
 {
-    if (!bassValidStream()
-            || BASS_ChannelIsActive(m_stream) == BASS_ACTIVE_STOPPED
-            || BASS_ChannelIsActive(m_stream) == BASS_ACTIVE_PAUSED)
+    if (!bassValidStream())
         return false;
+
+    if (BASS_ChannelIsActive(m_stream) == BASS_ACTIVE_PAUSED
+            || BASS_ChannelIsActive(m_stream) == BASS_ACTIVE_STOPPED)
+        return true;
 
     if (!BASS_ChannelPause(m_stream))
     {
@@ -536,7 +540,7 @@ int Player::nextIndex()
  *
  * :return: index
  */
-int Player::backIndex()
+int Player::previousIndex()
 {
     if (!validIndex(m_index))
         return -1;

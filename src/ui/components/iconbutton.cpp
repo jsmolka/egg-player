@@ -85,10 +85,9 @@ bool IconButton::isLocked() const
 }
 
 /*
- * Setter for lockable property. If the
- * button is lockable it will update
- * based on locked property if it gets
- * clicked.
+ * Setter for lockable property. If the button
+ * is lockable it will update based on the
+ * locked property if it gets clicked.
  *
  * :param lockable: lockable
  */
@@ -129,10 +128,9 @@ void IconButton::init(const QList<QIcon> &icons, int size, bool lockable)
 }
 
 /*
- * Slot for clicked event. If the button
- * is lockable the locked property get
- * switched and the style sheet gets
- * reloaded.
+ * Slot for clicked event. If the button is
+ * lockable the locked property get switched
+ * and the style sheet gets reloaded.
  */
 void IconButton::onClicked()
 {

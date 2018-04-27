@@ -33,8 +33,8 @@ void SongInfo::init(const QList<int> &stretches)
 
     for (int i = 0; i < m_labels.size(); i++)
     {
-        layout->addWidget(m_labels.at(i), 0, i);
-        layout->setColumnStretch(i, stretches.at(i));
+        layout->addWidget(m_labels[i], 0, i);
+        layout->setColumnStretch(i, stretches[i]);
     }
 }
 

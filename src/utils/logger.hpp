@@ -4,6 +4,7 @@
 #include <QApplication>
 #include <QDateTime>
 #include <QFile>
+#include <QStringList>
 #include <QTextStream>
 
 #ifdef QT_DEBUG
@@ -17,7 +18,9 @@ class Logger
 {
 public:
     static void create();
-    static void log(const QString &message, const QString &arg1 = "", const QString &arg2 = "");
+
+    static void log(const QString &message, const QStringList &args);
+    static void log(const QString &message, const QString &arg1 = QString(), const QString &arg2 = QString());
 
 private:
     static QFile *file;

@@ -21,7 +21,6 @@ const QString CSS_MUSICBAR     = "resource/css/musicbar.css";
 const QString CSS_MUSICLIBRARY = "resource/css/musiclibrary.css";
 
 const QString FONT_LATO         = "resource/fonts/Lato.ttf";
-const QString ICO_BACK          = "resource/images/icons/back.png";
 const QString ICO_EXPAND        = "resource/images/icons/expand.png";
 const QString ICO_FASTFORWARD   = "resource/images/icons/fastforward.png";
 const QString ICO_FASTREWIND    = "resource/images/icons/fastrewind.png";
@@ -32,6 +31,7 @@ const QString ICO_MUTE          = "resource/images/icons/mute.png";
 const QString ICO_NEXT          = "resource/images/icons/next.png";
 const QString ICO_PAUSE         = "resource/images/icons/pause.png";
 const QString ICO_PLAY          = "resource/images/icons/play.png";
+const QString ICO_PREVIOUS      = "resource/images/icons/previous.png";
 const QString ICO_REPLAY        = "resource/images/icons/replay.png";
 const QString ICO_REWIND        = "resource/images/icons/rewind.png";
 const QString ICO_SHUFFLE       = "resource/images/icons/shuffle.png";

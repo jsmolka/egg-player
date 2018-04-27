@@ -24,8 +24,8 @@ public:
     static void SNext(const QString &shortcut);
     static QString SNext();
 
-    static void SBack(const QString &shortcut);
-    static QString SBack();
+    static void SPrevious(const QString &shortcut);
+    static QString SPrevious();
 
     static void SVolumeUp(const QString &shortcut);
     static QString SVolumeUp();
@@ -81,7 +81,7 @@ private:
     static const QString kAFontSize;
     static const QString kSPlayPause;
     static const QString kSNext;
-    static const QString kSBack;
+    static const QString kSPrevious;
     static const QString kSVolumeUp;
     static const QString kSVolumeDown;
     static const QString kPVolume;
@@ -100,7 +100,7 @@ private:
     static const double dAFontSize;
     static const QString dSPlayPause;
     static const QString dSNext;
-    static const QString dSBack;
+    static const QString dSPrevious;
     static const QString dSVolumeUp;
     static const QString dSVolumeDown;
     static const int dPVolume;

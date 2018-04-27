@@ -14,37 +14,50 @@ void Logger::create()
 }
 
 /*
- * Logs a message with two possible args. Also
- * writes the message into the console if Qt is
- * in debug mode.
+ * Logs a message with args. Also writes the
+ * message into the console if Qt is in debug
+ * mode.
  *
  * :param message: message
- * :param arg1: first arg
- * :param arg2: second arg
+ * :param args: arguments
  */
-void Logger::log(const QString &message, const QString &arg1, const QString &arg2)
+void Logger::log(const QString &message, const QStringList &args)
 {
     if (!Config::ALog())
         return;
 
     QString log = message;
 
-    if (!arg1.isEmpty())
-        log = log.arg(arg1);
-    if (!arg2.isEmpty())
-        log = log.arg(arg2);
+    for (const QString &arg : args)
+        if (!arg.isNull())
+            log = log.arg(arg);
 
-    QString dateTime = QDateTime::currentDateTime().toString("dd-MM-yyyy hh:mm:ss");
-    QString text = QString("[%1] %2").arg(dateTime).arg(log);
-
-#ifdef QT_DEBUG
-    qDebug().noquote() << text;
-#endif
+    QString time = QDateTime::currentDateTime().toString("dd-MM-yyyy hh:mm:ss");
+    QString text = QString("[%1] %2").arg(time).arg(log);
 
     QTextStream out(file);
     out.setCodec("UTF-8");
     out << text << "\n";
     out.flush();
+
+#ifdef QT_DEBUG
+    qDebug().noquote() << text;
+#endif
+}
+
+/*
+ * Log wrapper.
+ *
+ * :param message: message
+ * :param arg1: first argument
+ * :param arg2: second argument
+ */
+void Logger::log(const QString &message, const QString &arg1, const QString &arg2)
+{
+    QStringList args;
+    args << arg1;
+    args << arg2;
+    log(message, args);
 }
 
 /*

@@ -29,9 +29,9 @@ public:
     QLabel * currentTimeLabel();
     QLabel * totalTimeLabel();
     LengthSlider * lengthSlider();
-    IconButton * nextButton();
     IconButton * playButton();
-    IconButton * backButton();
+    IconButton * nextButton();
+    IconButton * previousButton();
     IconButton * shuffleButton();
     IconButton * loopButton();
     IconButton * volumeButton();
@@ -61,9 +61,9 @@ private:
     QLabel *pm_currentTimeLabel;
     QLabel *pm_totalTimeLabel;
     LengthSlider *pm_lengthSlider;
-    IconButton *pm_nextButton;
     IconButton *pm_playButton;
-    IconButton *pm_backButton;
+    IconButton *pm_nextButton;
+    IconButton *pm_previousButton;
     IconButton *pm_shuffleButton;
     IconButton *pm_loopButton;
     IconButton *pm_volumeButton;

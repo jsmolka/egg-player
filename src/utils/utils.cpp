@@ -1,8 +1,9 @@
 #include "utils.hpp"
 
 /*
- * Converts a length in seconds
- * into a time string.
+ * Converts a length in seconds into a time
+ * string. If automatically uses the correct
+ * format depending on the length.
  *
  * :param length: length in seconds
  * :return: time string
@@ -25,8 +26,9 @@ QString Utils::timeString(int length)
 }
 
 /*
- * Loads the default cover and resizes it
- * if the size is unequal to -1.
+ * Loads the default cover and resizes it into
+ * a certain size. If the size is -1 the cover
+ * does not get resized.
  *
  * :param size: size, default -1
  * :return: default cover
@@ -41,7 +43,7 @@ QPixmap Utils::defaultCover(int size)
 }
 
 /*
- * Resizes pixmap.
+ * Resizes a pixmap.
  *
  * :param pixmap: pixmap
  * :param size: size
@@ -53,7 +55,7 @@ QPixmap Utils::resize(const QPixmap &pixmap, int size)
 }
 
 /*
- * Resizes image.
+ * Resizes an image.
  *
  * :param image: image
  * :param size: size
@@ -65,8 +67,9 @@ QImage Utils::resize(const QImage &image, int size)
 }
 
 /*
- * Reads a file. Returns an empty string
- * if the file cannot be read.
+ * Reads a file and returns its content. If
+ * the file cannot be opened or read, an empty
+ * string gets returned.
  *
  * :param path: file
  * :return: file content or empty string
@@ -82,14 +85,13 @@ QString Utils::read(const QString &path)
 
     QTextStream stream(&file);
     QString text = stream.readAll();
-
     file.close();
 
     return text;
 }
 
 /*
- * Checks if file exists.
+ * Checks if a file exists.
  *
  * :param path: file
  * :return: file exists
@@ -100,9 +102,10 @@ bool Utils::exists(const QString &path)
 }
 
 /*
- * Returns directory for a given path.
- * Returns an empty dir if the file is
- * neither a dir nor a file.
+ * Returns the directory for a given path. If
+ * the path is a directory it will get returned.
+ * If it is a file, the directory of the file
+ * gets returned.
  *
  * :param path: path
  * :return: directory or empty dir
@@ -149,7 +152,7 @@ QStringList Utils::glob(const QString &path, const QString &pattern, bool recurs
 }
 
 /*
- * Returns file name of file.
+ * Returns the file name of a file.
  *
  * :param file: file
  * :return: file name
@@ -160,61 +163,12 @@ QString Utils::fileName(const QString &file)
 }
 
 /*
- * Darkens a rgb cover.
- *
- * :param color: color
- * :param factor: factor
- * :return: darkened color
- */
-QColor Utils::darker(const QColor &color, qreal factor)
-{
-    qreal r = (qreal) color.red() * (1 - factor);
-    qreal g = (qreal) color.green() * (1 - factor);
-    qreal b = (qreal) color.blue() * (1 - factor);
-
-    return QColor(r, g, b);
-}
-
-/*
- * Calculates average color by iterating
- * over every pixel, adding them and then
- * dividing by the pixel count.
- *
- * :param image: image
- * :return: average color
- */
-QColor Utils::averageColor(const QImage &image)
-{
-    quint32 red = 0;
-    quint32 green = 0;
-    quint32 blue = 0;
-
-    QRgb *pixels = (QRgb *) image.bits();
-    quint32 pixelCount = image.height() * image.width();
-    for (quint32 i = 0; i < pixelCount; i++)
-    {
-        QColor pixel = QColor(pixels[i]);
-
-        red += pixel.red();
-        green += pixel.green();
-        blue += pixel.blue();
-    }
-
-    red = red / pixelCount;
-    green = green / pixelCount;
-    blue = blue / pixelCount;
-
-    return QColor(red, green, blue);
-}
-
-/*
  * Calculates dominent color of an image. The algorithm
  * iterates over every pixel, converts them into the
- * HSV color space and creates two mapped heuristics out of
- * them.
- * Those hold colorful and grey scale colors. The algorithm
- * tries to return a colorful color. If there is none a grey
- * scale gets returned.
+ * HSV color space and creates two mapped heuristics out
+ * of them. Those hold colorful and grey scale colors. The
+ * algorithm tries to return a colorful color. If there is
+ * none, a grey scale gets returned.
  *
  * :param image: image
  * :return: dominant color
@@ -328,8 +282,8 @@ QColor Utils::dominantColor(const QImage &image)
 }
 
 /*
- * Gets the dominant color and edits some values
- * to prevent too bright values.
+ * Gets the dominant color of an image and edits
+ * some values to prevent too bright values.
  *
  * :param image: image
  * :param size: size for scaling, default 25

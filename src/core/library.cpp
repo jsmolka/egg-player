@@ -1,8 +1,8 @@
 #include "library.hpp"
 
 /*
- * Constructor. Loads files from library
- * path and creates thread for cover caching.
+ * Constructor. Loads files from the library path
+ * and creates a thread for cover caching.
  *
  * :param path: path
  */
@@ -61,8 +61,8 @@ void Library::sortByTitle()
  * Searches for a string in the library.
  *
  * :param string: string
- * :param cs: case sensive
- * :return: list of audio pointer
+ * :param cs: case sensivity
+ * :return: audio list
  */
 AudioList Library::search(const QString &string, Qt::CaseSensitivity cs)
 {

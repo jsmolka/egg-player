@@ -47,7 +47,7 @@ public slots:
     void pause();
 
     void next();
-    void back();
+    void previous();
 
 signals:
     void audioChanged(Audio *audio);
@@ -87,7 +87,7 @@ private:
 
     void switchOrPause(int index);
     int nextIndex();
-    int backIndex();
+    int previousIndex();
 
     void shuffle();
     void unshuffle();

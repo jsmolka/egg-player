@@ -15,7 +15,7 @@ MusicBar::MusicBar(QWidget *parent) : QWidget(parent)
     setupUi();
 
     connect(pm_nextButton, SIGNAL(pressed()), pm_player, SLOT(next()));
-    connect(pm_backButton, SIGNAL(pressed()), pm_player, SLOT(back()));
+    connect(pm_previousButton, SIGNAL(pressed()), pm_player, SLOT(previous()));
     connect(pm_shuffleButton, SIGNAL(locked(bool)), this, SLOT(onShuffleButtonLocked(bool)));
     connect(pm_loopButton, SIGNAL(locked(bool)), this, SLOT(onLoopButtonLocked(bool)));
     connect(pm_playButton, SIGNAL(pressed()), this, SLOT(onPlayButtonPressed()));
@@ -122,9 +122,9 @@ IconButton * MusicBar::nextButton()
  *
  * :return: back button pointer
  */
-IconButton * MusicBar::backButton()
+IconButton * MusicBar::previousButton()
 {
-    return pm_backButton;
+    return pm_previousButton;
 }
 
 /*
@@ -174,18 +174,15 @@ void MusicBar::paintEvent(QPaintEvent *)
  */
 void MusicBar::onPlayButtonPressed()
 {
-    if (pm_player->index() != -1)
-    {
-        if (pm_playButton->selectedIcon() == 0)
-            pm_player->play();
-        else
-            pm_player->pause();
-    }
+    if (pm_playButton->selectedIcon() == 0)
+        pm_player->play();
+    else
+        pm_player->pause();
 }
 
 /*
- * Slot for audio changed. Sets up cover,
- * track label, time labels and length slider.
+ * Slot for audio changed. Sets up cover, track label,
+ * time labels and length slider.
  *
  * :param audio: audio pointer
  */
@@ -217,8 +214,8 @@ void MusicBar::onPlayerStateChanged(Player::State state)
 }
 
 /*
- * Slot for player position changed. Sets
- * slider position if it is not pressed.
+ * Slot for player position changed. Sets slider
+ * position if it is not pressed.
  *
  * :param position: current position in seconds
  */
@@ -232,8 +229,8 @@ void MusicBar::onPlayerPositionChanged(int position)
 }
 
 /*
- * Slot for player volume change. Saves
- * the saved volume in config for later use.
+ * Slot for player volume change. Saves the saved
+ * volume in config for later use.
  *
  * :param volume: volume
  */
@@ -263,8 +260,8 @@ void MusicBar::onLoopButtonLocked(bool locked)
 }
 
 /*
- * Slot for slider moved. Set the value
- * of current time label to reflect change.
+ * Slot for slider moved. Set the value of the
+ * current time label to reflect the change.
  *
  * :param position: position in seconds
  */
@@ -327,9 +324,9 @@ void MusicBar::setupUi()
 
     QList<IconButton *> buttons;
 
-    pm_backButton = new IconButton(this);
-    pm_backButton->init({QIcon(ICO_BACK)}, Config::BIconSize());
-    buttons << pm_backButton;
+    pm_previousButton = new IconButton(this);
+    pm_previousButton->init({QIcon(ICO_PREVIOUS)}, Config::BIconSize());
+    buttons << pm_previousButton;
 
     pm_playButton = new IconButton(this);
     pm_playButton->init({QIcon(ICO_PLAY), QIcon(ICO_PAUSE)}, Config::BIconSize());

@@ -10,26 +10,8 @@ Cache::Cache()
         return;
 
     QSqlDatabase::addDatabase("QSQLITE", SQL_CONNECTION);
-
-    QString createCovers =
-       "CREATE TABLE IF NOT EXISTS covers("
-       " id INTEGER PRIMARY KEY,"
-       " len INTEGER,"
-       " cover BLOB"
-       ")";
-
-    QString createAudios =
-       "CREATE TABLE IF NOT EXISTS audios("
-       " path TEXT PRIMARY KEY,"
-       " coverid INTEGER,"
-       " FOREIGN KEY (coverid) REFERENCES covers(id)"
-       ")";
-
-    QSqlQuery query(db());
-    if (!query.exec(createCovers))
-        handleError(query);
-    if (!query.exec(createAudios))
-        handleError((query));
+    createCovers();
+    createAudios();
 }
 
 /*
@@ -41,12 +23,11 @@ Cache::~Cache()
 }
 
 /*
- * Inserts audio into cache. It adds the cover
- * into the covers table and the path with a
- * cover id into the audios table.
- * No tags are stored inside the cache because
- * TagLib is fast enough to reload tags at
- * every startup.
+ * Inserts audio into cache. It adds the cover into
+ * the covers table and the path with a cover id
+ * into the audios table.
+ * No tags are stored inside the cache because TagLib
+ * is fast enough to reload tags at every startup.
  *
  * :param audio: audio pointer
  * :param size: cover size, default 200
@@ -54,11 +35,7 @@ Cache::~Cache()
  */
 bool Cache::insert(Audio *audio, int size)
 {
-    QByteArray bytes = coverToBytes(audio->cover(size));
-
-    int id = coverId(bytes);
-    if (id == -1)
-        id = insertCover(bytes);
+    int id = getOrInsertCover(audio->cover(size));
     if (id == -1)
         return false;
 
@@ -75,7 +52,7 @@ bool Cache::insert(Audio *audio, int size)
 }
 
 /*
- * Checks if database contains audio.
+ * Checks if database contains an audio.
  *
  * :param audio: audio pointer
  * :return: contains
@@ -94,9 +71,8 @@ bool Cache::contains(Audio *audio)
 }
 
 /*
- * Retrieves cover from database. If the
- * cover cannot be found it returns the
- * default cover.
+ * Retrieves cover from database. If the cover
+ * cannot be found it returns the default cover.
  *
  * :param path: audio path
  * :param size: cover size
@@ -111,6 +87,7 @@ QPixmap Cache::cover(const QString &path, int size)
         "WHERE path = :PATH"
     );
     query.bindValue(":PATH", path);
+
     if (!query.exec())
         handleError(query);
 
@@ -145,60 +122,62 @@ QSqlDatabase Cache::db()
 }
 
 /*
- * Returns last cover id or -1 if the
- * covers table is empty.
- *
- * :return: cover id or -1
+ * Creates the covers table if it does not exist
+ * already.
  */
-int Cache::lastCoverId()
+void Cache::createCovers()
 {
+    QString createCovers =
+       "CREATE TABLE IF NOT EXISTS covers("
+       " id INTEGER PRIMARY KEY,"
+       " len INTEGER,"
+       " cover BLOB"
+       ")";
+
     QSqlQuery query(db());
-    query.prepare("SELECT max(id) FROM covers");
-    if (!query.exec())
-        handleError(query);
-    if (query.first())
-        return query.value(0).toInt();
-    return -1;
+    if (!query.exec(createCovers))
+        handleError((query));
 }
 
 /*
- * Returns cover id for cover in byte array form.
- * For performance reasons it first tries to query
- * based on the byte array length. If it only returns
- * one result it can be returned.
- * Otherwise there are mulitple covers with the same
- * length and the query uses blob comparison instead.
- * If the cover id cannot be retrieved it returns -1.
- *
- * :param bytes: cover byte array
- * :return: cover id or -1
+ * Creates the audios table if it does not exist
+ * already.
  */
-int Cache::coverId(const QByteArray &bytes)
+void Cache::createAudios()
 {
-    QSqlQuery query(db());
-    query.prepare("SELECT id FROM covers WHERE len = :LEN");
-    query.bindValue(":LEN", bytes.length());
-    if (!query.exec())
-        handleError(query);
-    if (query.first())
-    {
-        int id = query.value(0).toInt();
-        if (!query.next())
-            return id;
+    QString createAudios =
+       "CREATE TABLE IF NOT EXISTS audios("
+       " path TEXT PRIMARY KEY,"
+       " coverid INTEGER,"
+       " FOREIGN KEY (coverid) REFERENCES covers(id)"
+       ")";
 
-        query.prepare("SELECT id FROM covers WHERE cover = :COVER");
-        query.bindValue(":COVER", bytes);
-        if (!query.exec())
-            handleError(query);
-        if (query.first())
-            return query.value(0).toInt();
-    }
-    return -1;
+    QSqlQuery query(db());
+    if (!query.exec(createAudios))
+        handleError(query);
 }
 
 /*
- * Inserts cover into database. Assumes
- * that the cover does not exist already.
+ * Either get the cover id or inserts it into the
+ * covers tables and returns the lastest id.
+ *
+ * :param cover: cover
+ * :return: id
+ */
+int Cache::getOrInsertCover(const QPixmap &cover)
+{
+    QByteArray bytes = coverToBytes(cover);
+
+    int id = coverId(bytes);
+    if (id == -1)
+        id = insertCover(bytes);
+
+    return id;
+}
+
+/*
+ * Inserts cover into database. Assumes that the cover
+ * does not exist already.
  *
  * :param bytes: cover byte array
  * :return: cover id or -1
@@ -218,6 +197,95 @@ int Cache::insertCover(const QByteArray &bytes)
         return -1;
     }
     return id;
+}
+
+/*
+ * Returns cover id for cover in byte array form.
+ * For performance reasons it first tries to query
+ * based on the byte array length and then by blob
+ * comparison.
+ *
+ * :param bytes: cover byte array
+ * :return: cover id or -1
+ */
+int Cache::coverId(const QByteArray &bytes)
+{
+    int id = queryCoverIdByLength(bytes.length());
+
+    if (id == -1)
+        id = queryCoverIdByBlob(bytes);
+
+    return id;
+}
+
+/*
+ * Returns last cover id or -1 if the covers table
+ * is empty.
+ *
+ * :return: cover id or -1
+ */
+int Cache::lastCoverId()
+{
+    QSqlQuery query(db());
+    query.prepare("SELECT max(id) FROM covers");
+
+    if (!query.exec())
+        handleError(query);
+
+    if (query.first())
+        return query.value(0).toInt();
+
+    return -1;
+}
+
+/*
+ * Tries to query the current cover by length
+ * comparison. If there are multiple results this
+ * function is not able to query the correct cover.
+ *
+ * :param length: length
+ * :return: id
+ */
+int Cache::queryCoverIdByLength(int length)
+{
+    int id = -1;
+
+    QSqlQuery query(db());
+    query.prepare("SELECT id FROM covers WHERE len = :LEN");
+    query.bindValue(":LEN", length);
+
+    if (!query.exec())
+        handleError(query);
+
+    if (query.first())
+        id = query.value(0).toInt();
+
+    if (query.next())
+        id = -1;
+
+    return id;
+}
+
+/*
+ * Tries to query the current cover by blob
+ * comparison.
+ *
+ * :param bytes: cover bytes array
+ * :return: id
+ */
+int Cache::queryCoverIdByBlob(const QByteArray &bytes)
+{
+    QSqlQuery query(db());
+    query.prepare("SELECT id FROM covers WHERE cover = :COVER");
+    query.bindValue(":COVER", bytes);
+
+    if (!query.exec())
+        handleError(query);
+
+    if (query.first())
+        return query.value(0).toInt();
+
+    return -1;
 }
 
 /*

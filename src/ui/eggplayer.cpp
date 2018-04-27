@@ -22,9 +22,8 @@ EggPlayer::~EggPlayer()
 }
 
 /*
- * Loads the saved registry position and
- * shows the window. Should be called
- * instead of show().
+ * Loads the saved registry position and shows
+ * the window. Should be called instead of show().
  */
 void EggPlayer::showSavedPosition()
 {

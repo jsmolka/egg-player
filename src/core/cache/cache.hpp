@@ -24,9 +24,17 @@ public:
 private:
     QSqlDatabase db();
 
-    int lastCoverId();
-    int coverId(const QByteArray &bytes);
+    void createCovers();
+    void createAudios();
+
+    int getOrInsertCover(const QPixmap &cover);
     int insertCover(const QByteArray &bytes);
+
+    int coverId(const QByteArray &bytes);
+    int lastCoverId();
+
+    int queryCoverIdByLength(int length);
+    int queryCoverIdByBlob(const QByteArray &bytes);
 
     void handleError(const QSqlQuery &query);
 
