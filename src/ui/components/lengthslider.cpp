@@ -49,7 +49,9 @@ void LengthSlider::onSliderPressed()
 
 /*
  * Slot for slider released. It sets the pressed
- * property and emits the current value.
+ * property and emits the current value. It also
+ * removes to focus to prevent accidently moving
+ * the slider with key presses.
  *
  * :emit positionChanged: value
  */
@@ -57,4 +59,6 @@ void LengthSlider::onSliderReleased()
 {
     m_pressed = false;
     emit positionChanged(value());
+    clearFocus();
+
 }

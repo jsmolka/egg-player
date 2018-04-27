@@ -3,6 +3,9 @@
 
 #include <Windows.h>
 
+#include <QHash>
+#include <QStringList>
+
 #include "logger.hpp"
 #include "player.hpp"
 
@@ -14,9 +17,17 @@ public:
 private:
     struct Keyboard
     {
-        Keyboard(DWORD key, bool shift, bool ctrl, bool alt)
+        Keyboard()
         {
-            this->key = key;
+            vk = 0;
+            shift = false;
+            ctrl = false;
+            alt = false;
+        }
+
+        Keyboard(DWORD vk, bool shift, bool ctrl, bool alt)
+        {
+            this->vk = vk;
             this->shift = shift;
             this->ctrl = ctrl;
             this->alt = alt;
@@ -24,23 +35,28 @@ private:
 
         bool operator ==(const Keyboard kb)
         {
-            return key == kb.key && shift == kb.shift && ctrl == kb.ctrl && alt == kb.alt;
+            return vk == kb.vk && shift == kb.shift && ctrl == kb.ctrl && alt == kb.alt;
         }
 
-        DWORD key;
+        DWORD vk;
         bool shift;
         bool ctrl;
         bool alt;
     };
 
-    static void loadShortcuts();
+    enum Media {None, PlayPause, Next, Back, VolumeUp, VolumeDown};
+
+    static Keyboard parseShortcut(const QString &shortcut, Media media = None);
     static LRESULT LowLevelKeyboardProc(int nCode, WPARAM wParam, LPARAM lParam);
 
-    static bool isShiftDown();
-    static bool isCtrlDown();
-    static bool isAltDown(KBDLLHOOKSTRUCT *kbdStruct);
-
     static HHOOK hook;
+    static const QHash<QString, int> keyMap;
+
+    static Keyboard scPlayPause;
+    static Keyboard scNext;
+    static Keyboard scBack;
+    static Keyboard scVolumeUp;
+    static Keyboard scVolumeDown;
 };
 
 #endif // SHORTCUT_HPP

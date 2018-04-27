@@ -18,6 +18,21 @@ public:
     static void AFontSize(double size);
     static double AFontSize();
 
+    static void SPlayPause(const QString &shortcut);
+    static QString SPlayPause();
+
+    static void SNext(const QString &shortcut);
+    static QString SNext();
+
+    static void SBack(const QString &shortcut);
+    static QString SBack();
+
+    static void SVolumeUp(const QString &shortcut);
+    static QString SVolumeUp();
+
+    static void SVolumeDown(const QString &shortcut);
+    static QString SVolumeDown();
+
     static void PVolume(int volume);
     static int PVolume();
 
@@ -57,12 +72,18 @@ private:
     static QSettings *config;
 
     static const QString kApp;
+    static const QString kShortcut;
     static const QString kPlayer;
     static const QString kLibrary;
     static const QString kBar;
 
     static const QString kALog;
     static const QString kAFontSize;
+    static const QString kSPlayPause;
+    static const QString kSNext;
+    static const QString kSBack;
+    static const QString kSVolumeUp;
+    static const QString kSVolumeDown;
     static const QString kPVolume;
     static const QString kPShuffle;
     static const QString kPLoop;
@@ -77,6 +98,11 @@ private:
 
     static const bool dALog;
     static const double dAFontSize;
+    static const QString dSPlayPause;
+    static const QString dSNext;
+    static const QString dSBack;
+    static const QString dSVolumeUp;
+    static const QString dSVolumeDown;
     static const int dPVolume;
     static const bool dPShuffle;
     static const bool dPLoop;

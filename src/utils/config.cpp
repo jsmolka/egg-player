@@ -17,6 +17,21 @@ void Config::create()
     if (!sectionContains(kApp, kAFontSize))
         AFontSize(dAFontSize);
 
+    if (!sectionContains(kShortcut, kSPlayPause))
+        SPlayPause(dSPlayPause);
+
+    if (!sectionContains(kShortcut, kSNext))
+        SNext(dSNext);
+
+    if (!sectionContains(kShortcut, kSBack))
+        SBack(dSBack);
+
+    if (!sectionContains(kShortcut, kSVolumeUp))
+        SVolumeUp(dSVolumeUp);
+
+    if (!sectionContains(kShortcut, kSVolumeDown))
+        SVolumeDown(dSVolumeDown);
+
     if (!sectionContains(kPlayer, kPVolume))
         PVolume(dPVolume);
 
@@ -101,6 +116,136 @@ double Config::AFontSize()
     config->endGroup();
 
     return size;
+}
+
+/*
+ * Setter for play pause shortcut.
+ *
+ * :param shortcut: shortcut
+ */
+void Config::SPlayPause(const QString &shortcut)
+{
+    config->beginGroup(kShortcut);
+    config->setValue(kSPlayPause, shortcut);
+    config->endGroup();
+}
+
+/*
+ * Getter for play pause shortcut
+ *
+ * :return: shortcut
+ */
+QString Config::SPlayPause()
+{
+    config->beginGroup(kShortcut);
+    QString shortcut = config->value(kSPlayPause, dSPlayPause).toString();
+    config->endGroup();
+
+    return shortcut;
+}
+
+/*
+ * Setter for next shortcut.
+ *
+ * :param shortcut: shortcut
+ */
+void Config::SNext(const QString &shortcut)
+{
+    config->beginGroup(kShortcut);
+    config->setValue(kSNext, shortcut);
+    config->endGroup();
+}
+
+/*
+ * Getter for next shortcut
+ *
+ * :return: shortcut
+ */
+QString Config::SNext()
+{
+    config->beginGroup(kShortcut);
+    QString shortcut = config->value(kSNext, dSNext).toString();
+    config->endGroup();
+
+    return shortcut;
+}
+
+/*
+ * Setter for back shortcut.
+ *
+ * :param shortcut: shortcut
+ */
+void Config::SBack(const QString &shortcut)
+{
+    config->beginGroup(kShortcut);
+    config->setValue(kSBack, shortcut);
+    config->endGroup();
+}
+
+/*
+ * Getter for back shortcut
+ *
+ * :return: shortcut
+ */
+QString Config::SBack()
+{
+    config->beginGroup(kShortcut);
+    QString shortcut = config->value(kSBack, dSBack).toString();
+    config->endGroup();
+
+    return shortcut;
+}
+
+/*
+ * Setter for volume up shortcut.
+ *
+ * :param shortcut: shortcut
+ */
+void Config::SVolumeUp(const QString &shortcut)
+{
+    config->beginGroup(kShortcut);
+    config->setValue(kSVolumeUp, shortcut);
+    config->endGroup();
+}
+
+/*
+ * Getter for volume up shortcut
+ *
+ * :return: shortcut
+ */
+QString Config::SVolumeUp()
+{
+    config->beginGroup(kShortcut);
+    QString shortcut = config->value(kSVolumeUp, dSVolumeUp).toString();
+    config->endGroup();
+
+    return shortcut;
+}
+
+/*
+ * Setter for volume down shortcut.
+ *
+ * :param shortcut: shortcut
+ */
+void Config::SVolumeDown(const QString &shortcut)
+{
+    config->beginGroup(kShortcut);
+    config->setValue(kSVolumeDown, shortcut);
+    config->endGroup();
+}
+
+/*
+ * Getter for volume down shortcut
+ *
+ * :return: shortcut
+ */
+QString Config::SVolumeDown()
+{
+    config->beginGroup(kShortcut);
+    QString shortcut = config->value(kSVolumeDown, dSVolumeDown).toString();
+    config->endGroup();
+
+    return shortcut;
 }
 
 /*
@@ -418,6 +563,7 @@ QSettings * Config::config         = nullptr;
  * within the config.
  */
 const QString Config::kApp         = "App";
+const QString Config::kShortcut    = "Shortcut";
 const QString Config::kPlayer      = "Player";
 const QString Config::kLibrary     = "Library";
 const QString Config::kBar         = "Bar";
@@ -428,6 +574,11 @@ const QString Config::kBar         = "Bar";
  */
 const QString Config::kALog        = "Log";
 const QString Config::kAFontSize   = "FontSize";
+const QString Config::kSPlayPause  = "PlayPause";
+const QString Config::kSNext       = "Next";
+const QString Config::kSBack       = "Back";
+const QString Config::kSVolumeUp   = "VolumeUp";
+const QString Config::kSVolumeDown = "VolumeDown";
 const QString Config::kPVolume     = "Volume";
 const QString Config::kPShuffle    = "Shuffle";
 const QString Config::kPLoop       = "Loop";
@@ -446,6 +597,11 @@ const QString Config::kBTimeWidth  = "TimeWidth";
  */
 const bool Config::dALog           = true;
 const double Config::dAFontSize    = 10.25;
+const QString Config::dSPlayPause  = "Media";
+const QString Config::dSNext       = "Media";
+const QString Config::dSBack       = "Media";
+const QString Config::dSVolumeUp   = "Media";
+const QString Config::dSVolumeDown = "Media";
 const int Config::dPVolume         = 25;
 const bool Config::dPShuffle       = false;
 const bool Config::dPLoop          = false;
