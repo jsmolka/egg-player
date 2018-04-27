@@ -19,6 +19,8 @@ public:
 
     enum State {Playing, Paused};
 
+    static Player * currentInstance();
+
     void setIndex(int index);
     int index() const;
 
@@ -59,10 +61,10 @@ private slots:
 private:
     struct AudioPosition
     {
-        AudioPosition(int i, Audio *a)
+        AudioPosition(int index, Audio *audio)
         {
-            index = i;
-            audio = a;
+            this->index = index;
+            this->audio = audio;
         }
 
         int index;
@@ -92,6 +94,7 @@ private:
 
     void setAudio(int index);
 
+    static Player *player;
     QList<AudioPosition> m_playlist;
     Timer *pm_timer;
     HSTREAM m_stream;

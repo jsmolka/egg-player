@@ -7,6 +7,7 @@
 #include "constants.hpp"
 #include "eggplayer.hpp"
 #include "logger.hpp"
+#include "shortcut.hpp"
 #include "utils.hpp"
 
 /*
@@ -53,6 +54,7 @@ void setup(QApplication *app)
 {
     Config::create();
     Logger::create();
+    Shortcut::create();
 
     checkResources();
 

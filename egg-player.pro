@@ -22,6 +22,7 @@ INCLUDEPATH += \
     $$PWD/src/utils
 
 LIBS += \
+    -luser32 \
     -L"$$PWD/ext/bass-2.4/lib" -lbass
 
 CONFIG(debug, debug|release) {
@@ -51,6 +52,7 @@ HEADERS += \
     $$PWD/src/ui/layouts/borderlayout.hpp \
     $$PWD/src/utils/config.hpp \
     $$PWD/src/utils/logger.hpp \
+    $$PWD/src/utils/shortcut.hpp \
     $$PWD/src/utils/utils.hpp
 
 SOURCES += \
@@ -72,4 +74,5 @@ SOURCES += \
     $$PWD/src/ui/layouts/borderlayout.cpp \
     $$PWD/src/utils/config.cpp \
     $$PWD/src/utils/logger.cpp \
+    $$PWD/src/utils/shortcut.cpp \
     $$PWD/src/utils/utils.cpp

@@ -19,6 +19,8 @@ Player::Player(QObject *parent) : QObject(parent)
     pm_timer = new Timer(1000, this);
 
     connect(pm_timer, SIGNAL(timeout(qint64)), this, SLOT(onTimeout(qint64)));
+
+    player = this;
 }
 
 /*
@@ -27,6 +29,18 @@ Player::Player(QObject *parent) : QObject(parent)
 Player::~Player()
 {
     bassFree();
+}
+
+/*
+ * Returns the current player instance. If there
+ * are multiple players created it always returns
+ * the newest one.
+ *
+ * :return: player
+ */
+Player * Player::currentInstance()
+{
+    return player;
 }
 
 /*
@@ -614,3 +628,8 @@ void Player::setAudio(int index)
     emit audioChanged(audio);
     emit positionChanged(0);
 }
+
+/*
+ * This static variable holds the current player instance.
+ */
+Player * Player::player = nullptr;
