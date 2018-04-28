@@ -3,10 +3,10 @@ A Groove Music like music player.
 
 ## Features
 ### Customization
-The player offers two ways for customizing the user interface and player in general. One comes in the form of css files located unter ```resources/css``` and allows the user to change mostly color and shape related things. If the proportions of the player are off on maschines with high dpi scaling, you can set a lot of hardcoded values in the config file located unter ```User/Documents/egg-player```.
+Instead of using Qt's resource system the egg-player loads its customizable files at every start. This includes the css files under ```resources/css``` which allow all kind of color and shape related changes. Apart from that there is a global config file located under ```User/Documents/egg-player```. This config holds, next to shortcuts and general settings, a lot of user interface related values. Those might be useful for machines with higher dpi scaling because the app is not optimized for use cases like that right now. In those cases the user can manually these values to create an appealing look.
 
 ### Global shortcuts
-The player supports global shortcuts for the following actions with default shortcuts
+The egg-player supports global shortcuts for media actions. The following tables contains those media actions with their default values.
 <table>
   <tr>
     <th>Action</th>
@@ -34,10 +34,10 @@ The player supports global shortcuts for the following actions with default shor
   </tr>
 </table>
 
-The default settings for those settings are your keyboards media keys. If you do not have those or want to change the shortcuts, you can do that in the config file. There is a group called ```Shortcut``` wher you can insert a combination of shift, ctrl, alt and a key on the keyboard. All possible keys can be found in the [shortcut.cpp](https://github.com/jsmolka/egg-player/blob/master/src/utils/shortcut.cpp) file. One example for a shortcut combination would be ```Alt+Shift+P```. If you want to change it back into the media keys, you can simply use ```Media```.
+Those default values can be changed by simply altering their value in the config file which gets parsed at every startup. There is a group called ```Shortcut``` where the user can insert a combination of shift, ctrl, alt and a key on the keyboard. All possible keys can be found in the [shortcut.cpp](https://github.com/jsmolka/egg-player/blob/master/src/utils/shortcut.cpp) file. One example for a shortcut combination would be ```Alt+Shift+P```. Media keys are also supported. If you want to use those you simply need to set the value to ```Media``` and the player automatically chooses the correct media key for you.
 
 ### Error logs
-If logging is enabled in the config, the player automatically logs all warnings and errors. Those are stored under ```User/Documents/egg-player```. If anything in the player does not work the log is a really good way to start. It tells you in which class the error occurred and what the error actually was.
+If logging is enabled in the config, the player automatically logs all warnings and errors. Those are stored under ```User/Documents/egg-player```. If anything in the player does not work the log is a really good place to start. It tells you in which class the error or warning occurred and gives you a rather detailed description.
 
 ## Roadmap
 - [x] documentation
