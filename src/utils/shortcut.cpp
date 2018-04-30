@@ -3,38 +3,17 @@
 /*
  * Constructor.
  *
- * :param parent: parent pointer
- */
-Shortcut::Shortcut(QObject *parent) : QObject(parent)
-{
-
-}
-
-/*
- * Constructor.
- *
  * :param shortcut: shortcut
+ * :param repeat: repeat signal while being pressed
  * :param parent: parent pointer
  */
-Shortcut::Shortcut(const QString &shortcut, QObject *parent):
-    Shortcut(shortcut, false, parent)
-{
-
-}
-/*
- * Constructor.
- *
- * :param shortcut: shortcut
- * :param holdable: holdable
- * :param parent: parent pointer
- */
-Shortcut::Shortcut(const QString &shortcut, bool hold, QObject *parent) : QObject(parent)
+Shortcut::Shortcut(const QString &shortcut, bool repeat, QObject *parent) :
+    QObject(parent)
 {
     m_count++;
-    m_id = m_count;
 
-    Combination combination = parseShortcut(shortcut, hold);
-    m_registered = registerShortcut(combination);
+    m_id = m_count;
+    m_registered = registerShortcut(shortcut, repeat);
 
     if (m_registered)
         qApp->eventDispatcher()->installNativeEventFilter(this);
@@ -53,28 +32,7 @@ Shortcut::~Shortcut()
 }
 
 /*
- * Getter for id property.
- *
- * :return: id
- */
-int Shortcut::id() const
-{
-    return m_id;
-}
-
-/*
- * Getter for registered property.
- *
- * :return: registered
- */
-bool Shortcut::isRegistered() const
-{
-    return m_registered;
-}
-
-/*
- * Filters windows hotkey event for the
- * current id.
+ * Event filter.
  *
  * :param eventType: eventType
  * :param message: message
@@ -95,17 +53,15 @@ bool Shortcut::nativeEventFilter(const QByteArray &eventType, void *message, lon
 }
 
 /*
- * Parses the shortcut and returns the equivalent
- * Keyboard structure.
+ * Parses an shortcut.
  *
  * :param shortcut: shortcut
- * :param hold: can hold shortcut
- * :param keyboard: keyboard
+ * :return: combination
  */
-Shortcut::Combination Shortcut::parseShortcut(const QString &shortcut, bool hold)
+Shortcut::Combination Shortcut::parseShortcut(const QString &shortcut)
 {
     UINT vk = 0;
-    UINT modifier = hold ? 0 : MOD_NOREPEAT;
+    UINT modifier = 0;
 
     QStringList keys = shortcut.toUpper().replace(" ", "").split("+");
     for (const QString &key : keys)
@@ -139,15 +95,21 @@ Shortcut::Combination Shortcut::parseShortcut(const QString &shortcut, bool hold
 /*
  * Registers a shortcut.
  *
+ * :param repeat: repeat signal while being pressed
  * :param combination: combination
  * :return: success
  */
-bool Shortcut::registerShortcut(Combination combination)
+bool Shortcut::registerShortcut(const QString &shortcut, bool repeat)
 {
+    Combination combination = parseShortcut(shortcut);
+
     if (!combination.isValid())
         return false;
 
-    return RegisterHotKey(NULL, m_id, combination.modifier, combination.vk);
+    if (!repeat)
+        combination.modifier |= MOD_NOREPEAT;
+
+    return (bool) RegisterHotKey(NULL, m_id, combination.modifier, combination.vk);
 }
 
 /*
@@ -157,12 +119,12 @@ bool Shortcut::registerShortcut(Combination combination)
  */
 bool Shortcut::unregisterShortcut()
 {
-    return UnregisterHotKey(NULL, m_id);
+    return (bool) UnregisterHotKey(NULL, m_id);
 }
 
 /*
  * Counts the number of instances and is
- * the identifier to each shortcut.
+ * the identifier for each shortcut.
  */
 int Shortcut::m_count = 0;
 

@@ -3,9 +3,10 @@
 /*
  * Constructor.
  */
-EggPlayer::EggPlayer()
+EggPlayer::EggPlayer(QWidget *parent) :
+    QWidget(parent)
 {
-    pm_library = new Library(Config::LPath());
+    pm_library = new Library(Config::Library::path());
     pm_library->sortByTitle();
 
     setupUi();

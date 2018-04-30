@@ -1,8 +1,9 @@
 #include "cache.hpp"
 
 /*
- * Constructor. If the QSqlDatabase does not contain
- * the database it gets added and its tables get created.
+ * Constructor. If the QSqlDatabase does not
+ * contain the database it gets added and its
+ * tables get created.
  */
 Cache::Cache()
 {
@@ -23,11 +24,12 @@ Cache::~Cache()
 }
 
 /*
- * Inserts audio into cache. It adds the cover into
- * the covers table and the path with a cover id
- * into the audios table.
- * No tags are stored inside the cache because TagLib
- * is fast enough to reload tags at every startup.
+ * Inserts audio into cache. It adds the cover
+ * into the covers table and the path with a
+ * cover id into the audios table.
+ * No tags are stored inside the cache because
+ * TagLib is fast enough to reload tags at every
+ * startup.
  *
  * :param audio: audio pointer
  * :param size: cover size, default 200
@@ -43,6 +45,7 @@ bool Cache::insert(Audio *audio, int size)
     query.prepare("INSERT INTO audios VALUES (:PATH, :COVERID)");
     query.bindValue(":PATH", audio->path());
     query.bindValue(":COVERID", id);
+
     if (!query.exec())
     {
         handleError(query);
@@ -62,6 +65,7 @@ bool Cache::contains(Audio *audio)
     QSqlQuery query(db());
     query.prepare("SELECT 1 FROM audios WHERE path = :PATH");
     query.bindValue(":PATH", audio->path());
+
     if (!query.exec())
     {
         handleError(query);
@@ -118,12 +122,13 @@ QSqlDatabase Cache::db()
     if (!db.isOpen())
         if (!db.open())
             Logger::log("Cache: Cannot open database");
+
     return db;
 }
 
 /*
- * Creates the covers table if it does not exist
- * already.
+ * Creates the covers table if it does not
+ * exist already.
  */
 void Cache::createCovers()
 {
@@ -140,8 +145,8 @@ void Cache::createCovers()
 }
 
 /*
- * Creates the audios table if it does not exist
- * already.
+ * Creates the audios table if it does not
+ * exist already.
  */
 void Cache::createAudios()
 {
@@ -158,8 +163,8 @@ void Cache::createAudios()
 }
 
 /*
- * Either get the cover id or inserts it into the
- * covers tables and returns the lastest id.
+ * Either get the cover id or inserts it into
+ * the covers tables and returns the lastest id.
  *
  * :param cover: cover
  * :return: id
@@ -176,8 +181,8 @@ int Cache::getOrInsertCover(const QPixmap &cover)
 }
 
 /*
- * Inserts cover into database. Assumes that the cover
- * does not exist already.
+ * Inserts cover into database. Assumes that the
+ * cover does not exist already.
  *
  * :param bytes: cover byte array
  * :return: cover id or -1
@@ -191,6 +196,7 @@ int Cache::insertCover(const QByteArray &bytes)
     query.bindValue(":ID", id);
     query.bindValue(":LEN", bytes.length());
     query.bindValue(":COVER", bytes);
+
     if (!query.exec())
     {
         handleError(query);
@@ -298,11 +304,13 @@ void Cache::handleError(const QSqlQuery &query)
 {
     QSqlError error = query.lastError();
     if (error.isValid())
+    {
         Logger::log(
             "Cache: Querying '%1' failed with error '%2'",
             lastQuery(query),
             error.databaseText()
         );
+    }
 }
 
 /*

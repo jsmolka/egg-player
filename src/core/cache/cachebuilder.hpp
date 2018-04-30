@@ -12,7 +12,7 @@ class CacheBuilder : public QThread
     Q_OBJECT
 
 public:
-    CacheBuilder(const AudioList &audioList);
+    CacheBuilder(const AudioList &audioList, QObject *parent = nullptr);
     ~CacheBuilder();
 
 public slots:

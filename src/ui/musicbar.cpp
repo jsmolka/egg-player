@@ -5,18 +5,19 @@
  *
  * :param parent: parent pointer
  */
-MusicBar::MusicBar(QWidget *parent) : QWidget(parent)
+MusicBar::MusicBar(QWidget *parent) :
+    QWidget(parent)
 {
     pm_player = new Player(this);
-    pm_player->setVolume(Config::PVolume());
-    pm_player->setShuffle(Config::PShuffle());
-    pm_player->setLoop(Config::PLoop());
+    pm_player->setVolume(Config::Player::volume());
+    pm_player->setShuffle(Config::Player::shuffle());
+    pm_player->setLoop(Config::Player::loop());
 
-    pm_scPlayPause = new Shortcut(Config::SPlayPause(), this);
-    pm_scNext = new Shortcut(Config::SNext(), this);
-    pm_scPrevious = new Shortcut(Config::SPrevious(), this);
-    pm_scVolumeUp = new Shortcut(Config::SVolumeUp(), true, this);
-    pm_scVolumeDown = new Shortcut(Config::SVolumeDown(), true, this);
+    pm_scPlayPause = new Shortcut(Config::Shortcut::playPause(), false, this);
+    pm_scNext = new Shortcut(Config::Shortcut::next(), false, this);
+    pm_scPrevious = new Shortcut(Config::Shortcut::previous(), false, this);
+    pm_scVolumeUp = new Shortcut(Config::Shortcut::volumeUp(), true, this);
+    pm_scVolumeDown = new Shortcut(Config::Shortcut::volumeDown(), true, this);
 
     setupUi();
 
@@ -200,7 +201,7 @@ void MusicBar::onPlayButtonPressed()
  */
 void MusicBar::onPlayerAudioChanged(Audio *audio)
 {
-    QPixmap cover = Cache().cover(audio->path(), Config::BCoverSize());
+    QPixmap cover = Cache().cover(audio->path(), Config::Bar::coverSize());
 
     pm_coverLabel->setPixmap(cover);
     pm_trackLabel->setText(QString("%1\n%2").arg(audio->title(), audio->artist()));
@@ -248,7 +249,7 @@ void MusicBar::onPlayerPositionChanged(int position)
  */
 void MusicBar::onPlayerVolumeChanged(int volume)
 {
-    Config::PVolume(volume);
+    Config::Player::setVolume(volume);
 }
 
 /*
@@ -258,7 +259,7 @@ void MusicBar::onPlayerVolumeChanged(int volume)
 void MusicBar::onShuffleButtonLocked(bool locked)
 {
     pm_player->setShuffle(locked);
-    Config::PShuffle(locked);
+    Config::Player::setShuffle(locked);
 }
 
 /*
@@ -268,7 +269,7 @@ void MusicBar::onShuffleButtonLocked(bool locked)
 void MusicBar::onLoopButtonLocked(bool locked)
 {
     pm_player->setLoop(locked);
-    Config::PLoop(locked);
+    Config::Player::setShuffle(locked);
 }
 
 /*
@@ -327,26 +328,26 @@ void MusicBar::onShortcutVolumeDownPressed()
 void MusicBar::setupUi()
 {
     QGridLayout *layout = new QGridLayout(this);
-    layout->setSpacing(Config::BSpacing());
+    layout->setSpacing(Config::Bar::spacing());
     layout->setContentsMargins(layout->spacing(), 0, layout->spacing(), 0);
 
-    setFixedHeight(Config::BHeight());
+    setFixedHeight(Config::Bar::height());
     setStyleSheet(Utils::read(CSS_MUSICBAR));
     setAutoFillBackground(true);
-    setColor(Utils::backgroundColor(Utils::defaultCover(Config::BCoverSize())));
+    setColor(Utils::backgroundColor(Utils::defaultCover(Config::Bar::coverSize())));
     setLayout(layout);
 
     pm_coverLabel = new QLabel(this);
-    pm_coverLabel->setPixmap(Utils::defaultCover(Config::BCoverSize()));
+    pm_coverLabel->setPixmap(Utils::defaultCover(Config::Bar::coverSize()));
     pm_coverLabel->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
     layout->addWidget(pm_coverLabel, 0, 0);
 
     pm_trackLabel = new QLabel(this);
-    pm_trackLabel->setFixedWidth(Config::BTrackWidth());
+    pm_trackLabel->setFixedWidth(Config::Bar::trackWidth());
     layout->addWidget(pm_trackLabel, 0, 1);
 
     pm_currentTimeLabel = new QLabel(this);
-    pm_currentTimeLabel->setFixedWidth(Config::BTimeWidth());
+    pm_currentTimeLabel->setFixedWidth(Config::Bar::timeWidth());
     pm_currentTimeLabel->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Maximum);
     pm_currentTimeLabel->setAlignment(Qt::AlignRight);
     layout->addWidget(pm_currentTimeLabel, 0, 2);
@@ -357,36 +358,36 @@ void MusicBar::setupUi()
     layout->addWidget(pm_lengthSlider, 0, 3);
 
     pm_totalTimeLabel = new QLabel(this);
-    pm_totalTimeLabel->setFixedWidth(Config::BTimeWidth());
+    pm_totalTimeLabel->setFixedWidth(Config::Bar::timeWidth());
     pm_totalTimeLabel->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Maximum);
     layout->addWidget(pm_totalTimeLabel, 0, 4);
 
     QList<IconButton *> buttons;
 
     pm_previousButton = new IconButton(this);
-    pm_previousButton->init({QIcon(ICO_PREVIOUS)}, Config::BIconSize());
+    pm_previousButton->init({QIcon(ICO_PREVIOUS)}, Config::Bar::iconSize());
     buttons << pm_previousButton;
 
     pm_playButton = new IconButton(this);
-    pm_playButton->init({QIcon(ICO_PLAY), QIcon(ICO_PAUSE)}, Config::BIconSize());
+    pm_playButton->init({QIcon(ICO_PLAY), QIcon(ICO_PAUSE)}, Config::Bar::iconSize());
     buttons << pm_playButton;
 
     pm_nextButton = new IconButton(this);
-    pm_nextButton->init({QIcon(ICO_NEXT)}, Config::BIconSize());
+    pm_nextButton->init({QIcon(ICO_NEXT)}, Config::Bar::iconSize());
     buttons << pm_nextButton;
 
     pm_shuffleButton = new IconButton(this);
-    pm_shuffleButton->init({QIcon(ICO_SHUFFLE)}, Config::BIconSize(), true);
-    pm_shuffleButton->setLocked(Config::PShuffle());
+    pm_shuffleButton->init({QIcon(ICO_SHUFFLE)}, Config::Bar::iconSize(), true);
+    pm_shuffleButton->setLocked(Config::Player::shuffle());
     buttons << pm_shuffleButton;
 
     pm_loopButton = new IconButton(this);
-    pm_loopButton->init({QIcon(ICO_REPLAY)}, Config::BIconSize(), true);
-    pm_loopButton->setLocked(Config::PLoop());
+    pm_loopButton->init({QIcon(ICO_REPLAY)}, Config::Bar::iconSize(), true);
+    pm_loopButton->setLocked(Config::Player::loop());
     buttons << pm_loopButton;
 
     pm_volumeButton = new IconButton(this);
-    pm_volumeButton->init({QIcon(ICO_VOLUME), QIcon(ICO_MUTE)}, Config::BIconSize());
+    pm_volumeButton->init({QIcon(ICO_VOLUME), QIcon(ICO_MUTE)}, Config::Bar::iconSize());
     buttons << pm_volumeButton;
 
     int column = 5;

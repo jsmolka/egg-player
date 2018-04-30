@@ -16,13 +16,8 @@ class Shortcut : public QObject, public QAbstractNativeEventFilter
     Q_OBJECT
 
 public:
-    Shortcut(QObject *parent = nullptr);
-    Shortcut(const QString &shortcut, QObject *parent = nullptr);
-    Shortcut(const QString &shortcut, bool hold, QObject *parent = nullptr);
+    Shortcut(const QString &shortcut, bool repeat, QObject *parent = nullptr);
     ~Shortcut();
-
-    int id() const;
-    bool isRegistered() const;
 
 signals:
     void pressed();
@@ -48,15 +43,15 @@ private:
         UINT modifier;
     };
 
-    Combination parseShortcut(const QString &shortcut, bool hold);
-    bool registerShortcut(Combination combination);
+    Combination parseShortcut(const QString &shortcut);
+    bool registerShortcut(const QString &shortcut, bool repeat);
     bool unregisterShortcut();
-
-    static int m_count;
-    static const QHash<QString, int> m_map;
 
     int m_id;
     bool m_registered;
+
+    static int m_count;
+    static const QHash<QString, int> m_map;
 };
 
 #endif // SHORTCUT_HPP

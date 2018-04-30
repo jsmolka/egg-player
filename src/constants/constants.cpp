@@ -43,8 +43,8 @@ const QString ICO_VOLUME2       = "resource/images/icons/volume2.png";
 const QString IMG_DEFAULT_COVER = "resource/images/default-cover.png";
 const QString IMG_EGGPLAYER     = "resource/images/egg/egg.png";
 
-const QString LANG_APP_NAME     = "Egg Player";
-const QString LANG_ORG_NAME     = "Egg Inc.";
+const QString APP_NAME          = "Egg Player";
+const QString APP_ORG_NAME      = "Egg Inc.";
 
 const QString SQL_CONNECTION    = "cache";
 const QString SQL_PATH          = DOCUMENTS + "/cache.db";

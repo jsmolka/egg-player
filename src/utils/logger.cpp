@@ -23,7 +23,7 @@ void Logger::create()
  */
 void Logger::log(const QString &message, const QStringList &args)
 {
-    if (!Config::ALog())
+    if (!Config::App::log())
         return;
 
     QString log = message;

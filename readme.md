@@ -6,7 +6,7 @@ A Groove Music like music player.
 Instead of using Qt's resource system the egg-player loads its customizable files at every start. This includes the css files under ```resources/css``` which allow all kind of color and shape related changes. Apart from that there is a global config file located under ```User/Documents/egg-player```. This config holds, next to shortcuts and general settings, a lot of user interface related values. Those might be useful for machines with higher dpi scaling because the app is not optimized for use cases like that right now. In those cases the user can manually these values to create an appealing look.
 
 ### Global shortcuts
-The egg-player supports global shortcuts for media actions. The following tables contains those media actions with their default values.
+The Egg Player supports global shortcuts for media actions. The following tables contains those media actions with their default values.
 <table>
   <tr>
     <th>Action</th>
@@ -34,7 +34,7 @@ The egg-player supports global shortcuts for media actions. The following tables
   </tr>
 </table>
 
-Those default values can be changed by simply altering their value in the config file which gets parsed at every startup. There is a group called ```Shortcut``` where the user can insert a combination of shift, ctrl, alt and a key on the keyboard. All possible keys can be found in the [shortcut.cpp](https://github.com/jsmolka/egg-player/blob/master/src/utils/shortcut.cpp) file. One example for a shortcut combination would be ```Alt+Shift+P```. Media keys are also supported. If you want to use those you simply need to set the value to ```Media``` and the player automatically chooses the correct media key for you.
+Those default values can be changed by simply altering their value in the config file which gets parsed at every startup. There is a group called ```Shortcut``` where the user can insert a combination of shift, ctrl, alt and a key on the keyboard. All possible keys can be found in the [shortcut.cpp](https://github.com/jsmolka/egg-player/blob/master/src/utils/shortcut.cpp) file. One example for a shortcut combination would be ```Alt+Shift+P```. Note that you cannot use the same shortcut for two actions or reuse a shortcut which is being used by the system already.
 
 ### Error logs
 If logging is enabled in the config, the player automatically logs all warnings and errors. Those are stored under ```User/Documents/egg-player```. If anything in the player does not work the log is a really good place to start. It tells you in which class the error or warning occurred and gives you a rather detailed description.

@@ -6,7 +6,8 @@
  *
  * :param parent: parent pointer
  */
-LengthSlider::LengthSlider(QWidget *parent) : QSlider(parent)
+LengthSlider::LengthSlider(QWidget *parent) :
+    QSlider(parent)
 {
     setOrientation(Qt::Horizontal);
     setStyle(new LengthSliderStyle(style()));

@@ -14,7 +14,7 @@ class EggPlayer : public QWidget
     Q_OBJECT
 
 public:
-    EggPlayer();
+    EggPlayer(QWidget *parent = nullptr);
     ~EggPlayer();
 
     void showSavedPosition();

@@ -5,13 +5,13 @@
  *
  * :param audioList: audio list
  */
-CacheBuilder::CacheBuilder(const AudioList &audioList)
+CacheBuilder::CacheBuilder(const AudioList &audioList, QObject *parent) :
+    QThread(parent)
 {
     m_audioList = audioList;
     m_abort = false;
 
-    // Abort and delete thread at applicaton end
-    connect(QApplication::instance(), SIGNAL(aboutToQuit()), this, SLOT(abort()));
+    connect(qApp, SIGNAL(aboutToQuit()), this, SLOT(abort()));
     connect(this, SIGNAL(finished()), this, SLOT(deleteLater()));
 }
 

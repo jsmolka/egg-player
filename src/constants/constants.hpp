@@ -31,8 +31,8 @@ const extern QString ICO_VOLUME2;
 const extern QString IMG_DEFAULT_COVER;
 const extern QString IMG_EGGPLAYER;
 
-const extern QString LANG_APP_NAME;
-const extern QString LANG_ORG_NAME;
+const extern QString APP_NAME;
+const extern QString APP_ORG_NAME;
 
 const extern QString SQL_CONNECTION;
 const extern QString SQL_PATH;

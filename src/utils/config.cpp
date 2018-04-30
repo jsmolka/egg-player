@@ -1,69 +1,44 @@
 #include "config.hpp"
 
 /*
- * Creates settings and sets all non existing
- * keys to their default value.
+ * Creates settings and sets all non existing keys to
+ * their default value.
  */
 void Config::create()
 {
     if (config)
         return;
 
-    config = new QSettings(CFG_PATH, QSettings::IniFormat, QApplication::instance());
+    config = new QSettings(CFG_PATH, QSettings::IniFormat, qApp);
 
-    if (!sectionContains(kApp, kALog))
-        ALog(dALog);
+    App::create();
+    Shortcut::create();
+    Player::create();
+    Library::create();
+    Bar::create();
+}
 
-    if (!sectionContains(kApp, kAFontSize))
-        AFontSize(dAFontSize);
+/*
+ * Sets all non existing keys to their default value.
+ */
+void Config::App::create()
+{
+    if (!App::contains(kLog))
+        App::setLog(dLog);
 
-    if (!sectionContains(kShortcut, kSPlayPause))
-        SPlayPause(dSPlayPause);
+    if (!App::contains(kFontSize))
+        App::setFontSize(dFontSize);
+}
 
-    if (!sectionContains(kShortcut, kSNext))
-        SNext(dSNext);
-
-    if (!sectionContains(kShortcut, kSPrevious))
-        SPrevious(dSPrevious);
-
-    if (!sectionContains(kShortcut, kSVolumeUp))
-        SVolumeUp(dSVolumeUp);
-
-    if (!sectionContains(kShortcut, kSVolumeDown))
-        SVolumeDown(dSVolumeDown);
-
-    if (!sectionContains(kPlayer, kPVolume))
-        PVolume(dPVolume);
-
-    if (!sectionContains(kPlayer, kPShuffle))
-        PShuffle(dPShuffle);
-
-    if (!sectionContains(kPlayer, kPLoop))
-        PLoop(dPLoop);
-
-    if (!sectionContains(kLibrary, kLPath))
-        LPath(dLPath);
-
-    if (!sectionContains(kLibrary, kLItemHeight))
-        LItemHeight(dLItemHeight);
-
-    if (!sectionContains(kBar, kBHeight))
-        BHeight(dBHeight);
-
-    if (!sectionContains(kBar, kBSpacing))
-        BSpacing(dBSpacing);
-
-    if (!sectionContains(kBar, kBCoverSize))
-        BCoverSize(dBCoverSize);
-
-    if (!sectionContains(kBar, kBIconSize))
-        BIconSize(dBIconSize);
-
-    if (!sectionContains(kBar, kBTrackWidth))
-        BTrackWidth(dBTrackWidth);
-
-    if (!sectionContains(kBar, kBTimeWidth))
-        BTimeWidth(dBTimeWidth);
+/*
+ * Checks if app contains key.
+ *
+ * :param key: key
+ * :return: contains
+ */
+bool Config::App::contains(const QString &key)
+{
+    return Config::contains(kApp, key);
 }
 
 /*
@@ -71,11 +46,9 @@ void Config::create()
  *
  * :param log: log
  */
-void Config::ALog(bool log)
+void Config::App::setLog(bool log)
 {
-    config->beginGroup(kApp);
-    config->setValue(kALog, log);
-    config->endGroup();
+    Config::setValue(kApp, kLog, log);
 }
 
 /*
@@ -83,13 +56,9 @@ void Config::ALog(bool log)
  *
  * :return: log
  */
-bool Config::ALog()
+bool Config::App::log()
 {
-    config->beginGroup(kApp);
-    bool log = config->value(kALog, dALog).toBool();
-    config->endGroup();
-
-    return log;
+    return Config::value(kApp, kLog, dLog).toBool();
 }
 
 /*
@@ -97,11 +66,9 @@ bool Config::ALog()
  *
  * :param size: size
  */
-void Config::AFontSize(double size)
+void Config::App::setFontSize(double size)
 {
-    config->beginGroup(kApp);
-    config->setValue(kAFontSize, size);
-    config->endGroup();
+    Config::setValue(kApp, kFontSize, size);
 }
 
 /*
@@ -109,25 +76,69 @@ void Config::AFontSize(double size)
  *
  * :return: size
  */
-double Config::AFontSize()
+double Config::App::fontSize()
 {
-    config->beginGroup(kApp);
-    double size = config->value(kAFontSize, dAFontSize).toDouble();
-    config->endGroup();
-
-    return size;
+    return Config::value(kApp, kFontSize, dFontSize).toDouble();
 }
+
+/*
+ * App group.
+ */
+const QString Config::App::kApp      = "App";
+
+/*
+ * App section keys.
+ */
+const QString Config::App::kLog      = "Log";
+const QString Config::App::kFontSize = "FontSize";
+
+/*
+ * App section default values.
+ */
+const bool Config::App::dLog         = true;
+const double Config::App::dFontSize  = 10.25;
+
+/*
+ * Sets all non existing keys to their default value.
+ */
+void Config::Shortcut::create()
+{
+    if (!Shortcut::contains(kPlayPause))
+        Shortcut::setPlayPause(dPlayPause);
+
+    if (!Shortcut::contains(kNext))
+        Shortcut::setNext(dNext);
+
+    if (!Shortcut::contains(kPrevious))
+        Shortcut::setPrevious(dPrevious);
+
+    if (!Shortcut::contains(kVolumeUp))
+        Shortcut::setVolumeUp(dVolumeUp);
+
+    if (!Shortcut::contains(kVolumeDown))
+        Shortcut::setVolumeDown(dVolumeDown);
+}
+
+/*
+ * Checks if shortcut contains key.
+ *
+ * :param key: key
+ * :return: contains
+ */
+bool Config::Shortcut::contains(const QString &key)
+{
+    return Config::contains(kShortcut, key);
+}
+
 
 /*
  * Setter for play pause shortcut.
  *
  * :param shortcut: shortcut
  */
-void Config::SPlayPause(const QString &shortcut)
+void Config::Shortcut::setPlayPause(const QString &shortcut)
 {
-    config->beginGroup(kShortcut);
-    config->setValue(kSPlayPause, shortcut);
-    config->endGroup();
+    Config::setValue(kShortcut, kPlayPause, shortcut);
 }
 
 /*
@@ -135,13 +146,9 @@ void Config::SPlayPause(const QString &shortcut)
  *
  * :return: shortcut
  */
-QString Config::SPlayPause()
+QString Config::Shortcut::playPause()
 {
-    config->beginGroup(kShortcut);
-    QString shortcut = config->value(kSPlayPause, dSPlayPause).toString();
-    config->endGroup();
-
-    return shortcut;
+    return Config::value(kShortcut, kPlayPause, dPlayPause).toString();
 }
 
 /*
@@ -149,11 +156,9 @@ QString Config::SPlayPause()
  *
  * :param shortcut: shortcut
  */
-void Config::SNext(const QString &shortcut)
+void Config::Shortcut::setNext(const QString &shortcut)
 {
-    config->beginGroup(kShortcut);
-    config->setValue(kSNext, shortcut);
-    config->endGroup();
+    Config::setValue(kShortcut, kNext, shortcut);
 }
 
 /*
@@ -161,13 +166,9 @@ void Config::SNext(const QString &shortcut)
  *
  * :return: shortcut
  */
-QString Config::SNext()
+QString Config::Shortcut::next()
 {
-    config->beginGroup(kShortcut);
-    QString shortcut = config->value(kSNext, dSNext).toString();
-    config->endGroup();
-
-    return shortcut;
+    return Config::value(kShortcut, kNext, dNext).toString();
 }
 
 /*
@@ -175,11 +176,9 @@ QString Config::SNext()
  *
  * :param shortcut: shortcut
  */
-void Config::SPrevious(const QString &shortcut)
+void Config::Shortcut::setPrevious(const QString &shortcut)
 {
-    config->beginGroup(kShortcut);
-    config->setValue(kSPrevious, shortcut);
-    config->endGroup();
+    Config::setValue(kShortcut, kPrevious, shortcut);
 }
 
 /*
@@ -187,13 +186,9 @@ void Config::SPrevious(const QString &shortcut)
  *
  * :return: shortcut
  */
-QString Config::SPrevious()
+QString Config::Shortcut::previous()
 {
-    config->beginGroup(kShortcut);
-    QString shortcut = config->value(kSPrevious, dSPrevious).toString();
-    config->endGroup();
-
-    return shortcut;
+    return Config::value(kShortcut, kPrevious, dPrevious).toString();
 }
 
 /*
@@ -201,11 +196,9 @@ QString Config::SPrevious()
  *
  * :param shortcut: shortcut
  */
-void Config::SVolumeUp(const QString &shortcut)
+void Config::Shortcut::setVolumeUp(const QString &shortcut)
 {
-    config->beginGroup(kShortcut);
-    config->setValue(kSVolumeUp, shortcut);
-    config->endGroup();
+    Config::setValue(kShortcut, kVolumeUp, shortcut);
 }
 
 /*
@@ -213,13 +206,9 @@ void Config::SVolumeUp(const QString &shortcut)
  *
  * :return: shortcut
  */
-QString Config::SVolumeUp()
+QString Config::Shortcut::volumeUp()
 {
-    config->beginGroup(kShortcut);
-    QString shortcut = config->value(kSVolumeUp, dSVolumeUp).toString();
-    config->endGroup();
-
-    return shortcut;
+    return Config::value(kShortcut, kVolumeUp, dVolumeUp).toString();
 }
 
 /*
@@ -227,11 +216,9 @@ QString Config::SVolumeUp()
  *
  * :param shortcut: shortcut
  */
-void Config::SVolumeDown(const QString &shortcut)
+void Config::Shortcut::setVolumeDown(const QString &shortcut)
 {
-    config->beginGroup(kShortcut);
-    config->setValue(kSVolumeDown, shortcut);
-    config->endGroup();
+    Config::setValue(kShortcut, kVolumeDown, shortcut);
 }
 
 /*
@@ -239,13 +226,58 @@ void Config::SVolumeDown(const QString &shortcut)
  *
  * :return: shortcut
  */
-QString Config::SVolumeDown()
+QString Config::Shortcut::volumeDown()
 {
-    config->beginGroup(kShortcut);
-    QString shortcut = config->value(kSVolumeDown, dSVolumeDown).toString();
-    config->endGroup();
+    return Config::value(kShortcut, kVolumeDown, dVolumeDown).toString();
+}
 
-    return shortcut;
+/*
+ * Shortcut section.
+ */
+const QString Config::Shortcut::kShortcut   = "Shortcut";
+
+/*
+ * Shortcut keys.
+ */
+const QString Config::Shortcut::kPlayPause  = "PlayPause";
+const QString Config::Shortcut::kNext       = "Next";
+const QString Config::Shortcut::kPrevious   = "Previous";
+const QString Config::Shortcut::kVolumeUp   = "VolumeUp";
+const QString Config::Shortcut::kVolumeDown = "VolumeDown";
+
+/*
+ * Shortcut default values.
+ */
+const QString Config::Shortcut::dPlayPause  = "Ctrl+F11";
+const QString Config::Shortcut::dNext       = "Ctrl+F12";
+const QString Config::Shortcut::dPrevious   = "Ctrl+F10";
+const QString Config::Shortcut::dVolumeUp   = "Ctrl+F8";
+const QString Config::Shortcut::dVolumeDown = "Ctrl+F7";
+
+/*
+ * Sets all non existing keys to their default value.
+ */
+void Config::Player::create()
+{
+    if (!Player::contains(kVolume))
+        Player::setVolume(dVolume);
+
+    if (!Player::contains(kShuffle))
+        Player::setShuffle(dShuffle);
+
+    if (!Player::contains(kLoop))
+        Player::setLoop(dLoop);
+}
+
+/*
+ * Checks if player contains key.
+ *
+ * :param key: key
+ * :return: contains
+ */
+bool Config::Player::contains(const QString &key)
+{
+    return Config::contains(kPlayer, key);
 }
 
 /*
@@ -253,11 +285,9 @@ QString Config::SVolumeDown()
  *
  * :param volume: volume
  */
-void Config::PVolume(int volume)
+void Config::Player::setVolume(int volume)
 {
-    config->beginGroup(kPlayer);
-    config->setValue(kPVolume, volume);
-    config->endGroup();
+    Config::setValue(kPlayer, kVolume, volume);
 }
 
 /*
@@ -265,13 +295,9 @@ void Config::PVolume(int volume)
  *
  * :return: volume
  */
-int Config::PVolume()
+int Config::Player::volume()
 {
-    config->beginGroup(kPlayer);
-    int volume = config->value(kPVolume, dPVolume).toInt();
-    config->endGroup();
-
-    return volume;
+    return Config::value(kPlayer, kVolume, dVolume).toInt();
 }
 
 /*
@@ -279,11 +305,9 @@ int Config::PVolume()
  *
  * :param shuffle: shuffle
  */
-void Config::PShuffle(bool shuffle)
+void Config::Player::setShuffle(bool shuffle)
 {
-    config->beginGroup(kPlayer);
-    config->setValue(kPShuffle, shuffle);
-    config->endGroup();
+    Config::setValue(kPlayer, kShuffle, shuffle);
 }
 
 /*
@@ -291,13 +315,9 @@ void Config::PShuffle(bool shuffle)
  *
  * :return: shuffle
  */
-bool Config::PShuffle()
+bool Config::Player::shuffle()
 {
-    config->beginGroup(kPlayer);
-    bool shuffle = config->value(kPShuffle, dPShuffle).toBool();
-    config->endGroup();
-
-    return shuffle;
+    return Config::value(kPlayer, kShuffle, dShuffle).toBool();
 }
 
 /*
@@ -305,11 +325,9 @@ bool Config::PShuffle()
  *
  * :param loop: loop
  */
-void Config::PLoop(bool loop)
+void Config::Player::setLoop(bool loop)
 {
-    config->beginGroup(kPlayer);
-    config->setValue(kPLoop, loop);
-    config->endGroup();
+    Config::setValue(kPlayer, kLoop, loop);
 }
 
 /*
@@ -317,13 +335,51 @@ void Config::PLoop(bool loop)
  *
  * :return: loop
  */
-bool Config::PLoop()
+bool Config::Player::loop()
 {
-    config->beginGroup(kPlayer);
-    bool loop = config->value(kPLoop, dPLoop).toBool();
-    config->endGroup();
+    return Config::value(kPlayer, kLoop, dLoop).toBool();
+}
 
-    return loop;
+/*
+ * Player section.
+ */
+const QString Config::Player::kPlayer  = "Player";
+
+/*
+ * Player keys.
+ */
+const QString Config::Player::kVolume  = "Volume";
+const QString Config::Player::kShuffle = "Shuffle";
+const QString Config::Player::kLoop    = "Loop";
+
+/*
+ * Player default values.
+ */
+const int Config::Player::dVolume      = 25;
+const bool Config::Player::dShuffle    = false;
+const bool Config::Player::dLoop       = false;
+
+/*
+ * Sets all non existing keys to their default value.
+ */
+void Config::Library::create()
+{
+    if (!Library::contains(kPath))
+        Library::setPath(dPath);
+
+    if (!Library::contains(kItemHeight))
+        Library::setItemHeight(dItemHeight);
+}
+
+/*
+ * Checks if library contains key.
+ *
+ * :param key: key
+ * :return: contains
+ */
+bool Config::Library::contains(const QString &key)
+{
+    return Config::contains(kLibrary, key);
 }
 
 /*
@@ -331,11 +387,9 @@ bool Config::PLoop()
  *
  * :param string: path
  */
-void Config::LPath(const QString &path)
+void Config::Library::setPath(const QString &path)
 {
-    config->beginGroup(kLibrary);
-    config->setValue(kLPath, path);
-    config->endGroup();
+    Config::setValue(kLibrary, kPath, path);
 }
 
 /*
@@ -343,13 +397,9 @@ void Config::LPath(const QString &path)
  *
  * :return: path
  */
-QString Config::LPath()
+QString Config::Library::path()
 {
-    config->beginGroup(kLibrary);
-    QString path = config->value(kLPath, dLPath).toString();
-    config->endGroup();
-
-    return path;
+    return Config::value(kLibrary, kPath, dPath).toString();
 }
 
 /*
@@ -357,11 +407,9 @@ QString Config::LPath()
  *
  * :param height: height
  */
-void Config::LItemHeight(int height)
+void Config::Library::setItemHeight(int height)
 {
-    config->beginGroup(kLibrary);
-    config->setValue(kLItemHeight, height);
-    config->endGroup();
+    Config::setValue(kLibrary, kItemHeight, height);
 }
 
 /*
@@ -369,13 +417,61 @@ void Config::LItemHeight(int height)
  *
  * :return: height
  */
-int Config::LItemHeight()
+int Config::Library::itemHeight()
 {
-    config->beginGroup(kLibrary);
-    int height = config->value(kLItemHeight, dLItemHeight).toInt();
-    config->endGroup();
+    return Config::value(kLibrary, kItemHeight, dItemHeight).toInt();
+}
 
-    return height;
+/*
+ * Library section.
+ */
+const QString Config::Library::kLibrary    = "Library";
+
+/*
+ * Library keys.
+ */
+const QString Config::Library::kPath       = "Path";
+const QString Config::Library::kItemHeight = "ItemHeight";
+
+/*
+ * Library default values.
+ */
+const QString Config::Library::dPath       = QStandardPaths::writableLocation(QStandardPaths::MusicLocation);
+const int Config::Library::dItemHeight     = 50;
+
+/*
+ * Sets all non existing keys to their default value.
+ */
+void Config::Bar::create()
+{
+    if (!Bar::contains(kHeight))
+        Bar::setHeight(dHeight);
+
+    if (!Bar::contains(kSpacing))
+        Bar::setSpacing(dSpacing);
+
+    if (!Bar::contains(kCoverSize))
+        Bar::setCoverSize(dCoverSize);
+
+    if (!Bar::contains(kIconSize))
+        Bar::setIconSize(dIconSize);
+
+    if (!Bar::contains(kTrackWidth))
+        Bar::setTrackWidth(dTrackWidth);
+
+    if (!Bar::contains(kTimeWidth))
+        Bar::setTimeWidth(dTimeWidth);
+}
+
+/*
+ * Checks if bar contains key.
+ *
+ * :param key: key
+ * :return: contains
+ */
+bool Config::Bar::contains(const QString &key)
+{
+    return Config::contains(kBar, key);
 }
 
 /*
@@ -383,11 +479,9 @@ int Config::LItemHeight()
  *
  * :param height: height
  */
-void Config::BHeight(int height)
+void Config::Bar::setHeight(int height)
 {
-    config->beginGroup(kBar);
-    config->setValue(kBHeight, height);
-    config->endGroup();
+    Config::setValue(kBar, kHeight, height);
 }
 
 /*
@@ -395,13 +489,9 @@ void Config::BHeight(int height)
  *
  * :result: height
  */
-int Config::BHeight()
+int Config::Bar::height()
 {
-    config->beginGroup(kBar);
-    int height = config->value(kBHeight, dBHeight).toInt();
-    config->endGroup();
-
-    return height;
+    return Config::value(kBar, kHeight, dHeight).toInt();
 }
 
 /*
@@ -409,11 +499,9 @@ int Config::BHeight()
  *
  * :param spacing: spacing
  */
-void Config::BSpacing(int spacing)
+void Config::Bar::setSpacing(int spacing)
 {
-    config->beginGroup(kBar);
-    config->setValue(kBSpacing, spacing);
-    config->endGroup();
+    Config::setValue(kBar, kSpacing, spacing);
 }
 
 /*
@@ -421,13 +509,9 @@ void Config::BSpacing(int spacing)
  *
  * :return: spacing
  */
-int Config::BSpacing()
+int Config::Bar::spacing()
 {
-    config->beginGroup(kBar);
-    int spacing = config->value(kBSpacing, dBSpacing).toInt();
-    config->endGroup();
-
-    return spacing;
+    return Config::value(kBar, kSpacing, dSpacing).toInt();
 }
 
 /*
@@ -435,11 +519,9 @@ int Config::BSpacing()
  *
  * :param size: size
  */
-void Config::BCoverSize(int size)
+void Config::Bar::setCoverSize(int size)
 {
-    config->beginGroup(kBar);
-    config->setValue(kBCoverSize, size);
-    config->endGroup();
+    Config::setValue(kBar, kCoverSize, size);
 }
 
 /*
@@ -447,13 +529,9 @@ void Config::BCoverSize(int size)
  *
  * :return: size
  */
-int Config::BCoverSize()
+int Config::Bar::coverSize()
 {
-    config->beginGroup(kBar);
-    int size = config->value(kBCoverSize, dBCoverSize).toInt();
-    config->endGroup();
-
-    return size;
+    return Config::value(kBar, kCoverSize, dCoverSize).toInt();
 }
 
 /*
@@ -461,11 +539,9 @@ int Config::BCoverSize()
  *
  * :param size: size
  */
-void Config::BIconSize(int size)
+void Config::Bar::setIconSize(int size)
 {
-    config->beginGroup(kBar);
-    config->setValue(kBIconSize, size);
-    config->endGroup();
+    Config::setValue(kBar, kIconSize, size);
 }
 
 /*
@@ -473,13 +549,9 @@ void Config::BIconSize(int size)
  *
  * :return: size
  */
-int Config::BIconSize()
+int Config::Bar::iconSize()
 {
-    config->beginGroup(kBar);
-    int size = config->value(kBIconSize, dBIconSize).toInt();
-    config->endGroup();
-
-    return size;
+    return Config::value(kBar, kIconSize, dIconSize).toInt();
 }
 
 /*
@@ -487,11 +559,9 @@ int Config::BIconSize()
  *
  * :param width: width
  */
-void Config::BTrackWidth(int width)
+void Config::Bar::setTrackWidth(int width)
 {
-    config->beginGroup(kBar);
-    config->setValue(kBTrackWidth, width);
-    config->endGroup();
+    Config::setValue(kBar, kTrackWidth, width);
 }
 
 /*
@@ -499,13 +569,9 @@ void Config::BTrackWidth(int width)
  *
  * :return: width
  */
-int Config::BTrackWidth()
+int Config::Bar::trackWidth()
 {
-    config->beginGroup(kBar);
-    int width = config->value(kBTrackWidth, dBTrackWidth).toInt();
-    config->endGroup();
-
-    return width;
+    return Config::value(kBar, kTrackWidth, dTrackWidth).toInt();
 }
 
 /*
@@ -513,11 +579,9 @@ int Config::BTrackWidth()
  *
  * :param width: width
  */
-void Config::BTimeWidth(int width)
+void Config::Bar::setTimeWidth(int width)
 {
-    config->beginGroup(kBar);
-    config->setValue(kBTimeWidth, width);
-    config->endGroup();
+    Config::setValue(kBar, kTimeWidth, width);
 }
 
 /*
@@ -525,25 +589,46 @@ void Config::BTimeWidth(int width)
  *
  * :return: width
  */
-int Config::BTimeWidth()
+int Config::Bar::timeWidth()
 {
-    config->beginGroup(kBar);
-    int width = config->value(kBTimeWidth, dBTimeWidth).toInt();
-    config->endGroup();
-
-    return width;
+    return Config::value(kBar, kTimeWidth, dTimeWidth).toInt();
 }
 
 /*
- * Checks if section contains key.
+ * Bar group.
+ */
+const QString Config::Bar::kBar        = "Bar";
+
+/*
+ * Bar keys.
+ */
+const QString Config::Bar::kHeight     = "Height";
+const QString Config::Bar::kSpacing    = "Spacing";
+const QString Config::Bar::kCoverSize  = "CoverSize";
+const QString Config::Bar::kIconSize   = "IconSize";
+const QString Config::Bar::kTrackWidth = "TrackWidth";
+const QString Config::Bar::kTimeWidth  = "TimeWidth";
+
+/*
+ * Bar default values.
+ */
+const int Config::Bar::dHeight         = 68;
+const int Config::Bar::dSpacing        = 10;
+const int Config::Bar::dCoverSize      = 48;
+const int Config::Bar::dIconSize       = 33;
+const int Config::Bar::dTrackWidth     = 240;
+const int Config::Bar::dTimeWidth      = 50;
+
+/*
+ * Checks if group contains key.
  *
- * :param section: section
+ * :param group: group
  * :param key: key
  * :return: exists
  */
-bool Config::sectionContains(const QString &section, const QString &key)
+bool Config::contains(const QString &group, const QString &key)
 {
-    config->beginGroup(section);
+    config->beginGroup(group);
     bool contains = config->contains(key);
     config->endGroup();
 
@@ -551,65 +636,37 @@ bool Config::sectionContains(const QString &section, const QString &key)
 }
 
 /*
- * Settings pointer which gets created
- * in create() function. Its parent will
- * be the application so we do not have to
- * worry about freeing it.
+ * Sets a config value.
+ *
+ * :param group: group
+ * :param key: key
+ * :param value: value
  */
-QSettings * Config::config         = nullptr;
+void Config::setValue(const QString &group, const QString &key, const QVariant &value)
+{
+    config->beginGroup(group);
+    config->setValue(key, value);
+    config->endGroup();
+}
 
 /*
- * The following variables are groups
- * within the config.
+ * Gets a config value.
+ *
+ * :param group: group
+ * :param key: key
+ * :param defaultValue: defaultValue
+ * :return: value
  */
-const QString Config::kApp         = "App";
-const QString Config::kShortcut    = "Shortcut";
-const QString Config::kPlayer      = "Player";
-const QString Config::kLibrary     = "Library";
-const QString Config::kBar         = "Bar";
+QVariant Config::value(const QString &group, const QString &key, const QVariant &defaultValue)
+{
+    config->beginGroup(group);
+    QVariant value = config->value(key, defaultValue);
+    config->endGroup();
+
+    return value;
+}
 
 /*
- * The following variables with k prefix
- * are keys used in config.
+ * Config pointer.
  */
-const QString Config::kALog        = "Log";
-const QString Config::kAFontSize   = "FontSize";
-const QString Config::kSPlayPause  = "PlayPause";
-const QString Config::kSNext       = "Next";
-const QString Config::kSPrevious   = "Previous";
-const QString Config::kSVolumeUp   = "VolumeUp";
-const QString Config::kSVolumeDown = "VolumeDown";
-const QString Config::kPVolume     = "Volume";
-const QString Config::kPShuffle    = "Shuffle";
-const QString Config::kPLoop       = "Loop";
-const QString Config::kLPath       = "Path";
-const QString Config::kLItemHeight = "ItemHeight";
-const QString Config::kBHeight     = "Height";
-const QString Config::kBSpacing    = "Spacing";
-const QString Config::kBCoverSize  = "CoverSize";
-const QString Config::kBIconSize   = "IconSize";
-const QString Config::kBTrackWidth = "TrackWidth";
-const QString Config::kBTimeWidth  = "TimeWidth";
-
-/*
- * The following variables with d prefix
- * are default values used in config.
- */
-const bool Config::dALog           = true;
-const double Config::dAFontSize    = 10.25;
-const QString Config::dSPlayPause  = "Ctrl+F11";
-const QString Config::dSNext       = "Ctrl+F12";
-const QString Config::dSPrevious   = "Ctrl+F10";
-const QString Config::dSVolumeUp   = "Ctrl+F8";
-const QString Config::dSVolumeDown = "Ctrl+F7";
-const int Config::dPVolume         = 25;
-const bool Config::dPShuffle       = false;
-const bool Config::dPLoop          = false;
-const QString Config::dLPath       = QStandardPaths::writableLocation(QStandardPaths::MusicLocation);
-const int Config::dLItemHeight     = 50;
-const int Config::dBHeight         = 68;
-const int Config::dBSpacing        = 10;
-const int Config::dBCoverSize      = 48;
-const int Config::dBIconSize       = 33;
-const int Config::dBTrackWidth     = 240;
-const int Config::dBTimeWidth      = 50;
+QSettings * Config::config = nullptr;

@@ -6,7 +6,8 @@
  * :param interval: interval in milliseconds
  * :param parent: parent pointer
  */
-Timer::Timer(int interval, QObject *parent) : QObject(parent)
+Timer::Timer(int interval, QObject *parent) :
+    QObject(parent)
 {
     pm_timer = new QTimer(parent);
     pm_timer->setTimerType(Qt::PreciseTimer);

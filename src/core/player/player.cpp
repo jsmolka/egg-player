@@ -5,7 +5,8 @@
  *
  * :param parent: parent pointer
  */
-Player::Player(QObject *parent) : QObject(parent)
+Player::Player(QObject *parent) :
+    QObject(parent)
 {
     qsrand(time(0));
 

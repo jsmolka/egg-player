@@ -5,7 +5,8 @@
  *
  * :param parent: parent
  */
-IconButton::IconButton(QWidget *parent) : QPushButton(parent)
+IconButton::IconButton(QWidget *parent) :
+    QPushButton(parent)
 {
     m_index = true;
     m_lockable = false;

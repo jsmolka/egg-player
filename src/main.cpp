@@ -39,7 +39,7 @@ QFont loadFont()
     QString family = QFontDatabase::applicationFontFamilies(id).at(0);
 
     QFont font(family);
-    font.setPointSizeF(Config::AFontSize());
+    font.setPointSizeF(Config::App::fontSize());
     font.setWeight(QFont::Weight::Medium);
 
     return font;
@@ -55,8 +55,8 @@ void setup()
 
     checkResources();
 
-    qApp->setApplicationName(LANG_APP_NAME);
-    qApp->setOrganizationName(LANG_ORG_NAME);
+    qApp->setApplicationName(APP_NAME);
+    qApp->setOrganizationName(APP_ORG_NAME);
     qApp->setFont(loadFont());
 }
 

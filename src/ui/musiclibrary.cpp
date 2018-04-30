@@ -6,7 +6,8 @@
  * :param library: library pointer
  * :param parent: parent pointer
  */
-MusicLibrary::MusicLibrary(Library *library, QWidget *parent) : QListWidget(parent)
+MusicLibrary::MusicLibrary(Library *library, QWidget *parent) :
+    QListWidget(parent)
 {
     pm_library = library;
 
@@ -46,7 +47,7 @@ void MusicLibrary::setupUi()
         info->setProperty("even", i % 2 == 0);
 
         QListWidgetItem *item = new QListWidgetItem(this);
-        item->setSizeHint(QSize(0, Config::LItemHeight()));
+        item->setSizeHint(QSize(0, Config::Library::itemHeight()));
         addItem(item);
         setItemWidget(item, info);
     }

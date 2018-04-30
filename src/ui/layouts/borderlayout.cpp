@@ -7,7 +7,8 @@
  * :param spacing: spacing
  * :param parent: parent
  */
-BorderLayout::BorderLayout(int margin, int spacing, QWidget *parent) : QLayout(parent)
+BorderLayout::BorderLayout(int margin, int spacing, QWidget *parent) :
+    QLayout(parent)
 {
     setMargin(margin);
     setSpacing(spacing);
@@ -19,9 +20,10 @@ BorderLayout::BorderLayout(int margin, int spacing, QWidget *parent) : QLayout(p
  * :param spacing: spacing
  * :param parent: parent
  */
-BorderLayout::BorderLayout(int spacing, QWidget *parent) : QLayout(parent)
+BorderLayout::BorderLayout(int spacing, QWidget *parent) :
+    BorderLayout(0, spacing, parent)
 {
-    setSpacing(spacing);
+
 }
 
 /*
@@ -66,8 +68,7 @@ int BorderLayout::count() const
 }
 
 /*
- * Returns item pointer at index. Returns
- * nullptr if there is not item at the index.
+ * Returns item pointer at index.
  *
  * :param index: index
  * :return: wrapper pointer or nullptr
@@ -111,26 +112,38 @@ void BorderLayout::setGeometry(const QRect &rect)
 
         if (position == North)
         {
-            item->setGeometry(QRect(rect.x(),
-                                    northHeight,
-                                    rect.width(),
-                                    item->sizeHint().height()));
+            item->setGeometry(
+                QRect(
+                    rect.x(),
+                    northHeight,
+                    rect.width(),
+                    item->sizeHint().height()
+                )
+            );
 
             northHeight += item->geometry().height() + spacing();
         }
         else if (position == South)
         {
-            item->setGeometry(QRect(item->geometry().x(),
-                                    item->geometry().y(),
-                                    rect.width(),
-                                    item->sizeHint().height()));
+            item->setGeometry(
+                QRect(
+                    item->geometry().x(),
+                    item->geometry().y(),
+                    rect.width(),
+                    item->sizeHint().height()
+                )
+            );
 
             southHeight += item->geometry().height() + spacing();
 
-            item->setGeometry(QRect(rect.x(),
-                                    rect.y() + rect.height() - southHeight + spacing(),
-                                    item->geometry().width(),
-                                    item->geometry().height()));
+            item->setGeometry(
+                QRect(
+                    rect.x(),
+                    rect.y() + rect.height() - southHeight + spacing(),
+                    item->geometry().width(),
+                    item->geometry().height()
+                )
+            );
         }
         else if (position == Center)
         {
@@ -148,34 +161,50 @@ void BorderLayout::setGeometry(const QRect &rect)
 
         if (position == West)
         {
-            item->setGeometry(QRect(rect.x() + westWidth,
-                                    northHeight,
-                                    item->sizeHint().width(),
-                                    centerHeight));
+            item->setGeometry(
+                QRect(
+                    rect.x() + westWidth,
+                    northHeight,
+                    item->sizeHint().width(),
+                    centerHeight
+                )
+            );
 
             westWidth += item->geometry().width() + spacing();
         }
         else if (position == East)
         {
-            item->setGeometry(QRect(item->geometry().x(),
-                                    item->geometry().y(),
-                                    item->sizeHint().width(),
-                                    centerHeight));
+            item->setGeometry(
+                QRect(
+                    item->geometry().x(),
+                    item->geometry().y(),
+                    item->sizeHint().width(),
+                    centerHeight
+                )
+            );
 
             eastWidth += item->geometry().width() + spacing();
 
-            item->setGeometry(QRect(rect.x() + rect.width() - eastWidth + spacing(),
-                                    northHeight,
-                                    item->geometry().width(),
-                                    item->geometry().height()));
+            item->setGeometry(
+                QRect(
+                    rect.x() + rect.width() - eastWidth + spacing(),
+                    northHeight,
+                    item->geometry().width(),
+                    item->geometry().height()
+                )
+            );
         }
     }
 
     if (center)
-        center->item->setGeometry(QRect(westWidth,
-                                        northHeight,
-                                        rect.width() - eastWidth - westWidth,
-                                        centerHeight));
+        center->item->setGeometry(
+            QRect(
+                westWidth,
+                northHeight,
+                rect.width() - eastWidth - westWidth,
+                centerHeight
+            )
+        );
 }
 
 /*
@@ -189,8 +218,7 @@ QSize BorderLayout::sizeHint() const
 }
 
 /*
- * Takes item at index. Returns item pointer
- * if the index exists else a nullptr.
+ * Takes item at index.
  *
  * :param index: index
  * :return: item pointer or nullptr

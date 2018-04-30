@@ -12,108 +12,162 @@ class Config
 public:
     static void create();
 
-    static void ALog(bool log);
-    static bool ALog();
+    class App
+    {
+    public:
+        static void create();
+        static bool contains(const QString &key);
 
-    static void AFontSize(double size);
-    static double AFontSize();
+        static void setLog(bool log);
+        static bool log();
 
-    static void SPlayPause(const QString &shortcut);
-    static QString SPlayPause();
+        static void setFontSize(double size);
+        static double fontSize();
 
-    static void SNext(const QString &shortcut);
-    static QString SNext();
+    private:
+        static const QString kApp;
 
-    static void SPrevious(const QString &shortcut);
-    static QString SPrevious();
+        static const QString kLog;
+        static const QString kFontSize;
 
-    static void SVolumeUp(const QString &shortcut);
-    static QString SVolumeUp();
+        static const bool dLog;
+        static const double dFontSize;
+    };
 
-    static void SVolumeDown(const QString &shortcut);
-    static QString SVolumeDown();
+    class Shortcut
+    {
+    public:
+        static void create();
+        static bool contains(const QString &key);
 
-    static void PVolume(int volume);
-    static int PVolume();
+        static void setPlayPause(const QString &shortcut);
+        static QString playPause();
 
-    static void PShuffle(bool shuffle);
-    static bool PShuffle();
+        static void setNext(const QString &shortcut);
+        static QString next();
 
-    static void PLoop(bool loop);
-    static bool PLoop();
+        static void setPrevious(const QString &shortcut);
+        static QString previous();
 
-    static void LPath(const QString &path);
-    static QString LPath();
+        static void setVolumeUp(const QString &shortcut);
+        static QString volumeUp();
 
-    static void LItemHeight(int height);
-    static int LItemHeight();
+        static void setVolumeDown(const QString &shortcut);
+        static QString volumeDown();
 
-    static void BHeight(int height);
-    static int BHeight();
+    private:
+        static const QString kShortcut;
 
-    static void BSpacing(int spacing);
-    static int BSpacing();
+        static const QString kPlayPause;
+        static const QString kNext;
+        static const QString kPrevious;
+        static const QString kVolumeUp;
+        static const QString kVolumeDown;
 
-    static void BCoverSize(int size);
-    static int BCoverSize();
+        static const QString dPlayPause;
+        static const QString dNext;
+        static const QString dPrevious;
+        static const QString dVolumeUp;
+        static const QString dVolumeDown;
+    };
 
-    static void BIconSize(int size);
-    static int BIconSize();
+    class Player
+    {
+    public:
+        static void create();
+        static bool contains(const QString &key);
 
-    static void BTrackWidth(int width);
-    static int BTrackWidth();
+        static void setVolume(int volume);
+        static int volume();
 
-    static void BTimeWidth(int width);
-    static int BTimeWidth();
+        static void setShuffle(bool shuffle);
+        static bool shuffle();
+
+        static void setLoop(bool loop);
+        static bool loop();
+
+    private:
+        static const QString kPlayer;
+
+        static const QString kVolume;
+        static const QString kShuffle;
+        static const QString kLoop;
+
+        static const int dVolume;
+        static const bool dShuffle;
+        static const bool dLoop;
+    };
+
+    class Library
+    {
+    public:
+        static void create();
+        static bool contains(const QString &key);
+
+        static void setPath(const QString &path);
+        static QString path();
+
+        static void setItemHeight(int height);
+        static int itemHeight();
+
+    private:
+        static const QString kLibrary;
+
+        static const QString kPath;
+        static const QString kItemHeight;
+
+        static const QString dPath;
+        static const int dItemHeight;
+    };
+
+    class Bar
+    {
+    public:
+        static void create();
+        static bool contains(const QString &key);
+
+        static void setHeight(int height);
+        static int height();
+
+        static void setSpacing(int spacing);
+        static int spacing();
+
+        static void setCoverSize(int size);
+        static int coverSize();
+
+        static void setIconSize(int size);
+        static int iconSize();
+
+        static void setTrackWidth(int width);
+        static int trackWidth();
+
+        static void setTimeWidth(int width);
+        static int timeWidth();
+
+    private:
+        static const QString kBar;
+
+        static const QString kHeight;
+        static const QString kSpacing;
+        static const QString kCoverSize;
+        static const QString kIconSize;
+        static const QString kTrackWidth;
+        static const QString kTimeWidth;
+
+        static const int dHeight;
+        static const int dSpacing;
+        static const int dCoverSize;
+        static const int dIconSize;
+        static const int dTrackWidth;
+        static const int dTimeWidth;
+    };
 
 private:
-    static bool sectionContains(const QString &section, const QString &key);
+    static bool contains(const QString &group, const QString &key);
+    static void setValue(const QString &group, const QString &key, const QVariant &value);
+    static QVariant value(const QString &group, const QString &key, const QVariant &defaultValue);
 
     static QSettings *config;
-
-    static const QString kApp;
-    static const QString kShortcut;
-    static const QString kPlayer;
-    static const QString kLibrary;
-    static const QString kBar;
-
-    static const QString kALog;
-    static const QString kAFontSize;
-    static const QString kSPlayPause;
-    static const QString kSNext;
-    static const QString kSPrevious;
-    static const QString kSVolumeUp;
-    static const QString kSVolumeDown;
-    static const QString kPVolume;
-    static const QString kPShuffle;
-    static const QString kPLoop;
-    static const QString kLPath;
-    static const QString kLItemHeight;
-    static const QString kBHeight;
-    static const QString kBSpacing;
-    static const QString kBCoverSize;
-    static const QString kBIconSize;
-    static const QString kBTrackWidth;
-    static const QString kBTimeWidth;
-
-    static const bool dALog;
-    static const double dAFontSize;
-    static const QString dSPlayPause;
-    static const QString dSNext;
-    static const QString dSPrevious;
-    static const QString dSVolumeUp;
-    static const QString dSVolumeDown;
-    static const int dPVolume;
-    static const bool dPShuffle;
-    static const bool dPLoop;
-    static const QString dLPath;
-    static const int dLItemHeight;
-    static const int dBHeight;
-    static const int dBSpacing;
-    static const int dBCoverSize;
-    static const int dBIconSize;
-    static const int dBTrackWidth;
-    static const int dBTimeWidth;
 };
 
 #endif // CONFIG_HPP

@@ -6,7 +6,8 @@
  * :param audio: audio pointer
  * :param parent: parent pointer
  */
-SongInfo::SongInfo(Audio *audio, QWidget *parent) : QWidget(parent)
+SongInfo::SongInfo(Audio *audio, QWidget *parent) :
+    QWidget(parent)
 {
     pm_audio = audio;
 }

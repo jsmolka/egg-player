@@ -94,8 +94,6 @@ private:
 
     void setAudio(int index);
 
-    static Player *pm_instance;
-
     QList<AudioPosition> m_playlist;
     Timer *pm_timer;
     HSTREAM m_stream;
@@ -104,6 +102,8 @@ private:
     bool m_loop;
     bool m_shuffle;
     bool m_playing;
+
+    static Player *pm_instance;
 };
 
 #endif // PLAYER_HPP
