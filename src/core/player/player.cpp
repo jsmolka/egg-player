@@ -20,7 +20,7 @@ Player::Player(QObject *parent) : QObject(parent)
 
     connect(pm_timer, SIGNAL(timeout(qint64)), this, SLOT(onTimeout(qint64)));
 
-    player = this;
+    pm_instance = this;
 }
 
 /*
@@ -40,7 +40,7 @@ Player::~Player()
  */
 Player * Player::currentInstance()
 {
-    return player;
+    return pm_instance;
 }
 
 /*
@@ -636,4 +636,4 @@ void Player::setAudio(int index)
 /*
  * This static variable holds the current player instance.
  */
-Player * Player::player = nullptr;
+Player * Player::pm_instance = nullptr;

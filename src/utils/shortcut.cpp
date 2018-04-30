@@ -1,20 +1,97 @@
 #include "shortcut.hpp"
 
 /*
- * Creates the hook and loads shortcuts.
+ * Constructor.
+ *
+ * :param parent: parent pointer
  */
-void Shortcut::create()
+Shortcut::Shortcut(QObject *parent) : QObject(parent)
 {
-    if (hook)
-        return;
 
-    scPlayPause = parseShortcut(Config::SPlayPause(), PlayPause);
-    scNext = parseShortcut(Config::SNext(), Next);
-    scBack = parseShortcut(Config::SPrevious(), Back);
-    scVolumeUp = parseShortcut(Config::SVolumeUp(), VolumeUp);
-    scVolumeDown = parseShortcut(Config::SVolumeDown()), VolumeDown;
+}
 
-    hook = SetWindowsHookEx(WH_KEYBOARD_LL, LowLevelKeyboardProc, GetModuleHandle(NULL), 0);
+/*
+ * Constructor.
+ *
+ * :param shortcut: shortcut
+ * :param parent: parent pointer
+ */
+Shortcut::Shortcut(const QString &shortcut, QObject *parent):
+    Shortcut(shortcut, false, parent)
+{
+
+}
+/*
+ * Constructor.
+ *
+ * :param shortcut: shortcut
+ * :param holdable: holdable
+ * :param parent: parent pointer
+ */
+Shortcut::Shortcut(const QString &shortcut, bool hold, QObject *parent) : QObject(parent)
+{
+    m_count++;
+    m_id = m_count;
+
+    Combination combination = parseShortcut(shortcut, hold);
+    m_registered = registerShortcut(combination);
+
+    if (m_registered)
+        qApp->eventDispatcher()->installNativeEventFilter(this);
+    else
+        Logger::log("Shortcut: Cannot register shortcut '%1'", shortcut);
+
+}
+
+/*
+ * Destructor.
+ */
+Shortcut::~Shortcut()
+{
+    if (m_registered)
+        unregisterShortcut();
+}
+
+/*
+ * Getter for id property.
+ *
+ * :return: id
+ */
+int Shortcut::id() const
+{
+    return m_id;
+}
+
+/*
+ * Getter for registered property.
+ *
+ * :return: registered
+ */
+bool Shortcut::isRegistered() const
+{
+    return m_registered;
+}
+
+/*
+ * Filters windows hotkey event for the
+ * current id.
+ *
+ * :param eventType: eventType
+ * :param message: message
+ * :param result: result
+ * :emit pressed: pressed
+ * :return: false
+ */
+bool Shortcut::nativeEventFilter(const QByteArray &eventType, void *message, long *result)
+{
+    Q_UNUSED(eventType);
+    Q_UNUSED(result);
+
+    MSG* msg = static_cast<MSG*>(message);
+    if (msg->message == WM_HOTKEY && msg->wParam == m_id)
+        emit pressed();
+
+    return false;
 }
 
 /*
@@ -22,128 +99,78 @@ void Shortcut::create()
  * Keyboard structure.
  *
  * :param shortcut: shortcut
- * :param media: type of shortcut
+ * :param hold: can hold shortcut
  * :param keyboard: keyboard
  */
-Shortcut::Keyboard Shortcut::parseShortcut(const QString &shortcut, Media media)
+Shortcut::Combination Shortcut::parseShortcut(const QString &shortcut, bool hold)
 {
-    int vk = 0;
-    bool shift = false;
-    bool ctrl = false;
-    bool alt = false;
+    UINT vk = 0;
+    UINT modifier = hold ? 0 : MOD_NOREPEAT;
 
     QStringList keys = shortcut.toUpper().replace(" ", "").split("+");
-    if (keys.isEmpty())
-        Logger::log("Shortcut: Shortcut is empty");
-
     for (const QString &key : keys)
     {
-        if (!keyMap.contains(key))
+        if (!m_map.contains(key))
         {
             vk = 0;
             break;
         }
-
         if (key.compare("SHIFT") == 0)
         {
-            shift = true;
+            modifier |= MOD_SHIFT;
             continue;
         }
         if (key.compare("CTRL") == 0)
         {
-            ctrl = true;
+            modifier |= MOD_CONTROL;
             continue;
         }
         if (key.compare("ALT") == 0)
         {
-            alt = true;
+            modifier |= MOD_ALT;
             continue;
         }
 
-        if (key.compare("MEDIA") == 0)
-        {
-            switch (media)
-            {
-                case PlayPause:
-                    vk = VK_MEDIA_PLAY_PAUSE;
-                    break;
-                case Next:
-                    vk = VK_MEDIA_NEXT_TRACK;
-                    break;
-                case Back:
-                    vk = VK_MEDIA_PREV_TRACK;
-                    break;
-                case VolumeUp:
-                    vk = VK_VOLUME_UP;
-                    break;
-                case VolumeDown:
-                    vk = VK_VOLUME_DOWN;
-                    break;
-            }
-        }
-        else
-        {
-            vk = keyMap.value(key);
-        }
+        vk = m_map.value(key);
     }
-
-    if (vk == 0)
-        Logger::log("Shortcut: Cannot parse shortcut '%1'", shortcut);
-
-    return Keyboard(vk, shift, ctrl, alt);
+    return Combination(vk, modifier);
 }
 
 /*
- * Function which gets called on every keypress
+ * Registers a shortcut.
  *
- * :param nCode: information about wParam and lParam
- * :param wParam: identifier of keyboard message
- * :param lParam: KBDLLHOOKSTRUCT pointer
- * :return: exit code
+ * :param combination: combination
+ * :return: success
  */
-LRESULT CALLBACK Shortcut::LowLevelKeyboardProc(int nCode, WPARAM wParam, LPARAM lParam)
+bool Shortcut::registerShortcut(Combination combination)
 {
-    if (nCode == HC_ACTION && wParam == WM_KEYDOWN)
-    {
-        KBDLLHOOKSTRUCT *kbdStruct = reinterpret_cast<KBDLLHOOKSTRUCT *>(lParam);
+    if (!combination.isValid())
+        return false;
 
-        DWORD vk = kbdStruct->vkCode;
-        bool shift = GetAsyncKeyState(VK_SHIFT) != 0;
-        bool ctrl = GetAsyncKeyState(VK_CONTROL) != 0;
-        bool alt = GetAsyncKeyState(VK_MENU) != 0;
-
-        Keyboard current(vk, shift, ctrl, alt);
-
-        Player *player = Player::currentInstance();
-        if (player)
-        {
-            // Make sure the shortcut is first because of the way equals works
-            if (scPlayPause == current)
-                player->isPlaying() ? player->pause() : player->play();
-            if (scNext == current)
-                player->next();
-            if (scBack == current)
-                player->previous();
-            if (scVolumeUp == current)
-                player->setVolume(player->volume() + 1);
-            if (scVolumeDown == current)
-                player->setVolume(player->volume() - 1);
-        }
-    }
-    return CallNextHookEx(hook, nCode, wParam, lParam);
+    return RegisterHotKey(NULL, m_id, combination.modifier, combination.vk);
 }
 
 /*
- * Pointer to the created hook.
+ * Unregisters shortcut.
+ *
+ * :return: success
  */
-HHOOK Shortcut::hook = nullptr;
+bool Shortcut::unregisterShortcut()
+{
+    return UnregisterHotKey(NULL, m_id);
+}
+
+/*
+ * Counts the number of instances and is
+ * the identifier to each shortcut.
+ */
+int Shortcut::m_count = 0;
 
 /*
  * Map key string to int.
  */
-const QHash<QString, int> Shortcut::keyMap =
+const QHash<QString, int> Shortcut::m_map =
 {
-    {"MEDIA"    , 0x0000},  // Placeholder for media keys
     {"CANCEL"   , 0x0001},
     {"BACK"     , 0x0008},
     {"TAB"      , 0x0009},
@@ -250,12 +277,3 @@ const QHash<QString, int> Shortcut::keyMap =
     {"NUMLOCK"  , 0x0090},
     {"SCROLL"   , 0x0091}
 };
-
-/*
- * Keyboard shortcuts.
- */
-Shortcut::Keyboard Shortcut::scPlayPause;
-Shortcut::Keyboard Shortcut::scNext;
-Shortcut::Keyboard Shortcut::scBack;
-Shortcut::Keyboard Shortcut::scVolumeUp;
-Shortcut::Keyboard Shortcut::scVolumeDown;

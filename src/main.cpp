@@ -47,20 +47,17 @@ QFont loadFont()
 
 /*
  * Sets up application.
- *
- * :param app: application pointer
  */
-void setup(QApplication *app)
+void setup()
 {
     Config::create();
     Logger::create();
-    Shortcut::create();
 
     checkResources();
 
-    app->setApplicationName(LANG_APP_NAME);
-    app->setOrganizationName(LANG_ORG_NAME);
-    app->setFont(loadFont());
+    qApp->setApplicationName(LANG_APP_NAME);
+    qApp->setOrganizationName(LANG_ORG_NAME);
+    qApp->setFont(loadFont());
 }
 
 /*
@@ -74,7 +71,7 @@ int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
 
-    setup(&app);
+    setup();
 
     EggPlayer player;
     player.showSavedPosition();

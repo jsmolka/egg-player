@@ -12,6 +12,12 @@ MusicBar::MusicBar(QWidget *parent) : QWidget(parent)
     pm_player->setShuffle(Config::PShuffle());
     pm_player->setLoop(Config::PLoop());
 
+    pm_scPlayPause = new Shortcut(Config::SPlayPause(), this);
+    pm_scNext = new Shortcut(Config::SNext(), this);
+    pm_scPrevious = new Shortcut(Config::SPrevious(), this);
+    pm_scVolumeUp = new Shortcut(Config::SVolumeUp(), true, this);
+    pm_scVolumeDown = new Shortcut(Config::SVolumeDown(), true, this);
+
     setupUi();
 
     connect(pm_nextButton, SIGNAL(pressed()), pm_player, SLOT(next()));
@@ -27,6 +33,12 @@ MusicBar::MusicBar(QWidget *parent) : QWidget(parent)
     connect(pm_player, SIGNAL(stateChanged(Player::State)), this, SLOT(onPlayerStateChanged(Player::State)));
     connect(pm_player, SIGNAL(positionChanged(int)), this, SLOT(onPlayerPositionChanged(int)));
     connect(pm_player, SIGNAL(volumeChanged(int)), this, SLOT(onPlayerVolumeChanged(int)));
+
+    connect(pm_scPlayPause, SIGNAL(pressed()), this, SLOT(onShortcutPlayPausePressed()));
+    connect(pm_scNext, SIGNAL(pressed()), pm_player, SLOT(next()));
+    connect(pm_scPrevious, SIGNAL(pressed()), pm_player, SLOT(previous()));
+    connect(pm_scVolumeUp, SIGNAL(pressed()), this, SLOT(onShortcutVolumeUpPressed()));
+    connect(pm_scVolumeDown, SIGNAL(pressed()), this, SLOT(onShortcutVolumeDownPressed()));
 }
 
 /*
@@ -280,6 +292,33 @@ void MusicBar::onLengthSliderPositionChanged(int position)
 {
     pm_currentTimeLabel->setText(Utils::timeString(position));
     pm_player->setPosition(position);
+}
+
+/*
+ * Slot for shortcut play pause pressed. Plays or pauses
+ * the player depending on the current state.
+ */
+void MusicBar::onShortcutPlayPausePressed()
+{
+    pm_player->isPlaying() ? pm_player->pause() : pm_player->play();
+}
+
+/*
+ * Slot for shotcut volume up pressed. Increases the
+ * player volume.
+ */
+void MusicBar::onShortcutVolumeUpPressed()
+{
+    pm_player->setVolume(pm_player->volume() + 1);
+}
+
+/*
+ * Slot for shortcut volume down pressed. Decreases
+ * the player volume.
+ */
+void MusicBar::onShortcutVolumeDownPressed()
+{
+    pm_player->setVolume(pm_player->volume() - 1);
 }
 
 /*

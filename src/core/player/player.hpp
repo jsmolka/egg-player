@@ -94,7 +94,8 @@ private:
 
     void setAudio(int index);
 
-    static Player *player;
+    static Player *pm_instance;
+
     QList<AudioPosition> m_playlist;
     Timer *pm_timer;
     HSTREAM m_stream;

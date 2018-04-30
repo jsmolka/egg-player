@@ -3,61 +3,60 @@
 
 #include <Windows.h>
 
+#include <QAbstractEventDispatcher>
+#include <QAbstractNativeEventFilter>
 #include <QHash>
+#include <QObject>
 #include <QStringList>
 
 #include "logger.hpp"
-#include "player.hpp"
 
-#include <QDebug>
-
-class Shortcut
+class Shortcut : public QObject, public QAbstractNativeEventFilter
 {
+    Q_OBJECT
+
 public:
-    static void create();
+    Shortcut(QObject *parent = nullptr);
+    Shortcut(const QString &shortcut, QObject *parent = nullptr);
+    Shortcut(const QString &shortcut, bool hold, QObject *parent = nullptr);
+    ~Shortcut();
+
+    int id() const;
+    bool isRegistered() const;
+
+signals:
+    void pressed();
+
+protected:
+    bool nativeEventFilter(const QByteArray &eventType, void *message, long *result) override;
 
 private:
-    struct Keyboard
+    struct Combination
     {
-        Keyboard(DWORD vk = 0, bool shift = false, bool ctrl = false, bool alt = false)
+        Combination(UINT vk, UINT modifier)
         {
             this->vk = vk;
-            this->shift = shift;
-            this->ctrl = ctrl;
-            this->alt = alt;
+            this->modifier = modifier;
         }
 
-        bool operator ==(const Keyboard kb)
+        bool isValid()
         {
-            bool result = vk == kb.vk;
-            if (shift)
-                result = result && shift == kb.shift;
-            if (ctrl)
-                result = result && ctrl == kb.ctrl;
-            if (alt)
-                result = result && alt == kb.alt;
-            return result;
+            return vk != 0;
         }
 
-        DWORD vk;
-        bool shift;
-        bool ctrl;
-        bool alt;
+        UINT vk;
+        UINT modifier;
     };
 
-    enum Media {None, PlayPause, Next, Back, VolumeUp, VolumeDown};
+    Combination parseShortcut(const QString &shortcut, bool hold);
+    bool registerShortcut(Combination combination);
+    bool unregisterShortcut();
 
-    static Keyboard parseShortcut(const QString &shortcut, Media media = None);
-    static LRESULT LowLevelKeyboardProc(int nCode, WPARAM wParam, LPARAM lParam);
+    static int m_count;
+    static const QHash<QString, int> m_map;
 
-    static HHOOK hook;
-    static const QHash<QString, int> keyMap;
-
-    static Keyboard scPlayPause;
-    static Keyboard scNext;
-    static Keyboard scBack;
-    static Keyboard scVolumeUp;
-    static Keyboard scVolumeDown;
+    int m_id;
+    bool m_registered;
 };
 
 #endif // SHORTCUT_HPP

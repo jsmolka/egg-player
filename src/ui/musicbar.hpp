@@ -13,6 +13,7 @@
 #include "iconbutton.hpp"
 #include "lengthslider.hpp"
 #include "player.hpp"
+#include "shortcut.hpp"
 #include "utils.hpp"
 
 class MusicBar : public QWidget
@@ -49,6 +50,9 @@ private slots:
     void onLoopButtonLocked(bool locked);
     void onLengthSliderMoved(int position);
     void onLengthSliderPositionChanged(int position);
+    void onShortcutPlayPausePressed();
+    void onShortcutVolumeUpPressed();
+    void onShortcutVolumeDownPressed();
 
 private:
     void setupUi();
@@ -67,6 +71,11 @@ private:
     IconButton *pm_shuffleButton;
     IconButton *pm_loopButton;
     IconButton *pm_volumeButton;
+    Shortcut *pm_scPlayPause;
+    Shortcut *pm_scNext;
+    Shortcut *pm_scPrevious;
+    Shortcut *pm_scVolumeUp;
+    Shortcut *pm_scVolumeDown;
 };
 
 #endif // MUSICBAR_HPP
