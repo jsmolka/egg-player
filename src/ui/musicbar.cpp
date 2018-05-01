@@ -242,14 +242,15 @@ void MusicBar::onPlayerPositionChanged(int position)
 }
 
 /*
- * Slot for player volume change. Saves the saved
- * volume in config for later use.
+ * Slot for player volume change. Saves the changed
+ * volume in config and adjusts the volume icon.
  *
  * :param volume: volume
  */
 void MusicBar::onPlayerVolumeChanged(int volume)
 {
     Config::Player::setVolume(volume);
+    setVolumeIcon();
 }
 
 /*
@@ -382,12 +383,16 @@ void MusicBar::setupUi()
     buttons << pm_shuffleButton;
 
     pm_loopButton = new IconButton(this);
-    pm_loopButton->init({QIcon(ICO_REPLAY)}, Config::Bar::iconSize(), true);
+    pm_loopButton->init({QIcon(ICO_LOOP)}, Config::Bar::iconSize(), true);
     pm_loopButton->setLocked(Config::Player::loop());
     buttons << pm_loopButton;
 
     pm_volumeButton = new IconButton(this);
-    pm_volumeButton->init({QIcon(ICO_VOLUME), QIcon(ICO_MUTE)}, Config::Bar::iconSize());
+    pm_volumeButton->init({QIcon(ICO_VOLUME_FULL),
+                           QIcon(ICO_VOLUME_MEDIUM),
+                           QIcon(ICO_VOLUME_LOW),
+                           QIcon(ICO_VOLUME_MUTE)}, Config::Bar::iconSize());
+    setVolumeIcon();
     buttons << pm_volumeButton;
 
     int column = 5;
@@ -408,4 +413,21 @@ void MusicBar::setColor(const QColor &color)
     QPalette palette;
     palette.setColor(QPalette::Background, color);
     setPalette(palette);
+}
+
+/*
+ * Sets volume icon according to player volume.
+ */
+void MusicBar::setVolumeIcon()
+{
+    int volume = pm_player->volume();
+
+    if (volume > 66)
+        pm_volumeButton->setSelectedIcon(0);
+    else if (volume > 33)
+        pm_volumeButton->setSelectedIcon(1);
+    else if (volume > 0)
+        pm_volumeButton->setSelectedIcon(2);
+    else
+        pm_volumeButton->setSelectedIcon(3);
 }

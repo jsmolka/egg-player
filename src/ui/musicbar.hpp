@@ -58,6 +58,7 @@ private:
     void setupUi();
     QPixmap defaultCover();
     void setColor(const QColor &color);
+    void setVolumeIcon();
 
     Player *pm_player;
     QLabel *pm_coverLabel;

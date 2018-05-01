@@ -39,7 +39,7 @@ Player::~Player()
  *
  * :return: player
  */
-Player * Player::currentInstance()
+Player * Player::instance()
 {
     return pm_instance;
 }
@@ -635,6 +635,6 @@ void Player::setAudio(int index)
 }
 
 /*
- * This static variable holds the current player instance.
+ * Holds the current player instance.
  */
 Player * Player::pm_instance = nullptr;

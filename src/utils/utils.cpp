@@ -67,6 +67,50 @@ QImage Utils::resize(const QImage &image, int size)
 }
 
 /*
+ * Checks if all resources are available.
+ */
+void Utils::checkResources()
+{
+    QStringList resources =
+    {
+        FONT_LATO,
+        ICO_LOOP,
+        ICO_NEXT,
+        ICO_PAUSE,
+        ICO_PLAY,
+        ICO_PREVIOUS,
+        ICO_SHUFFLE,
+        ICO_VOLUME_FULL,
+        ICO_VOLUME_LOW,
+        ICO_VOLUME_MEDIUM,
+        ICO_VOLUME_MUTE,
+        IMG_DEFAULT_COVER,
+        IMG_EGGPLAYER
+    };
+
+    for (const QString &resource : resources)
+        if (!Utils::exists(resource))
+            Logger::log("Resource does not exist '%1'", resource);
+}
+
+/*
+ * Loads custom font.
+ *
+ * :return: font
+ */
+QFont Utils::loadFont()
+{
+    int id = QFontDatabase::addApplicationFont(FONT_LATO);
+    QString family = QFontDatabase::applicationFontFamilies(id).at(0);
+
+    QFont font(family);
+    font.setPointSizeF(Config::App::fontSize());
+    font.setWeight(QFont::Weight::Medium);
+
+    return font;
+}
+
+/*
  * Reads a file and returns its content. If
  * the file cannot be opened or read, an empty
  * string gets returned.

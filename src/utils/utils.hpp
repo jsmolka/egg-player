@@ -5,6 +5,8 @@
 
 #include <QColor>
 #include <QDir>
+#include <QFont>
+#include <QFontDatabase>
 #include <QImage>
 #include <QPixmap>
 #include <QString>
@@ -22,6 +24,8 @@ public:
     static QPixmap defaultCover(int size = -1);
     static QPixmap resize(const QPixmap &pixmap, int size);
     static QImage resize(const QImage &image, int size);
+    static void checkResources();
+    static QFont loadFont();
 
     // File
     static QString read(const QString &path);

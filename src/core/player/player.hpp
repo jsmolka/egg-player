@@ -19,7 +19,7 @@ public:
 
     enum State {Playing, Paused};
 
-    static Player * currentInstance();
+    static Player * instance();
 
     void setIndex(int index);
     int index() const;
