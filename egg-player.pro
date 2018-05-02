@@ -52,7 +52,8 @@ HEADERS += \
     $$PWD/src/utils/config.hpp \
     $$PWD/src/utils/logger.hpp \
     $$PWD/src/utils/shortcut.hpp \
-    $$PWD/src/utils/utils.hpp
+    $$PWD/src/utils/utils.hpp \
+    src/ui/components/volumeslider.hpp
 
 SOURCES += \
     $$PWD/src/main.cpp \
@@ -74,4 +75,5 @@ SOURCES += \
     $$PWD/src/utils/config.cpp \
     $$PWD/src/utils/logger.cpp \
     $$PWD/src/utils/shortcut.cpp \
-    $$PWD/src/utils/utils.cpp
+    $$PWD/src/utils/utils.cpp \
+    src/ui/components/volumeslider.cpp

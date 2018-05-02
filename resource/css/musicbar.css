@@ -21,12 +21,12 @@ IconButton:pressed {
     background: rgba(0, 0, 0, 0.15);
 }
 
-LengthSlider::groove:horizontal {
+QSlider::groove:horizontal {
 	background: #969696;
 	height: 2px;
 }
 
-LengthSlider::handle:horizontal {
+QSlider::handle:horizontal {
 	background: #D2D2D2;
 	width: 16px;
 	height: 16px;

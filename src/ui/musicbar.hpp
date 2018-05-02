@@ -15,6 +15,7 @@
 #include "player.hpp"
 #include "shortcut.hpp"
 #include "utils.hpp"
+#include "volumeslider.hpp"
 
 class MusicBar : public QWidget
 {
@@ -41,14 +42,15 @@ protected:
     void paintEvent(QPaintEvent *);
 
 private slots:
-    void onPlayButtonPressed();
     void onPlayerAudioChanged(Audio *audio);
     void onPlayerStateChanged(Player::State state);
     void onPlayerPositionChanged(int position);
     void onPlayerVolumeChanged(int volume);
 
+    void onPlayButtonPressed();
     void onShuffleButtonLocked(bool locked);
     void onLoopButtonLocked(bool locked);
+    void onVolumeButtonPressed();
 
     void onLengthSliderMoved(int position);
     void onLengthSliderPositionChanged(int position);
@@ -80,6 +82,7 @@ private:
     Shortcut *pm_scPrevious;
     Shortcut *pm_scVolumeUp;
     Shortcut *pm_scVolumeDown;
+    VolumeSlider *pm_volumeSlider;
 };
 
 #endif // MUSICBAR_HPP
