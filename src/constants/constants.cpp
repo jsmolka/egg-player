@@ -1,21 +1,6 @@
 #include "constants.hpp"
 
-/*
- * This function returns the egg player
- * documents directory and creates it if
- * it does not exist already.
- *
- * :return: directory
- */
-QString documents()
-{
-    QString directory = QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation) + "/egg-player";
-    QDir().mkpath(directory);
-
-    return directory;
-}
-
-const QString DOCUMENTS        = documents();
+const QString DOCUMENTS        = Utils::documents();
 
 const QString CSS_MUSICBAR     = "resource/css/musicbar.css";
 const QString CSS_MUSICLIBRARY = "resource/css/musiclibrary.css";

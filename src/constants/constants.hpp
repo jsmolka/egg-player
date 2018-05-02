@@ -1,9 +1,7 @@
 #ifndef CONSTANTS_HPP
 #define CONSTANTS_HPP
 
-#include <QDir>
-#include <QString>
-#include <QStandardPaths>
+#include "utils.hpp"
 
 const extern QString CSS_MUSICBAR;
 const extern QString CSS_MUSICLIBRARY;

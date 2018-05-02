@@ -208,8 +208,7 @@ void Player::setVolume(int volume)
 {
     m_volume = qMin(100, qMax(volume, 0));
 
-    if (!bassSetVolume(m_volume))
-        return;
+    bassSetVolume(m_volume);
 
     emit volumeChanged(m_volume);
 }

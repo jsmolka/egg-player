@@ -1,7 +1,7 @@
 #include "audios.hpp"
 
 /*
- * Sorts list by title.
+ * Sorts vector by title.
  */
 void Audios::sortByTitle()
 {
@@ -16,7 +16,7 @@ void Audios::sortByTitle()
 }
 
 /*
- * Sorts list by artist.
+ * Sorts vector by artist.
  */
 void Audios::sortByArtist()
 {
@@ -31,7 +31,7 @@ void Audios::sortByArtist()
 }
 
 /*
- * Sorts list by album.
+ * Sorts vector by album.
  */
 void Audios::sortByAlbum()
 {
@@ -46,7 +46,7 @@ void Audios::sortByAlbum()
 }
 
 /*
- * Sorts list by track.
+ * Sorts vector by track.
  */
 void Audios::sortByTrack()
 {

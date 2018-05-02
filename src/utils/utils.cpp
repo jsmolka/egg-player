@@ -67,33 +67,6 @@ QImage Utils::resize(const QImage &image, int size)
 }
 
 /*
- * Checks if all resources are available.
- */
-void Utils::checkResources()
-{
-    QStringList resources =
-    {
-        FONT_LATO,
-        ICO_LOOP,
-        ICO_NEXT,
-        ICO_PAUSE,
-        ICO_PLAY,
-        ICO_PREVIOUS,
-        ICO_SHUFFLE,
-        ICO_VOLUME_FULL,
-        ICO_VOLUME_LOW,
-        ICO_VOLUME_MEDIUM,
-        ICO_VOLUME_MUTE,
-        IMG_DEFAULT_COVER,
-        IMG_EGGPLAYER
-    };
-
-    for (const QString &resource : resources)
-        if (!Utils::exists(resource))
-            Logger::log("Resource does not exist '%1'", resource);
-}
-
-/*
  * Loads custom font.
  *
  * :return: font
@@ -204,6 +177,48 @@ QStringList Utils::glob(const QString &path, const QString &pattern, bool recurs
 QString Utils::fileName(const QString &file)
 {
     return QFileInfo(file).baseName();
+}
+
+/*
+ * Checks if all resources are available.
+ */
+void Utils::checkResources()
+{
+    QStringList resources =
+    {
+        FONT_LATO,
+        ICO_LOOP,
+        ICO_NEXT,
+        ICO_PAUSE,
+        ICO_PLAY,
+        ICO_PREVIOUS,
+        ICO_SHUFFLE,
+        ICO_VOLUME_FULL,
+        ICO_VOLUME_LOW,
+        ICO_VOLUME_MEDIUM,
+        ICO_VOLUME_MUTE,
+        IMG_DEFAULT_COVER,
+        IMG_EGGPLAYER
+    };
+
+    for (const QString &resource : resources)
+        if (!Utils::exists(resource))
+            Logger::log("Resource does not exist '%1'", resource);
+}
+
+/*
+ * This function returns the egg player documents
+ * directory and creates it if it does not exist
+ * already.
+ *
+ * :return: directory
+ */
+QString Utils::documents()
+{
+    QString directory = QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation) + "/egg-player";
+    QDir().mkpath(directory);
+
+    return directory;
 }
 
 /*
