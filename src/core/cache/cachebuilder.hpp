@@ -4,7 +4,7 @@
 #include <QApplication>
 #include <QThread>
 
-#include "audiolist.hpp"
+#include "audios.hpp"
 #include "cache.hpp"
 
 class CacheBuilder : public QThread
@@ -12,7 +12,7 @@ class CacheBuilder : public QThread
     Q_OBJECT
 
 public:
-    CacheBuilder(const AudioList &audioList, QObject *parent = nullptr);
+    CacheBuilder(const Audios &audios, QObject *parent = nullptr);
     ~CacheBuilder();
 
 public slots:
@@ -22,7 +22,7 @@ protected:
     void run() override;
 
 private:
-    AudioList m_audioList;
+    Audios m_audios;
     bool m_abort;
 };
 

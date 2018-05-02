@@ -4,6 +4,7 @@
 #include <QIcon>
 #include <QPushButton>
 #include <QStyle>
+#include <QVector>
 
 class IconButton : public QPushButton
 {
@@ -15,8 +16,8 @@ public:
     IconButton(QWidget *parent = nullptr);
     ~IconButton();
 
-    void setIcons(const QList<QIcon> &icons);
-    QList<QIcon> icons() const;
+    void setIcons(const QVector<QIcon> &icons);
+    QVector<QIcon> icons() const;
 
     void setSelectedIcon(int index);
     int selectedIcon() const;
@@ -27,7 +28,7 @@ public:
     void setLockable(bool lockable);
     bool isLockable() const;
 
-    void init(const QList<QIcon> &icons, int size, bool lockable = false);
+    void init(const QVector<QIcon> &icons, int size, bool lockable = false);
 
 signals:
     void locked(bool locked);
@@ -36,7 +37,7 @@ private slots:
     void onClicked();
 
 private:
-    QList<QIcon> m_icons;
+    QVector<QIcon> m_icons;
     bool m_index;
     bool m_lockable;
     bool m_locked;

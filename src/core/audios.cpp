@@ -1,9 +1,9 @@
-#include "audiolist.hpp"
+#include "audios.hpp"
 
 /*
  * Sorts list by title.
  */
-void AudioList::sortByTitle()
+void Audios::sortByTitle()
 {
     std::sort(begin(), end(),
         [](const Audio *a1, const Audio *a2) {
@@ -18,7 +18,7 @@ void AudioList::sortByTitle()
 /*
  * Sorts list by artist.
  */
-void AudioList::sortByArtist()
+void Audios::sortByArtist()
 {
     std::sort(begin(), end(),
         [](const Audio *a1, const Audio *a2) {
@@ -33,7 +33,7 @@ void AudioList::sortByArtist()
 /*
  * Sorts list by album.
  */
-void AudioList::sortByAlbum()
+void Audios::sortByAlbum()
 {
     std::sort(begin(), end(),
         [](const Audio *a1, const Audio *a2) {
@@ -48,7 +48,7 @@ void AudioList::sortByAlbum()
 /*
  * Sorts list by track.
  */
-void AudioList::sortByTrack()
+void Audios::sortByTrack()
 {
     std::sort(begin(), end(),
         [](const Audio *a1, const Audio *a2) {

@@ -4,12 +4,12 @@
  * Constructor.
  *
  * :param interval: interval in milliseconds
- * :param parent: parent pointer
+ * :param parent: parent, default nullptr
  */
 Timer::Timer(int interval, QObject *parent) :
     QObject(parent)
 {
-    pm_timer = new QTimer(parent);
+    pm_timer = new QTimer(this);
     pm_timer->setTimerType(Qt::PreciseTimer);
 
     m_elapsed = 0;
@@ -58,12 +58,14 @@ int Timer::remaining() const
 }
 
 /*
- * Starts the timer using the remaining time. If the remaining time is
- * smaller than the interval it means that there is some time left until
- * the next timeout. After the next timeout the remaining time is equal
- * to the interval again.
- * Otherwise they are equal which means that there is no remaining time
- * left.
+ * Starts the timer using the remaining time. If
+ * the remaining time is smaller than the
+ * interval, it means that there is some time
+ * left until the next timeout. After the next
+ * timeout the remaining time will be equal to
+ * to the interval again. Otherwise they are
+ * equal which means that there is no remaining
+ * time left.
  */
 void Timer::start()
 {
@@ -117,9 +119,9 @@ void Timer::setElapsed(qint64 elapsed)
 }
 
 /*
- * Slot for timer timeout. It increments
- * the elapsed time and resets the remaining
- * time to interval time.
+ * Slot for timer timeout. It increments the
+ * elapsed time and resets the remaining time
+ * to interval time.
  *
  * :emit timeout: elapsed
  */

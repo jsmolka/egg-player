@@ -1,10 +1,11 @@
 #include "lengthslider.hpp"
 
 /*
- * Constructor. Sets slider style to LengthSliderStyle
- * to make the slider clickable.
+ * Constructor. Sets slider style to
+ * LengthSliderStyle to make the slider
+ * clickable.
  *
- * :param parent: parent pointer
+ * :param parent: parent, default nullptr
  */
 LengthSlider::LengthSlider(QWidget *parent) :
     QSlider(parent)

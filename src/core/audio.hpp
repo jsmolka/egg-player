@@ -31,7 +31,7 @@ public:
     int track() const;
     int length() const;
 
-    QPixmap cover(int size);
+    QPixmap cover(int size = 200);
 
 private:
     bool readTags();

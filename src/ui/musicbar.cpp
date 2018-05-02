@@ -3,7 +3,7 @@
 /*
  * Constructor.
  *
- * :param parent: parent pointer
+ * :param parent: pointer, default nullptr
  */
 MusicBar::MusicBar(QWidget *parent) :
     QWidget(parent)
@@ -182,8 +182,8 @@ void MusicBar::paintEvent(QPaintEvent *)
 }
 
 /*
- * Slot for play button pressed. Starts or
- * pauses player.
+ * Slot for play button pressed. Starts or pauses
+ * the player.
  */
 void MusicBar::onPlayButtonPressed()
 {
@@ -194,14 +194,14 @@ void MusicBar::onPlayButtonPressed()
 }
 
 /*
- * Slot for audio changed. Sets up cover, track label,
- * time labels and length slider.
+ * Slot for audio changed. Sets up cover, track
+ * label, time labels and length slider.
  *
- * :param audio: audio pointer
+ * :param audio: audio
  */
 void MusicBar::onPlayerAudioChanged(Audio *audio)
 {
-    QPixmap cover = Cache().cover(audio->path(), Config::Bar::coverSize());
+    QPixmap cover = Cache().cover(audio, Config::Bar::coverSize());
 
     pm_coverLabel->setPixmap(cover);
     pm_trackLabel->setText(QString("%1\n%2").arg(audio->title(), audio->artist()));
@@ -216,10 +216,10 @@ void MusicBar::onPlayerAudioChanged(Audio *audio)
 }
 
 /*
- * Slot for player state changed. Sets corresponding
- * icon of play button.
+ * Slot for player state changed. Sets
+ * corresponding icon of play button.
  *
- * :param state: current player state
+ * :param state: player state
  */
 void MusicBar::onPlayerStateChanged(Player::State state)
 {
@@ -230,7 +230,7 @@ void MusicBar::onPlayerStateChanged(Player::State state)
  * Slot for player position changed. Sets slider
  * position if it is not pressed.
  *
- * :param position: current position in seconds
+ * :param position: position in seconds
  */
 void MusicBar::onPlayerPositionChanged(int position)
 {
@@ -242,8 +242,9 @@ void MusicBar::onPlayerPositionChanged(int position)
 }
 
 /*
- * Slot for player volume change. Saves the changed
- * volume in config and adjusts the volume icon.
+ * Slot for player volume change. Saves the
+ * changed volume in config and adjusts the
+ * volume icon.
  *
  * :param volume: volume
  */
@@ -256,6 +257,8 @@ void MusicBar::onPlayerVolumeChanged(int volume)
 /*
  * Slot for shuffle button locked. Applies change
  * to player and saves it in the config.
+ *
+ * :param locked: locked
  */
 void MusicBar::onShuffleButtonLocked(bool locked)
 {
@@ -264,8 +267,10 @@ void MusicBar::onShuffleButtonLocked(bool locked)
 }
 
 /*
- * Slot for loop button locked. Applies change
- * to player and saves it in the config.
+ * Slot for loop button locked. Applies change to
+ * player and saves it in the config.
+ *
+ * :param locked: locked
  */
 void MusicBar::onLoopButtonLocked(bool locked)
 {
@@ -285,8 +290,8 @@ void MusicBar::onLengthSliderMoved(int position)
 }
 
 /*
- * Slot for slider position changed. Updates the current
- * time and player position accordingly.
+ * Slot for slider position changed. Updates the
+ * current time and player position accordingly.
  *
  * :param position: position in seconds
  */
@@ -297,8 +302,9 @@ void MusicBar::onLengthSliderPositionChanged(int position)
 }
 
 /*
- * Slot for shortcut play pause pressed. Plays or pauses
- * the player depending on the current state.
+ * Slot for shortcut play pause pressed. Plays or
+ * pauses the player depending on the current
+ * state.
  */
 void MusicBar::onShortcutPlayPausePressed()
 {
@@ -306,8 +312,8 @@ void MusicBar::onShortcutPlayPausePressed()
 }
 
 /*
- * Slot for shotcut volume up pressed. Increases the
- * player volume.
+ * Slot for shotcut volume up pressed. Increases
+ * the player volume.
  */
 void MusicBar::onShortcutVolumeUpPressed()
 {
@@ -315,8 +321,8 @@ void MusicBar::onShortcutVolumeUpPressed()
 }
 
 /*
- * Slot for shortcut volume down pressed. Decreases
- * the player volume.
+ * Slot for shortcut volume down pressed.
+ * Decreases the player volume.
  */
 void MusicBar::onShortcutVolumeDownPressed()
 {
@@ -363,7 +369,8 @@ void MusicBar::setupUi()
     pm_totalTimeLabel->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Maximum);
     layout->addWidget(pm_totalTimeLabel, 0, 4);
 
-    QList<IconButton *> buttons;
+    QVector<IconButton *> buttons;
+    buttons.reserve(6);
 
     pm_previousButton = new IconButton(this);
     pm_previousButton->init({QIcon(ICO_PREVIOUS)}, Config::Bar::iconSize());

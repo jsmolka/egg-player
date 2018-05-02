@@ -2,6 +2,8 @@
 
 /*
  * Constructor.
+ *
+ * :param parent: parent, default nullptr
  */
 EggPlayer::EggPlayer(QWidget *parent) :
     QWidget(parent)
@@ -52,14 +54,14 @@ void EggPlayer::closeEvent(QCloseEvent *event)
 }
 
 /*
- * Slot for MusicLibrary double clicked event.
- * It starts the player with the clicked audio.
+ * Slot for MusicLibrary double clicked event. It
+ * starts the player with the clicked audio.
  *
- * :param index: music library index
+ * :param index: library index
  */
 void EggPlayer::onMusicLibraryDoubleClicked(const QModelIndex &index)
 {
-    pm_musicBar->player()->loadPlaylist(pm_library->audioList(), index.row());
+    pm_musicBar->player()->loadPlaylist(pm_library->audios(), index.row());
     pm_musicBar->player()->play();
 }
 
@@ -83,9 +85,9 @@ void EggPlayer::setupUi()
 }
 
 /*
- * Saves current position in registry. Does
- * not need to be in config because position
- * is not really relevant there.
+ * Saves current position in registry. Does not
+ * need to be in config because position is not
+ * really relevant there.
  */
 void EggPlayer::savePosition()
 {

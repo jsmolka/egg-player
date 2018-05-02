@@ -5,6 +5,7 @@
 #include <QLabel>
 #include <QStyleOption>
 #include <QPainter>
+#include <QVector>
 #include <QWidget>
 
 #include "audio.hpp"
@@ -18,7 +19,7 @@ public:
     SongInfo(Audio *audio, QWidget *parent = nullptr);
     ~SongInfo();
 
-    void init(const QList<int> &stretches);
+    void init(const QVector<int> &stretches);
     void showTrack();
     void showTitle();
     void showArtist();
@@ -31,9 +32,9 @@ protected:
     void paintEvent(QPaintEvent *);
 
 private:
-    void createLabel(const QString &string, Qt::Alignment align = Qt::AlignLeft);
+    void createLabel(const QString &text = QString(), Qt::Alignment align = Qt::AlignLeft);
 
-    QList<QLabel *> m_labels;
+    QVector<QLabel *> m_labels;
     Audio *pm_audio;
 };
 

@@ -46,10 +46,13 @@ private slots:
     void onPlayerStateChanged(Player::State state);
     void onPlayerPositionChanged(int position);
     void onPlayerVolumeChanged(int volume);
+
     void onShuffleButtonLocked(bool locked);
     void onLoopButtonLocked(bool locked);
+
     void onLengthSliderMoved(int position);
     void onLengthSliderPositionChanged(int position);
+
     void onShortcutPlayPausePressed();
     void onShortcutVolumeUpPressed();
     void onShortcutVolumeDownPressed();

@@ -3,7 +3,7 @@
 /*
  * Constructor.
  *
- * :param parent: parent
+ * :param parent: parent, defaut nullptr
  */
 IconButton::IconButton(QWidget *parent) :
     QPushButton(parent)
@@ -28,7 +28,7 @@ IconButton::~IconButton()
  *
  * :param icons: list of icons
  */
-void IconButton::setIcons(const QList<QIcon> &icons)
+void IconButton::setIcons(const QVector<QIcon> &icons)
 {
     m_icons = icons;
 }
@@ -38,7 +38,7 @@ void IconButton::setIcons(const QList<QIcon> &icons)
  *
  * :return: list of icons
  */
-QList<QIcon> IconButton::icons() const
+QVector<QIcon> IconButton::icons() const
 {
     return m_icons;
 }
@@ -65,8 +65,9 @@ int IconButton::selectedIcon() const
 }
 
 /*
- * Setter for locked property. Locking button
- * will only take effect if the button is lockable.
+ * Setter for locked property. Locking the button
+ * will only take effect if the button is
+ * lockable.
  *
  * :param locked: locked
  */
@@ -87,8 +88,8 @@ bool IconButton::isLocked() const
 
 /*
  * Setter for lockable property. If the button
- * is lockable it will update based on the
- * locked property if it gets clicked.
+ * is lockable it will update based on the locked
+ * property if it gets clicked.
  *
  * :param lockable: lockable
  */
@@ -116,7 +117,7 @@ bool IconButton::isLockable() const
  * :param size: icon size
  * :param lockable: is lockable, default false
  */
-void IconButton::init(const QList<QIcon> &icons, int size, bool lockable)
+void IconButton::init(const QVector<QIcon> &icons, int size, bool lockable)
 {
     m_icons = icons;
     m_lockable = lockable;
@@ -130,8 +131,8 @@ void IconButton::init(const QList<QIcon> &icons, int size, bool lockable)
 
 /*
  * Slot for clicked event. If the button is
- * lockable the locked property get switched
- * and the style sheet gets reloaded.
+ * lockable the locked property get switched and
+ * the style sheet gets reloaded.
  */
 void IconButton::onClicked()
 {

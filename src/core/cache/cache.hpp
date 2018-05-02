@@ -19,7 +19,8 @@ public:
 
     bool insert(Audio *audio, int size = 200);
     bool contains(Audio *audio);
-    QPixmap cover(const QString &path, int size);
+    QPixmap cover(const QString &path, int size = 200);
+    QPixmap cover(Audio *audio, int size = 200);
 
 private:
     QSqlDatabase db();

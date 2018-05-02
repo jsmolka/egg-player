@@ -3,8 +3,8 @@
 /*
  * Constructor.
  *
- * :param audio: audio pointer
- * :param parent: parent pointer
+ * :param audio: audio
+ * :param parent: parent, default nullptr
  */
 SongInfo::SongInfo(Audio *audio, QWidget *parent) :
     QWidget(parent)
@@ -21,22 +21,20 @@ SongInfo::~SongInfo()
 }
 
 /*
- * Initialize function. Loops over all
- * created labels and shows them with
- * stretch value.
+ * Initialize function. Loops over all created
+ * labels and shows them with stretch value.
  *
  * :param stretches: list of stretches
  */
-void SongInfo::init(const QList<int> &stretches)
+void SongInfo::init(const QVector<int> &stretches)
 {
     QGridLayout *layout = new QGridLayout(this);
-    setLayout(layout);
-
     for (int i = 0; i < m_labels.size(); i++)
     {
         layout->addWidget(m_labels[i], 0, i);
         layout->setColumnStretch(i, stretches[i]);
     }
+    setLayout(layout);
 }
 
 /*
@@ -44,7 +42,10 @@ void SongInfo::init(const QList<int> &stretches)
  */
 void SongInfo::showTrack()
 {
-    createLabel(QString::number(pm_audio->track()));
+    if (pm_audio->track() != 0)
+        createLabel(QString::number(pm_audio->track()));
+    else
+        createLabel();
 }
 
 /*
@@ -76,7 +77,10 @@ void SongInfo::showAlbum()
  */
 void SongInfo::showYear()
 {
-    createLabel(QString::number(pm_audio->year()));
+    if (pm_audio->year() != 0)
+        createLabel(QString::number(pm_audio->year()));
+    else
+        createLabel();
 }
 
 /*
@@ -109,13 +113,12 @@ void SongInfo::paintEvent(QPaintEvent *)
 /*
  * Creates label.
  *
- * :param string: text
- * :param align: horizontal alignment
+ * :param text: text, default empty
+ * :param align: horizontal alignment, default left
  */
-void SongInfo::createLabel(const QString &string, Qt::Alignment align)
+void SongInfo::createLabel(const QString &text, Qt::Alignment align)
 {
-    QLabel *label = new QLabel(string, this);
+    QLabel *label = new QLabel(text, this);
     label->setAlignment(align | Qt::AlignVCenter);
-    label->setAttribute(Qt::WA_TranslucentBackground);
     m_labels << label;
 }

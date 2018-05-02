@@ -28,7 +28,7 @@ protected:
 private:
     struct Combination
     {
-        Combination(UINT vk, UINT modifier)
+        Combination(UINT vk = 0, UINT modifier = 0)
         {
             this->vk = vk;
             this->modifier = modifier;

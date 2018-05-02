@@ -16,7 +16,7 @@ Library::Library(const QString &path)
 
     loadFiles(path);
 
-    CacheBuilder *builder = new CacheBuilder(m_audioList);
+    CacheBuilder *builder = new CacheBuilder(m_audios);
     builder->start();
 }
 
@@ -25,18 +25,18 @@ Library::Library(const QString &path)
  */
 Library::~Library()
 {
-    for (Audio *audio : m_audioList)
-        delete audio;
+    while (!m_audios.isEmpty())
+        delete m_audios.takeFirst();
 }
 
 /*
- * Getter for audio list property.
+ * Getter for audios property.
  *
- * :return: audio list
+ * :return: audios
  */
-AudioList Library::audioList() const
+Audios Library::audios() const
 {
-    return m_audioList;
+    return m_audios;
 }
 
 /*
@@ -46,7 +46,7 @@ AudioList Library::audioList() const
  */
 bool Library::isEmpty() const
 {
-    return m_audioList.isEmpty();
+    return m_audios.isEmpty();
 }
 
 /*
@@ -54,20 +54,20 @@ bool Library::isEmpty() const
  */
 void Library::sortByTitle()
 {
-    m_audioList.sortByTitle();
+    m_audios.sortByTitle();
 }
 
 /*
  * Searches for a string in the library.
  *
  * :param string: string
- * :param cs: case sensivity
+ * :param cs: case sensivity, default insensitive
  * :return: audio list
  */
-AudioList Library::search(const QString &string, Qt::CaseSensitivity cs)
+Audios Library::search(const QString &string, Qt::CaseSensitivity cs)
 {
-    AudioList result;
-    for (Audio *audio : m_audioList)
+    Audios result;
+    for (Audio *audio : m_audios)
         if (audio->title().contains(string, cs)
                 || audio->artist().contains(string, cs)
                 || audio->album().contains(string, cs))
@@ -79,11 +79,14 @@ AudioList Library::search(const QString &string, Qt::CaseSensitivity cs)
  * Returns audio at index.
  *
  * :param index: index
- * :return: audio pointer
+ * :return: audio, nullptr if invalid index
  */
 Audio * Library::audioAt(int index)
 {
-    return m_audioList[index];
+    if (index < 0 || index >= m_audios.size())
+        return nullptr;
+
+    return m_audios[index];
 }
 
 /*
@@ -100,7 +103,7 @@ void Library::loadFiles(const QString &path)
         return;
     }
 
-    m_audioList.reserve(files.size());
+    m_audios.reserve(files.size());
     for (const QString &file : files)
     {
         Audio *audio = new Audio(file);
@@ -109,7 +112,6 @@ void Library::loadFiles(const QString &path)
             delete audio;
             continue;
         }
-
-        m_audioList << audio;
+        m_audios << audio;
     }
 }

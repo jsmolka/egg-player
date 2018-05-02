@@ -3,7 +3,7 @@
 /*
  * Constructor.
  *
- * :param parent: parent pointer
+ * :param parent: parent, default nullptr
  */
 Player::Player(QObject *parent) :
     QObject(parent)
@@ -33,9 +33,8 @@ Player::~Player()
 }
 
 /*
- * Returns the current player instance. If there
- * are multiple players created it always returns
- * the newest one.
+ * Returns the current player instance. It always
+ * returns the most recent player.
  *
  * :return: player
  */
@@ -111,8 +110,8 @@ int Player::volume() const
 
 /*
  * Getter for position. The remaining time is not
- * need because it would be removed by the division
- * anyway.
+ * needed because it would be removed by the
+ * integer division anyway.
  *
  * :return: position in seconds
  */
@@ -127,20 +126,20 @@ int Player::position() const
  * After that it shuffles the playlist if the
  * shuffle property is true.
  *
- * :param playlist: playlist
+ * :param audios: audios
  * :param index: index, default 0
  */
-void Player::loadPlaylist(const AudioList &playlist, int index)
+void Player::loadPlaylist(const Audios &audios, int index)
 {
     if (!bassFreeStream())
         return;
 
     m_playing = false;
     m_playlist.clear();
-    m_playlist.reserve(playlist.size());
+    m_playlist.reserve(audios.size());
 
-    for (int i = 0; i < playlist.size(); i++)
-        m_playlist << AudioPosition(i, playlist[i]);
+    for (int i = 0; i < audios.size(); i++)
+        m_playlist << AudioPosition(i, audios[i]);
 
     setIndex(index);
 
@@ -151,10 +150,10 @@ void Player::loadPlaylist(const AudioList &playlist, int index)
 }
 
 /*
- * Gets audio pointer at index. If the
- * index is invalid it returns a nullptr.
+ * Gets audio at index.
  *
- * :return: audio pointer
+ * :param index: index
+ * :return: audio, nullptr if invalid index
  */
 Audio * Player::audioAt(int index)
 {
@@ -167,7 +166,7 @@ Audio * Player::audioAt(int index)
 /*
  * Gets current audio.
  *
- * :return: audio pointer
+ * :return: audio, nullptr if invalid index
  */
 Audio * Player::currentAudio()
 {
@@ -175,8 +174,32 @@ Audio * Player::currentAudio()
 }
 
 /*
- * Setter for volume property. Volume should
- * be between 0 and 100.
+ * Gets index at index.
+ *
+ * :param index: index
+ * :return: index, -1 if invalid index
+ */
+int Player::indexAt(int index)
+{
+    if (!validIndex(index))
+        return -1;
+
+    return m_playlist[index].index;
+}
+
+/*
+ * Gets current index.
+ *
+ * :return: index, -1 if invalid index
+ */
+int Player::currentIndex()
+{
+    return indexAt(m_index);
+}
+
+/*
+ * Setter for volume property. Volume should be
+ * between 0 and 100.
  *
  * :param volume: volume
  * :emit volumeChanged: volume
@@ -218,9 +241,9 @@ void Player::setLoop(bool loop)
 }
 
 /*
- * Setter for shuffle property. The playlist
- * can only be shuffled or unshuffled if the
- * player has a valid index.
+ * Setter for shuffle property. The playlist can
+ * only be shuffled or unshuffled if the player
+ * has a valid index.
  *
  * :param shuffle: shuffle
  */
@@ -240,7 +263,7 @@ void Player::setShuffle(bool shuffle)
 }
 
 /*
- * Plays or resumes the current audio.
+ * Plays the current stream.
  *
  * :emit stateChanged: state
  */
@@ -272,7 +295,9 @@ void Player::pause()
 }
 
 /*
- * Switches to the next song in the playlist.
+ * Switches to the next song in the playlist. If
+ * there is not next song the position gets reset
+ * and the stream gets paused.
  */
 void Player::next()
 {
@@ -281,6 +306,8 @@ void Player::next()
 
 /*
  * Switches to the previous song in the playlist.
+ * If there is not previous song the position
+ * gets reset and the stream gets paused.
  */
 void Player::previous()
 {
@@ -292,18 +319,18 @@ void Player::previous()
  * position and manages automatically playing
  * the next song if the current one finishes.
  *
- * :param total: current time in milliseconds
+ * :param elapsed: elapsed time in milliseconds
  * :emit positionChanged: position in seconds
  */
-void Player::onTimeout(qint64 total)
+void Player::onTimeout(qint64 elapsed)
 {
     Audio *audio = currentAudio();
     if (!audio)
         return;
 
-    total = total / 1000;
-    if (total <= audio->length())
-        emit positionChanged(total);
+    elapsed = elapsed / 1000;
+    if (elapsed <= audio->length())
+        emit positionChanged(elapsed);
     else
         next();
 }
@@ -340,11 +367,11 @@ bool Player::bassFree()
 }
 
 /*
- * Creates a BASS stream from an audio pointer.
- * If the stream is currently occupied it gets
- * freed before reassigning.
+ * Creates a BASS stream from an audio. If the
+ * stream is currently occupied it gets freed
+ * before reassigning.
  *
- * :param audio: audio pointer
+ * :param audio: audio
  * :return: success
  */
 bool Player::bassCreateStream(Audio *audio)
@@ -388,11 +415,14 @@ bool Player::bassValidStream()
 }
 
 /*
- * Sets the volume of the current channel.
- * The volume gets divided to get the float
- * value BASS needs. The quotient is 1000
- * which seems to be a reasonable value.
+ * Sets the volume of the current channel. The
+ * volume gets divided to get the float value
+ * BASS needs.
+ * The quotient is 1000 which seems to be a
+ * reasonable value. For a higher volume ceiling
+ * this value should be lowered.
  *
+ * :param volume: volume
  * :return: success
  */
 bool Player::bassSetVolume(int volume)
@@ -409,7 +439,7 @@ bool Player::bassSetVolume(int volume)
 }
 
 /*
- * Sets position of bass channel.
+ * Sets position of BASS channel.
  *
  * :param position: position
  * :return: success
@@ -472,9 +502,9 @@ bool Player::bassPause()
 }
 
 /*
- * Small function for logging purposes. If
- * there is a current audio pointer it gets
- * added to the message.
+ * Small function for logging purposes. If there
+ * is a current audio it gets added to the
+ * message.
  *
  * :param message: message
  */
@@ -490,7 +520,7 @@ void Player::logAudio(const QString &message)
 }
 
 /*
- * Checks if the index is valid.
+ * Checks if an index is valid.
  *
  * :return: valid
  */
@@ -500,8 +530,8 @@ bool Player::validIndex(int index)
 }
 
 /*
- * Smoothly switches to an index and pauses
- * if the index is invalid.
+ * Smoothly switches to an index and pauses if
+ * the index is invalid.
  *
  * :param index: index
  */
@@ -520,9 +550,8 @@ void Player::switchOrPause(int index)
 
 /*
  * Calculates the next playlist index.
- * Returns -1 if there is no next index.
  *
- * :return: index
+ * :return: index, -1 if last and no loop
  */
 int Player::nextIndex()
 {
@@ -537,9 +566,8 @@ int Player::nextIndex()
 
 /*
  * Calculates the previous playlist index.
- * Returns -1 if there is no previous index.
  *
- * :return: index
+ * :return: index, -1 if first and no loop
  */
 int Player::previousIndex()
 {
@@ -553,8 +581,9 @@ int Player::previousIndex()
 }
 
 /*
- * Shuffles current playlist and swaps
- * current audio with first index.
+ * Shuffles the playlist and swaps the current
+ * audio with first audio. Because of that the
+ * full shuffled playlist is pending.
  */
 void Player::shuffle()
 {
@@ -568,7 +597,7 @@ void Player::shuffle()
     {
         if (audio == audioAt(i))
         {
-            m_playlist.swap(0, i);
+            std::swap(m_playlist[0], m_playlist[i]);
             break;
         }
     }
@@ -576,8 +605,10 @@ void Player::shuffle()
 }
 
 /*
- * Unshuffles current playlist and
- * sets index to current audio.
+ * Unshuffles the playlist and sets the current
+ * index to the current audio. Because of that
+ * the audio is in the current position inside
+ * the unshuffled playlist.
  */
 void Player::unshuffle()
 {
@@ -602,10 +633,11 @@ void Player::unshuffle()
 }
 
 /*
- * Sets active audio. The current stream get freed and a
- * new one get created. The volume for the stream gets set
- * and the timer gets restarded. If the player is in the
- * playing state it player, otherwise it pauses.
+ * Sets active audio. This involves freeing the
+ * current stream, creating a new one, setting
+ * the volume and restarting the timer. If the
+ * player is was previouly playing it gets
+ * started automatically, otherwise it pauses.
  *
  * :param index: audio index
  * :emit audioChanged: audio

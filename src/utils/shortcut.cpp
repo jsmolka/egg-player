@@ -4,8 +4,8 @@
  * Constructor.
  *
  * :param shortcut: shortcut
- * :param repeat: repeat signal while being pressed
- * :param parent: parent pointer
+ * :param repeat: repeat signal while pressed
+ * :param parent: parent, default nullptr
  */
 Shortcut::Shortcut(const QString &shortcut, bool repeat, QObject *parent) :
     QObject(parent)
@@ -95,7 +95,7 @@ Shortcut::Combination Shortcut::parseShortcut(const QString &shortcut)
 /*
  * Registers a shortcut.
  *
- * :param repeat: repeat signal while being pressed
+ * :param repeat: repeat signal while pressed
  * :param combination: combination
  * :return: success
  */
@@ -123,8 +123,8 @@ bool Shortcut::unregisterShortcut()
 }
 
 /*
- * Counts the number of instances and is
- * the identifier for each shortcut.
+ * Counts the number of instances and is the
+ * identifier for each shortcut.
  */
 int Shortcut::m_count = 0;
 

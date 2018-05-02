@@ -3,8 +3,8 @@
 /*
  * Constructor.
  *
- * :param library: library pointer
- * :param parent: parent pointer
+ * :param library: library
+ * :param parent: parent, default nullptr
  */
 MusicLibrary::MusicLibrary(Library *library, QWidget *parent) :
     QListWidget(parent)
@@ -27,15 +27,15 @@ MusicLibrary::~MusicLibrary()
  */
 void MusicLibrary::setupUi()
 {
-    setStyleSheet(Utils::read(CSS_MUSICLIBRARY));
-    setVerticalScrollMode(QAbstractItemView::ScrollPerPixel);
     setFrameStyle(QFrame::NoFrame);
+    setStyleSheet(Utils::read(CSS_MUSICLIBRARY));
+    setUniformItemSizes(true);
+    setVerticalScrollMode(QAbstractItemView::ScrollPerPixel);
 
-    AudioList audioList = pm_library->audioList();
-
-    for (int i = 0; i < audioList.size(); i++)
+    Audios audios = pm_library->audios();
+    for (int i = 0; i < audios.size(); i++)
     {
-        SongInfo *info = new SongInfo(audioList[i], this);
+        SongInfo *info = new SongInfo(audios[i], this);
         info->showTitle();
         info->showArtist();
         info->showAlbum();
@@ -43,7 +43,6 @@ void MusicLibrary::setupUi()
         info->showGenre();
         info->showLength();
         info->init({10, 10, 10, 1, 10, 1});
-
         info->setProperty("even", i % 2 == 0);
 
         QListWidgetItem *item = new QListWidgetItem(this);

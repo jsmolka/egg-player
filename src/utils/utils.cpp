@@ -111,12 +111,12 @@ QFont Utils::loadFont()
 }
 
 /*
- * Reads a file and returns its content. If
- * the file cannot be opened or read, an empty
+ * Reads a file and returns its content. If the
+ * file cannot be opened or read, an empty
  * string gets returned.
  *
  * :param path: file
- * :return: file content or empty string
+ * :return: file content, empty string at failure
  */
 QString Utils::read(const QString &path)
 {
@@ -146,13 +146,13 @@ bool Utils::exists(const QString &path)
 }
 
 /*
- * Returns the directory for a given path. If
- * the path is a directory it will get returned.
- * If it is a file, the directory of the file
- * gets returned.
+ * Returns the directory for a given path. If the
+ * path is a directory it will get returned. If
+ * it is a file, the directory of the file gets
+ * returned.
  *
  * :param path: path
- * :return: directory or empty dir
+ * :return: directory, empty dir at failure
  */
 QDir Utils::dir(const QString &path)
 {
@@ -168,8 +168,8 @@ QDir Utils::dir(const QString &path)
 }
 
 /*
- * Globbes files with a certain pattern.
- * Behaves simular to Pythons glob function.
+ * Globbes files with a certain pattern. Behaves
+ * very simular to Pythons glob function.
  *
  * :param path: path
  * :param pattern: pattern
@@ -207,12 +207,13 @@ QString Utils::fileName(const QString &file)
 }
 
 /*
- * Calculates dominent color of an image. The algorithm
- * iterates over every pixel, converts them into the
- * HSV color space and creates two mapped heuristics out
- * of them. Those hold colorful and grey scale colors. The
- * algorithm tries to return a colorful color. If there is
- * none, a grey scale gets returned.
+ * Calculates dominent color of an image. The
+ * algorithm iterates over every pixel, converts
+ * them into the HSV color space and creates two
+ * mapped heuristics out of them.
+ * Those hold colorful and grey scale colors. The
+ * algorithm tries to return a colorful color. If
+ * there is none, a grey scale gets returned.
  *
  * :param image: image
  * :return: dominant color
@@ -327,7 +328,9 @@ QColor Utils::dominantColor(const QImage &image)
 
 /*
  * Gets the dominant color of an image and edits
- * some values to prevent too bright values.
+ * some values to prevent too bright values. It
+ * also resizes the image to keep processing the
+ * constant.
  *
  * :param image: image
  * :param size: size for scaling, default 25

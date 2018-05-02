@@ -1,14 +1,16 @@
 #include "cachebuilder.hpp"
 
 /*
- * Constructor.
+ * Constructor. Connects the thread to the app
+ * so that it automatically aborts and deletes.
  *
- * :param audioList: audio list
+ * :param parent: parent, default nullptr
+ * :param audios: audios
  */
-CacheBuilder::CacheBuilder(const AudioList &audioList, QObject *parent) :
+CacheBuilder::CacheBuilder(const Audios &audios, QObject *parent) :
     QThread(parent)
 {
-    m_audioList = audioList;
+    m_audios = audios;
     m_abort = false;
 
     connect(qApp, SIGNAL(aboutToQuit()), this, SLOT(abort()));
@@ -24,8 +26,8 @@ CacheBuilder::~CacheBuilder()
 }
 
 /*
- * Sets the abort property and cleanly
- * exits the thread.
+ * Sets the abort property and cleanly exits
+ * the thread.
  */
 void CacheBuilder::abort()
 {
@@ -35,15 +37,14 @@ void CacheBuilder::abort()
 }
 
 /*
- * Implemented run function. This is the
- * main function of the thread. It loads
- * the cover files and aborts the thread
- * if necessary.
+ * Implemented run function. This is the main
+ * function of the thread. It loads the audio
+ * covers and saves them in the cache.
  */
 void CacheBuilder::run()
 {
     Cache cache;
-    for (Audio *audio : m_audioList)
+    for (Audio *audio : m_audios)
     {
         if (m_abort)
             break;

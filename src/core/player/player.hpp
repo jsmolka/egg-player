@@ -6,7 +6,7 @@
 #include <bass/bass.h>
 
 #include "audio.hpp"
-#include "audiolist.hpp"
+#include "audios.hpp"
 #include "timer.hpp"
 
 class Player : public QObject
@@ -31,10 +31,13 @@ public:
     int volume() const;
     int position() const;
 
-    void loadPlaylist(const AudioList &playlist, int index = 0);
+    void loadPlaylist(const Audios &audios, int index = 0);
 
     Audio * audioAt(int index);
     Audio * currentAudio();
+
+    int indexAt(int index);
+    int currentIndex();
 
 public slots:
     void setVolume(int volume);
@@ -56,12 +59,12 @@ signals:
     void volumeChanged(int volume);
 
 private slots:
-    void onTimeout(qint64 total);
+    void onTimeout(qint64 elapsed);
 
 private:
     struct AudioPosition
     {
-        AudioPosition(int index, Audio *audio)
+        AudioPosition(int index = -1, Audio *audio = nullptr)
         {
             this->index = index;
             this->audio = audio;
@@ -94,7 +97,7 @@ private:
 
     void setAudio(int index);
 
-    QList<AudioPosition> m_playlist;
+    QVector<AudioPosition> m_playlist;
     Timer *pm_timer;
     HSTREAM m_stream;
     int m_index;

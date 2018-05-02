@@ -5,7 +5,7 @@
  *
  * :param margin: margin
  * :param spacing: spacing
- * :param parent: parent
+ * :param parent: parent, default nullptr
  */
 BorderLayout::BorderLayout(int margin, int spacing, QWidget *parent) :
     QLayout(parent)
@@ -18,7 +18,7 @@ BorderLayout::BorderLayout(int margin, int spacing, QWidget *parent) :
  * Constructor.
  *
  * :param spacing: spacing
- * :param parent: parent
+ * :param parent: parent, default nullptr
  */
 BorderLayout::BorderLayout(int spacing, QWidget *parent) :
     BorderLayout(0, spacing, parent)
@@ -71,7 +71,7 @@ int BorderLayout::count() const
  * Returns item pointer at index.
  *
  * :param index: index
- * :return: wrapper pointer or nullptr
+ * :return: wrapper, nullptr in invalid index
  */
 QLayoutItem * BorderLayout::itemAt(int index) const
 {
@@ -221,7 +221,7 @@ QSize BorderLayout::sizeHint() const
  * Takes item at index.
  *
  * :param index: index
- * :return: item pointer or nullptr
+ * :return: nullptr if invalid index
  */
 QLayoutItem * BorderLayout::takeAt(int index)
 {

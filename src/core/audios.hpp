@@ -1,11 +1,11 @@
 #ifndef AUDIOLIST_HPP
 #define AUDIOLIST_HPP
 
-#include <QList>
+#include <QVector>
 
 #include "audio.hpp"
 
-class AudioList : public QList<Audio *>
+class Audios : public QVector<Audio *>
 {
 public:
     void sortByTitle();

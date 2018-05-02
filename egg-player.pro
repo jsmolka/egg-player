@@ -35,7 +35,7 @@ CONFIG(release, debug|release) {
 
 HEADERS += \
     $$PWD/src/core/audio.hpp \
-    $$PWD/src/core/audiolist.hpp \
+    $$PWD/src/core/audios.hpp \
     $$PWD/src/core/library.hpp \
     $$PWD/src/core/cache/cache.hpp \
     $$PWD/src/core/cache/cachebuilder.hpp \
@@ -57,7 +57,7 @@ HEADERS += \
 SOURCES += \
     $$PWD/src/main.cpp \
     $$PWD/src/core/audio.cpp \
-    $$PWD/src/core/audiolist.cpp \
+    $$PWD/src/core/audios.cpp \
     $$PWD/src/core/library.cpp \
     $$PWD/src/core/cache/cache.cpp \
     $$PWD/src/core/cache/cachebuilder.cpp \

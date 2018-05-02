@@ -1,8 +1,8 @@
 #include "config.hpp"
 
 /*
- * Creates settings and sets all non existing keys to
- * their default value.
+ * Creates settings and sets all non existing
+ * keys to their default value.
  */
 void Config::create()
 {
@@ -19,7 +19,8 @@ void Config::create()
 }
 
 /*
- * Sets all non existing keys to their default value.
+ * Sets all non existing keys to their default
+ * value.
  */
 void Config::App::create()
 {
@@ -99,7 +100,8 @@ const bool Config::App::dLog         = true;
 const double Config::App::dFontSize  = 10.25;
 
 /*
- * Sets all non existing keys to their default value.
+ * Sets all non existing keys to their default
+ * value.
  */
 void Config::Shortcut::create()
 {
@@ -142,7 +144,7 @@ void Config::Shortcut::setPlayPause(const QString &shortcut)
 }
 
 /*
- * Getter for play pause shortcut
+ * Getter for play pause shortcut.
  *
  * :return: shortcut
  */
@@ -162,7 +164,7 @@ void Config::Shortcut::setNext(const QString &shortcut)
 }
 
 /*
- * Getter for next shortcut
+ * Getter for next shortcut.
  *
  * :return: shortcut
  */
@@ -182,7 +184,7 @@ void Config::Shortcut::setPrevious(const QString &shortcut)
 }
 
 /*
- * Getter for previous shortcut
+ * Getter for previous shortcut.
  *
  * :return: shortcut
  */
@@ -202,7 +204,7 @@ void Config::Shortcut::setVolumeUp(const QString &shortcut)
 }
 
 /*
- * Getter for volume up shortcut
+ * Getter for volume up shortcut.
  *
  * :return: shortcut
  */
@@ -222,7 +224,7 @@ void Config::Shortcut::setVolumeDown(const QString &shortcut)
 }
 
 /*
- * Getter for volume down shortcut
+ * Getter for volume down shortcut.
  *
  * :return: shortcut
  */
@@ -255,7 +257,8 @@ const QString Config::Shortcut::dVolumeUp   = "Ctrl+F8";
 const QString Config::Shortcut::dVolumeDown = "Ctrl+F7";
 
 /*
- * Sets all non existing keys to their default value.
+ * Sets all non existing keys to their default
+ * value.
  */
 void Config::Player::create()
 {
@@ -360,7 +363,8 @@ const bool Config::Player::dShuffle    = false;
 const bool Config::Player::dLoop       = false;
 
 /*
- * Sets all non existing keys to their default value.
+ * Sets all non existing keys to their default
+ * value.
  */
 void Config::Library::create()
 {
@@ -440,7 +444,8 @@ const QString Config::Library::dPath       = QStandardPaths::writableLocation(QS
 const int Config::Library::dItemHeight     = 50;
 
 /*
- * Sets all non existing keys to their default value.
+ * Sets all non existing keys to their default
+ * value.
  */
 void Config::Bar::create()
 {
@@ -654,7 +659,7 @@ void Config::setValue(const QString &group, const QString &key, const QVariant &
  *
  * :param group: group
  * :param key: key
- * :param defaultValue: defaultValue
+ * :param defaultValue: default value
  * :return: value
  */
 QVariant Config::value(const QString &group, const QString &key, const QVariant &defaultValue)

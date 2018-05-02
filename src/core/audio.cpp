@@ -6,10 +6,9 @@
 using namespace TagLib;
 
 /*
- * Constructor. Creates an audio object and
- * tries to read its tags. If the title tag
- * is empty it will be set to the file name
- * of the read file.
+ * Constructor. Creates an audio object and tries
+ * to read its tags. If the title tag is empty it
+ * will be set to the file name of the read file.
  *
  * :param path: audio path
  */
@@ -129,7 +128,7 @@ int Audio::length() const
 /*
  * Returns audio cover.
  *
- * :param size: cover size
+ * :param size: cover size, default 200
  */
 QPixmap Audio::cover(int size)
 {
@@ -137,9 +136,9 @@ QPixmap Audio::cover(int size)
 }
 
 /*
- * Reads audio tags. If either the tags or
- * the audio properties cannot be read the
- * function returns false.
+ * Reads audio tags. If either the tags or the
+ * audio properties cannot be read the function
+ * returns false.
  *
  * :return: success
  */
@@ -167,11 +166,12 @@ bool Audio::readTags()
 }
 
 /*
- * Reads cover of audio file. If the cover
- * is not a square it will be drawn onto a
- * transparent square.
+ * Reads cover of audio file. Because covers
+ * should always be squares the read cover
+ * will be drawn onto a transparent square
+ * if it is not square.
  *
- * :return: cover or default
+ * :return: cover
  */
 QPixmap Audio::readCover()
 {
