@@ -28,12 +28,9 @@ SongInfo::~SongInfo()
  */
 void SongInfo::init(const QVector<int> &stretches)
 {
-    QGridLayout *layout = new QGridLayout(this);
+    QHBoxLayout *layout = new QHBoxLayout(this);
     for (int i = 0; i < m_labels.size(); i++)
-    {
-        layout->addWidget(m_labels[i], 0, i);
-        layout->setColumnStretch(i, stretches[i]);
-    }
+        layout->addWidget(m_labels[i], stretches[i]);
     setLayout(layout);
 }
 

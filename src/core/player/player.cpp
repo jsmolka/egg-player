@@ -206,10 +206,7 @@ int Player::currentIndex()
  */
 void Player::setVolume(int volume)
 {
-    if (volume == m_volume)
-        return;
-
-    m_volume = volume;
+    m_volume = qMax(0, qMin(volume, 100));
 
     bassSetVolume(m_volume);
 
@@ -224,9 +221,6 @@ void Player::setVolume(int volume)
  */
 void Player::setPosition(int position)
 {
-    if (this->position() == position)
-        return;
-
     if (!bassSetPosition(position))
         return;
 

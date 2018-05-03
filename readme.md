@@ -54,3 +54,5 @@ If logging is enabled in the config, the player automatically logs all warnings 
 - fixed size for labels in SongInfo
 - differenciate vertical and horizontal spacing in Config::Bar
 - fix weird center alignment of volume slider
+- add alignment parameter for each SongInfo label
+    - QSizePolicy::Fixed + setMinimum[or Maximum]Width(doCalc())?

@@ -1,7 +1,7 @@
 #ifndef SONGINFO_HPP
 #define SONGINFO_HPP
 
-#include <QGridLayout>
+#include <QHBoxLayout>
 #include <QLabel>
 #include <QStyleOption>
 #include <QPainter>
