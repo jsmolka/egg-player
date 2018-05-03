@@ -48,16 +48,17 @@ private slots:
     void onPlayerAudioChanged(Audio *audio);
     void onPlayerStateChanged(Player::State state);
     void onPlayerPositionChanged(int position);
+    void onPlayerVolumeChanged(int volume);
 
-    void onPlayButtonPressed();
+    void onPlayPauseButtonPressed();
     void onShuffleButtonLocked(bool locked);
     void onLoopButtonLocked(bool locked);
     void onVolumeButtonPressed();
 
     void onLengthSliderMoved(int value);
     void onLengthSliderValueChanged(int value);
-
     void onVolumeSliderMoved(int value);
+    void onVolumeSliderValueChanged(int value);
 
     void onShortcutPlayPausePressed();
     void onShortcutVolumeUpPressed();
@@ -86,9 +87,15 @@ private:
 
     void setColor(const QColor &color);
 
-    void setVolumePlayer(int volume);
-    void setVolumeIcon(int volume);
+    void setButtonVisibility(bool visible);
+    void hideButtons();
+    void showButtons();
+
     void setVolumeConfig(int volume);
+    void setVolumeIcon(int volume);
+    void setVolumePlayer(int volume);
+    void setVolumeSlider(int volume);
+    void changeVolume(int volume, int step);
 
     Player *pm_player;
 

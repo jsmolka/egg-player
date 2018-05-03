@@ -206,7 +206,6 @@ int Player::currentIndex()
  */
 void Player::setVolume(int volume)
 {
-    volume = qMin(100, qMax(volume, 0));
     if (volume == m_volume)
         return;
 
@@ -321,9 +320,9 @@ void Player::previous()
 }
 
 /*
- * Slot for timer timeout. It emits the current
- * position and manages automatically playing
- * the next song if the current one finishes.
+ * Timer timeout event. Emits the current
+ * position and manages automatically playing the
+ * next song if the current one finishes.
  *
  * :param elapsed: elapsed time in milliseconds
  * :emit positionChanged: position in seconds

@@ -54,8 +54,8 @@ void EggPlayer::closeEvent(QCloseEvent *event)
 }
 
 /*
- * Slot for MusicLibrary double clicked event. It
- * starts the player with the clicked audio.
+ * Musc library double clicked event. It starts
+ * the player with the clicked audio.
  *
  * :param index: library index
  */

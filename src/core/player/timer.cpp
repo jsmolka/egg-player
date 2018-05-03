@@ -119,9 +119,9 @@ void Timer::setElapsed(qint64 elapsed)
 }
 
 /*
- * Slot for timer timeout. It increments the
- * elapsed time and resets the remaining time
- * to interval time.
+ * Timer timeout event. Increments the elapsed
+ * time and resets the remaining time to
+ * interval.
  *
  * :emit timeout: elapsed
  */

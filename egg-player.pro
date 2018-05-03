@@ -31,6 +31,11 @@ CONFIG(debug, debug|release) {
 CONFIG(release, debug|release) {
     LIBS += -L"$$PWD/ext/taglib-1.11.1/lib" -ltag
     DESTDIR = $$PWD/bin/release
+
+    QMAKE_CFLAGS_RELEASE -= -O
+    QMAKE_CFLAGS_RELEASE -= -O1
+    QMAKE_CFLAGS_RELEASE -= -O2
+    QMAKE_CFLAGS_RELEASE *= -O3
 }
 
 HEADERS += \

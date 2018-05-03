@@ -53,3 +53,4 @@ If logging is enabled in the config, the player automatically logs all warnings 
 - black title bar through [Windows API](https://msdn.microsoft.com/en-us/library/windows/desktop/ms724940%28v=vs.85%29.aspx)
 - fixed size for labels in SongInfo
 - differenciate vertical and horizontal spacing in Config::Bar
+- fix weird center alignment of volume slider

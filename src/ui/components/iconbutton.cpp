@@ -130,7 +130,7 @@ void IconButton::init(const QVector<QIcon> &icons, int size, bool lockable)
 }
 
 /*
- * Slot for clicked event. If the button is
+ * Clicked event. If the button is
  * lockable the locked property get switched and
  * the style sheet gets reloaded.
  */

@@ -53,7 +53,7 @@ bool Shortcut::nativeEventFilter(const QByteArray &eventType, void *message, lon
 }
 
 /*
- * Parses an shortcut.
+ * Parses a shortcut.
  *
  * :param shortcut: shortcut
  * :return: combination

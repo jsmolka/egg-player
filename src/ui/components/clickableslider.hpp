@@ -1,5 +1,5 @@
-#ifndef LENGTHSLIDER_HPP
-#define LENGTHSLIDER_HPP
+#ifndef CLICKABLESLIDER_HPP
+#define CLICKABLESLIDER_HPP
 
 #include <QPainter>
 #include <QProxyStyle>
@@ -42,4 +42,4 @@ private:
     bool m_pressed;
 };
 
-#endif // LENGTHSLIDER_HPP
+#endif // CLICKABLESLIDER_HPP

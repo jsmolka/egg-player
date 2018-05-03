@@ -37,7 +37,8 @@ bool ClickableSlider::isPressed() const
 }
 
 /*
- * Slot for slider pressed.
+ * Pressed event. Makes clicking the slider a
+ * move.
  *
  * :emit sliderMoved: position
  */
@@ -48,10 +49,10 @@ void ClickableSlider::onSliderPressed()
 }
 
 /*
- * Slot for slider released. It sets the pressed
- * property and emits the current value. It also
- * removes to focus to prevent accidently moving
- * the slider with key presses.
+ * Released event. It sets the pressed property
+ * and emits the current value. It also removes
+ * to focus to prevent accidently moving the
+ * slider with key presses.
  *
  * :emit sliderValueChanged: value
  */

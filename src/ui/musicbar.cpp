@@ -1,7 +1,8 @@
 #include "musicbar.hpp"
 
 /*
- * Constructor.
+ * Constructor. Creates all necessary objects and
+ * connections.
  *
  * :param parent: pointer, default nullptr
  */
@@ -21,8 +22,13 @@ MusicBar::MusicBar(QWidget *parent) :
 
     setupUi();
 
+    connect(pm_player, SIGNAL(audioChanged(Audio *)), this, SLOT(onPlayerAudioChanged(Audio *)));
+    connect(pm_player, SIGNAL(stateChanged(Player::State)), this, SLOT(onPlayerStateChanged(Player::State)));
+    connect(pm_player, SIGNAL(positionChanged(int)), this, SLOT(onPlayerPositionChanged(int)));
+    connect(pm_player, SIGNAL(volumeChanged(int)), this, SLOT(onPlayerVolumeChanged(int)));
+
     connect(pm_nextButton, SIGNAL(pressed()), pm_player, SLOT(next()));
-    connect(pm_playPauseButton, SIGNAL(pressed()), this, SLOT(onPlayButtonPressed()));
+    connect(pm_playPauseButton, SIGNAL(pressed()), this, SLOT(onPlayPauseButtonPressed()));
     connect(pm_previousButton, SIGNAL(pressed()), pm_player, SLOT(previous()));
     connect(pm_shuffleButton, SIGNAL(locked(bool)), this, SLOT(onShuffleButtonLocked(bool)));
     connect(pm_loopButton, SIGNAL(locked(bool)), this, SLOT(onLoopButtonLocked(bool)));
@@ -31,10 +37,7 @@ MusicBar::MusicBar(QWidget *parent) :
     connect(pm_lengthSlider, SIGNAL(sliderMoved(int)), this, SLOT(onLengthSliderMoved(int)));
     connect(pm_lengthSlider, SIGNAL(sliderValueChanged(int)), this, SLOT(onLengthSliderValueChanged(int)));
     connect(pm_volumeSlider, SIGNAL(sliderMoved(int)), this, SLOT(onVolumeSliderMoved(int)));
-
-    connect(pm_player, SIGNAL(audioChanged(Audio *)), this, SLOT(onPlayerAudioChanged(Audio *)));
-    connect(pm_player, SIGNAL(stateChanged(Player::State)), this, SLOT(onPlayerStateChanged(Player::State)));
-    connect(pm_player, SIGNAL(positionChanged(int)), this, SLOT(onPlayerPositionChanged(int)));
+    connect(pm_volumeSlider, SIGNAL(sliderValueChanged(int)), SLOT(onVolumeSliderValueChanged(int)));
 
     connect(pm_scPlayPause, SIGNAL(pressed()), this, SLOT(onShortcutPlayPausePressed()));
     connect(pm_scNext, SIGNAL(pressed()), pm_player, SLOT(next()));
@@ -193,8 +196,8 @@ void MusicBar::paintEvent(QPaintEvent *)
 }
 
 /*
- * Slot for audio changed. Sets up cover, track
- * label, time labels and length slider.
+ * Player audio changed event. Sets up cover,
+ * track label, time labels and length slider.
  *
  * :param audio: audio
  */
@@ -215,7 +218,7 @@ void MusicBar::onPlayerAudioChanged(Audio *audio)
 }
 
 /*
- * Slot for player state changed. Sets
+ * Player state changed event. Sets the
  * corresponding icon of play button.
  *
  * :param state: player state
@@ -226,7 +229,7 @@ void MusicBar::onPlayerStateChanged(Player::State state)
 }
 
 /*
- * Slot for player position changed. Sets slider
+ * Player position changed event. Sets slider
  * position if it is not pressed.
  *
  * :param position: position in seconds
@@ -241,10 +244,20 @@ void MusicBar::onPlayerPositionChanged(int position)
 }
 
 /*
- * Slot for play button pressed. Starts or pauses
- * the player.
+ * Player volume changed event. Just set the
+ * volume button icon because other volume events
+ * are done seperately.
  */
-void MusicBar::onPlayButtonPressed()
+void MusicBar::onPlayerVolumeChanged(int volume)
+{
+    setVolumeIcon(volume);
+}
+
+/*
+ * Play pause button pressed event. Starts or
+ * pauses the player depeding on the button icon.
+ */
+void MusicBar::onPlayPauseButtonPressed()
 {
     if (pm_playPauseButton->selectedIcon() == 0)
         pm_player->play();
@@ -253,8 +266,8 @@ void MusicBar::onPlayButtonPressed()
 }
 
 /*
- * Slot for shuffle button locked. Applies change
- * to player and saves it in the config.
+ * Shuffle button locked event. Applies change to
+ * player and saves it in the config.
  *
  * :param locked: locked
  */
@@ -265,7 +278,7 @@ void MusicBar::onShuffleButtonLocked(bool locked)
 }
 
 /*
- * Slot for loop button locked. Applies change to
+ * Loop button locked event. Applies change to
  * player and saves it in the config.
  *
  * :param locked: locked
@@ -273,39 +286,30 @@ void MusicBar::onShuffleButtonLocked(bool locked)
 void MusicBar::onLoopButtonLocked(bool locked)
 {
     pm_player->setLoop(locked);
-    Config::Player::setShuffle(locked);
+    Config::Player::setLoop(locked);
 }
 
 /*
- * Slot for volume button pressed. Opens a popup
- * window where the player volume can be adjusted.
+ * Volume button pressed event. Shows or hides
+ * the volume slider depeding its current state.
  */
 void MusicBar::onVolumeButtonPressed()
 {
     if (pm_volumeSlider->isVisible())
     {
-        pm_volumeSlider->hide();
-        pm_previousButton->show();
-        pm_playPauseButton->show();
-        pm_nextButton->show();
-        pm_shuffleButton->show();
-        pm_loopButton->show();
+        pm_volumeSlider->setVisible(false);
+        showButtons();
     }
     else
     {
-        pm_previousButton->hide();
-        pm_playPauseButton->hide();
-        pm_nextButton->hide();
-        pm_shuffleButton->hide();
-        pm_loopButton->hide();
-        pm_volumeSlider->show();
-        pm_volumeSlider->setValue(pm_player->volume());
+        hideButtons();
+        pm_volumeSlider->setVisible(true);
     }
 }
 
 /*
- * Slot for slider moved. Set the value of the
- * current time label to reflect the change.
+ * Length slider moved event. Set the value of
+ * the current time label to reflect the change.
  *
  * :param value: position in seconds
  */
@@ -315,7 +319,7 @@ void MusicBar::onLengthSliderMoved(int value)
 }
 
 /*
- * Slot for slider position changed. Updates the
+ * Length slider value changed event. Updates the
  * current time and player position accordingly.
  *
  * :param value: position in seconds
@@ -326,37 +330,59 @@ void MusicBar::onLengthSliderValueChanged(int value)
     pm_player->setPosition(value);
 }
 
+/*
+ * Volume slider moved event. Sets the player
+ * volume accordingly. Does not change the config
+ * because of performance reason.
+ *
+ * :param value: value
+ */
 void MusicBar::onVolumeSliderMoved(int value)
 {
-    pm_player->setVolume(value);
+    setVolumePlayer(value);
 }
 
 /*
- * Slot for shortcut play pause pressed. Plays or
+ * Volume slider value changed event. Changes the
+ * player volume and config value accordingly.
+ *
+ * :param value: value
+ */
+void MusicBar::onVolumeSliderValueChanged(int value)
+{
+    setVolumeConfig(value);
+    setVolumePlayer(value);
+}
+
+/*
+ * Play pause shortcut pressed event. Plays or
  * pauses the player depending on the current
  * state.
  */
 void MusicBar::onShortcutPlayPausePressed()
 {
-    pm_player->isPlaying() ? pm_player->pause() : pm_player->play();
+    if (pm_player->isPlaying())
+        pm_player->pause();
+    else
+        pm_player->play();
 }
 
 /*
- * Slot for shotcut volume up pressed. Increases
+ * Volume up shortcut pressed event. Increases
  * the player volume.
  */
 void MusicBar::onShortcutVolumeUpPressed()
 {
-    pm_player->setVolume(pm_player->volume() + 1);
+    changeVolume(pm_player->volume(), 1);
 }
 
 /*
- * Slot for shortcut volume down pressed.
- * Decreases the player volume.
+ * Volume down shortcut pressed event. Decreases
+ * the player volume.
  */
 void MusicBar::onShortcutVolumeDownPressed()
 {
-    pm_player->setVolume(pm_player->volume() - 1);
+    changeVolume(pm_player->volume(), -1);
 }
 
 /*
@@ -369,9 +395,9 @@ void MusicBar::setupUi()
     layout->setContentsMargins(layout->spacing(), 0, layout->spacing(), 0);
     setLayout(layout);
 
+    setAutoFillBackground(true);
     setFixedHeight(Config::Bar::height());
     setStyleSheet(Utils::read(CSS_MUSICBAR));
-    setAutoFillBackground(true);
     setColor(Utils::backgroundColor(Utils::defaultCover(Config::Bar::coverSize())));
 
     createAudioInfo();
@@ -379,6 +405,9 @@ void MusicBar::setupUi()
     createButtons();
 }
 
+/*
+ * Creates the audio info user inferface part.
+ */
 void MusicBar::createAudioInfo()
 {
     pm_coverLabel = new QLabel(this);
@@ -394,6 +423,9 @@ void MusicBar::createAudioInfo()
     layout->addWidget(pm_trackLabel, 0, TrackLabelPosition);
 }
 
+/*
+ * Creates the length slider user inferface part.
+ */
 void MusicBar::createLengthSlider()
 {
     pm_currentTimeLabel = new QLabel(this);
@@ -415,37 +447,45 @@ void MusicBar::createLengthSlider()
     layout->addWidget(pm_totalTimeLabel, 0, TotalTimeLabelPosition);
 }
 
+/*
+ * Creates the buttons user interface part.
+ */
 void MusicBar::createButtons()
 {
     pm_previousButton = new IconButton(this);
+    pm_previousButton->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
     pm_previousButton->init({QIcon(ICO_PREVIOUS)}, Config::Bar::iconSize());
 
     pm_playPauseButton = new IconButton(this);
+    pm_playPauseButton->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
     pm_playPauseButton->init({QIcon(ICO_PLAY), QIcon(ICO_PAUSE)}, Config::Bar::iconSize());
 
     pm_nextButton = new IconButton(this);
+    pm_nextButton->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
     pm_nextButton->init({QIcon(ICO_NEXT)}, Config::Bar::iconSize());
 
     pm_shuffleButton = new IconButton(this);
-        pm_shuffleButton->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
+    pm_shuffleButton->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
     pm_shuffleButton->init({QIcon(ICO_SHUFFLE)}, Config::Bar::iconSize(), true);
     pm_shuffleButton->setLocked(Config::Player::shuffle());
 
     pm_loopButton = new IconButton(this);
-        pm_loopButton->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
+    pm_loopButton->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
     pm_loopButton->init({QIcon(ICO_LOOP)}, Config::Bar::iconSize(), true);
     pm_loopButton->setLocked(Config::Player::loop());
 
     pm_volumeButton = new IconButton(this);
+    pm_volumeButton->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
     pm_volumeButton->init({QIcon(ICO_VOLUME_FULL),
                            QIcon(ICO_VOLUME_MEDIUM),
                            QIcon(ICO_VOLUME_LOW),
                            QIcon(ICO_VOLUME_MUTE)}, Config::Bar::iconSize());
-    setVolumeIcon();
+    setVolumeIcon(Config::Player::volume());
 
     pm_volumeSlider = new ClickableSlider(this);
     pm_volumeSlider->setVisible(false);
     pm_volumeSlider->setRange(0, 100);
+    pm_volumeSlider->setValue(Config::Player::volume());
     pm_volumeSlider->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::MinimumExpanding);
     pm_volumeSlider->setFixedWidth(5 * Config::Bar::iconSize() + 4 * Config::Bar::spacing());
 
@@ -471,13 +511,50 @@ void MusicBar::setColor(const QColor &color)
     setPalette(palette);
 }
 
-void MusicBar::setVolumePlayer(int volume)
+/*
+ * Sets visibility for all buttons.
+ *
+ * :param visible: visible
+ */
+void MusicBar::setButtonVisibility(bool visible)
 {
-    pm_player->setVolume(volume);
+    pm_previousButton->setVisible(visible);
+    pm_playPauseButton->setVisible(visible);
+    pm_nextButton->setVisible(visible);
+    pm_shuffleButton->setVisible(visible);
+    pm_loopButton->setVisible(visible);
 }
 
 /*
- * Sets volume icon according to player volume.
+ * Hides all buttons.
+ */
+void MusicBar::hideButtons()
+{
+    setButtonVisibility(false);
+}
+
+/*
+ * Shows all buttons.
+ */
+void MusicBar::showButtons()
+{
+    setButtonVisibility(true);
+}
+
+/*
+ * Sets player volume in config.
+ *
+ * :param volume: volume
+ */
+void MusicBar::setVolumeConfig(int volume)
+{
+    Config::Player::setVolume(volume);
+}
+
+/*
+ * Sets volume icon according to volume.
+ *
+ * :param volume: volume
  */
 void MusicBar::setVolumeIcon(int volume)
 {
@@ -491,7 +568,39 @@ void MusicBar::setVolumeIcon(int volume)
         pm_volumeButton->setSelectedIcon(3);
 }
 
-void MusicBar::setVolumeConfig(int volume)
+/*
+ * Sets player volume.
+ *
+ * :param volume: volume
+ */
+void MusicBar::setVolumePlayer(int volume)
 {
-    Config::Player::setVolume(volume);
+    pm_player->setVolume(volume);
+}
+
+/*
+ * Sets volume slider position.
+ *
+ * :param volume: volume
+ */
+void MusicBar::setVolumeSlider(int volume)
+{
+    pm_volumeSlider->setValue(volume);
+}
+
+/*
+ * Changes volume by a step.
+ *
+ * :param volume: volume
+ * :param step: step
+ */
+void MusicBar::changeVolume(int volume, int step)
+{
+    volume = volume + step;
+    if (volume < 0 || volume > 100)
+        return;
+
+    setVolumeConfig(volume);
+    setVolumePlayer(volume);
+    setVolumeSlider(volume);
 }

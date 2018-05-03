@@ -62,7 +62,7 @@ void Library::sortByTitle()
  *
  * :param string: string
  * :param cs: case sensivity, default insensitive
- * :return: audio list
+ * :return: audios
  */
 Audios Library::search(const QString &string, Qt::CaseSensitivity cs)
 {
