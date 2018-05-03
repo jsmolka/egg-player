@@ -21,12 +21,12 @@ IconButton:pressed {
     background: rgba(0, 0, 0, 0.15);
 }
 
-QSlider::groove:horizontal {
+ClickableSlider::groove:horizontal {
 	background: #969696;
 	height: 2px;
 }
 
-QSlider::handle:horizontal {
+ClickableSlider::handle:horizontal {
 	background: #D2D2D2;
 	width: 16px;
 	height: 16px;

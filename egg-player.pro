@@ -45,15 +45,14 @@ HEADERS += \
     $$PWD/src/ui/eggplayer.hpp \
     $$PWD/src/ui/musicbar.hpp \
     $$PWD/src/ui/musiclibrary.hpp \
+    $$PWD/src/ui/components/clickableslider.hpp \
     $$PWD/src/ui/components/iconbutton.hpp \
-    $$PWD/src/ui/components/lengthslider.hpp \
     $$PWD/src/ui/components/songinfo.hpp \
     $$PWD/src/ui/layouts/borderlayout.hpp \
     $$PWD/src/utils/config.hpp \
     $$PWD/src/utils/logger.hpp \
     $$PWD/src/utils/shortcut.hpp \
-    $$PWD/src/utils/utils.hpp \
-    src/ui/components/volumeslider.hpp
+    $$PWD/src/utils/utils.hpp
 
 SOURCES += \
     $$PWD/src/main.cpp \
@@ -68,12 +67,11 @@ SOURCES += \
     $$PWD/src/ui/eggplayer.cpp \
     $$PWD/src/ui/musicbar.cpp \
     $$PWD/src/ui/musiclibrary.cpp \
+    $$PWD/src/ui/components/clickableslider.cpp \
     $$PWD/src/ui/components/iconbutton.cpp \
-    $$PWD/src/ui/components/lengthslider.cpp \
     $$PWD/src/ui/components/songinfo.cpp \
     $$PWD/src/ui/layouts/borderlayout.cpp \
     $$PWD/src/utils/config.cpp \
     $$PWD/src/utils/logger.cpp \
     $$PWD/src/utils/shortcut.cpp \
-    $$PWD/src/utils/utils.cpp \
-    src/ui/components/volumeslider.cpp
+    $$PWD/src/utils/utils.cpp

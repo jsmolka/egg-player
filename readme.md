@@ -51,5 +51,5 @@ If logging is enabled in the config, the player automatically logs all warnings 
 
 ## Things to do
 - black title bar through [Windows API](https://msdn.microsoft.com/en-us/library/windows/desktop/ms724940%28v=vs.85%29.aspx)
-- custom css with repaint event for LengthSlider
 - fixed size for labels in SongInfo
+- differenciate vertical and horizontal spacing in Config::Bar

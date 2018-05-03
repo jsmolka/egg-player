@@ -7,7 +7,7 @@
 #include <QStyle>
 #include <QStyleOption>
 
-class LengthSliderStyle : public QProxyStyle
+class ClickableSliderStyle : public QProxyStyle
 {
 public:
     using QProxyStyle::QProxyStyle;
@@ -21,18 +21,18 @@ public:
     }
 };
 
-class LengthSlider : public QSlider
+class ClickableSlider : public QSlider
 {
     Q_OBJECT
 
 public:
-    LengthSlider(QWidget *parent = nullptr);
-    ~LengthSlider();
+    ClickableSlider(QWidget *parent = nullptr);
+    ~ClickableSlider();
 
     bool isPressed() const;
 
 signals:
-    void positionChanged(int position);
+    void sliderValueChanged(int value);
 
 private slots:
     void onSliderPressed();

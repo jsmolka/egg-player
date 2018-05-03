@@ -1,17 +1,16 @@
-#include "lengthslider.hpp"
+#include "clickableslider.hpp"
 
 /*
- * Constructor. Sets slider style to
- * LengthSliderStyle to make the slider
- * clickable.
+ * Constructor. Sets slider style to make
+ * the slider clickable.
  *
  * :param parent: parent, default nullptr
  */
-LengthSlider::LengthSlider(QWidget *parent) :
+ClickableSlider::ClickableSlider(QWidget *parent) :
     QSlider(parent)
 {
     setOrientation(Qt::Horizontal);
-    setStyle(new LengthSliderStyle(style()));
+    setStyle(new ClickableSliderStyle(style()));
 
     m_pressed = false;
 
@@ -22,7 +21,7 @@ LengthSlider::LengthSlider(QWidget *parent) :
 /*
  * Destructor.
  */
-LengthSlider::~LengthSlider()
+ClickableSlider::~ClickableSlider()
 {
 
 }
@@ -32,7 +31,7 @@ LengthSlider::~LengthSlider()
  *
  * :return: pressed
  */
-bool LengthSlider::isPressed() const
+bool ClickableSlider::isPressed() const
 {
     return m_pressed;
 }
@@ -42,7 +41,7 @@ bool LengthSlider::isPressed() const
  *
  * :emit sliderMoved: position
  */
-void LengthSlider::onSliderPressed()
+void ClickableSlider::onSliderPressed()
 {
     m_pressed = true;
     emit sliderMoved(value());
@@ -54,10 +53,10 @@ void LengthSlider::onSliderPressed()
  * removes to focus to prevent accidently moving
  * the slider with key presses.
  *
- * :emit positionChanged: value
+ * :emit sliderValueChanged: value
  */
-void LengthSlider::onSliderReleased()
+void ClickableSlider::onSliderReleased()
 {
     m_pressed = false;
-    emit positionChanged(value());
+    emit sliderValueChanged(value());
 }
