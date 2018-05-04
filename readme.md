@@ -56,3 +56,8 @@ If logging is enabled in the config, the player automatically logs all warnings 
 - fix weird center alignment of volume slider
 - add alignment parameter for each SongInfo label
     - QSizePolicy::Fixed + setMinimum[or Maximum]Width(doCalc())?
+- do not show certain info at low size
+- QHBoxLayout for MusicBar
+- loads Library in thread and signal that it is ready -> update user interface
+- library scroll acceleration
+- json config
