@@ -452,11 +452,11 @@ void Config::Bar::create()
     if (!Bar::contains(kHeight))
         Bar::setHeight(dHeight);
 
+    if (!Bar::contains(kMargin))
+        Bar::setMargin(dMargin);
+
     if (!Bar::contains(kSpacing))
         Bar::setSpacing(dSpacing);
-
-    if (!Bar::contains(kCoverSize))
-        Bar::setCoverSize(dCoverSize);
 
     if (!Bar::contains(kIconSize))
         Bar::setIconSize(dIconSize);
@@ -500,6 +500,26 @@ int Config::Bar::height()
 }
 
 /*
+ * Setter for bar margin.
+ *
+ * :param margin: margin
+ */
+void Config::Bar::setMargin(int margin)
+{
+    Config::setValue(kBar, kMargin, margin);
+}
+
+/*
+ * Getter for bar margin.
+ *
+ * :return: margin
+ */
+int Config::Bar::margin()
+{
+    return Config::value(kBar, kMargin, dMargin).toInt();
+}
+
+/*
  * Setter for bar spacing.
  *
  * :param spacing: spacing
@@ -520,23 +540,13 @@ int Config::Bar::spacing()
 }
 
 /*
- * Setter for bar cover size.
- *
- * :param size: size
- */
-void Config::Bar::setCoverSize(int size)
-{
-    Config::setValue(kBar, kCoverSize, size);
-}
-
-/*
  * Getter for bar cover size.
  *
  * :return: size
  */
 int Config::Bar::coverSize()
 {
-    return Config::value(kBar, kCoverSize, dCoverSize).toInt();
+    return Bar::height() - 2 * Bar::margin();
 }
 
 /*
@@ -609,7 +619,7 @@ const QString Config::Bar::kBar        = "Bar";
  */
 const QString Config::Bar::kHeight     = "Height";
 const QString Config::Bar::kSpacing    = "Spacing";
-const QString Config::Bar::kCoverSize  = "CoverSize";
+const QString Config::Bar::kMargin     = "Margin";
 const QString Config::Bar::kIconSize   = "IconSize";
 const QString Config::Bar::kTrackWidth = "TrackWidth";
 const QString Config::Bar::kTimeWidth  = "TimeWidth";
@@ -618,8 +628,8 @@ const QString Config::Bar::kTimeWidth  = "TimeWidth";
  * Bar default values.
  */
 const int Config::Bar::dHeight         = 68;
-const int Config::Bar::dSpacing        = 10;
-const int Config::Bar::dCoverSize      = 48;
+const int Config::Bar::dSpacing        = 8;
+const int Config::Bar::dMargin         = 8;
 const int Config::Bar::dIconSize       = 33;
 const int Config::Bar::dTrackWidth     = 240;
 const int Config::Bar::dTimeWidth      = 50;

@@ -129,10 +129,12 @@ public:
         static void setHeight(int height);
         static int height();
 
+        static void setMargin(int margin);
+        static int margin();
+
         static void setSpacing(int spacing);
         static int spacing();
 
-        static void setCoverSize(int size);
         static int coverSize();
 
         static void setIconSize(int size);
@@ -149,14 +151,14 @@ public:
 
         static const QString kHeight;
         static const QString kSpacing;
-        static const QString kCoverSize;
+        static const QString kMargin;
         static const QString kIconSize;
         static const QString kTrackWidth;
         static const QString kTimeWidth;
 
         static const int dHeight;
         static const int dSpacing;
-        static const int dCoverSize;
+        static const int dMargin;
         static const int dIconSize;
         static const int dTrackWidth;
         static const int dTimeWidth;

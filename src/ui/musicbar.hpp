@@ -65,25 +65,11 @@ private slots:
     void onShortcutVolumeDownPressed();
 
 private:
-    enum Positions
-    {
-        CoverLabelPosition = 0,
-        TrackLabelPosition = 1,
-        CurrentTimeLabelPosition = 2,
-        LengthSliderPosition = 3,
-        TotalTimeLabelPosition = 4,
-        PreviousButtonPosition = 5,
-        PlayPauseButtonPosition = 6,
-        NextButtonPosition = 7,
-        ShuffleButtonPosition = 8,
-        LoopButtonPosition = 9,
-        VolumeButtonPosition = 10
-    };
-
     void setupUi();
     void createAudioInfo();
     void createLengthSlider();
     void createButtons();
+    void createLayout();
 
     void setColor(const QColor &color);
 
