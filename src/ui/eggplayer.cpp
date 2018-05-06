@@ -8,8 +8,13 @@
 EggPlayer::EggPlayer(QWidget *parent) :
     QWidget(parent)
 {
-    pm_library = new Library(Config::Library::path());
-    pm_library->sortByTitle();
+
+    pm_library = new Library(this);
+    connect(pm_library, SIGNAL(loaded()), this, SLOT(onLibraryLoaded()));
+    //pm_library->load(Config::Library::path());
+    //pm_library->sortByTitle();
+    LibraryBuilder *builder = new LibraryBuilder(pm_library);
+    builder->start();
 
     setupUi();
 
@@ -21,7 +26,7 @@ EggPlayer::EggPlayer(QWidget *parent) :
  */
 EggPlayer::~EggPlayer()
 {
-    delete pm_library;
+
 }
 
 /*
@@ -66,11 +71,25 @@ void EggPlayer::onMusicLibraryDoubleClicked(const QModelIndex &index)
 }
 
 /*
+ * Library loaded event. Start the cache builder.
+ */
+void EggPlayer::onLibraryLoaded()
+{
+    pm_library->sortByTitle();
+
+    CacheBuilder *builder = new CacheBuilder(pm_library->audios());
+    builder->start();
+
+    pm_musicLibrary->loadLibrary(pm_library);
+}
+
+/*
  * Sets up user interface.
  */
 void EggPlayer::setupUi()
 {
-    pm_musicLibrary = new MusicLibrary(pm_library, this);
+    pm_musicLibrary = new MusicLibrary(this);
+    pm_musicLibrary->loadLibrary(pm_library);
     pm_musicBar = new MusicBar(this);
 
     QLabel *west = new QLabel(this);

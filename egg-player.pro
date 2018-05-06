@@ -14,6 +14,7 @@ INCLUDEPATH += \
     $$PWD/src/constants \
     $$PWD/src/core \
     $$PWD/src/core/cache \
+    $$PWD/src/core/library \
     $$PWD/src/core/player \
     $$PWD/src/ui \
     $$PWD/src/ui/components \
@@ -44,9 +45,9 @@ CONFIG(release, debug|release) {
 HEADERS += \
     $$PWD/src/core/audio.hpp \
     $$PWD/src/core/audios.hpp \
-    $$PWD/src/core/library.hpp \
     $$PWD/src/core/cache/cache.hpp \
     $$PWD/src/core/cache/cachebuilder.hpp \
+    $$PWD/src/core/library/library.hpp \
     $$PWD/src/core/player/player.hpp \
     $$PWD/src/core/player/timer.hpp \
     $$PWD/src/constants/constants.hpp \
@@ -60,15 +61,16 @@ HEADERS += \
     $$PWD/src/utils/config.hpp \
     $$PWD/src/utils/logger.hpp \
     $$PWD/src/utils/shortcut.hpp \
-    $$PWD/src/utils/utils.hpp
+    $$PWD/src/utils/utils.hpp \
+    src/core/library/librarybuilder.hpp
 
 SOURCES += \
     $$PWD/src/main.cpp \
     $$PWD/src/core/audio.cpp \
     $$PWD/src/core/audios.cpp \
-    $$PWD/src/core/library.cpp \
     $$PWD/src/core/cache/cache.cpp \
     $$PWD/src/core/cache/cachebuilder.cpp \
+    $$PWD/src/core/library/library.cpp \
     $$PWD/src/core/player/player.cpp \
     $$PWD/src/core/player/timer.cpp \
     $$PWD/src/constants/constants.cpp \
@@ -82,4 +84,5 @@ SOURCES += \
     $$PWD/src/utils/config.cpp \
     $$PWD/src/utils/logger.cpp \
     $$PWD/src/utils/shortcut.cpp \
-    $$PWD/src/utils/utils.cpp
+    $$PWD/src/utils/utils.cpp \
+    src/core/library/librarybuilder.cpp

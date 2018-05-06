@@ -7,14 +7,15 @@
 #include "audio.hpp"
 #include "audios.hpp"
 #include "cache.hpp"
-#include "cachebuilder.hpp"
 #include "logger.hpp"
 #include "utils.hpp"
 
-class Library
+class Library : public QObject
 {
+    Q_OBJECT
+
 public:
-    Library(const QString &path);
+    Library(QObject *parent = nullptr);
     ~Library();
 
     Audios audios() const;
@@ -22,11 +23,17 @@ public:
 
     void sortByTitle();
 
+    void load(const QStringList &paths);
+    void load(const QString &path);
+
     Audios search(const QString &string, Qt::CaseSensitivity cs = Qt::CaseInsensitive);
     Audio * audioAt(int index);
 
+signals:
+    void loaded();
+
 private:
-    void loadFiles(const QString &path);
+    void loadFromPath(const QString &path);
 
     Audios m_audios;
 };
