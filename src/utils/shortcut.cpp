@@ -45,7 +45,7 @@ bool Shortcut::nativeEventFilter(const QByteArray &eventType, void *message, lon
     Q_UNUSED(eventType);
     Q_UNUSED(result);
 
-    MSG* msg = static_cast<MSG *>(message);
+    MSG* msg = static_cast<MSG*>(message);
     if (msg->message == WM_HOTKEY && msg->wParam == m_id)
         emit pressed();
 

@@ -3,15 +3,15 @@
 /*
  * Constructor.
  *
+ * :param library: library
  * :param parent: parent, default nullptr
  */
-MusicLibrary::MusicLibrary(QWidget *parent) :
+MusicLibrary::MusicLibrary(Library *library, QWidget *parent) :
     QListWidget(parent)
 {
-    setFrameStyle(QFrame::NoFrame);
-    setStyleSheet(Utils::read(CSS_MUSICLIBRARY));
-    setUniformItemSizes(true);
-    setVerticalScrollMode(QAbstractItemView::ScrollPerPixel);
+    pm_library = library;
+
+    setupUi();
 }
 
 /*
@@ -23,15 +23,16 @@ MusicLibrary::~MusicLibrary()
 }
 
 /*
- * Loads a library.
- *
- * :param library: library
+ * Sets up user interface.
  */
-void MusicLibrary::loadLibrary(Library *library)
+void MusicLibrary::setupUi()
 {
-    clear();
+    setFrameStyle(QFrame::NoFrame);
+    setStyleSheet(Utils::read(CSS_MUSICLIBRARY));
+    setUniformItemSizes(true);
+    setVerticalScrollMode(QAbstractItemView::ScrollPerPixel);
 
-    Audios audios = library->audios();
+    Audios audios = pm_library->audios();
     for (int i = 0; i < audios.size(); i++)
     {
         SongInfo *info = new SongInfo(audios[i], this);

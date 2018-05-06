@@ -15,10 +15,13 @@ class MusicLibrary : public QListWidget
     Q_OBJECT
 
 public:
-    MusicLibrary(QWidget *parent = nullptr);
+    MusicLibrary(Library *library, QWidget *parent = nullptr);
     ~MusicLibrary();
 
-    void loadLibrary(Library *library);
+private:
+    void setupUi();
+
+    Library *pm_library;
 };
 
 #endif // MUSICLIBRARY_HPP

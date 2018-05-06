@@ -5,9 +5,7 @@
 #include <QWidget>
 
 #include "borderlayout.hpp"
-#include "cachebuilder.hpp"
 #include "library.hpp"
-#include "librarybuilder.hpp"
 #include "musiclibrary.hpp"
 #include "musicbar.hpp"
 
@@ -26,7 +24,6 @@ protected:
 
 private slots:
     void onMusicLibraryDoubleClicked(const QModelIndex &index);
-    void onLibraryLoaded();
 
 private:
     void setupUi();
