@@ -50,14 +50,14 @@ If logging is enabled in the config, the player automatically logs all warnings 
 - [ ] reactive cache
 
 ## Things to do
-- black title bar through [Windows API](https://msdn.microsoft.com/en-us/library/windows/desktop/ms724940%28v=vs.85%29.aspx)
+- [black title bar](https://msdn.microsoft.com/en-us/library/windows/desktop/ms724940%28v=vs.85%29.aspx)
 - fixed size for labels in SongInfo
 - differenciate vertical and horizontal spacing in Config::Bar
 - fix weird center alignment of volume slider
 - add alignment parameter for each SongInfo label
     - QSizePolicy::Fixed + setMinimum[or Maximum]Width(doCalc())?
 - do not show certain info at low size
-- QHBoxLayout for MusicBar
 - loads Library in thread and signal that it is ready -> update user interface
 - library scroll acceleration
 - json config
+- make app [DPI unware](https://msdn.microsoft.com/en-us/library/windows/desktop/mt846517%28v=vs.85%29.aspx)

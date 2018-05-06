@@ -20,19 +20,19 @@ public:
     ~SongInfo();
 
     void init(const QVector<int> &stretches);
-    void showTrack();
-    void showTitle();
-    void showArtist();
-    void showAlbum();
-    void showYear();
-    void showGenre();
-    void showLength();
+    void showTrack(Qt::Alignment horizontal = Qt::AlignLeft);
+    void showTitle(Qt::Alignment horizontal = Qt::AlignLeft);
+    void showArtist(Qt::Alignment horizontal = Qt::AlignLeft);
+    void showAlbum(Qt::Alignment horizontal = Qt::AlignLeft);
+    void showYear(Qt::Alignment horizontal = Qt::AlignLeft);
+    void showGenre(Qt::Alignment horizontal = Qt::AlignLeft);
+    void showLength(Qt::Alignment horizontal = Qt::AlignLeft);
 
 protected:
     void paintEvent(QPaintEvent *);
 
 private:
-    void createLabel(const QString &text = QString(), Qt::Alignment align = Qt::AlignLeft);
+    void createLabel(const QString &text = QString(), Qt::Alignment horizontal = Qt::AlignLeft);
 
     QVector<QLabel *> m_labels;
     Audio *pm_audio;

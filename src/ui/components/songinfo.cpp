@@ -36,64 +36,78 @@ void SongInfo::init(const QVector<int> &stretches)
 
 /*
  * Show track.
+ *
+ *:param horizontal: horizontal alignment
  */
-void SongInfo::showTrack()
+void SongInfo::showTrack(Qt::Alignment horizontal)
 {
     if (pm_audio->track() != 0)
-        createLabel(QString::number(pm_audio->track()));
+        createLabel(QString::number(pm_audio->track()), horizontal);
     else
         createLabel();
 }
 
 /*
  * Show title.
+ *
+ * :param horizontal: horizontal alignment
  */
-void SongInfo::showTitle()
+void SongInfo::showTitle(Qt::Alignment horizontal)
 {
-    createLabel(pm_audio->title());
+    createLabel(pm_audio->title(), horizontal);
 }
 
 /*
  * Show artist.
+ *
+ * :param horizontal: horizontal alignment
  */
-void SongInfo::showArtist()
+void SongInfo::showArtist(Qt::Alignment horizontal)
 {
-    createLabel(pm_audio->artist());
+    createLabel(pm_audio->artist(), horizontal);
 }
 
 /*
  * Show album.
+ *
+ * :param horizontal: horizontal alignment
  */
-void SongInfo::showAlbum()
+void SongInfo::showAlbum(Qt::Alignment horizontal)
 {
-    createLabel(pm_audio->album());
+    createLabel(pm_audio->album(), horizontal);
 }
 
 /*
  * Show year.
+ *
+ * :param horizontal: horizontal alignment
  */
-void SongInfo::showYear()
+void SongInfo::showYear(Qt::Alignment horizontal)
 {
     if (pm_audio->year() != 0)
-        createLabel(QString::number(pm_audio->year()));
+        createLabel(QString::number(pm_audio->year()), horizontal);
     else
         createLabel();
 }
 
 /*
  * Show genre.
+ *
+ * :param horizontal: horizontal alignment
  */
-void SongInfo::showGenre()
+void SongInfo::showGenre(Qt::Alignment horizontal)
 {
-    createLabel(pm_audio->genre());
+    createLabel(pm_audio->genre(), horizontal);
 }
 
 /*
  * Show length.
+ *
+ * :param horizontal: horizontal alignment
  */
-void SongInfo::showLength()
+void SongInfo::showLength(Qt::Alignment horizontal)
 {
-    createLabel(Utils::timeString(pm_audio->length()), Qt::AlignRight);
+    createLabel(Utils::timeString(pm_audio->length()), horizontal);
 }
 
 /*
@@ -113,9 +127,9 @@ void SongInfo::paintEvent(QPaintEvent *)
  * :param text: text, default empty
  * :param align: horizontal alignment, default left
  */
-void SongInfo::createLabel(const QString &text, Qt::Alignment align)
+void SongInfo::createLabel(const QString &text, Qt::Alignment horizontal)
 {
     QLabel *label = new QLabel(text, this);
-    label->setAlignment(align | Qt::AlignVCenter);
+    label->setAlignment(horizontal | Qt::AlignVCenter);
     m_labels << label;
 }

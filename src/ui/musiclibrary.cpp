@@ -41,7 +41,7 @@ void MusicLibrary::setupUi()
         info->showAlbum();
         info->showYear();
         info->showGenre();
-        info->showLength();
+        info->showLength(Qt::AlignRight);
         info->init({10, 10, 10, 1, 10, 1});
         info->setProperty("even", i % 2 == 0);
 
