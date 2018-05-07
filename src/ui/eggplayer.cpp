@@ -9,7 +9,7 @@ EggPlayer::EggPlayer(QWidget *parent) :
     QWidget(parent)
 {
     pm_library = new Library();
-    pm_library->load(Config::Library::path());
+    pm_library->load(Config::Library::paths());
     pm_library->sortByTitle();
 
     setupUi();

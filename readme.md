@@ -3,7 +3,7 @@ A Groove Music like music player.
 
 ## Features
 ### Customization
-Instead of using Qt's resource system the egg-player loads its customizable files at every start. This includes the css files under ```resources/css``` which allow all kind of color and shape related changes. Apart from that there is a global config file located under ```User/Documents/egg-player```. This config holds, next to shortcuts and general settings, a lot of user interface related values. Those might be useful for machines with higher dpi scaling because the app is not optimized for use cases like that right now. In those cases the user can manually these values to create an appealing look.
+Instead of using Qt's resource system the Egg Player loads its customizable files at every start. This includes the css files under ```resources/css``` which allow all kind of color and shape related changes. Apart from that there is a global config file located under ```User/Documents/egg-player```. This config holds, next to shortcuts and general settings, a lot of user interface related values. Those might be useful for machines with higher dpi scaling because the app is not optimized for use cases like that right now. In those cases the user can manually these values to create an appealing look.
 
 ### Global shortcuts
 The Egg Player supports global shortcuts for media actions. The following tables contains those media actions with their default values.
@@ -45,19 +45,24 @@ If logging is enabled in the config, the player automatically logs all warnings 
 - [x] use [bass.dll](http://www.un4seen.com/) as audio backend
 - [ ] own tag library based on [libmp3](https://github.com/TheOnlyCaky/libmp3) to support unicode characters
 - [ ] proper scaling on different machines
-- [x] proper multithreading
+- [ ] proper multithreading
 - [x] global shortcuts
 - [ ] reactive cache
+
+## Changes from newest release
+
+### New features
+- multiple library paths
+
+### Changelog
+- use json for config
 
 ## Things to do
 - [black title bar](https://msdn.microsoft.com/en-us/library/windows/desktop/ms724940%28v=vs.85%29.aspx)
 - fixed size for labels in SongInfo
 - fix weird center alignment of volume slider
-- add alignment parameter for each SongInfo label
-    - QSizePolicy::Fixed + setMinimum[or Maximum]Width(doCalc())?
 - do not show certain info at low size
 - loads Library in thread and signal that it is ready -> update user interface
 - library scroll acceleration
-- json config
 - make app [DPI unware](https://msdn.microsoft.com/en-us/library/windows/desktop/mt846517%28v=vs.85%29.aspx)
 - css round border for all devices

@@ -21,13 +21,15 @@ void Logger::log(const QString &message, const QStringList &args)
     QString text = QString("[%1] %2").arg(time).arg(log);
 
     if (!file)
-        Logger::createAndClear();
+        Logger::createAndClearFile();
 
-    file->open(QIODevice::Append | QIODevice::Text);
-    QTextStream out(file);
-    out.setCodec("UTF-8");
-    out << text << "\n";
-    file->close();
+    if (file->open(QIODevice::Append | QIODevice::Text))
+    {
+        QTextStream out(file);
+        out.setCodec("UTF-8");
+        out << text << "\n";
+        file->close();
+    }
 
 #ifdef QT_DEBUG
     qDebug().noquote() << text;
@@ -37,7 +39,7 @@ void Logger::log(const QString &message, const QStringList &args)
 /*
  * Creates and clears log file.
  */
-void Logger::createAndClear()
+void Logger::createAndClearFile()
 {
     file = new QFile(LOG_PATH, qApp);
     file->open(QIODevice::Append | QIODevice::Text);

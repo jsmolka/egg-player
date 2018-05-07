@@ -27,6 +27,6 @@ const QString APP_ORG_NAME      = "Egg Inc.";
 const QString SQL_CONNECTION    = "cache";
 const QString SQL_PATH          = DOCUMENTS + "/cache.db";
 
-const QString CFG_PATH          = DOCUMENTS + "/config.ini";
+const QString CFG_PATH          = DOCUMENTS + "/config.json";
 
 const QString LOG_PATH          = DOCUMENTS + "/egg.log";
