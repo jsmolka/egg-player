@@ -19,7 +19,7 @@ Audio::Audio(const QString &path)
 
     if (!m_valid)
     {
-        Logger::log("Audio: Cannot read tags '%1'", m_path);
+        Logger::log("Audio: Cannot read tags '%1'", {m_path});
         return;
     }
 
@@ -211,7 +211,7 @@ QPixmap Audio::readCover()
     else
     {
         image = Utils::defaultCover();
-        Logger::log("Audio: Cannot read cover '%1'", m_path);
+        Logger::log("Audio: Cannot read cover '%1'", {m_path});
     }
     return image;
 }

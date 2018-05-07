@@ -6,6 +6,8 @@
 #include <QStyle>
 #include <QVector>
 
+#include "utils.hpp"
+
 class IconButton : public QPushButton
 {
     Q_OBJECT
@@ -28,7 +30,7 @@ public:
     void setLockable(bool lockable);
     bool isLockable() const;
 
-    void init(const QVector<QIcon> &icons, int size, bool lockable = false);
+    void init(const QStringList &icons, int size, bool lockable = false);
 
 signals:
     void locked(bool locked);

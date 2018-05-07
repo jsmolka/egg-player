@@ -3,15 +3,15 @@
 /*
  * Constructor.
  *
- * :param library: library
  * :param parent: parent, default nullptr
  */
-MusicLibrary::MusicLibrary(Library *library, QWidget *parent) :
+MusicLibrary::MusicLibrary(QWidget *parent) :
     QListWidget(parent)
 {
-    pm_library = library;
-
-    setupUi();
+    setFrameStyle(QFrame::NoFrame);
+    setStyleSheet(Utils::read(CSS_MUSICLIBRARY));
+    setUniformItemSizes(true);
+    setVerticalScrollMode(QAbstractItemView::ScrollPerPixel);
 }
 
 /*
@@ -23,19 +23,18 @@ MusicLibrary::~MusicLibrary()
 }
 
 /*
- * Sets up user interface.
+ * Loads a library.
+ *
+ * :param library: library
  */
-void MusicLibrary::setupUi()
+void MusicLibrary::loadLibrary(Library *library)
 {
-    setFrameStyle(QFrame::NoFrame);
-    setStyleSheet(Utils::read(CSS_MUSICLIBRARY));
-    setUniformItemSizes(true);
-    setVerticalScrollMode(QAbstractItemView::ScrollPerPixel);
+    clear();
 
-    Audios audios = pm_library->audios();
-    for (int i = 0; i < audios.size(); i++)
+    bool even = false;
+    for (Audio *audio : library->audios())
     {
-        SongInfo *info = new SongInfo(audios[i], this);
+        SongInfo *info = new SongInfo(audio, this);
         info->showTitle();
         info->showArtist();
         info->showAlbum();
@@ -43,11 +42,13 @@ void MusicLibrary::setupUi()
         info->showGenre();
         info->showLength(Qt::AlignRight);
         info->init({10, 10, 10, 1, 10, 1});
-        info->setProperty("even", i % 2 == 0);
+        info->setEven(even);
 
         QListWidgetItem *item = new QListWidgetItem(this);
         item->setSizeHint(QSize(0, Config::Library::itemHeight()));
         addItem(item);
         setItemWidget(item, info);
+
+        even = !even;
     }
 }

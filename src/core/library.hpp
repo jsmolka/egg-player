@@ -14,7 +14,7 @@
 class Library
 {
 public:
-    Library(const QString &path);
+    Library();
     ~Library();
 
     Audios audios() const;
@@ -22,11 +22,14 @@ public:
 
     void sortByTitle();
 
+    void load(const QStringList &paths);
+    void load(const QString &path);
+
     Audios search(const QString &string, Qt::CaseSensitivity cs = Qt::CaseInsensitive);
     Audio * audioAt(int index);
 
 private:
-    void loadFiles(const QString &path);
+    void loadFromPath(const QString &path);
 
     Audios m_audios;
 };

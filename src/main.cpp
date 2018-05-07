@@ -1,5 +1,6 @@
 #include <QApplication>
 
+#include "config.hpp"
 #include "constants.hpp"
 #include "eggplayer.hpp"
 #include "utils.hpp"
@@ -10,7 +11,6 @@
 void setup()
 {
     Config::create();
-    Logger::create();
 
     Utils::checkResources();
 

@@ -65,15 +65,22 @@ int IconButton::selectedIcon() const
 }
 
 /*
- * Setter for locked property. Locking the button
- * will only take effect if the button is
- * lockable.
+ * Setter for locked property. Reloads the
+ * buttons stylesheet.
  *
  * :param locked: locked
+ * :emit locked: locked
  */
 void IconButton::setLocked(bool locked)
 {
     m_locked = locked;
+
+    if (!m_lockable)
+        return;
+
+    style()->unpolish(this);
+    style()->polish(this);
+    emit this->locked(m_locked);
 }
 
 /*
@@ -113,34 +120,29 @@ bool IconButton::isLockable() const
  * button icon to the first item in icons and
  * resizes it.
  *
- * :param icons: list of icons
+ * :param icons: icon paths
  * :param size: icon size
  * :param lockable: is lockable, default false
  */
-void IconButton::init(const QVector<QIcon> &icons, int size, bool lockable)
+void IconButton::init(const QStringList &icons, int size, bool lockable)
 {
-    m_icons = icons;
     m_lockable = lockable;
+    m_icons.clear();
+    for (const QPixmap &icon : icons)
+        m_icons << Utils::resize(QPixmap(icon), size);
 
     QSize iconSize = QSize(size, size);
 
-    setIcon(icons[0]);
+    setIcon(m_icons.first());
     setIconSize(iconSize);
     setFixedSize(iconSize);
 }
 
 /*
- * Clicked event. If the button is
- * lockable the locked property get switched and
- * the style sheet gets reloaded.
+ * Clicked event. Switches the locked
+ * property.
  */
 void IconButton::onClicked()
 {
-    if (m_lockable)
-    {
-        m_locked = !m_locked;
-        style()->unpolish(this);
-        style()->polish(this);
-        emit locked(m_locked);
-    }
+    setLocked(!m_locked);
 }

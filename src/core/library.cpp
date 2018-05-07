@@ -1,23 +1,11 @@
 #include "library.hpp"
 
 /*
- * Constructor. Loads files from the library path
- * and creates a thread for cover caching.
- *
- * :param path: path
+ * Constructor.
  */
-Library::Library(const QString &path)
+Library::Library()
 {
-    if (!Utils::exists(path))
-    {
-        Logger::log("Library: Path does not exist '%1'", path);
-        return;
-    }
 
-    loadFiles(path);
-
-    CacheBuilder *builder = new CacheBuilder(m_audios);
-    builder->start();
 }
 
 /*
@@ -58,6 +46,36 @@ void Library::sortByTitle()
 }
 
 /*
+ * Loads library from multiple paths.
+ * Also creates a thread for cache loading.
+ *
+ * :param paths: paths
+ */
+void Library::load(const QStringList &paths)
+{
+    for (const QString &path : paths)
+    {
+        if (Utils::exists(path))
+            loadFromPath(path);
+        else
+            Logger::log("Library: Path does not exist '%1'", {path});
+    }
+
+    CacheBuilder *builder = new CacheBuilder(m_audios);
+    builder->start();
+}
+
+/*
+ * Overloaded function.
+ *
+ * :param path: path
+ */
+void Library::load(const QString &path)
+{
+    load(QStringList(path));
+}
+
+/*
  * Searches for a string in the library.
  *
  * :param string: string
@@ -90,28 +108,27 @@ Audio * Library::audioAt(int index)
 }
 
 /*
- * Loads library files.
+ * Loads audios from a path.
  *
  * :param path: path
  */
-void Library::loadFiles(const QString &path)
+void Library::loadFromPath(const QString &path)
 {
     QStringList files = Utils::glob(path, "*.mp3");
     if (files.isEmpty())
     {
-        Logger::log("Library: Path contains no files '%1'", path);
+        Logger::log("Library: Path contains no audio files '%1'", {path});
         return;
     }
 
-    m_audios.reserve(files.size());
+    m_audios.reserve(m_audios.size() + files.size());
     for (const QString &file : files)
     {
         Audio *audio = new Audio(file);
-        if (!audio->isValid())
-        {
+        if (audio->isValid())
+            m_audios << audio;
+        else
             delete audio;
-            continue;
-        }
-        m_audios << audio;
+
     }
 }

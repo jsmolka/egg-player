@@ -96,7 +96,7 @@ QString Utils::read(const QString &path)
     QFile file(path);
     if (!file.open(QFile::ReadOnly | QFile::Text))
     {
-        Logger::log("FileUtil: Cannot read file '%1'", path);
+        Logger::log("FileUtil: Cannot read file '%1'", {path});
         return QString();
     }
 
@@ -203,7 +203,7 @@ void Utils::checkResources()
 
     for (const QString &resource : resources)
         if (!Utils::exists(resource))
-            Logger::log("Resource does not exist '%1'", resource);
+            Logger::log("Resource does not exist '%1'", {resource});
 }
 
 /*

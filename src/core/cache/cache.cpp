@@ -105,7 +105,7 @@ QPixmap Cache::cover(const QString &path, int size)
     if (image.isNull())
     {
         image = Utils::defaultCover();
-        Logger::log("Cache: Cannot load cover '%1'", path);
+        Logger::log("Cache: Cannot load cover '%1'", {path});
     }
     return Utils::resize(image, size);
 }
@@ -319,8 +319,10 @@ void Cache::handleError(const QSqlQuery &query)
     {
         Logger::log(
             "Cache: Querying '%1' failed with error '%2'",
-            lastQuery(query),
-            error.databaseText()
+            {
+                lastQuery(query),
+                error.databaseText()
+            }
         );
     }
 }

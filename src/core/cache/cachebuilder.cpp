@@ -4,8 +4,8 @@
  * Constructor. Connects the thread to the app
  * so that it automatically aborts and deletes.
  *
- * :param parent: parent, default nullptr
  * :param audios: audios
+ * :param parent: parent, default nullptr
  */
 CacheBuilder::CacheBuilder(const Audios &audios, QObject *parent) :
     QThread(parent)

@@ -15,9 +15,14 @@ class SongInfo : public QWidget
 {
     Q_OBJECT
 
+    Q_PROPERTY(bool even READ isEven WRITE setEven)
+
 public:
     SongInfo(Audio *audio, QWidget *parent = nullptr);
     ~SongInfo();
+
+    void setEven(bool even);
+    bool isEven() const;
 
     void init(const QVector<int> &stretches);
     void showTrack(Qt::Alignment horizontal = Qt::AlignLeft);
@@ -36,6 +41,7 @@ private:
 
     QVector<QLabel *> m_labels;
     Audio *pm_audio;
+    bool m_even;
 };
 
 #endif // SONGINFO_HPP

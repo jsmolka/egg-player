@@ -8,7 +8,8 @@
 EggPlayer::EggPlayer(QWidget *parent) :
     QWidget(parent)
 {
-    pm_library = new Library(Config::Library::path());
+    pm_library = new Library();
+    pm_library->load(Config::Library::path());
     pm_library->sortByTitle();
 
     setupUi();
@@ -70,7 +71,8 @@ void EggPlayer::onMusicLibraryDoubleClicked(const QModelIndex &index)
  */
 void EggPlayer::setupUi()
 {
-    pm_musicLibrary = new MusicLibrary(pm_library, this);
+    pm_musicLibrary = new MusicLibrary(this);
+    pm_musicLibrary->loadLibrary(pm_library);
     pm_musicBar = new MusicBar(this);
 
     QLabel *west = new QLabel(this);

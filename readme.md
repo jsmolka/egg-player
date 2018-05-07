@@ -52,7 +52,6 @@ If logging is enabled in the config, the player automatically logs all warnings 
 ## Things to do
 - [black title bar](https://msdn.microsoft.com/en-us/library/windows/desktop/ms724940%28v=vs.85%29.aspx)
 - fixed size for labels in SongInfo
-- differenciate vertical and horizontal spacing in Config::Bar
 - fix weird center alignment of volume slider
 - add alignment parameter for each SongInfo label
     - QSizePolicy::Fixed + setMinimum[or Maximum]Width(doCalc())?
@@ -61,3 +60,4 @@ If logging is enabled in the config, the player automatically logs all warnings 
 - library scroll acceleration
 - json config
 - make app [DPI unware](https://msdn.microsoft.com/en-us/library/windows/desktop/mt846517%28v=vs.85%29.aspx)
+- css round border for all devices

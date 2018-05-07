@@ -9,6 +9,11 @@
 MusicBar::MusicBar(QWidget *parent) :
     QWidget(parent)
 {
+    setAutoFillBackground(true);
+    setFixedHeight(Config::Bar::height());
+    setStyleSheet(Utils::read(CSS_MUSICBAR));
+    setColor(Utils::backgroundColor(Utils::defaultCover(Config::Bar::coverSize())));
+
     pm_player = new Player(this);
     pm_player->setVolume(Config::Player::volume());
     pm_player->setShuffle(Config::Player::shuffle());
@@ -390,11 +395,6 @@ void MusicBar::onShortcutVolumeDownPressed()
  */
 void MusicBar::setupUi()
 {
-    setAutoFillBackground(true);
-    setFixedHeight(Config::Bar::height());
-    setStyleSheet(Utils::read(CSS_MUSICBAR));
-    setColor(Utils::backgroundColor(Utils::defaultCover(Config::Bar::coverSize())));
-
     createAudioInfo();
     createLengthSlider();
     createButtons();
@@ -441,32 +441,32 @@ void MusicBar::createButtons()
 {
     pm_previousButton = new IconButton(this);
     pm_previousButton->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-    pm_previousButton->init({QIcon(ICO_PREVIOUS)}, Config::Bar::iconSize());
+    pm_previousButton->init({ICO_PREVIOUS}, Config::Bar::iconSize());
 
     pm_playPauseButton = new IconButton(this);
     pm_playPauseButton->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-    pm_playPauseButton->init({QIcon(ICO_PLAY), QIcon(ICO_PAUSE)}, Config::Bar::iconSize());
+    pm_playPauseButton->init({ICO_PLAY, ICO_PAUSE}, Config::Bar::iconSize());
 
     pm_nextButton = new IconButton(this);
     pm_nextButton->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-    pm_nextButton->init({QIcon(ICO_NEXT)}, Config::Bar::iconSize());
+    pm_nextButton->init({ICO_NEXT}, Config::Bar::iconSize());
 
     pm_shuffleButton = new IconButton(this);
     pm_shuffleButton->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-    pm_shuffleButton->init({QIcon(ICO_SHUFFLE)}, Config::Bar::iconSize(), true);
+    pm_shuffleButton->init({ICO_SHUFFLE}, Config::Bar::iconSize(), true);
     pm_shuffleButton->setLocked(Config::Player::shuffle());
 
     pm_loopButton = new IconButton(this);
     pm_loopButton->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-    pm_loopButton->init({QIcon(ICO_LOOP)}, Config::Bar::iconSize(), true);
+    pm_loopButton->init({ICO_LOOP}, Config::Bar::iconSize(), true);
     pm_loopButton->setLocked(Config::Player::loop());
 
     pm_volumeButton = new IconButton(this);
     pm_volumeButton->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-    pm_volumeButton->init({QIcon(ICO_VOLUME_FULL),
-                           QIcon(ICO_VOLUME_MEDIUM),
-                           QIcon(ICO_VOLUME_LOW),
-                           QIcon(ICO_VOLUME_MUTE)}, Config::Bar::iconSize());
+    pm_volumeButton->init({ICO_VOLUME_FULL,
+                           ICO_VOLUME_MEDIUM,
+                           ICO_VOLUME_LOW,
+                           ICO_VOLUME_MUTE}, Config::Bar::iconSize());
     setVolumeIcon(Config::Player::volume());
 
     pm_volumeSlider = new ClickableSlider(this);

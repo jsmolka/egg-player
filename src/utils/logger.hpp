@@ -17,12 +17,11 @@
 class Logger
 {
 public:
-    static void create();
-
-    static void log(const QString &message, const QStringList &args);
-    static void log(const QString &message, const QString &arg1 = QString(), const QString &arg2 = QString());
+    static void log(const QString &message, const QStringList &args = {});
 
 private:
+    static void createAndClearFile();
+
     static QFile *file;
 };
 
