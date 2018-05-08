@@ -677,12 +677,7 @@ const QString Config::Shortcut::dVolumeUp   = "Ctrl+F8";
  */
 void Config::save()
 {
-    jObject[kApp] = oApp;
-    jObject[kShortcut] = oShortcut;
-    jObject[kPlayer] = oPlayer;
-    jObject[kLibrary] = oLibrary;
-    jObject[kBar] = oBar;
-    jDocument.setObject(jObject);
+    saveObjects();
 
     QFile file(CFG_PATH);
     if (file.open(QFile::WriteOnly))
@@ -701,33 +696,40 @@ void Config::load()
         if (file.open(QIODevice::ReadOnly))
             jDocument = QJsonDocument::fromJson(file.readAll());
     }
-    jObject = jDocument.object();
+    loadObjects();
+}
 
-    if (jObject.contains(kApp))
-        oApp = jObject[kApp].toObject();
+/*
+ * Saves objects.
+ */
+void Config::saveObjects()
+{
+    QJsonObject object = jDocument.object();
+    object[kApp] = oApp;
+    object[kShortcut] = oShortcut;
+    object[kPlayer] = oPlayer;
+    object[kLibrary] = oLibrary;
+    object[kBar] = oBar;
+    jDocument.setObject(object);
+}
 
-    if (jObject.contains(kShortcut))
-        oShortcut = jObject[kShortcut].toObject();
-
-    if (jObject.contains(kPlayer))
-        oPlayer = jObject[kPlayer].toObject();
-
-    if (jObject.contains(kLibrary))
-        oLibrary = jObject[kLibrary].toObject();
-
-    if (jObject.contains(kBar))
-        oBar = jObject[kBar].toObject();
+/*
+ * Loads objects.
+ */
+void Config::loadObjects()
+{
+    QJsonObject object = jDocument.object();
+    oApp = object[kApp].toObject();
+    oShortcut = object[kShortcut].toObject();
+    oPlayer = object[kPlayer].toObject();
+    oLibrary = object[kLibrary].toObject();
+    oBar = object[kBar].toObject();
 }
 
 /*
  * Json document.
  */
 QJsonDocument Config::jDocument;
-
-/*
- * Json object.
- */
-QJsonObject Config::jObject;
 
 /*
  * Main json objects.

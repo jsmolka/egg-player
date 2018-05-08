@@ -175,8 +175,10 @@ private:
     static void save();
     static void load();
 
+    static void saveObjects();
+    static void loadObjects();
+
     static QJsonDocument jDocument;
-    static QJsonObject jObject;
 
     static QJsonObject oApp;
     static QJsonObject oBar;

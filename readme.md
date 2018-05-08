@@ -49,7 +49,7 @@ If logging is enabled in the config, the player automatically logs all warnings 
 - [x] global shortcuts
 - [ ] reactive cache
 
-## Changes from newest release
+## Changes since newest release
 
 ### New features
 - multiple library paths
