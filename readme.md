@@ -42,9 +42,9 @@ If logging is enabled in the config, the player automatically logs all warnings 
 ## Roadmap
 - [x] documentation
 - [ ] playlist support
-- [x] use [bass.dll](http://www.un4seen.com/) as audio backend
-- [ ] own tag library based on [libmp3](https://github.com/TheOnlyCaky/libmp3) to support unicode characters
-- [ ] proper scaling on different machines
+- [x] [bass.dll](http://www.un4seen.com/) as audio backend
+- [ ] own tag library based on [libmp3](https://github.com/TheOnlyCaky/libmp3)
+- [ ] proper dpi scaling
 - [ ] proper multithreading
 - [x] global shortcuts
 - [ ] reactive cache
@@ -60,9 +60,7 @@ If logging is enabled in the config, the player automatically logs all warnings 
 ## Things to do
 - [black title bar](https://msdn.microsoft.com/en-us/library/windows/desktop/ms724940%28v=vs.85%29.aspx)
 - fixed size for labels in SongInfo
-- fix weird center alignment of volume slider
 - do not show certain info at low size
-- loads Library in thread and signal that it is ready -> update user interface
+- load library in a separate thread
 - library scroll acceleration
-- make app [DPI unware](https://msdn.microsoft.com/en-us/library/windows/desktop/mt846517%28v=vs.85%29.aspx)
 - css round border for all devices

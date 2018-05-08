@@ -21,8 +21,8 @@ void Config::create()
  */
 void Config::App::create()
 {
-    setDefault(kFontSize, dFontSize);
-    setDefault(kLog, dLog);
+    setDefault(oApp, kFontSize, dFontSize);
+    setDefault(oApp, kLog, dLog);
 }
 
 /*
@@ -32,7 +32,7 @@ void Config::App::create()
  */
 void Config::App::setFontSize(double size)
 {
-    setValue(kFontSize, size);
+    setValue(oApp, kFontSize, size);
 }
 
 /*
@@ -52,7 +52,7 @@ double Config::App::fontSize()
  */
 void Config::App::setLog(bool log)
 {
-    setValue(kLog, log);
+    setValue(oApp, kLog, log);
 }
 
 /*
@@ -63,30 +63,6 @@ void Config::App::setLog(bool log)
 bool Config::App::log()
 {
     return oApp[kLog].toBool();
-}
-
-/*
- * Sets non existing key to its default.
- *
- * :param key: key
- * :param value: value
- */
-void Config::App::setDefault(const QString &key, const QJsonValue &value)
-{
-    if (!oApp.contains(key))
-        setValue(key, value);
-}
-
-/*
- * Sets value at key.
- *
- * :param key: key
- * :param value: value
- */
-void Config::App::setValue(const QString &key, const QJsonValue &value)
-{
-    oApp[key] = value;
-    save();
 }
 
 /*
@@ -107,12 +83,12 @@ const bool Config::App::dLog         = true;
  */
 void Config::Bar::create()
 {
-    setDefault(kHeight, dHeight);
-    setDefault(kIconSize, dIconSize);
-    setDefault(kMargin, dMargin);
-    setDefault(kSpacing, dSpacing);
-    setDefault(kTimeWidth, dTimeWidth);
-    setDefault(kTrackWidth, dTrackWidth);
+    setDefault(oBar, kHeight, dHeight);
+    setDefault(oBar, kIconSize, dIconSize);
+    setDefault(oBar, kMargin, dMargin);
+    setDefault(oBar, kSpacing, dSpacing);
+    setDefault(oBar, kTimeWidth, dTimeWidth);
+    setDefault(oBar, kTrackWidth, dTrackWidth);
 }
 
 /*
@@ -122,7 +98,7 @@ void Config::Bar::create()
  */
 void Config::Bar::setHeight(int height)
 {
-    setValue(kHeight, height);
+    setValue(oBar, kHeight, height);
 }
 
 /*
@@ -132,7 +108,7 @@ void Config::Bar::setHeight(int height)
  */
 int Config::Bar::height()
 {
-    return oBar[kHeight].toInt();
+    return scale(oBar[kHeight].toInt());
 }
 
 /*
@@ -142,7 +118,7 @@ int Config::Bar::height()
  */
 void Config::Bar::setIconSize(int size)
 {
-    setValue(kIconSize, size);
+    setValue(oBar, kIconSize, size);
 }
 
 /*
@@ -152,7 +128,7 @@ void Config::Bar::setIconSize(int size)
  */
 int Config::Bar::iconSize()
 {
-    return oBar[kIconSize].toInt();
+    return scale(oBar[kIconSize].toInt());
 }
 
 /*
@@ -162,7 +138,7 @@ int Config::Bar::iconSize()
  */
 void Config::Bar::setMargin(int margin)
 {
-    setValue(kMargin, margin);
+    setValue(oBar, kMargin, margin);
 }
 
 /*
@@ -172,7 +148,7 @@ void Config::Bar::setMargin(int margin)
  */
 int Config::Bar::margin()
 {
-    return oBar[kMargin].toInt();
+    return scale(oBar[kMargin].toInt());
 }
 
 /*
@@ -182,7 +158,7 @@ int Config::Bar::margin()
  */
 void Config::Bar::setSpacing(int spacing)
 {
-    setValue(kSpacing, spacing);
+    setValue(oBar, kSpacing, spacing);
 }
 
 /*
@@ -192,7 +168,7 @@ void Config::Bar::setSpacing(int spacing)
  */
 int Config::Bar::spacing()
 {
-    return oBar[kSpacing].toInt();
+    return scale(oBar[kSpacing].toInt());
 }
 
 /*
@@ -212,7 +188,7 @@ int Config::Bar::coverSize()
  */
 void Config::Bar::setTimeWidth(int width)
 {
-    setValue(kTimeWidth, width);
+    setValue(oBar, kTimeWidth, width);
 }
 
 /*
@@ -222,7 +198,7 @@ void Config::Bar::setTimeWidth(int width)
  */
 int Config::Bar::timeWidth()
 {
-    return oBar[kTimeWidth].toInt();
+    return scale(oBar[kTimeWidth].toInt());
 }
 
 /*
@@ -232,7 +208,7 @@ int Config::Bar::timeWidth()
  */
 void Config::Bar::setTrackWidth(int width)
 {
-    setValue(kTimeWidth, width);
+    setValue(oBar, kTimeWidth, width);
 }
 
 /*
@@ -242,31 +218,7 @@ void Config::Bar::setTrackWidth(int width)
  */
 int Config::Bar::trackWidth()
 {
-    return oBar[kTrackWidth].toInt();
-}
-
-/*
- * Sets non existing key to its default.
- *
- * :param key: key
- * :param value: value
- */
-void Config::Bar::setDefault(const QString &key, const QJsonValue &value)
-{
-    if (!oBar.contains(key))
-        setValue(key, value);
-}
-
-/*
- * Sets value at key.
- *
- * :param key: key
- * :param value: value
- */
-void Config::Bar::setValue(const QString &key, const QJsonValue &value)
-{
-    oBar[key] = value;
-    save();
+    return scale(oBar[kTrackWidth].toInt());
 }
 
 /*
@@ -295,8 +247,8 @@ const int Config::Bar::dTrackWidth     = 240;
  */
 void Config::Library::create()
 {
-    setDefault(kPaths, dPaths);
-    setDefault(kItemHeight, dItemHeight);
+    setDefault(oLibrary, kPaths, dPaths);
+    setDefault(oLibrary, kItemHeight, dItemHeight);
 }
 
 /*
@@ -306,7 +258,7 @@ void Config::Library::create()
  */
 void Config::Library::setItemHeight(int height)
 {
-    setValue(kItemHeight, height);
+    setValue(oLibrary, kItemHeight, height);
 }
 
 /*
@@ -316,7 +268,7 @@ void Config::Library::setItemHeight(int height)
  */
 int Config::Library::itemHeight()
 {
-    return oLibrary[kItemHeight].toInt();
+    return scale(oLibrary[kItemHeight].toInt());
 }
 
 /*
@@ -330,7 +282,7 @@ void Config::Library::setPaths(const QStringList &paths)
     for (const QString &path : paths)
         array << QJsonValue::fromVariant(path);
 
-    setValue(kPaths, array);
+    setValue(oLibrary, kPaths, array);
 }
 
 /*
@@ -345,54 +297,6 @@ QStringList Config::Library::paths()
         list << element.toString();
 
     return list;
-}
-
-/*
- * Sets non existing key to its default.
- *
- * :param key: key
- * :param value: value
- */
-void Config::Library::setDefault(const QString &key, const QJsonValue &value)
-{
-    if (!oLibrary.contains(key))
-        setValue(key, value);
-}
-
-/*
- * Overloaded function.
- *
- * :param key: key
- * :param value: value
- */
-void Config::Library::setDefault(const QString &key, const QJsonArray &value)
-{
-    if (!oLibrary.contains(key))
-        setValue(key, value);
-}
-
-/*
- * Sets value at key.
- *
- * :param key: key
- * :param value: value
- */
-void Config::Library::setValue(const QString &key, const QJsonValue &value)
-{
-    oLibrary[key] = value;
-    save();
-}
-
-/*
- * Overloaded function.
- *
- * :param key: key
- * :param value: value
- */
-void Config::Library::setValue(const QString &key, const QJsonArray &value)
-{
-    oLibrary[key] = value;
-    save();
 }
 
 /*
@@ -413,9 +317,9 @@ const QJsonArray Config::Library::dPaths   = {QStandardPaths::writableLocation(Q
  */
 void Config::Player::create()
 {
-    setDefault(kVolume, dVolume);
-    setDefault(kShuffle, dShuffle);
-    setDefault(kLoop, dLoop);
+    setDefault(oPlayer, kVolume, dVolume);
+    setDefault(oPlayer, kShuffle, dShuffle);
+    setDefault(oPlayer, kLoop, dLoop);
 }
 
 /*
@@ -425,7 +329,7 @@ void Config::Player::create()
  */
 void Config::Player::setLoop(bool loop)
 {
-    setValue(kLoop, loop);
+    setValue(oPlayer, kLoop, loop);
 }
 
 /*
@@ -445,7 +349,7 @@ bool Config::Player::loop()
  */
 void Config::Player::setShuffle(bool shuffle)
 {
-    setValue(kShuffle, shuffle);
+    setValue(oPlayer, kShuffle, shuffle);
 }
 
 /*
@@ -465,7 +369,7 @@ bool Config::Player::shuffle()
  */
 void Config::Player::setVolume(int volume)
 {
-    setValue(kVolume, volume);
+    setValue(oPlayer, kVolume, volume);
 }
 
 /*
@@ -476,30 +380,6 @@ void Config::Player::setVolume(int volume)
 int Config::Player::volume()
 {
     return oPlayer[kVolume].toInt();
-}
-
-/*
- * Sets non existing key to its default.
- *
- * :param key: key
- * :param value: value
- */
-void Config::Player::setDefault(const QString &key, const QJsonValue &value)
-{
-    if (!oPlayer.contains(key))
-        setValue(key, value);
-}
-
-/*
- * Sets value at key.
- *
- * :param key: key
- * :param value: value
- */
-void Config::Player::setValue(const QString &key, const QJsonValue &value)
-{
-    oPlayer[key] = value;
-    save();
 }
 
 /*
@@ -522,11 +402,11 @@ const int Config::Player::dVolume      = 25;
  */
 void Config::Shortcut::create()
 {
-    setDefault(kNext, dNext);
-    setDefault(kPlayPause, dPlayPause);
-    setDefault(kPrevious, dPrevious);
-    setDefault(kVolumeDown, dVolumeDown);
-    setDefault(kVolumeUp, dVolumeUp);
+    setDefault(oShortcut, kNext, dNext);
+    setDefault(oShortcut, kPlayPause, dPlayPause);
+    setDefault(oShortcut, kPrevious, dPrevious);
+    setDefault(oShortcut, kVolumeDown, dVolumeDown);
+    setDefault(oShortcut, kVolumeUp, dVolumeUp);
 }
 
 /*
@@ -536,7 +416,7 @@ void Config::Shortcut::create()
  */
 void Config::Shortcut::setNext(const QString &shortcut)
 {
-    setValue(kNext, shortcut);
+    setValue(oShortcut, kNext, shortcut);
 }
 
 /*
@@ -556,7 +436,7 @@ QString Config::Shortcut::next()
  */
 void Config::Shortcut::setPlayPause(const QString &shortcut)
 {
-    setValue(kPlayPause, shortcut);
+    setValue(oShortcut, kPlayPause, shortcut);
 }
 
 /*
@@ -576,7 +456,7 @@ QString Config::Shortcut::playPause()
  */
 void Config::Shortcut::setPrevious(const QString &shortcut)
 {
-    setValue(kPrevious, shortcut);
+    setValue(oShortcut, kPrevious, shortcut);
 }
 
 /*
@@ -596,7 +476,7 @@ QString Config::Shortcut::previous()
  */
 void Config::Shortcut::setVolumeDown(const QString &shortcut)
 {
-    setValue(kVolumeDown, shortcut);
+    setValue(oShortcut, kVolumeDown, shortcut);
 }
 
 /*
@@ -616,7 +496,7 @@ QString Config::Shortcut::volumeDown()
  */
 void Config::Shortcut::setVolumeUp(const QString &shortcut)
 {
-    setValue(kVolumeUp, shortcut);
+    setValue(oShortcut, kVolumeUp, shortcut);
 }
 
 /*
@@ -627,30 +507,6 @@ void Config::Shortcut::setVolumeUp(const QString &shortcut)
 QString Config::Shortcut::volumeUp()
 {
     return oShortcut[kVolumeUp].toString();
-}
-
-/*
- * Sets non existing key to its default.
- *
- * :param key: key
- * :param value: value
- */
-void Config::Shortcut::setDefault(const QString &key, const QJsonValue &value)
-{
-    if (!oShortcut.contains(key))
-        setValue(key, value);
-}
-
-/*
- * Sets value at key.
- *
- * :param key: key
- * :param value: value
- */
-void Config::Shortcut::setValue(const QString &key, const QJsonValue &value)
-{
-    oShortcut[key] = value;
-    save();
 }
 
 /*
@@ -724,6 +580,69 @@ void Config::loadObjects()
     oPlayer = object[kPlayer].toObject();
     oLibrary = object[kLibrary].toObject();
     oBar = object[kBar].toObject();
+}
+
+/*
+ * Sets value at key and saves changes.
+ *
+ * :param object: object
+ * :param key: key
+ * :param value: value
+ */
+void Config::setValue(QJsonObject &object, const QString &key, const QJsonValue &value)
+{
+    object[key] = value;
+    save();
+}
+
+/*
+ * Sets value at key and saves changes.
+ *
+ * :param object: object
+ * :param key: key
+ * :param value: value
+ */
+void Config::setValue(QJsonObject &object, const QString &key, const QJsonArray &value)
+{
+    object[key] = value;
+    save();
+}
+
+/*
+ * Sets value if the key does not exist.
+ *
+ * :param object: object
+ * :param key: key
+ * :param value: value
+ */
+void Config::setDefault(QJsonObject &object, const QString &key, const QJsonValue &value)
+{
+    if (!object.contains(key))
+        setValue(object, key, value);
+}
+
+/*
+ * Sets value if the key does not exist.
+ *
+ * :param object: object
+ * :param key: key
+ * :param value: value
+ */
+void Config::setDefault(QJsonObject &object, const QString &key, const QJsonArray &value)
+{
+    if (!object.contains(key))
+        setValue(object, key, value);
+}
+
+/*
+ * Scales value.
+ *
+ * :param value: value
+ * :return: scaled value
+ */
+float Config::scale(float value)
+{
+    return (GetScaleFactorForDevice(DEVICE_PRIMARY) / 100.f) * value;
 }
 
 /*

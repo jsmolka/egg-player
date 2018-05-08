@@ -22,6 +22,7 @@ INCLUDEPATH += \
 
 LIBS += \
     -luser32 \
+    -lshcore \
     -L"$$PWD/ext/bass-2.4/lib" -lbass
 
 CONFIG(debug, debug|release) {

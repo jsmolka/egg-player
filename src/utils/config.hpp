@@ -1,6 +1,8 @@
 #ifndef CONFIG_HPP
 #define CONFIG_HPP
 
+#include <ShellScalingApi.h>
+
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QJsonArray>
@@ -27,9 +29,6 @@ public:
         static bool log();
 
     private:
-        static void setDefault(const QString &key, const QJsonValue &value);
-        static void setValue(const QString &key, const QJsonValue &value);
-
         static const QString kFontSize;
         static const QString kLog;
 
@@ -63,9 +62,6 @@ public:
         static int trackWidth();
 
     private:
-        static void setDefault(const QString &key, const QJsonValue &value);
-        static void setValue(const QString &key, const QJsonValue &value);
-
         static const QString kHeight;
         static const QString kIconSize;
         static const QString kMargin;
@@ -94,11 +90,6 @@ public:
         static QStringList paths();
 
     private:
-        static void setDefault(const QString &key, const QJsonValue &value);
-        static void setDefault(const QString &key, const QJsonArray &value);
-        static void setValue(const QString &key, const QJsonValue &value);
-        static void setValue(const QString &key, const QJsonArray &value);
-
         static const QString kItemHeight;
         static const QString kPaths;
 
@@ -121,9 +112,6 @@ public:
         static int volume();
 
     private:
-        static void setDefault(const QString &key, const QJsonValue &value);
-        static void setValue(const QString &key, const QJsonValue &value);
-
         static const QString kLoop;
         static const QString kShuffle;
         static const QString kVolume;
@@ -155,9 +143,6 @@ public:
         static QString volumeUp();
 
     private:
-        static void setDefault(const QString &key, const QJsonValue &value);
-        static void setValue(const QString &key, const QJsonValue &value);
-
         static const QString kNext;
         static const QString kPlayPause;
         static const QString kPrevious;
@@ -177,6 +162,14 @@ private:
 
     static void saveObjects();
     static void loadObjects();
+
+    static void setValue(QJsonObject &object, const QString &key, const QJsonValue &value);
+    static void setValue(QJsonObject &object, const QString &key, const QJsonArray &value);
+
+    static void setDefault(QJsonObject &object, const QString &key, const QJsonValue &value);
+    static void setDefault(QJsonObject &object, const QString &key, const QJsonArray &value);
+
+    static float scale(float value);
 
     static QJsonDocument jDocument;
 
