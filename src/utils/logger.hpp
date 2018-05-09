@@ -21,6 +21,7 @@ public:
 
 private:
     static void createAndClearFile();
+    static QString createLog(const QString &message, const QStringList &args);
 
     static QFile *file;
 };

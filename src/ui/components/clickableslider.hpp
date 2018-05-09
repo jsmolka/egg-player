@@ -1,25 +1,9 @@
 #ifndef CLICKABLESLIDER_HPP
 #define CLICKABLESLIDER_HPP
 
-#include <QPainter>
-#include <QProxyStyle>
 #include <QSlider>
-#include <QStyle>
-#include <QStyleOption>
 
-class ClickableSliderStyle : public QProxyStyle
-{
-public:
-    using QProxyStyle::QProxyStyle;
-
-    int styleHint(QStyle::StyleHint hint, const QStyleOption* option = nullptr, const QWidget* widget = nullptr, QStyleHintReturn* returnData = nullptr) const
-    {
-        if (hint == QStyle::SH_Slider_AbsoluteSetButtons)
-            return Qt::LeftButton;
-
-        return QProxyStyle::styleHint(hint, option, widget, returnData);
-    }
-};
+#include "clickablesliderstyle.hpp"
 
 class ClickableSlider : public QSlider
 {

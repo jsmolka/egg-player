@@ -170,6 +170,7 @@ private:
     static void setDefault(QJsonObject &object, const QString &key, const QJsonArray &value);
 
     static float scale(float value);
+    static int scale(int value);
 
     static QJsonDocument jDocument;
 

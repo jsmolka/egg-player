@@ -13,13 +13,6 @@ void Logger::log(const QString &message, const QStringList &args)
     if (!Config::App::log())
         return;
 
-    QString log = message;
-    for (const QString &arg : args)
-        log = log.arg(arg);
-
-    QString time = QDateTime::currentDateTime().toString("dd-MM-yyyy hh:mm:ss");
-    QString text = QString("[%1] %2").arg(time).arg(log);
-
     if (!file)
         Logger::createAndClearFile();
 
@@ -27,12 +20,12 @@ void Logger::log(const QString &message, const QStringList &args)
     {
         QTextStream out(file);
         out.setCodec("UTF-8");
-        out << text << "\n";
+        out << createLog(message, args) << "\n";
         file->close();
     }
 
 #ifdef QT_DEBUG
-    qDebug().noquote() << text;
+    qDebug().noquote() << createLog(message, args);
 #endif
 }
 
@@ -45,6 +38,23 @@ void Logger::createAndClearFile()
     file->open(QIODevice::Append | QIODevice::Text);
     file->resize(0);
     file->close();
+}
+
+/*
+ * Creates log message.
+ *
+ * :param message: message
+ * :param args: args
+ * :return: log message
+ */
+QString Logger::createLog(const QString &message, const QStringList &args)
+{
+    QString log = message;
+    for (const QString &arg : args)
+        log = log.arg(arg);
+
+    QString time = QDateTime::currentDateTime().toString("dd-MM-yyyy hh:mm:ss");
+    return QString("[%1] %2").arg(time).arg(log);
 }
 
 /*

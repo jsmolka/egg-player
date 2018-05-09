@@ -562,10 +562,10 @@ void Config::saveObjects()
 {
     QJsonObject object = jDocument.object();
     object[kApp] = oApp;
-    object[kShortcut] = oShortcut;
-    object[kPlayer] = oPlayer;
-    object[kLibrary] = oLibrary;
     object[kBar] = oBar;
+    object[kLibrary] = oLibrary;
+    object[kPlayer] = oPlayer;
+    object[kShortcut] = oShortcut;
     jDocument.setObject(object);
 }
 
@@ -576,10 +576,10 @@ void Config::loadObjects()
 {
     QJsonObject object = jDocument.object();
     oApp = object[kApp].toObject();
-    oShortcut = object[kShortcut].toObject();
-    oPlayer = object[kPlayer].toObject();
-    oLibrary = object[kLibrary].toObject();
     oBar = object[kBar].toObject();
+    oLibrary = object[kLibrary].toObject();
+    oPlayer = object[kPlayer].toObject();
+    oShortcut = object[kShortcut].toObject();
 }
 
 /*
@@ -643,6 +643,17 @@ void Config::setDefault(QJsonObject &object, const QString &key, const QJsonArra
 float Config::scale(float value)
 {
     return (GetScaleFactorForDevice(DEVICE_PRIMARY) / 100.f) * value;
+}
+
+/*
+ * Scales value.
+ *
+ * :param value: value
+ * :return: scaled value
+ */
+int Config::scale(int value)
+{
+    return (int) scale((float) value);
 }
 
 /*

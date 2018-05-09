@@ -55,6 +55,7 @@ HEADERS += \
     $$PWD/src/ui/musicbar.hpp \
     $$PWD/src/ui/musiclibrary.hpp \
     $$PWD/src/ui/components/clickableslider.hpp \
+    $$PWD/src/ui/components/clickablesliderstyle.hpp \
     $$PWD/src/ui/components/iconbutton.hpp \
     $$PWD/src/ui/components/songinfo.hpp \
     $$PWD/src/ui/layouts/borderlayout.hpp \
@@ -77,6 +78,7 @@ SOURCES += \
     $$PWD/src/ui/musicbar.cpp \
     $$PWD/src/ui/musiclibrary.cpp \
     $$PWD/src/ui/components/clickableslider.cpp \
+    $$PWD/src/ui/components/clickablesliderstyle.cpp \
     $$PWD/src/ui/components/iconbutton.cpp \
     $$PWD/src/ui/components/songinfo.cpp \
     $$PWD/src/ui/layouts/borderlayout.cpp \
