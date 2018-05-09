@@ -412,7 +412,6 @@ QString MusicBar::loadStyleSheet()
                 QString::number(Config::Bar::iconSize() / 2));
 }
 
-
 /*
  * Prepares
 

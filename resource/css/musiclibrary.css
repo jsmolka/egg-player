@@ -12,7 +12,7 @@ QLabel {
 }
 
 SongInfo[even=true] {
-	background: #262626;
+	background: rgb(38, 38, 38);
 }
 
 SongInfo[even=false] {
@@ -20,11 +20,11 @@ SongInfo[even=false] {
 }
 
 SongInfo:hover {
-	background: #404040;
+	background: rgb(64, 64, 64);
 }
 
 SongInfo:pressed {
-	background: #595959;
+	background: rgb(89, 89, 89);
 }
 
 QScrollBar:vertical {
@@ -33,7 +33,7 @@ QScrollBar:vertical {
 }
 
 QScrollBar::handle:vertical {
-    background: #404040;
+    background: rgb(64, 64, 64);
 }
 
 QScrollBar::add-line:vertical,

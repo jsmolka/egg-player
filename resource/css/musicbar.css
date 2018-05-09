@@ -14,10 +14,6 @@ IconButton {
 	border-radius: ICON_SIZE_HALF;
 }
 
-IconButton[locked=false] {
-    background: transparent;
-}
-
 IconButton[locked=true] {
     background: rgba(255, 255, 255, 0.3);
 }
@@ -31,12 +27,12 @@ IconButton:pressed {
 }
 
 ClickableSlider::groove:horizontal {
-	background: #969696;
+	background: rgb(150, 150, 150);
 	height: GROOVE_HEIGHT;
 }
 
 ClickableSlider::handle:horizontal {
-	background: #DCDCDC;
+	background: white;
 	width: HANDLE_SIZE;
 	height: HANDLE_SIZE;
 	margin-top: -HANDLE_SIZE_HALF;
@@ -45,9 +41,9 @@ ClickableSlider::handle:horizontal {
 }
 
 ClickableSlider::add-page {
-	background: #969696;
+	background: rgb(150, 150, 150);
 }
 
 ClickableSlider::sub-page {
-	background: #DCDCDC;
+	background: white;
 }

@@ -128,8 +128,8 @@ void IconButton::init(const QStringList &icons, int size, bool lockable)
 {
     m_lockable = lockable;
     m_icons.clear();
-    for (const QPixmap &icon : icons)
-        m_icons << Utils::resize(QPixmap(icon), size);
+    for (const QString &icon : icons)
+        m_icons << QPixmap(icon);
 
     QSize iconSize = QSize(size, size);
 

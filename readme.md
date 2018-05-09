@@ -3,7 +3,7 @@ A Groove Music like music player.
 
 ## Features
 ### Customization
-Instead of using Qt's resource system the Egg Player loads its customizable files at every start. This includes the css files under ```resources/css``` which allow all kind of color and shape related changes. Apart from that there is a global config file located under ```User/Documents/egg-player```. This config holds, next to shortcuts and general settings, a lot of user interface related values. Those might be useful for machines with higher dpi scaling because the app is not optimized for use cases like that right now. In those cases the user can manually these values to create an appealing look.
+Instead of using Qt's resource system the Egg Player loads its customizable files at every start. This includes the css files under ```resources/css``` which allow all kind of color and shape related changes. Apart from that there is a config file located under ```User/Documents/egg-player```. This config holds, next to shortcuts and general settings, a lot of user interface related values.
 
 ### Global shortcuts
 The Egg Player supports global shortcuts for media actions. The following tables contains those media actions with their default values.
@@ -64,4 +64,3 @@ If logging is enabled in the config, the player automatically logs all warnings 
 - do not show certain info at low size
 - load library in a separate thread
 - library scroll acceleration
-- css round border for all devices
