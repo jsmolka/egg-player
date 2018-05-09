@@ -108,7 +108,7 @@ void Config::Bar::setHeight(int height)
  */
 int Config::Bar::height()
 {
-    return scale(oBar[kHeight].toInt());
+    return makeEven(scale(oBar[kHeight].toInt()));
 }
 
 /*
@@ -128,7 +128,7 @@ void Config::Bar::setIconSize(int size)
  */
 int Config::Bar::iconSize()
 {
-    return scale(oBar[kIconSize].toInt());
+    return makeEven(scale(oBar[kIconSize].toInt()));
 }
 
 /*
@@ -235,7 +235,7 @@ const QString Config::Bar::kTrackWidth = "trackWidth";
  * Bar default values.
  */
 const int Config::Bar::dHeight         = 68;
-const int Config::Bar::dIconSize       = 33;
+const int Config::Bar::dIconSize       = 32;
 const int Config::Bar::dMargin         = 8;
 const int Config::Bar::dSpacing        = 8;
 const int Config::Bar::dTimeWidth      = 50;
@@ -654,6 +654,18 @@ float Config::scale(float value)
 int Config::scale(int value)
 {
     return (int) scale((float) value);
+}
+
+/*
+ * Makes a value even to prevent user
+ * interface alignment problems.
+ *
+ * :param value: value
+ * :return even: value
+ */
+int Config::makeEven(int value)
+{
+    return value % 2 == 0 ? value : --value;
 }
 
 /*

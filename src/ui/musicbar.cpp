@@ -4,7 +4,7 @@
  * Constructor. Creates all necessary objects and
  * connections.
  *
- * :param parent: pointer, default nullptr
+ * :param parent: parent, default nullptr
  */
 MusicBar::MusicBar(QWidget *parent) :
     QWidget(parent)

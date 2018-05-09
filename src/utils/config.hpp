@@ -172,6 +172,8 @@ private:
     static float scale(float value);
     static int scale(int value);
 
+    static int makeEven(int value);
+
     static QJsonDocument jDocument;
 
     static QJsonObject oApp;

@@ -27,10 +27,18 @@ ClickableSlider::groove:horizontal {
 }
 
 ClickableSlider::handle:horizontal {
-	background: #D2D2D2;
+	background: #DCDCDC;
 	width: 16px;
 	height: 16px;
 	margin-top: -8px;
 	margin-bottom: -8px;
 	border-radius: 8px;
+}
+
+ClickableSlider::add-page {
+	background: #969696;
+}
+
+ClickableSlider::sub-page {
+	background: #DCDCDC;
 }
