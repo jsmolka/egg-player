@@ -9,7 +9,7 @@ MusicLibrary::MusicLibrary(QWidget *parent) :
     QListWidget(parent)
 {
     setFrameStyle(QFrame::NoFrame);
-    setStyleSheet(Utils::read(CSS_MUSICLIBRARY));
+    setStyleSheet(loadStyleSheet());
     setUniformItemSizes(true);
     setVerticalScrollMode(QAbstractItemView::ScrollPerPixel);
 }
@@ -51,4 +51,18 @@ void MusicLibrary::loadLibrary(Library *library)
 
         even = !even;
     }
+}
+
+/*
+ * Loads style sheet and replaces placeholders.
+ *
+ * :return: style sheet
+ */
+QString MusicLibrary::loadStyleSheet()
+{
+    return Utils::read(CSS_MUSICLIBRARY)
+            .replace(
+                "SCROLLBAR_WIDTH",
+                QString::number(Config::Library::scrollBarWidth()));
+
 }

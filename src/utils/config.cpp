@@ -83,12 +83,54 @@ const bool Config::App::dLog         = true;
  */
 void Config::Bar::create()
 {
+    setDefault(oBar, kGrooveHeight, dGrooveHeight);
+    setDefault(oBar, kHandleSize, dHandleSize);
     setDefault(oBar, kHeight, dHeight);
     setDefault(oBar, kIconSize, dIconSize);
     setDefault(oBar, kMargin, dMargin);
     setDefault(oBar, kSpacing, dSpacing);
     setDefault(oBar, kTimeWidth, dTimeWidth);
     setDefault(oBar, kTrackWidth, dTrackWidth);
+}
+
+/*
+ * Setter for groove height.
+ *
+ * :param height: height
+ */
+void Config::Bar::setGrooveHeight(int height)
+{
+    setValue(oBar, kGrooveHeight, height);
+}
+
+/*
+ * Getter for groove height.
+ *
+ * :return: height
+ */
+int Config::Bar::grooveHeight()
+{
+    return makeEven(scale(oBar[kGrooveHeight].toInt()));
+}
+
+/*
+ * Setter for handle size.
+ *
+ * :param size: size
+ */
+void Config::Bar::setHandleSize(int size)
+{
+    setValue(oBar, kHandleSize, size);
+}
+
+/*
+ * Getter for groove height.
+ *
+ * :return height
+ */
+int Config::Bar::handleSize()
+{
+    return  makeEven(scale(oBar[kHandleSize].toInt()));
 }
 
 /*
@@ -224,22 +266,26 @@ int Config::Bar::trackWidth()
 /*
  * Bar keys.
  */
-const QString Config::Bar::kHeight     = "height";
-const QString Config::Bar::kIconSize   = "iconSize";
-const QString Config::Bar::kMargin     = "margin";
-const QString Config::Bar::kSpacing    = "spacing";
-const QString Config::Bar::kTimeWidth  = "timeWidth";
-const QString Config::Bar::kTrackWidth = "trackWidth";
+const QString Config::Bar::kGrooveHeight = "grooveHeight";
+const QString Config::Bar::kHandleSize   = "handleSize";
+const QString Config::Bar::kHeight       = "height";
+const QString Config::Bar::kIconSize     = "iconSize";
+const QString Config::Bar::kMargin       = "margin";
+const QString Config::Bar::kSpacing      = "spacing";
+const QString Config::Bar::kTimeWidth    = "timeWidth";
+const QString Config::Bar::kTrackWidth   = "trackWidth";
 
 /*
  * Bar default values.
  */
-const int Config::Bar::dHeight         = 68;
-const int Config::Bar::dIconSize       = 32;
-const int Config::Bar::dMargin         = 8;
-const int Config::Bar::dSpacing        = 8;
-const int Config::Bar::dTimeWidth      = 50;
-const int Config::Bar::dTrackWidth     = 240;
+const int Config::Bar::dGrooveHeight     = 2;
+const int Config::Bar::dHandleSize       = 16;
+const int Config::Bar::dHeight           = 68;
+const int Config::Bar::dIconSize         = 32;
+const int Config::Bar::dMargin           = 8;
+const int Config::Bar::dSpacing          = 8;
+const int Config::Bar::dTimeWidth        = 50;
+const int Config::Bar::dTrackWidth       = 240;
 
 /*
  * Sets all non existing keys to their default
@@ -249,6 +295,7 @@ void Config::Library::create()
 {
     setDefault(oLibrary, kPaths, dPaths);
     setDefault(oLibrary, kItemHeight, dItemHeight);
+    setDefault(oLibrary, kScrollBarWidth, dScrollBarWidth);
 }
 
 /*
@@ -300,16 +347,38 @@ QStringList Config::Library::paths()
 }
 
 /*
+ * Setter for scroll bar width.
+ *
+ * :param width: width
+ */
+void Config::Library::setScrollBarWidth(int width)
+{
+    setValue(oLibrary, kScrollBarWidth, width);
+}
+
+/*
+ * Getter for scroll bar width.
+ *
+ * :return: width
+ */
+int Config::Library::scrollBarWidth()
+{
+    return scale(oLibrary[kScrollBarWidth].toInt());
+}
+
+/*
  * Library keys.
  */
-const QString Config::Library::kItemHeight = "itemHeight";
-const QString Config::Library::kPaths      = "paths";
+const QString Config::Library::kItemHeight     = "itemHeight";
+const QString Config::Library::kPaths          = "paths";
+const QString Config::Library::kScrollBarWidth = "scrollBarWidth";
 
 /*
  * Library default values.
  */
-const int Config::Library::dItemHeight     = 50;
-const QJsonArray Config::Library::dPaths   = {QStandardPaths::writableLocation(QStandardPaths::MusicLocation)};
+const int Config::Library::dItemHeight         = 50;
+const QJsonArray Config::Library::dPaths       = {QStandardPaths::writableLocation(QStandardPaths::MusicLocation)};
+const int Config::Library::dScrollBarWidth     = 10;
 
 /*
  * Sets all non existing keys to their default

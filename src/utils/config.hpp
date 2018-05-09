@@ -41,6 +41,12 @@ public:
     public:
         static void create();
 
+        static void setGrooveHeight(int height);
+        static int grooveHeight();
+
+        static void setHandleSize(int size);
+        static int handleSize();
+
         static void setHeight(int height);
         static int height();
 
@@ -62,6 +68,8 @@ public:
         static int trackWidth();
 
     private:
+        static const QString kGrooveHeight;
+        static const QString kHandleSize;
         static const QString kHeight;
         static const QString kIconSize;
         static const QString kMargin;
@@ -69,7 +77,8 @@ public:
         static const QString kTimeWidth;
         static const QString kTrackWidth;
 
-
+        static const int dGrooveHeight;
+        static const int dHandleSize;
         static const int dHeight;
         static const int dIconSize;
         static const int dMargin;
@@ -89,12 +98,17 @@ public:
         static void setPaths(const QStringList &paths);
         static QStringList paths();
 
+        static void setScrollBarWidth(int width);
+        static int scrollBarWidth();
+
     private:
         static const QString kItemHeight;
         static const QString kPaths;
+        static const QString kScrollBarWidth;
 
         static const int dItemHeight;
         static const QJsonArray dPaths;
+        static const int dScrollBarWidth;
     };
 
     class Player

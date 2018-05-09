@@ -65,6 +65,8 @@ private slots:
     void onShortcutVolumeDownPressed();
 
 private:
+    QString loadStyleSheet();
+
     void setupUi();
     void createAudioInfo();
     void createLengthSlider();

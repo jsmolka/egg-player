@@ -44,7 +44,7 @@ If logging is enabled in the config, the player automatically logs all warnings 
 - [ ] playlist support
 - [x] [bass.dll](http://www.un4seen.com/) as audio backend
 - [ ] own tag library based on [libmp3](https://github.com/TheOnlyCaky/libmp3)
-- [ ] proper dpi scaling
+- [x] proper dpi scaling
 - [ ] proper multithreading
 - [x] global shortcuts
 - [ ] reactive cache
@@ -53,6 +53,7 @@ If logging is enabled in the config, the player automatically logs all warnings 
 
 ### New features
 - multiple library paths
+- proper dpi scaling
 
 ### Changelog
 - use json for config

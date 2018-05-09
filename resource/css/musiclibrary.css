@@ -1,5 +1,10 @@
+/*
+ * The following values will be replaced by config values.
+ * - SCROLLBAR_WIDTH
+ */
+
 MusicLibrary {
-	background-color: black;
+	background: black;
 }
 
 QLabel {
@@ -7,24 +12,24 @@ QLabel {
 }
 
 SongInfo[even=true] {
-	background-color: #262626;
+	background: #262626;
 }
 
 SongInfo[even=false] {
-	background-color: black;
+	background: black;
 }
 
 SongInfo:hover {
-	background-color: #404040;
+	background: #404040;
 }
 
 SongInfo:pressed {
-	background-color: #595959;
+	background: #595959;
 }
 
 QScrollBar:vertical {
     background: black;
-    width: 10px;
+    width: SCROLLBAR_WIDTH;
 }
 
 QScrollBar::handle:vertical {

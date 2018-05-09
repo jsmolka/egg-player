@@ -11,7 +11,7 @@ MusicBar::MusicBar(QWidget *parent) :
 {
     setAutoFillBackground(true);
     setFixedHeight(Config::Bar::height());
-    setStyleSheet(Utils::read(CSS_MUSICBAR));
+    setStyleSheet(loadStyleSheet());
     setColor(Utils::backgroundColor(Utils::defaultCover(Config::Bar::coverSize())));
 
     pm_player = new Player(this);
@@ -389,6 +389,32 @@ void MusicBar::onShortcutVolumeDownPressed()
 {
     changeVolume(pm_player->volume(), -1);
 }
+
+/*
+ * Loads style sheet and replaces placeholders.
+ *
+ * :return: style sheet
+ */
+QString MusicBar::loadStyleSheet()
+{
+    return Utils::read(CSS_MUSICBAR)
+            .replace(
+                "GROOVE_HEIGHT",
+                QString::number(Config::Bar::grooveHeight()))
+            .replace(
+                "HANDLE_SIZE_HALF",
+                QString::number(Config::Bar::handleSize() / 2))
+            .replace(
+                "HANDLE_SIZE",
+                QString::number(Config::Bar::handleSize()))
+            .replace(
+                "ICON_SIZE_HALF",
+                QString::number(Config::Bar::iconSize() / 2));
+}
+
+
+/*
+ * Prepares
 
 /*
  * Sets up user interface.

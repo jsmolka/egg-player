@@ -19,6 +19,9 @@ public:
     ~MusicLibrary();
 
     void loadLibrary(Library *library);
+
+private:
+    QString loadStyleSheet();
 };
 
 #endif // MUSICLIBRARY_HPP
