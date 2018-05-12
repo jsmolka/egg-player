@@ -31,6 +31,7 @@ public:
     int track() const;
     int length() const;
 
+    const wchar_t * pathWChar() const;
     QPixmap cover(int size = 200);
 
 private:

@@ -379,7 +379,7 @@ bool Player::bassCreateStream(Audio *audio)
         if (!bassFreeStream())
             return false;
 
-    m_stream = BASS_StreamCreateFile(false, audio->path().toLatin1(), 0, 0, 0);
+    m_stream = BASS_StreamCreateFile(false, audio->pathWChar(), 0, 0, 0);
     return bassValidStream();
 }
 

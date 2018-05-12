@@ -43,7 +43,6 @@ If logging is enabled in the config, the player automatically logs all warnings 
 - [x] documentation
 - [ ] playlist support
 - [x] [bass.dll](http://www.un4seen.com/) as audio backend
-- [ ] own tag library based on [libmp3](https://github.com/TheOnlyCaky/libmp3)
 - [x] proper dpi scaling
 - [ ] proper multithreading
 - [x] global shortcuts
@@ -52,11 +51,9 @@ If logging is enabled in the config, the player automatically logs all warnings 
 ## Changes since newest release
 
 ### New features
-- multiple library paths
-- proper dpi scaling
+- UTF-8 support
 
 ### Changelog
-- use json for config
 
 ## Things to do
 - [black title bar](https://msdn.microsoft.com/en-us/library/windows/desktop/ms724940%28v=vs.85%29.aspx)

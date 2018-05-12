@@ -126,6 +126,17 @@ int Audio::length() const
 }
 
 /*
+ * Returns the path in wide char form. Needs to
+ * be used for taglib and BASS.
+ *
+ * :return: path
+ */
+const wchar_t * Audio::pathWChar() const
+{
+    return reinterpret_cast<const wchar_t*>(m_path.constData());
+}
+
+/*
  * Returns audio cover.
  *
  * :param size: cover size, default 200
@@ -138,30 +149,31 @@ QPixmap Audio::cover(int size)
 /*
  * Reads audio tags. If either the tags or the
  * audio properties cannot be read the function
- * returns false.
+ * returns false. If the file has a tag it will
+ * be read.
  *
  * :return: success
  */
 bool Audio::readTags()
 {
-    FileRef fileRef(m_path.toLatin1().data());
+    FileRef fileRef(pathWChar());
 
-    if (fileRef.isNull()
-            || !fileRef.tag()
-            || !fileRef.audioProperties())
+    if (fileRef.isNull() || !fileRef.audioProperties())
         return false;
 
-    Tag *tag = fileRef.tag();
     AudioProperties *audioProp = fileRef.audioProperties();
-
-    m_title = QString(tag->title().toCString());
-    m_artist = QString(tag->artist().toCString());
-    m_album = QString(tag->album().toCString());
-    m_genre = QString(tag->genre().toCString());
-    m_year = tag->year();
-    m_track = tag->track();
     m_length = audioProp->length();
 
+    if (fileRef.tag())
+    {
+        Tag *tag = fileRef.tag();
+        m_title = TStringToQString(tag->title());
+        m_artist = TStringToQString(tag->artist());
+        m_album = TStringToQString(tag->album());
+        m_genre = TStringToQString(tag->genre());
+        m_year = tag->year();
+        m_track = tag->track();
+    }
     return true;
 }
 
@@ -175,7 +187,7 @@ bool Audio::readTags()
  */
 QPixmap Audio::readCover()
 {
-    MPEG::File file(m_path.toLatin1().data());
+    MPEG::File file(pathWChar());
     ID3v2::Tag *tag = file.ID3v2Tag();
     QPixmap image;
 
