@@ -9,6 +9,28 @@ Library::Library()
 }
 
 /*
+ * Initializer.
+ *
+ * :param audios: audios
+ */
+Library::Library(const Audios &audios) :
+    m_audios(audios)
+{
+
+}
+
+/*
+ * Initializer.
+ *
+ * :param library: library
+ */
+Library::Library(const Library &library) :
+    Library(library.audios())
+{
+
+}
+
+/*
  * Destructor.
  */
 Library::~Library()

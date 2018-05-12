@@ -15,6 +15,8 @@ class Library
 {
 public:
     Library();
+    Library(const Audios &audios);
+    Library(const Library &library);
     ~Library();
 
     Audios audios() const;

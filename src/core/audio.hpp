@@ -1,6 +1,7 @@
 #ifndef AUDIO_HPP
 #define AUDIO_HPP
 
+#include <QtMath>
 #include <QPainter>
 #include <QPixmap>
 
@@ -18,6 +19,8 @@
 class Audio
 {
 public:
+    Audio();
+    Audio(const Audio &audio);
     Audio(const QString &path);
     ~Audio();
 
@@ -29,7 +32,7 @@ public:
     QString genre() const;
     int year() const;
     int track() const;
-    int length() const;
+    int length(bool seconds = true) const;
 
     const wchar_t * pathWChar() const;
     QPixmap cover(int size = 200);

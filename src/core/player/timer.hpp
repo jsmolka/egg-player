@@ -9,6 +9,7 @@ class Timer : public QObject
     Q_OBJECT
 
 public:
+    Timer(QObject *parent = nullptr);
     Timer(int interval, QObject *parent = nullptr);
     ~Timer();
 

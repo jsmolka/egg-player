@@ -3,13 +3,24 @@
 /*
  * Constructor.
  *
+ * :param parent: parent, default nullptr
+ */
+SongInfo::SongInfo(QWidget *parent) :
+    QWidget(parent)
+{
+
+}
+
+/*
+ * Constructor.
+ *
  * :param audio: audio
  * :param parent: parent, default nullptr
  */
 SongInfo::SongInfo(Audio *audio, QWidget *parent) :
-    QWidget(parent)
+    QWidget(parent),
+    pm_audio(audio)
 {
-    pm_audio = audio;
     m_even = false;
 }
 

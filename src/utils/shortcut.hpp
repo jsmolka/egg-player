@@ -16,8 +16,13 @@ class Shortcut : public QObject, public QAbstractNativeEventFilter
     Q_OBJECT
 
 public:
+    Shortcut(QObject *parent = nullptr);
     Shortcut(const QString &shortcut, bool repeat, QObject *parent = nullptr);
     ~Shortcut();
+
+    int id() const;
+    bool isRegistered() const;
+    QString shortcut() const;
 
 signals:
     void pressed();
@@ -49,6 +54,7 @@ private:
 
     int m_id;
     bool m_registered;
+    QString m_shortcut;
 
     static int m_count;
     static const QHash<QString, int> m_map;

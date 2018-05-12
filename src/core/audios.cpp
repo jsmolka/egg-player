@@ -6,7 +6,8 @@
 void Audios::sortByTitle()
 {
     std::sort(begin(), end(),
-        [](const Audio *a1, const Audio *a2) {
+        [](const Audio *a1, const Audio *a2)
+        {
             return QString::compare(
                 a1->title(),
                 a2->title(),
@@ -21,7 +22,8 @@ void Audios::sortByTitle()
 void Audios::sortByArtist()
 {
     std::sort(begin(), end(),
-        [](const Audio *a1, const Audio *a2) {
+        [](const Audio *a1, const Audio *a2)
+        {
             return QString::compare(
                 a1->artist(),
                 a2->artist(),
@@ -36,7 +38,8 @@ void Audios::sortByArtist()
 void Audios::sortByAlbum()
 {
     std::sort(begin(), end(),
-        [](const Audio *a1, const Audio *a2) {
+        [](const Audio *a1, const Audio *a2)
+        {
             return QString::compare(
                 a1->album(),
                 a2->album(),
@@ -51,7 +54,8 @@ void Audios::sortByAlbum()
 void Audios::sortByTrack()
 {
     std::sort(begin(), end(),
-        [](const Audio *a1, const Audio *a2) {
+        [](const Audio *a1, const Audio *a2)
+        {
             return a1->track() < a2->track();
         }
     );

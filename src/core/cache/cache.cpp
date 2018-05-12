@@ -175,7 +175,7 @@ void Cache::createAudios()
 }
 
 /*
- * Either get the cover id or inserts it into the
+ * Either gets the cover id or inserts it into the
  * covers tables and returns its id.
  *
  * :param cover: cover

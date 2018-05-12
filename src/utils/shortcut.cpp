@@ -3,12 +3,24 @@
 /*
  * Constructor.
  *
+ * :param parent: parent, default nullptr
+ */
+Shortcut::Shortcut(QObject *parent) :
+    QObject(parent)
+{
+
+}
+
+/*
+ * Constructor.
+ *
  * :param shortcut: shortcut
  * :param repeat: repeat signal while pressed
  * :param parent: parent, default nullptr
  */
 Shortcut::Shortcut(const QString &shortcut, bool repeat, QObject *parent) :
-    QObject(parent)
+    QObject(parent),
+    m_shortcut(shortcut)
 {
     m_count++;
 
@@ -32,6 +44,36 @@ Shortcut::~Shortcut()
 }
 
 /*
+ * Getter for id property.
+ *
+ * :return: id
+ */
+int Shortcut::id() const
+{
+    return m_id;
+}
+
+/*
+ * Getter for registered property.
+ *
+ * :return: registered
+ */
+bool Shortcut::isRegistered() const
+{
+    return m_registered;
+}
+
+/*
+ * Getter for shortcut property.
+ *
+ * :return: shortcut
+ */
+QString Shortcut::shortcut() const
+{
+    return m_shortcut;
+}
+
+/*
  * Event filter.
  *
  * :param eventType: eventType
@@ -45,7 +87,7 @@ bool Shortcut::nativeEventFilter(const QByteArray &eventType, void *message, lon
     Q_UNUSED(eventType);
     Q_UNUSED(result);
 
-    MSG* msg = static_cast<MSG*>(message);
+    MSG* msg = static_cast<MSG *>(message);
     if (msg->message == WM_HOTKEY && msg->wParam == m_id)
         emit pressed();
 

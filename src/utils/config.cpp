@@ -711,7 +711,7 @@ void Config::setDefault(QJsonObject &object, const QString &key, const QJsonArra
  */
 float Config::scale(float value)
 {
-    return (GetScaleFactorForDevice(DEVICE_PRIMARY) / 100.f) * value;
+    return (GetScaleFactorForDevice(DEVICE_PRIMARY) / 100.0) * value;
 }
 
 /*
@@ -722,7 +722,7 @@ float Config::scale(float value)
  */
 int Config::scale(int value)
 {
-    return (int) scale((float) value);
+    return static_cast<int>(scale(static_cast<float>(value)));
 }
 
 /*

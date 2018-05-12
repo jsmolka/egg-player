@@ -12,6 +12,7 @@ class CacheBuilder : public QThread
     Q_OBJECT
 
 public:
+    CacheBuilder(QObject *parent = nullptr);
     CacheBuilder(const Audios &audios, QObject *parent = nullptr);
     ~CacheBuilder();
 

@@ -6,17 +6,42 @@
 using namespace TagLib;
 
 /*
+ * Constructor.
+ */
+Audio::Audio()
+{
+
+}
+
+/*
+ * Initializer.
+ *
+ * :param audio: audio
+ */
+Audio::Audio(const Audio &audio) :
+    m_path(audio.path()),
+    m_title(audio.title()),
+    m_artist(audio.artist()),
+    m_album(audio.album()),
+    m_genre(audio.genre())
+{
+    m_valid = audio.isValid();
+    m_year = audio.year();
+    m_track = audio.track();
+    m_length = audio.length(false);
+}
+
+/*
  * Constructor. Creates an audio object and tries
  * to read its tags. If the title tag is empty it
  * will be set to the file name of the read file.
  *
  * :param path: audio path
  */
-Audio::Audio(const QString &path)
+Audio::Audio(const QString &path) :
+    m_path(path)
 {
-    m_path = path;
     m_valid = readTags();
-
     if (!m_valid)
     {
         Logger::log("Audio: Cannot read tags '%1'", {m_path});
@@ -116,24 +141,29 @@ int Audio::track() const
 }
 
 /*
- * Getter for length property.
+ * Getter for length property. Returns the
+ * length either in seconds or in milliseconds.
+ * The length in seconds will be ceiled to get
+ * a smooth transition between songs.
  *
- * :return: length in seconds
+ * :param seconds: use seconds, default true
+ * :return: length
  */
-int Audio::length() const
+int Audio::length(bool seconds) const
 {
-    return m_length;
+    return seconds ? qCeil(static_cast<float>(m_length) / 1000.0) : m_length;
 }
 
 /*
  * Returns the path in wide char form. Needs to
- * be used for taglib and BASS.
+ * be used for taglib and BASS. Reinterpret cast
+ * only works in Windows.
  *
  * :return: path
  */
 const wchar_t * Audio::pathWChar() const
 {
-    return reinterpret_cast<const wchar_t*>(m_path.constData());
+    return reinterpret_cast<const wchar_t *>(m_path.constData());
 }
 
 /*
@@ -162,7 +192,7 @@ bool Audio::readTags()
         return false;
 
     AudioProperties *audioProp = fileRef.audioProperties();
-    m_length = audioProp->length();
+    m_length = audioProp->lengthInMilliseconds();
 
     if (fileRef.tag())
     {
@@ -179,7 +209,7 @@ bool Audio::readTags()
 
 /*
  * Reads cover of audio file. Because covers
- * should always be squares the read cover
+ * should always be squares, the read cover
  * will be drawn onto a transparent square
  * if it is not square.
  *

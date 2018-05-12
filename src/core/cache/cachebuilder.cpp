@@ -1,6 +1,17 @@
 #include "cachebuilder.hpp"
 
 /*
+ * Constructor.
+ *
+ * param parent: parent, default nullptr
+ */
+CacheBuilder::CacheBuilder(QObject *parent) :
+    QThread(parent)
+{
+
+}
+
+/*
  * Constructor. Connects the thread to the app
  * so that it automatically aborts and deletes.
  *
@@ -8,9 +19,9 @@
  * :param parent: parent, default nullptr
  */
 CacheBuilder::CacheBuilder(const Audios &audios, QObject *parent) :
-    QThread(parent)
+    QThread(parent),
+    m_audios(audios)
 {
-    m_audios = audios;
     m_abort = false;
 
     connect(qApp, SIGNAL(aboutToQuit()), this, SLOT(abort()));

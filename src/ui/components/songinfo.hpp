@@ -18,6 +18,7 @@ class SongInfo : public QWidget
     Q_PROPERTY(bool even READ isEven WRITE setEven)
 
 public:
+    SongInfo(QWidget *parent = nullptr);
     SongInfo(Audio *audio, QWidget *parent = nullptr);
     ~SongInfo();
 

@@ -1,9 +1,19 @@
 #include "logger.hpp"
 
 /*
+ * Creates and clears the logger file.
+ */
+void Logger::create()
+{
+    file = new QFile(LOG_PATH, qApp);
+    file->open(QIODevice::Append | QIODevice::Text);
+    file->resize(0);
+    file->close();
+}
+
+/*
  * Logs a message with args. Also writes the
- * message into the console if Qt is in debug
- * mode.
+ * message into the console.
  *
  * :param message: message
  * :param args: arguments, default empty
@@ -13,9 +23,6 @@ void Logger::log(const QString &message, const QStringList &args)
     if (!Config::App::log())
         return;
 
-    if (!file)
-        Logger::createAndClearFile();
-
     if (file->open(QIODevice::Append | QIODevice::Text))
     {
         QTextStream out(file);
@@ -24,20 +31,7 @@ void Logger::log(const QString &message, const QStringList &args)
         file->close();
     }
 
-#ifdef QT_DEBUG
     qDebug().noquote() << createLog(message, args);
-#endif
-}
-
-/*
- * Creates and clears log file.
- */
-void Logger::createAndClearFile()
-{
-    file = new QFile(LOG_PATH, qApp);
-    file->open(QIODevice::Append | QIODevice::Text);
-    file->resize(0);
-    file->close();
 }
 
 /*

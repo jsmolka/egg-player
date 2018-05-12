@@ -3,6 +3,17 @@
 /*
  * Constructor.
  *
+ * :param parent: parent, default nullptr
+ */
+Timer::Timer(QObject *parent) :
+    QObject(parent)
+{
+
+}
+
+/*
+ * Constructor.
+ *
  * :param interval: interval in milliseconds
  * :param parent: parent, default nullptr
  */
