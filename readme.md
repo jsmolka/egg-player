@@ -35,6 +35,10 @@ A detailed description of all features will be added when the program is in a fi
 - add egg_old.log to store old logs
 - char-by-char conversion instead of TStringToQString
 - use namespaces or classes in utils
+- max property for timer
+- use milliseconds song time as timer max
+- setting song to end should start next one
+- BASS proper error handling
 
 ### Cosmetic
 - [black title bar](https://msdn.microsoft.com/en-us/library/windows/desktop/ms724940%28v=vs.85%29.aspx)
