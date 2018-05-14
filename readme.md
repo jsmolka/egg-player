@@ -41,6 +41,8 @@ A detailed description of all features will be added when the program is in a fi
 - setting song to end should start next one
 - BASS proper error handling
 - prevent moving slider with arrow keys
+- use setUpdatesEnables() in QListWidget
+- minimize amount of new allocations
 
 ### Cosmetic
 - [black title bar](https://msdn.microsoft.com/en-us/library/windows/desktop/ms724940%28v=vs.85%29.aspx)
