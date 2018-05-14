@@ -21,7 +21,7 @@ SongInfo::SongInfo(Audio *audio, QWidget *parent) :
     QWidget(parent),
     pm_audio(audio)
 {
-    m_even = false;
+
 }
 
 /*
@@ -30,26 +30,6 @@ SongInfo::SongInfo(Audio *audio, QWidget *parent) :
 SongInfo::~SongInfo()
 {
 
-}
-
-/*
- * Setter for even property.
- *
- * :param even: even
- */
-void SongInfo::setEven(bool even)
-{
-    m_even = even;
-}
-
-/*
- * Getter for even property.
- *
- * :return: even
- */
-bool SongInfo::isEven() const
-{
-    return m_even;
 }
 
 /*

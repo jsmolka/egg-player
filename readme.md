@@ -33,15 +33,19 @@ A detailed description of all features will be added when the program is in a fi
 - load library in a separate thread
 - add application startup to log
 - add egg_old.log to store old logs
+- more detailed logs, especially for player 
 - char-by-char conversion instead of TStringToQString
 - use namespaces or classes in utils
 - max property for timer
 - use milliseconds song time as timer max
 - setting song to end should start next one
 - BASS proper error handling
+- prevent moving slider with arrow keys
 
 ### Cosmetic
 - [black title bar](https://msdn.microsoft.com/en-us/library/windows/desktop/ms724940%28v=vs.85%29.aspx)
 - fixed size for labels in SongInfo
 - do not show certain info at low size
 - library scroll acceleration
+- highlight active song
+- scrollbar with [round corners](https://stackoverflow.com/questions/12438095/qt-vertical-scroll-bar-stylesheets)

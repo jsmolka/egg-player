@@ -1,35 +1,24 @@
 /*
  * The following values will be replaced by config values.
- * - SCROLLBAR_WIDTH
+ * - scrollbar-width
  */
-
-MusicLibrary {
-	background: black;
-}
-
+ 
 QLabel {
 	color: white;
 }
 
-SongInfo[even=true] {
-	background: rgb(38, 38, 38);
-}
-
-SongInfo[even=false] {
+MusicLibrary {
 	background: black;
+	alternate-background-color: rgb(38, 38, 38);
 }
 
-SongInfo:hover {
+MusicLibrary::item:hover {
 	background: rgb(64, 64, 64);
-}
-
-SongInfo:pressed {
-	background: rgb(89, 89, 89);
 }
 
 QScrollBar:vertical {
     background: black;
-    width: SCROLLBAR_WIDTH;
+    width: scrollbar-width;
 }
 
 QScrollBar::handle:vertical {

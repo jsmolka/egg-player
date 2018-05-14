@@ -1,9 +1,9 @@
 /*
  * The following values will be replaced by config values.
- * - GROOVE_HEIGHT
- * - HANDLE_SIZE
- * - HANDLE_SIZE_HALF
- * - ICON_SIZE_HALF
+ * - groove-height
+ * - handle-size
+ * - handle-size-half
+ * - icon-size-half
  */
 
 QLabel {
@@ -11,7 +11,7 @@ QLabel {
 }
 
 IconButton {
-	border-radius: ICON_SIZE_HALF;
+	border-radius: icon-size-half;
 }
 
 IconButton[locked=true] {
@@ -28,22 +28,22 @@ IconButton:pressed {
 
 ClickableSlider::groove:horizontal {
 	background: rgb(150, 150, 150);
-	height: GROOVE_HEIGHT;
+	height: groove-height;
 }
 
 ClickableSlider::handle:horizontal {
 	background: white;
-	width: HANDLE_SIZE;
-	height: HANDLE_SIZE;
-	margin-top: -HANDLE_SIZE_HALF;
-	margin-bottom: -HANDLE_SIZE_HALF;
-	border-radius: HANDLE_SIZE_HALF;
-}
-
-ClickableSlider::add-page {
-	background: rgb(150, 150, 150);
+	width: handle-size;
+	height: handle-size;
+	margin-top: -handle-size-half;
+	margin-bottom: -handle-size-half;
+	border-radius: handle-size-half;
 }
 
 ClickableSlider::sub-page {
 	background: white;
+}
+
+ClickableSlider::add-page {
+	background: rgb(150, 150, 150);
 }

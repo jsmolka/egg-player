@@ -399,16 +399,16 @@ QString MusicBar::loadStyleSheet()
 {
     return Utils::read(CSS_MUSICBAR)
             .replace(
-                "GROOVE_HEIGHT",
+                "groove-height",
                 QString::number(Config::Bar::grooveHeight()))
             .replace(
-                "HANDLE_SIZE_HALF",
+                "handle-size-half",
                 QString::number(Config::Bar::handleSize() / 2))
             .replace(
-                "HANDLE_SIZE",
+                "handle-size",
                 QString::number(Config::Bar::handleSize()))
             .replace(
-                "ICON_SIZE_HALF",
+                "icon-size-half",
                 QString::number(Config::Bar::iconSize() / 2));
 }
 

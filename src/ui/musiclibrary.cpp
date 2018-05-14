@@ -8,7 +8,10 @@
 MusicLibrary::MusicLibrary(QWidget *parent) :
     QListWidget(parent)
 {
+    setAlternatingRowColors(true);
+    setFocusPolicy(Qt::NoFocus);
     setFrameStyle(QFrame::NoFrame);
+    setSelectionMode(QListWidget::NoSelection);
     setStyleSheet(loadStyleSheet());
     setUniformItemSizes(true);
     setVerticalScrollMode(QAbstractItemView::ScrollPerPixel);
@@ -31,7 +34,6 @@ void MusicLibrary::loadLibrary(Library *library)
 {
     clear();
 
-    bool even = false;
     for (Audio *audio : library->audios())
     {
         SongInfo *info = new SongInfo(audio, this);
@@ -42,14 +44,11 @@ void MusicLibrary::loadLibrary(Library *library)
         info->showGenre();
         info->showLength(Qt::AlignRight);
         info->init({10, 10, 10, 1, 10, 1});
-        info->setEven(even);
 
         QListWidgetItem *item = new QListWidgetItem(this);
         item->setSizeHint(QSize(0, Config::Library::itemHeight()));
         addItem(item);
         setItemWidget(item, info);
-
-        even = !even;
     }
 }
 
@@ -62,7 +61,7 @@ QString MusicLibrary::loadStyleSheet()
 {
     return Utils::read(CSS_MUSICLIBRARY)
             .replace(
-                "SCROLLBAR_WIDTH",
+                "scrollbar-width",
                 QString::number(Config::Library::scrollBarWidth()));
 
 }
