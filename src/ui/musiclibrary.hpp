@@ -24,6 +24,8 @@ public:
     void loadLibrary(Library *library);
 
 private:
+    void setup();
+
     QString loadStyleSheet();
 };
 

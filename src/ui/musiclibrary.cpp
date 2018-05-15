@@ -8,22 +8,7 @@
 MusicLibrary::MusicLibrary(QWidget *parent) :
     QTableWidget(parent)
 {
-    setAlternatingRowColors(true);
-    setEditTriggers(QAbstractItemView::NoEditTriggers);
-    setFocusPolicy(Qt::NoFocus);
-    setFrameStyle(QFrame::NoFrame);
-    setItemDelegate(new RowHoverDelegate(this, this));
-    setSelectionMode(QAbstractItemView::NoSelection);
-    setShowGrid(false);
-    setStyleSheet(loadStyleSheet());
-    setVerticalScrollMode(QAbstractItemView::ScrollPerPixel);   
-    setWordWrap(false);
-
-    horizontalHeader()->hide();
-    horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
-    horizontalScrollBar()->hide();
-
-    verticalHeader()->hide();
+    setup();
 }
 
 /*
@@ -81,6 +66,28 @@ void MusicLibrary::loadAudios(Audios audios)
 void MusicLibrary::loadLibrary(Library *library)
 {
     loadAudios(library->audios());
+}
+
+/*
+ * Sets up widget.
+ */
+void MusicLibrary::setup()
+{
+    setAlternatingRowColors(true);
+    setEditTriggers(QAbstractItemView::NoEditTriggers);
+    setFocusPolicy(Qt::NoFocus);
+    setFrameStyle(QFrame::NoFrame);
+    setItemDelegate(new RowHoverDelegate(this, this));
+    setSelectionMode(QAbstractItemView::NoSelection);
+    setShowGrid(false);
+    setStyleSheet(loadStyleSheet());
+    setVerticalScrollMode(QAbstractItemView::ScrollPerPixel);
+    setWordWrap(false);
+
+    horizontalHeader()->hide();
+    horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+    horizontalScrollBar()->hide();
+    verticalHeader()->hide();
 }
 
 /*

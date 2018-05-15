@@ -42,10 +42,14 @@ A detailed description of all features will be added when the program is in a fi
 - BASS proper error handling
 - prevent moving slider with arrow keys
 - minimize amount of new allocations
-- no horizontal scrolling in music library
 - app minimum size
 - delete table widget items
 - clickable scrollbar
+- move player into core directory
+- QTableWidget sorting
+  - insert audio into correct library position
+  - [disable sorting before inserting](http://www.qtcentre.org/threads/42187-QTableWidget-sorting)
+- music bar padding in config
 
 ### Cosmetic
 - [black title bar](https://msdn.microsoft.com/en-us/library/windows/desktop/ms724940%28v=vs.85%29.aspx)

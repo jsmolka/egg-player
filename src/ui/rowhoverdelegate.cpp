@@ -8,11 +8,11 @@
  */
 RowHoverDelegate::RowHoverDelegate(QTableWidget *tableWidget, QObject *parent) :
     QStyledItemDelegate(parent),
-    m_tableWidget(tableWidget),
+    pm_tableWidget(tableWidget),
     m_hoveredRow(-1)
 {
-    m_tableWidget->setMouseTracking(true);
-    connect(m_tableWidget, SIGNAL(itemEntered(QTableWidgetItem *)), this, SLOT(onItemEntered(QTableWidgetItem *)));
+    pm_tableWidget->setMouseTracking(true);
+    connect(pm_tableWidget, SIGNAL(itemEntered(QTableWidgetItem *)), this, SLOT(onItemEntered(QTableWidgetItem *)));
 }
 
 /*
@@ -23,7 +23,7 @@ RowHoverDelegate::RowHoverDelegate(QTableWidget *tableWidget, QObject *parent) :
 void RowHoverDelegate::onItemEntered(QTableWidgetItem *item)
 {
     m_hoveredRow = item->row();
-    m_tableWidget->viewport()->update();
+    pm_tableWidget->viewport()->update();
 }
 
 /*

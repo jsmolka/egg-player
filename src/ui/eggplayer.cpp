@@ -10,11 +10,11 @@ EggPlayer::EggPlayer(QWidget *parent) :
 {
     pm_library = new Library();
     pm_library->load(Config::Library::paths());
-    pm_library->sortByTitle();
+    //pm_library->sortByTitle();
 
     setupUi();
 
-    //connect(pm_musicLibrary, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(onMusicLibraryDoubleClicked(QModelIndex)));
+    connect(pm_musicLibrary, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(onMusicLibraryDoubleClicked(QModelIndex)));
 }
 
 /*
@@ -60,11 +60,11 @@ void EggPlayer::closeEvent(QCloseEvent *event)
  *
  * :param index: library index
  */
-/*void EggPlayer::onMusicLibraryDoubleClicked(const QModelIndex &index)
+void EggPlayer::onMusicLibraryDoubleClicked(const QModelIndex &index)
 {
     pm_musicBar->player()->loadPlaylist(pm_library->audios(), index.row());
     pm_musicBar->player()->play();
-}*/
+}
 
 /*
  * Sets up user interface.

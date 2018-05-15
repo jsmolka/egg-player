@@ -16,7 +16,7 @@ protected slots:
     void onItemEntered(QTableWidgetItem *item);
 
 private:
-    QTableWidget *m_tableWidget;
+    QTableWidget *pm_tableWidget;
     int m_hoveredRow;
 };
 
