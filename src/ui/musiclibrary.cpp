@@ -9,23 +9,21 @@ MusicLibrary::MusicLibrary(QWidget *parent) :
     QTableWidget(parent)
 {
     setAlternatingRowColors(true);
+    setEditTriggers(QAbstractItemView::NoEditTriggers);
     setFocusPolicy(Qt::NoFocus);
     setFrameStyle(QFrame::NoFrame);
-    setShowGrid(false);
     setItemDelegate(new RowHoverDelegate(this, this));
-    //setSelectionMode(QListWidget::NoSelection);
+    setSelectionMode(QAbstractItemView::NoSelection);
+    setShowGrid(false);
     setStyleSheet(loadStyleSheet());
-    setEditTriggers(QAbstractItemView::NoEditTriggers);
-    //setUniformItemSizes(true);
     setVerticalScrollMode(QAbstractItemView::ScrollPerPixel);   
-
-    horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
-
     setWordWrap(false);
 
-    verticalHeader()->hide();
     horizontalHeader()->hide();
+    horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
     horizontalScrollBar()->hide();
+
+    verticalHeader()->hide();
 }
 
 /*
@@ -37,33 +35,22 @@ MusicLibrary::~MusicLibrary()
 }
 
 /*
- * Loads a library.
+ * Loads audios.
  *
- * :param library: library
+ * :param audios: audios
  */
-void MusicLibrary::loadLibrary(Library *library)
+void MusicLibrary::loadAudios(Audios audios)
 {
     clear();
-    setRowCount(library->audios().size());
+
+    setRowCount(audios.size());
     setColumnCount(6);
+
+    setUpdatesEnabled(false);
     int i = 0;
-    for (Audio *audio : library->audios())
+    for (Audio *audio : audios)
     {
-        /*SongInfo *info = new SongInfo(audio, this);
-        info->showTitle();
-        info->showArtist();
-        info->showAlbum();
-        info->showYear();
-        info->showGenre();
-        info->showLength(Qt::AlignRight);
-        info->init({10, 10, 10, 1, 10, 1});
-
-        QListWidgetItem *item = new QListWidgetItem(this);
-        item->setSizeHint(QSize(0, Config::Library::itemHeight()));
-        addItem(item);
-        setItemWidget(item, info);*/
         setRowHeight(i, Config::Library::itemHeight());
-
         QTableWidgetItem *item = new QTableWidgetItem(audio->title());
         setItem(i, 0, item);
         item = new QTableWidgetItem(audio->artist());
@@ -79,9 +66,21 @@ void MusicLibrary::loadLibrary(Library *library)
         setItem(i, 5, item);
         i++;
     }
+    setUpdatesEnabled(true);
+
     resizeColumnsToContents();
     horizontalHeader()->setSectionResizeMode(3, QHeaderView::ResizeToContents);
     horizontalHeader()->setSectionResizeMode(5, QHeaderView::ResizeToContents);
+}
+
+/*
+ * Loads a library.
+ *
+ * :param library: library
+ */
+void MusicLibrary::loadLibrary(Library *library)
+{
+    loadAudios(library->audios());
 }
 
 /*

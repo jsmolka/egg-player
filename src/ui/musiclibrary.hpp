@@ -20,6 +20,7 @@ public:
     MusicLibrary(QWidget *parent = nullptr);
     ~MusicLibrary();
 
+    void loadAudios(Audios audios);
     void loadLibrary(Library *library);
 
 private:

@@ -9,8 +9,17 @@ MusicLibrary {
 	alternate-background-color: rgb(38, 38, 38);
 }
 
+MusicLibrary:item {
+	border: 0;
+	padding: 5;
+}
+
 MusicLibrary::item:hover {
 	background: rgb(64, 64, 64);
+}
+
+QScrollBar:horizontal {
+	width: 0;
 }
 
 QScrollBar:vertical {
@@ -28,3 +37,4 @@ QScrollBar::add-page:vertical,
 QScrollBar::sub-page:vertical {
     background: transparent;
 }
+
