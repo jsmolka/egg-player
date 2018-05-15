@@ -1,5 +1,7 @@
 /*
- * The following values will be replaced by config values.
+ * The css files should only be used to edit color related things. All other
+ * values can and should changed through the config. The following values will
+ * be replaced by config values.
  * - scrollbar-width
  */
 
@@ -11,7 +13,7 @@ MusicLibrary {
 
 MusicLibrary:item {
 	border: 0;
-	padding: 5;
+	padding: 20;
 }
 
 MusicLibrary::item:hover {

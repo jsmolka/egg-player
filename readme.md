@@ -1,18 +1,6 @@
 # egg-player
 A Groove Music like music player.
 
-## Features
-A detailed description of all features will be added when the program is in a finished state.
-
-- simple user interface
-- reads audio tags
-- background cover caching
-- global shortcuts
-- editable config
-- error logs
-- multiple library paths
-- proper dpi scaling
-
 ## Roadmap
 - [x] documentation
 - [ ] playlist support
@@ -23,10 +11,9 @@ A detailed description of all features will be added when the program is in a fi
 - [ ] reactive cache
 
 ## Changes since lastest release
-### New features
-- UTF-8 support
-
-### Changelog
+- add UTF-8 support
+- improve startup times
+- improve load times
 
 ## Things to do
 ### Internal
@@ -50,6 +37,8 @@ A detailed description of all features will be added when the program is in a fi
   - insert audio into correct library position
   - [disable sorting before inserting](http://www.qtcentre.org/threads/42187-QTableWidget-sorting)
 - music bar padding in config
+- parents for QTableWidgetItems or proper destructor
+- make library a QObject with parent
 
 ### Cosmetic
 - [black title bar](https://msdn.microsoft.com/en-us/library/windows/desktop/ms724940%28v=vs.85%29.aspx)
