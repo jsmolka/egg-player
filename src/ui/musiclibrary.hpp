@@ -8,6 +8,7 @@
 #include "constants.hpp"
 #include "config.hpp"
 #include "library.hpp"
+#include "rowhoverdelegate.hpp"
 #include "songinfo.hpp"
 #include "utils.hpp"
 

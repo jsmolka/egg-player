@@ -11,8 +11,11 @@ MusicLibrary::MusicLibrary(QWidget *parent) :
     setAlternatingRowColors(true);
     setFocusPolicy(Qt::NoFocus);
     setFrameStyle(QFrame::NoFrame);
+    setShowGrid(false);
+    setItemDelegate(new RowHoverDelegate(this, this));
     //setSelectionMode(QListWidget::NoSelection);
     setStyleSheet(loadStyleSheet());
+    setEditTriggers(QAbstractItemView::NoEditTriggers);
     //setUniformItemSizes(true);
     setVerticalScrollMode(QAbstractItemView::ScrollPerPixel);   
 
