@@ -2,12 +2,9 @@
  * The following values will be replaced by config values.
  * - scrollbar-width
  */
- 
-QLabel {
-	color: white;
-}
 
 MusicLibrary {
+	color: white;
 	background: black;
 	alternate-background-color: rgb(38, 38, 38);
 }

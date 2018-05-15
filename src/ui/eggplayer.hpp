@@ -22,9 +22,9 @@ public:
 protected:
     void closeEvent(QCloseEvent *event);
 
-private slots:
+/*private slots:
     void onMusicLibraryDoubleClicked(const QModelIndex &index);
-
+*/
 private:
     void setupUi();
     void savePosition();
