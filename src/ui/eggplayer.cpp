@@ -8,9 +8,9 @@
 EggPlayer::EggPlayer(QWidget *parent) :
     QWidget(parent)
 {
-    pm_library = new Library();
+    pm_library = new Library(parent);
+    connect(pm_library, SIGNAL(loaded()), this, SLOT(onLibraryLoaded()));
     pm_library->load(Config::Library::paths());
-    //pm_library->sortByTitle();
 
     setupUi();
 
@@ -22,7 +22,7 @@ EggPlayer::EggPlayer(QWidget *parent) :
  */
 EggPlayer::~EggPlayer()
 {
-    delete pm_library;
+
 }
 
 /*
@@ -52,6 +52,16 @@ void EggPlayer::closeEvent(QCloseEvent *event)
 {
     savePosition();
     QWidget::closeEvent(event);
+}
+
+/*
+ * Library loaded event. Populates the music
+ * library.
+ */
+void EggPlayer::onLibraryLoaded()
+{
+    pm_library->sortByTitle();
+    pm_musicLibrary->loadAudios(pm_library->audios());
 }
 
 /*

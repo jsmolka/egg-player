@@ -2,30 +2,11 @@
 
 /*
  * Constructor.
- */
-Library::Library()
-{
-
-}
-
-/*
- * Initializer.
  *
- * :param audios: audios
+ * :param parent: parent, default nullptr
  */
-Library::Library(const Audios &audios) :
-    m_audios(audios)
-{
-
-}
-
-/*
- * Initializer.
- *
- * :param library: library
- */
-Library::Library(const Library &library) :
-    Library(library.audios())
+Library::Library(QObject *parent) :
+    QObject(parent)
 {
 
 }
@@ -50,13 +31,13 @@ Audios Library::audios() const
 }
 
 /*
- * Checks if library is empty.
+ * Getter for paths property.
  *
- * :return: empty
+ * :return: paths
  */
-bool Library::isEmpty() const
+QStringList Library::paths() const
 {
-    return m_audios.isEmpty();
+    return m_paths;
 }
 
 /*
@@ -68,23 +49,20 @@ void Library::sortByTitle()
 }
 
 /*
- * Loads library from multiple paths.
- * Also creates a thread for cache loading.
+ * Loads library from multiple paths. Creates a
+ * library builder thread and returns immediately.
  *
  * :param paths: paths
  */
 void Library::load(const QStringList &paths)
 {
-    for (const QString &path : paths)
-    {
-        if (Utils::exists(path))
-            loadFromPath(path);
-        else
-            Logger::log("Library: Path does not exist '%1'", {path});
-    }
+    m_paths << paths;
 
-    CacheBuilder *builder = new CacheBuilder(m_audios);
-    builder->start();
+    pm_libraryBuilder = new AudioLoader(m_paths, this);
+    connect(pm_libraryBuilder, SIGNAL(finished()), this, SLOT(onLibraryBuilderFinished()));
+    connect(pm_libraryBuilder, SIGNAL(finished()), this, SIGNAL(loaded()));
+    connect(pm_libraryBuilder, SIGNAL(audioLoaded(Audio*)), this, SLOT(insert(Audio*)));
+    pm_libraryBuilder->start();
 }
 
 /*
@@ -130,27 +108,21 @@ Audio * Library::audioAt(int index)
 }
 
 /*
- * Loads audios from a path.
+ * Inserts audio into library.
  *
- * :param path: path
+ * :param audio: audio
  */
-void Library::loadFromPath(const QString &path)
+void Library::insert(Audio *audio)
 {
-    QStringList files = Utils::glob(path, "*.mp3");
-    if (files.isEmpty())
-    {
-        Logger::log("Library: Path contains no audio files '%1'", {path});
-        return;
-    }
+    m_audios << audio;
+}
 
-    m_audios.reserve(m_audios.size() + files.size());
-    for (const QString &file : files)
-    {
-        Audio *audio = new Audio(file);
-        if (audio->isValid())
-            m_audios << audio;
-        else
-            delete audio;
-
-    }
+/*
+ * Library builder finished event. Starts the
+ * cache builder.
+ */
+void Library::onLibraryBuilderFinished()
+{
+    pm_cacheBuilder = new CacheBuilder(m_audios, this);
+    pm_cacheBuilder->start();
 }

@@ -14,10 +14,10 @@ A Groove Music like music player.
 - add UTF-8 support
 - improve startup times
 - improve load times
+- improve memory usage
 
 ## Things to do
 ### Internal
-- load library in a separate thread
 - add application startup to log
 - add egg_old.log to store old logs
 - more detailed logs, especially for player 
@@ -30,15 +30,15 @@ A Groove Music like music player.
 - prevent moving slider with arrow keys
 - minimize amount of new allocations
 - app minimum size
-- delete table widget items
 - clickable scrollbar
 - move player into core directory
 - QTableWidget sorting
+  - sortByColumn()
   - insert audio into correct library position
   - [disable sorting before inserting](http://www.qtcentre.org/threads/42187-QTableWidget-sorting)
 - music bar padding in config
 - parents for QTableWidgetItems or proper destructor
-- make library a QObject with parent
+- do not allow icon buttons to get focus
 
 ### Cosmetic
 - [black title bar](https://msdn.microsoft.com/en-us/library/windows/desktop/ms724940%28v=vs.85%29.aspx)

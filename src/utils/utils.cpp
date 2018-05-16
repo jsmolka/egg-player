@@ -128,25 +128,19 @@ QDir Utils::dir(const QString &path)
  * very simular to Pythons glob function.
  *
  * :param path: path
- * :param pattern: pattern
- * :param recursive: glob resursively
+ * :param suffix: suffix
  * :return: list of paths
  */
-QStringList Utils::glob(const QString &path, const QString &pattern, bool recursive)
+QStringList Utils::glob(const QString &path, const QString &suffix)
 {
-    QDir dir = Utils::dir(path);
-    QStringList filter;
-    filter << pattern;
     QStringList result;
-
-    QFileInfoList infos = dir.entryInfoList(filter, QDir::NoDotAndDotDot | QDir::AllDirs | QDir::Files);
-    for (const QFileInfo &info : infos)
+    QDirIterator iterator(dir(path), QDirIterator::Subdirectories);
+    while (iterator.hasNext())
     {
-        if (info.isDir() && recursive)
-            result << glob(info.absoluteFilePath(), pattern, recursive);
-
-        if (info.isFile())
-            result << info.absoluteFilePath();
+        iterator.next();
+        if (iterator.fileInfo().isFile())
+            if (iterator.fileInfo().suffix() == suffix)
+                result << iterator.filePath();
     }
     return result;
 }

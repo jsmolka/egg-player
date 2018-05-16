@@ -5,6 +5,7 @@
 
 #include <QColor>
 #include <QDir>
+#include <QDirIterator>
 #include <QImage>
 #include <QPixmap>
 #include <QString>
@@ -27,7 +28,7 @@ public:
     static QString read(const QString &path);
     static bool exists(const QString &path);
     static QDir dir(const QString &path);
-    static QStringList glob(const QString &path, const QString &pattern, bool recursive = true);
+    static QStringList glob(const QString &path, const QString &suffix);
     static QString fileName(const QString &file);
 
     // Color

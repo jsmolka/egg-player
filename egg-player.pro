@@ -63,7 +63,8 @@ HEADERS += \
     $$PWD/src/utils/logger.hpp \
     $$PWD/src/utils/shortcut.hpp \
     $$PWD/src/utils/utils.hpp \
-    src/ui/rowhoverdelegate.hpp
+    src/ui/rowhoverdelegate.hpp \
+    src/core/audioloader.hpp
 
 SOURCES += \
     $$PWD/src/main.cpp \
@@ -87,4 +88,5 @@ SOURCES += \
     $$PWD/src/utils/logger.cpp \
     $$PWD/src/utils/shortcut.cpp \
     $$PWD/src/utils/utils.cpp \
-    src/ui/rowhoverdelegate.cpp
+    src/ui/rowhoverdelegate.cpp \
+    src/core/audioloader.cpp
