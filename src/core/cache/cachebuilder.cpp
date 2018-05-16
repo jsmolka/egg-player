@@ -58,7 +58,7 @@ void CacheBuilder::run()
     for (Audio *audio : m_audios)
     {
         if (m_abort)
-            break;
+            return;
 
         if (!cache.contains(audio))
             cache.insert(audio);

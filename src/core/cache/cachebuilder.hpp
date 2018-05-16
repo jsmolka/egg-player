@@ -4,7 +4,7 @@
 #include <QApplication>
 #include <QThread>
 
-#include "audios.hpp"
+#include "audio.hpp"
 #include "cache.hpp"
 
 class CacheBuilder : public QThread

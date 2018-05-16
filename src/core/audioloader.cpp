@@ -49,16 +49,19 @@ void AudioLoader::abort()
 
 /*
  * Implemented run function. This is the main
- * function of the thread. Loads the library.
+ * function of the thread. Loads the audios.
  */
 void AudioLoader::run()
 {
     for (const QString &path : m_paths)
     {
+        if (m_abort)
+            return;
+
         if (Utils::exists(path))
             loadFromPath(path);
         else
-            Logger::log("LibraryBuilder: Path does not exist '%1'", {path});
+            Logger::log("AudioLoader: Path does not exist '%1'", {path});
     }
 }
 
@@ -70,14 +73,7 @@ void AudioLoader::run()
  */
 void AudioLoader::loadFromPath(const QString &path)
 {
-    QStringList files = Utils::glob(path, "mp3");
-    if (files.isEmpty())
-    {
-        Logger::log("LibraryBuilder: Path contains no audio files '%1'", {path});
-        return;
-    }
-
-    for (const QString &file : files)
+    for (const QString &file : Utils::glob(path, "mp3"))
     {
         if (m_abort)
             return;
@@ -87,6 +83,5 @@ void AudioLoader::loadFromPath(const QString &path)
             emit audioLoaded(audio);
         else
             delete audio;
-
     }
 }

@@ -20,8 +20,8 @@ public:
     MusicLibrary(QWidget *parent = nullptr);
     ~MusicLibrary();
 
-    void loadAudios(Audios audios);
-    void loadLibrary(Library *library);
+public slots:
+    void insert(Audio *audio, int row = -1);
 
 private:
     void setup();

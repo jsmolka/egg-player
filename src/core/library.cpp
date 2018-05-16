@@ -41,14 +41,6 @@ QStringList Library::paths() const
 }
 
 /*
- * Sorts by title.
- */
-void Library::sortByTitle()
-{
-    m_audios.sortByTitle();
-}
-
-/*
  * Loads library from multiple paths. Creates a
  * library builder thread and returns immediately.
  *
@@ -58,70 +50,37 @@ void Library::load(const QStringList &paths)
 {
     m_paths << paths;
 
-    pm_libraryBuilder = new AudioLoader(m_paths, this);
-    connect(pm_libraryBuilder, SIGNAL(finished()), this, SLOT(onLibraryBuilderFinished()));
-    connect(pm_libraryBuilder, SIGNAL(finished()), this, SIGNAL(loaded()));
-    connect(pm_libraryBuilder, SIGNAL(audioLoaded(Audio*)), this, SLOT(insert(Audio*)));
-    pm_libraryBuilder->start();
+    pm_audioLoader = new AudioLoader(m_paths, this);
+    connect(pm_audioLoader, SIGNAL(finished()), this, SLOT(onAudioLoaderFinished()));
+    connect(pm_audioLoader, SIGNAL(finished()), this, SIGNAL(loaded()));
+    connect(pm_audioLoader, SIGNAL(audioLoaded(Audio*)), this, SLOT(insert(Audio*)));
+    pm_audioLoader->start();
 }
 
 /*
- * Overloaded function.
- *
- * :param path: path
- */
-void Library::load(const QString &path)
-{
-    load(QStringList(path));
-}
-
-/*
- * Searches for a string in the library.
- *
- * :param string: string
- * :param cs: case sensivity, default insensitive
- * :return: audios
- */
-Audios Library::search(const QString &string, Qt::CaseSensitivity cs)
-{
-    Audios result;
-    for (Audio *audio : m_audios)
-        if (audio->title().contains(string, cs)
-                || audio->artist().contains(string, cs)
-                || audio->album().contains(string, cs))
-            result << audio;
-    return result;
-}
-
-/*
- * Returns audio at index.
- *
- * :param index: index
- * :return: audio, nullptr if invalid index
- */
-Audio * Library::audioAt(int index)
-{
-    if (index < 0 || index >= m_audios.size())
-        return nullptr;
-
-    return m_audios[index];
-}
-
-/*
- * Inserts audio into library.
+ * Inserts audio into library. The audio list
+ * will always be sorted by title when using
+ * this method.
  *
  * :param audio: audio
  */
 void Library::insert(Audio *audio)
 {
-    m_audios << audio;
+    Audios::iterator iterator = std::lower_bound(m_audios.begin(), m_audios.end(), audio,
+        [](const Audio *left, const Audio *right)
+        {
+            return QString::compare(left->title(), right->title(), Qt::CaseInsensitive) < 0;
+        });
+    int index = iterator - m_audios.begin();
+    m_audios.insert(iterator, audio);
+    emit AudioInserted(audio, index);
 }
 
 /*
- * Library builder finished event. Starts the
+ * Audio loader finished event. Starts the
  * cache builder.
  */
-void Library::onLibraryBuilderFinished()
+void Library::onAudioLoaderFinished()
 {
     pm_cacheBuilder = new CacheBuilder(m_audios, this);
     pm_cacheBuilder->start();

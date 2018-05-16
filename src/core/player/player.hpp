@@ -6,7 +6,6 @@
 #include <bass/bass.h>
 
 #include "audio.hpp"
-#include "audios.hpp"
 #include "timer.hpp"
 
 class Player : public QObject

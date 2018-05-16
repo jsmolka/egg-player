@@ -32,13 +32,9 @@ A Groove Music like music player.
 - app minimum size
 - clickable scrollbar
 - move player into core directory
-- QTableWidget sorting
-  - sortByColumn()
-  - insert audio into correct library position
-  - [disable sorting before inserting](http://www.qtcentre.org/threads/42187-QTableWidget-sorting)
 - music bar padding in config
-- parents for QTableWidgetItems or proper destructor
 - do not allow icon buttons to get focus
+- add sorted option to library
 
 ### Cosmetic
 - [black title bar](https://msdn.microsoft.com/en-us/library/windows/desktop/ms724940%28v=vs.85%29.aspx)

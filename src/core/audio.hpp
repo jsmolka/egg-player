@@ -4,6 +4,7 @@
 #include <QtMath>
 #include <QPainter>
 #include <QPixmap>
+#include <QVector>
 
 #include <taglib/attachedpictureframe.h>
 #include <taglib/fileref.h>
@@ -20,8 +21,8 @@ class Audio
 {
 public:
     Audio();
-    Audio(const Audio &audio);
     Audio(const QString &path);
+    Audio(const Audio &audio);
     ~Audio();
 
     bool isValid() const;
@@ -51,5 +52,7 @@ private:
     int m_track;
     int m_length;
 };
+
+typedef QVector<Audio *> Audios;
 
 #endif // AUDIO_HPP

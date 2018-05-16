@@ -8,11 +8,11 @@
 EggPlayer::EggPlayer(QWidget *parent) :
     QWidget(parent)
 {
-    pm_library = new Library(parent);
-    connect(pm_library, SIGNAL(loaded()), this, SLOT(onLibraryLoaded()));
-    pm_library->load(Config::Library::paths());
-
     setupUi();
+
+    pm_library = new Library(parent);
+    connect(pm_library, SIGNAL(AudioInserted(Audio*, int)), pm_musicLibrary, SLOT(insert(Audio*, int)));
+    pm_library->load(Config::Library::paths());
 
     connect(pm_musicLibrary, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(onMusicLibraryDoubleClicked(QModelIndex)));
 }
@@ -55,16 +55,6 @@ void EggPlayer::closeEvent(QCloseEvent *event)
 }
 
 /*
- * Library loaded event. Populates the music
- * library.
- */
-void EggPlayer::onLibraryLoaded()
-{
-    pm_library->sortByTitle();
-    pm_musicLibrary->loadAudios(pm_library->audios());
-}
-
-/*
  * Musc library double clicked event. It starts
  * the player with the clicked audio.
  *
@@ -82,7 +72,6 @@ void EggPlayer::onMusicLibraryDoubleClicked(const QModelIndex &index)
 void EggPlayer::setupUi()
 {
     pm_musicLibrary = new MusicLibrary(this);
-    pm_musicLibrary->loadLibrary(pm_library);
     pm_musicBar = new MusicBar(this);
 
     QLabel *west = new QLabel(this);
