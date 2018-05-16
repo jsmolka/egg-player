@@ -6,26 +6,23 @@
  * param parent: parent, default nullptr
  */
 CacheBuilder::CacheBuilder(QObject *parent) :
-    QThread(parent)
+    QThread(parent),
+    m_abort(false)
 {
-
+    connect(qApp, SIGNAL(aboutToQuit()), this, SLOT(abort()));
+    connect(this, SIGNAL(finished()), this, SLOT(deleteLater()));
 }
 
 /*
- * Constructor. Connects the thread to the app
- * so that it automatically aborts and deletes.
+ * Constructor.
  *
  * :param audios: audios
  * :param parent: parent, default nullptr
  */
 CacheBuilder::CacheBuilder(const Audios &audios, QObject *parent) :
-    QThread(parent),
-    m_audios(audios)
+    CacheBuilder(parent)
 {
-    m_abort = false;
-
-    connect(qApp, SIGNAL(aboutToQuit()), this, SLOT(abort()));
-    connect(this, SIGNAL(finished()), this, SLOT(deleteLater()));
+    m_audios = audios;
 }
 
 /*
@@ -37,8 +34,17 @@ CacheBuilder::~CacheBuilder()
 }
 
 /*
- * Sets the abort property and cleanly exits
- * the thread.
+ * Setter for audio property.
+ *
+ * :param audios: audios
+ */
+void CacheBuilder::setAudios(const Audios &audios)
+{
+    m_audios = audios;
+}
+
+/*
+ * Exits thread cleanly.
  */
 void CacheBuilder::abort()
 {
@@ -48,9 +54,7 @@ void CacheBuilder::abort()
 }
 
 /*
- * Implemented run function. This is the main
- * function of the thread. It loads the audio
- * covers and saves them in the cache.
+ * Loads audio covers.
  */
 void CacheBuilder::run()
 {

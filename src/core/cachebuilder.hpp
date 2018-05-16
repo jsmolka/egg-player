@@ -16,6 +16,8 @@ public:
     CacheBuilder(const Audios &audios, QObject *parent = nullptr);
     ~CacheBuilder();
 
+    void setAudios(const Audios &audios);
+
 public slots:
     void abort();
 

@@ -3,29 +3,26 @@
 /*
  * Constructor.
  *
- * param parent: parent, default nullptr
+ * :param parent: parent, default nullptr
  */
 AudioLoader::AudioLoader(QObject *parent) :
-    QThread(parent)
+    QThread(parent),
+    m_abort(false)
 {
-
+    connect(qApp, SIGNAL(aboutToQuit()), this, SLOT(abort()));
+    connect(this, SIGNAL(finished()), this, SLOT(deleteLater()));
 }
 
 /*
- * Constructor. Connects the thread to the app
- * so that it automatically aborts and deletes.
+ * Constructor.
  *
  * :param paths: paths
  * :param parent: parent, default nullptr
  */
 AudioLoader::AudioLoader(const QStringList &paths, QObject *parent) :
-    QThread(parent),
-    m_paths(paths)
+    AudioLoader(parent)
 {
-    m_abort = false;
-
-    connect(qApp, SIGNAL(aboutToQuit()), this, SLOT(abort()));
-    connect(this, SIGNAL(finished()), this, SLOT(deleteLater()));
+    m_paths = paths;
 }
 
 /*
@@ -37,8 +34,17 @@ AudioLoader::~AudioLoader()
 }
 
 /*
- * Sets the abort property and cleanly exits
- * the thread.
+ * Setter for paths property.
+ *
+ * :param paths: paths
+ */
+void AudioLoader::setPaths(const QStringList &paths)
+{
+    m_paths = paths;
+}
+
+/*
+ * Exits the thread cleanly.
  */
 void AudioLoader::abort()
 {
@@ -48,8 +54,7 @@ void AudioLoader::abort()
 }
 
 /*
- * Implemented run function. This is the main
- * function of the thread. Loads the audios.
+ * Loads audios from paths.
  */
 void AudioLoader::run()
 {
@@ -59,7 +64,7 @@ void AudioLoader::run()
             return;
 
         if (Utils::exists(path))
-            loadFromPath(path);
+            load(path);
         else
             Logger::log("AudioLoader: Path does not exist '%1'", {path});
     }
@@ -69,9 +74,9 @@ void AudioLoader::run()
  * Loads audios from a path.
  *
  * :param path: path
- * :emit audioLoaded: loaded audio
+ * :emit loaded: audio
  */
-void AudioLoader::loadFromPath(const QString &path)
+void AudioLoader::load(const QString &path)
 {
     for (const QString &file : Utils::glob(path, "mp3"))
     {
@@ -80,7 +85,7 @@ void AudioLoader::loadFromPath(const QString &path)
 
         Audio *audio = new Audio(file);
         if (audio->isValid())
-            emit audioLoaded(audio);
+            emit loaded(audio);
         else
             delete audio;
     }

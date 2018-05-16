@@ -6,12 +6,11 @@
  * :param parent: parent, defaut nullptr
  */
 IconButton::IconButton(QWidget *parent) :
-    QPushButton(parent)
+    QPushButton(parent),
+    m_index(true),
+    m_lockable(false),
+    m_locked(false)
 {
-    m_index = true;
-    m_lockable = false;
-    m_locked = false;
-
     connect(this, SIGNAL(clicked(bool)), this, SLOT(onClicked()));
 }
 

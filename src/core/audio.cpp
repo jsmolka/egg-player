@@ -6,14 +6,6 @@
 using namespace TagLib;
 
 /*
- * Constructor.
- */
-Audio::Audio()
-{
-
-}
-
-/*
  * Constructor. Creates an audio object and tries
  * to read its tags. If the title tag is empty it
  * will be set to the file name of the read file.
@@ -32,24 +24,6 @@ Audio::Audio(const QString &path) :
 
     if (m_title.isEmpty())
         m_title = Utils::fileName(m_path);
-}
-
-/*
- * Initializer.
- *
- * :param audio: audio
- */
-Audio::Audio(const Audio &audio) :
-    m_path(audio.path()),
-    m_title(audio.title()),
-    m_artist(audio.artist()),
-    m_album(audio.album()),
-    m_genre(audio.genre())
-{
-    m_valid = audio.isValid();
-    m_year = audio.year();
-    m_track = audio.track();
-    m_length = audio.length(false);
 }
 
 /*

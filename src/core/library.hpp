@@ -19,7 +19,6 @@ public:
     ~Library();
 
     Audios audios() const;
-    QStringList paths() const;
 
     void load(const QStringList &paths);
 
@@ -28,14 +27,13 @@ public slots:
 
 signals:
     void loaded();
-    void AudioInserted(Audio *, int);
+    void inserted(Audio *, int);
 
 private slots:
     void onAudioLoaderFinished();
 
 private:
     Audios m_audios;
-    QStringList m_paths;
     CacheBuilder *pm_cacheBuilder;
     AudioLoader *pm_audioLoader;
 };

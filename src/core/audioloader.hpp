@@ -17,17 +17,19 @@ public:
     AudioLoader(const QStringList &paths, QObject *parent = nullptr);
     ~AudioLoader();
 
+    void setPaths(const QStringList &paths);
+
 public slots:
     void abort();
 
 signals:
-    void audioLoaded(Audio *);
+    void loaded(Audio *);
 
 protected:
     void run() override;
 
 private:
-    void loadFromPath(const QString &path);
+    void load(const QString &path);
 
     QStringList m_paths;
     bool m_abort;

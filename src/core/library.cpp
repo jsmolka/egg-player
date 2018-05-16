@@ -6,9 +6,13 @@
  * :param parent: parent, default nullptr
  */
 Library::Library(QObject *parent) :
-    QObject(parent)
+    QObject(parent),
+    pm_cacheBuilder(new CacheBuilder(this)),
+    pm_audioLoader(new AudioLoader(this))
 {
-
+    connect(pm_audioLoader, SIGNAL(finished()), this, SLOT(onAudioLoaderFinished()));
+    connect(pm_audioLoader, SIGNAL(finished()), this, SIGNAL(loaded()));
+    connect(pm_audioLoader, SIGNAL(loaded(Audio*)), this, SLOT(insert(Audio*)));
 }
 
 /*
@@ -31,36 +35,22 @@ Audios Library::audios() const
 }
 
 /*
- * Getter for paths property.
- *
- * :return: paths
- */
-QStringList Library::paths() const
-{
-    return m_paths;
-}
-
-/*
- * Loads library from multiple paths. Creates a
- * library builder thread and returns immediately.
+ * Loads the library by creating an audio
+ * builder. This function should not be called
+ * multiple times for the same paths.
  *
  * :param paths: paths
  */
 void Library::load(const QStringList &paths)
 {
-    m_paths << paths;
-
-    pm_audioLoader = new AudioLoader(m_paths, this);
-    connect(pm_audioLoader, SIGNAL(finished()), this, SLOT(onAudioLoaderFinished()));
-    connect(pm_audioLoader, SIGNAL(finished()), this, SIGNAL(loaded()));
-    connect(pm_audioLoader, SIGNAL(audioLoaded(Audio*)), this, SLOT(insert(Audio*)));
+    pm_audioLoader->setPaths(paths);
     pm_audioLoader->start();
 }
 
 /*
- * Inserts audio into library. The audio list
- * will always be sorted by title when using
- * this method.
+ * Inserts an audio into the library. The audio
+ * list will always be sorted by title when
+ * using this method.
  *
  * :param audio: audio
  */
@@ -71,17 +61,17 @@ void Library::insert(Audio *audio)
         {
             return QString::compare(left->title(), right->title(), Qt::CaseInsensitive) < 0;
         });
+
     int index = iterator - m_audios.begin();
     m_audios.insert(iterator, audio);
-    emit AudioInserted(audio, index);
+    emit inserted(audio, index);
 }
 
 /*
- * Audio loader finished event. Starts the
- * cache builder.
+ * Starts the cache builder.
  */
 void Library::onAudioLoaderFinished()
 {
-    pm_cacheBuilder = new CacheBuilder(m_audios, this);
+    pm_cacheBuilder->setAudios(m_audios);
     pm_cacheBuilder->start();
 }

@@ -20,9 +20,7 @@
 class Audio
 {
 public:
-    Audio();
     Audio(const QString &path);
-    Audio(const Audio &audio);
     ~Audio();
 
     bool isValid() const;

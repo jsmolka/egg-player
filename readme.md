@@ -31,10 +31,10 @@ A Groove Music like music player.
 - minimize amount of new allocations
 - app minimum size
 - clickable scrollbar
-- move player into core directory
 - music bar padding in config
 - do not allow icon buttons to get focus
 - add sorted option to library
+- remove unnecessary description from events
 
 ### Cosmetic
 - [black title bar](https://msdn.microsoft.com/en-us/library/windows/desktop/ms724940%28v=vs.85%29.aspx)

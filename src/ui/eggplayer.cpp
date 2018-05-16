@@ -6,15 +6,17 @@
  * :param parent: parent, default nullptr
  */
 EggPlayer::EggPlayer(QWidget *parent) :
-    QWidget(parent)
+    QWidget(parent),
+    pm_library(new Library(this)),
+    pm_musicLibrary(new MusicLibrary(this)),
+    pm_musicBar(new MusicBar(this))
 {
     setupUi();
 
-    pm_library = new Library(parent);
-    connect(pm_library, SIGNAL(AudioInserted(Audio*, int)), pm_musicLibrary, SLOT(insert(Audio*, int)));
-    pm_library->load(Config::Library::paths());
-
+    connect(pm_library, SIGNAL(inserted(Audio*, int)), pm_musicLibrary, SLOT(insert(Audio*, int)));
     connect(pm_musicLibrary, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(onMusicLibraryDoubleClicked(QModelIndex)));
+
+    pm_library->load(Config::Library::paths());
 }
 
 /*
@@ -58,7 +60,7 @@ void EggPlayer::closeEvent(QCloseEvent *event)
  * Musc library double clicked event. It starts
  * the player with the clicked audio.
  *
- * :param index: library index
+ * :param index: index
  */
 void EggPlayer::onMusicLibraryDoubleClicked(const QModelIndex &index)
 {
@@ -71,9 +73,6 @@ void EggPlayer::onMusicLibraryDoubleClicked(const QModelIndex &index)
  */
 void EggPlayer::setupUi()
 {
-    pm_musicLibrary = new MusicLibrary(this);
-    pm_musicBar = new MusicBar(this);
-
     QLabel *west = new QLabel(this);
     west->setFixedWidth(315);
     west->setStyleSheet("QLabel {background-color: #666666;}");
