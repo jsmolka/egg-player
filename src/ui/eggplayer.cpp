@@ -16,6 +16,7 @@ EggPlayer::EggPlayer(QWidget *parent) :
     connect(pm_library, SIGNAL(inserted(Audio*, int)), pm_musicLibrary, SLOT(insert(Audio*, int)));
     connect(pm_musicLibrary, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(onMusicLibraryDoubleClicked(QModelIndex)));
 
+    pm_library->setSorted(true);
     pm_library->load(Config::Library::paths());
 }
 
@@ -76,6 +77,13 @@ void EggPlayer::setupUi()
     QLabel *west = new QLabel(this);
     west->setFixedWidth(315);
     west->setStyleSheet("QLabel {background-color: #666666;}");
+
+    pm_musicLibrary->showColumn(MusicLibrary::Title);
+    pm_musicLibrary->showColumn(MusicLibrary::Artist);
+    pm_musicLibrary->showColumn(MusicLibrary::Album);
+    pm_musicLibrary->showColumn(MusicLibrary::Year, Qt::AlignLeft, false);
+    pm_musicLibrary->showColumn(MusicLibrary::Genre);
+    pm_musicLibrary->showColumn(MusicLibrary::Length, Qt::AlignRight, false);
 
     BorderLayout *layout = new BorderLayout(0, this);
     layout->addWidget(pm_musicLibrary, BorderLayout::Center);

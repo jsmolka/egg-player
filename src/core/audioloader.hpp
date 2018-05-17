@@ -31,7 +31,7 @@ protected:
 private:
     void load(const QString &path);
 
-    QStringList m_paths;
     bool m_abort;
+    QStringList m_paths;
 };
 #endif // AUDIOLOADER_HPP

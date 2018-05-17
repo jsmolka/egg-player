@@ -25,8 +25,8 @@ protected:
     void run() override;
 
 private:
-    Audios m_audios;
     bool m_abort;
+    Audios m_audios;
 };
 
 #endif // CACHEBUILDER_HPP

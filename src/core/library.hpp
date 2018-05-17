@@ -1,8 +1,6 @@
 #ifndef LIBRARY_HPP
 #define LIBRARY_HPP
 
-#include <algorithm>
-
 #include <QObject>
 #include <QStringList>
 
@@ -18,6 +16,8 @@ public:
     Library(QObject *parent = nullptr);
     ~Library();
 
+    void setSorted(bool sorted);
+    bool isSorted() const;
     Audios audios() const;
 
     void load(const QStringList &paths);
@@ -33,6 +33,11 @@ private slots:
     void onAudioLoaderFinished();
 
 private:
+    int lowerBound(Audio *audio);
+    void insertBinary(Audio *audio);
+    void append(Audio *audio);
+
+    bool m_sorted;
     Audios m_audios;
     CacheBuilder *pm_cacheBuilder;
     AudioLoader *pm_audioLoader;

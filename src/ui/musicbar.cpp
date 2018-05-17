@@ -7,24 +7,31 @@
  * :param parent: parent, default nullptr
  */
 MusicBar::MusicBar(QWidget *parent) :
-    QWidget(parent)
+    QWidget(parent),
+    pm_player(new Player(this)),
+    pm_coverLabel(new QLabel(this)),
+    pm_trackLabel(new QLabel(this)),
+    pm_currentTimeLabel(new QLabel(this)),
+    pm_totalTimeLabel(new QLabel(this)),
+    pm_playPauseButton(new IconButton(this)),
+    pm_nextButton(new IconButton(this)),
+    pm_previousButton(new IconButton(this)),
+    pm_shuffleButton(new IconButton(this)),
+    pm_loopButton(new IconButton(this)),
+    pm_volumeButton(new IconButton(this)),
+    pm_lengthSlider(new ClickableSlider(this)),
+    pm_volumeSlider(new ClickableSlider(this)),
+    pm_scPlayPause(new Shortcut(Config::Shortcut::playPause(), false, this)),
+    pm_scNext(new Shortcut(Config::Shortcut::next(), false, this)),
+    pm_scPrevious(new Shortcut(Config::Shortcut::previous(), false, this)),
+    pm_scVolumeUp(new Shortcut(Config::Shortcut::volumeUp(), true, this)),
+    pm_scVolumeDown(new Shortcut(Config::Shortcut::volumeDown(), true, this))
 {
-    setAutoFillBackground(true);
-    setFixedHeight(Config::Bar::height());
-    setStyleSheet(loadStyleSheet());
-    setColor(Utils::backgroundColor(Utils::defaultCover(Config::Bar::coverSize())));
-
-    pm_player = new Player(this);
     pm_player->setVolume(Config::Player::volume());
     pm_player->setShuffle(Config::Player::shuffle());
     pm_player->setLoop(Config::Player::loop());
 
-    pm_scPlayPause = new Shortcut(Config::Shortcut::playPause(), false, this);
-    pm_scNext = new Shortcut(Config::Shortcut::next(), false, this);
-    pm_scPrevious = new Shortcut(Config::Shortcut::previous(), false, this);
-    pm_scVolumeUp = new Shortcut(Config::Shortcut::volumeUp(), true, this);
-    pm_scVolumeDown = new Shortcut(Config::Shortcut::volumeDown(), true, this);
-
+    setup();
     setupUi();
 
     connect(pm_player, SIGNAL(audioChanged(Audio *)), this, SLOT(onPlayerAudioChanged(Audio *)));
@@ -413,7 +420,15 @@ QString MusicBar::loadStyleSheet()
 }
 
 /*
- * Prepares
+ * Sets up widget.
+ */
+void MusicBar::setup()
+{
+    setAutoFillBackground(true);
+    setFixedHeight(Config::Bar::height());
+    setStyleSheet(loadStyleSheet());
+    setColor(Utils::backgroundColor(Utils::defaultCover()));
+}
 
 /*
  * Sets up user interface.
@@ -431,11 +446,9 @@ void MusicBar::setupUi()
  */
 void MusicBar::createAudioInfo()
 {
-    pm_coverLabel = new QLabel(this);
     pm_coverLabel->setPixmap(Utils::defaultCover(Config::Bar::coverSize()));
     pm_coverLabel->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
 
-    pm_trackLabel = new QLabel(this);
     pm_trackLabel->setFixedWidth(Config::Bar::trackWidth());
     pm_trackLabel->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
 }
@@ -445,16 +458,13 @@ void MusicBar::createAudioInfo()
  */
 void MusicBar::createLengthSlider()
 {
-    pm_currentTimeLabel = new QLabel(this);
     pm_currentTimeLabel->setFixedWidth(Config::Bar::timeWidth());
     pm_currentTimeLabel->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Maximum);
     pm_currentTimeLabel->setAlignment(Qt::AlignRight | Qt::AlignHCenter);
 
-    pm_lengthSlider = new ClickableSlider(this);
     pm_lengthSlider->setEnabled(false);
     pm_lengthSlider->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding);
 
-    pm_totalTimeLabel = new QLabel(this);
     pm_totalTimeLabel->setFixedWidth(Config::Bar::timeWidth());
     pm_totalTimeLabel->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Maximum);
 }
@@ -464,29 +474,24 @@ void MusicBar::createLengthSlider()
  */
 void MusicBar::createButtons()
 {
-    pm_previousButton = new IconButton(this);
     pm_previousButton->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
     pm_previousButton->init({ICO_PREVIOUS}, Config::Bar::iconSize());
 
-    pm_playPauseButton = new IconButton(this);
     pm_playPauseButton->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
     pm_playPauseButton->init({ICO_PLAY, ICO_PAUSE}, Config::Bar::iconSize());
 
-    pm_nextButton = new IconButton(this);
+
     pm_nextButton->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
     pm_nextButton->init({ICO_NEXT}, Config::Bar::iconSize());
 
-    pm_shuffleButton = new IconButton(this);
     pm_shuffleButton->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
     pm_shuffleButton->init({ICO_SHUFFLE}, Config::Bar::iconSize(), true);
     pm_shuffleButton->setLocked(Config::Player::shuffle());
 
-    pm_loopButton = new IconButton(this);
     pm_loopButton->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
     pm_loopButton->init({ICO_LOOP}, Config::Bar::iconSize(), true);
     pm_loopButton->setLocked(Config::Player::loop());
 
-    pm_volumeButton = new IconButton(this);
     pm_volumeButton->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
     pm_volumeButton->init({ICO_VOLUME_FULL,
                            ICO_VOLUME_MEDIUM,
@@ -494,7 +499,6 @@ void MusicBar::createButtons()
                            ICO_VOLUME_MUTE}, Config::Bar::iconSize());
     setVolumeIcon(Config::Player::volume());
 
-    pm_volumeSlider = new ClickableSlider(this);
     pm_volumeSlider->setVisible(false);
     pm_volumeSlider->setRange(0, 100);
     pm_volumeSlider->setValue(Config::Player::volume());

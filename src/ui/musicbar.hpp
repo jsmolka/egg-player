@@ -67,6 +67,7 @@ private slots:
 private:
     QString loadStyleSheet();
 
+    void setup();
     void setupUi();
     void createAudioInfo();
     void createLengthSlider();

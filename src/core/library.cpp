@@ -7,6 +7,7 @@
  */
 Library::Library(QObject *parent) :
     QObject(parent),
+    m_sorted(false),
     pm_cacheBuilder(new CacheBuilder(this)),
     pm_audioLoader(new AudioLoader(this))
 {
@@ -22,6 +23,26 @@ Library::~Library()
 {
     while (!m_audios.isEmpty())
         delete m_audios.takeFirst();
+}
+
+/*
+ * Setter for sorted property.
+ *
+ * :param sorted: sorted
+ */
+void Library::setSorted(bool sorted)
+{
+    m_sorted = sorted;
+}
+
+/*
+ * Getter for sorted property.
+ *
+ * :return: sorted
+ */
+bool Library::isSorted() const
+{
+    return m_sorted;
 }
 
 /*
@@ -48,23 +69,17 @@ void Library::load(const QStringList &paths)
 }
 
 /*
- * Inserts an audio into the library. The audio
- * list will always be sorted by title when
- * using this method.
+ * Inserts an audio into the library. Depeding on
+ * the sorted propery it will be inserted binary.
  *
  * :param audio: audio
  */
 void Library::insert(Audio *audio)
 {
-    Audios::iterator iterator = std::lower_bound(m_audios.begin(), m_audios.end(), audio,
-        [](const Audio *left, const Audio *right)
-        {
-            return QString::compare(left->title(), right->title(), Qt::CaseInsensitive) < 0;
-        });
-
-    int index = iterator - m_audios.begin();
-    m_audios.insert(iterator, audio);
-    emit inserted(audio, index);
+    if (m_sorted)
+        insertBinary(audio);
+    else
+        append(audio);
 }
 
 /*
@@ -74,4 +89,51 @@ void Library::onAudioLoaderFinished()
 {
     pm_cacheBuilder->setAudios(m_audios);
     pm_cacheBuilder->start();
+}
+
+/*
+ * Gets the lower bound for an audio using a
+ * binary search like approach.
+ *
+ * :param audio: audio
+ */
+int Library::lowerBound(Audio *audio)
+{
+    int low = 0;
+    int high = m_audios.size();
+    while (low < high)
+    {
+        int mid = (low + high) / 2;
+        if (audio->title().compare(m_audios[mid]->title(), Qt::CaseInsensitive) < 0)
+            high = mid;
+        else
+            low = mid + 1;
+    }
+    return low;
+}
+
+/*
+ * Inserts audio in library. Keeps it sorted.
+ *
+ * :param audio: audio
+ * :emit inserted: audio, index
+ */
+void Library::insertBinary(Audio *audio)
+{
+    int index = lowerBound(audio);
+    m_audios.insert(index, audio);
+    emit inserted(audio, index);
+}
+
+/*
+ * Appends audio to libray.
+ *
+ *
+ * :param audio: audio
+ * :emit inserted: audio, -1
+ */
+void Library::append(Audio *audio)
+{
+    m_audios << audio;
+    emit inserted(audio, -1);
 }

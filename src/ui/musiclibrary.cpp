@@ -20,6 +20,20 @@ MusicLibrary::~MusicLibrary()
 }
 
 /*
+ * Shows column.
+ *
+ * :param info: info
+ * :param horizontal: horizontal, default left
+ * :param expand: expand
+ */
+void MusicLibrary::showColumn(SongInfo info, Qt::Alignment horizontal, bool expand)
+{
+    Qt::Alignment alignment = Qt::AlignVCenter | horizontal;
+    m_columns << ColumnInfo(info, alignment, expand);
+    setColumnCount(m_columns.size());
+}
+
+/*
  * Inserts audio into library. If row is
  * -1 it will be appended to the last one.
  *
@@ -28,31 +42,62 @@ MusicLibrary::~MusicLibrary()
  */
 void MusicLibrary::insert(Audio *audio, int row)
 {
+    setUpdatesEnabled(false);
+
     if (row == -1)
         row = rowCount();
-
-    setColumnCount(6);
-
     insertRow(row);
 
-    setRowHeight(row, Config::Library::itemHeight());
-    QTableWidgetItem *item = new QTableWidgetItem(audio->title());
-    setItem(row, 0, item);
-    item = new QTableWidgetItem(audio->artist());
-    setItem(row, 1, item);
-    item = new QTableWidgetItem(audio->album());
-    setItem(row, 2, item);
-    item = new QTableWidgetItem(QString::number(audio->year()));
-    setItem(row, 3, item);
-    item = new QTableWidgetItem(audio->genre());
-    setItem(row, 4, item);
-    item = new QTableWidgetItem(Utils::timeString(audio->length()));
-    item->setTextAlignment(Qt::AlignRight | Qt::AlignVCenter);
-    setItem(row, 5, item);
+    for (int i = 0; i < m_columns.size(); i++)
+    {
+        QString text;
+        switch(m_columns[i].info)
+        {
+            case Title:
+                text = audio->title();
+                break;
+            case Artist:
+                text = audio->artist();
+                break;
+            case Album:
+                text = audio->album();
+                break;
+            case Track:
+                text = audio->track() == 0 ? QString() : QString::number(audio->track());
+                break;
+            case Year:
+                text = audio->year() == 0 ? QString() : QString::number(audio->year());
+                break;
+            case Genre:
+                text = audio->genre();
+                break;
+            case Length:
+                text = Utils::timeString(audio->length());
+                break;
+        }
 
-    //resizeColumnsToContents();
-    horizontalHeader()->setSectionResizeMode(3, QHeaderView::ResizeToContents);
-    horizontalHeader()->setSectionResizeMode(5, QHeaderView::ResizeToContents);
+        QTableWidgetItem *item = new QTableWidgetItem(text);
+        item->setTextAlignment(m_columns[i].alignment);
+        setItem(row, i, item);
+
+        if (!m_columns[i].expand)
+            horizontalHeader()->setSectionResizeMode(i, QHeaderView::ResizeToContents);
+    }
+    setUpdatesEnabled(true);
+}
+
+/*
+ * Loads style sheet and replaces placeholders.
+ *
+ * :return: style sheet
+ */
+QString MusicLibrary::loadStyleSheet()
+{
+    return Utils::read(CSS_MUSICLIBRARY)
+            .replace(
+                "scrollbar-width",
+                QString::number(Config::Library::scrollBarWidth()));
+
 }
 
 /*
@@ -75,18 +120,6 @@ void MusicLibrary::setup()
     horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
     horizontalScrollBar()->hide();
     verticalHeader()->hide();
-}
-
-/*
- * Loads style sheet and replaces placeholders.
- *
- * :return: style sheet
- */
-QString MusicLibrary::loadStyleSheet()
-{
-    return Utils::read(CSS_MUSICLIBRARY)
-            .replace(
-                "scrollbar-width",
-                QString::number(Config::Library::scrollBarWidth()));
-
+    verticalHeader()->setSectionResizeMode(QHeaderView::Fixed);
+    verticalHeader()->setDefaultSectionSize(Config::Library::itemHeight());
 }

@@ -56,7 +56,6 @@ HEADERS += \
     $$PWD/src/ui/components/clickablesliderstyle.hpp \
     $$PWD/src/ui/components/iconbutton.hpp \
     $$PWD/src/ui/components/rowhoverdelegate.hpp \
-    $$PWD/src/ui/components/songinfo.hpp \
     $$PWD/src/ui/layouts/borderlayout.hpp \
     $$PWD/src/utils/config.hpp \
     $$PWD/src/utils/logger.hpp \
@@ -80,7 +79,6 @@ SOURCES += \
     $$PWD/src/ui/components/clickablesliderstyle.cpp \
     $$PWD/src/ui/components/iconbutton.cpp \
     $$PWD/src/ui/components/rowhoverdelegate.cpp \
-    $$PWD/src/ui/components/songinfo.cpp \
     $$PWD/src/ui/layouts/borderlayout.cpp \
     $$PWD/src/utils/config.cpp \
     $$PWD/src/utils/logger.cpp \

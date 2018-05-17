@@ -6,7 +6,7 @@ A Groove Music like music player.
 - [ ] playlist support
 - [x] [bass.dll](http://www.un4seen.com/) as audio backend
 - [x] proper dpi scaling
-- [ ] proper multithreading
+- [x] proper multithreading
 - [x] global shortcuts
 - [ ] reactive cache
 
@@ -33,7 +33,6 @@ A Groove Music like music player.
 - clickable scrollbar
 - music bar padding in config
 - do not allow icon buttons to get focus
-- add sorted option to library
 - remove unnecessary description from events
 
 ### Cosmetic
