@@ -7,17 +7,17 @@
  */
 EggPlayer::EggPlayer(QWidget *parent) :
     QWidget(parent),
-    pm_library(new Library(this)),
-    pm_musicLibrary(new MusicLibrary(this)),
-    pm_musicBar(new MusicBar(this))
+    m_library(this),
+    m_musicLibrary(this),
+    m_musicBar(this)
 {
     setupUi();
 
-    connect(pm_library, SIGNAL(inserted(Audio*, int)), pm_musicLibrary, SLOT(insert(Audio*, int)));
-    connect(pm_musicLibrary, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(onMusicLibraryDoubleClicked(QModelIndex)));
+    connect(&m_library, SIGNAL(inserted(Audio*, int)), &m_musicLibrary, SLOT(insert(Audio*, int)));
+    connect(&m_musicLibrary, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(onMusicLibraryDoubleClicked(QModelIndex)));
 
-    pm_library->setSorted(true);
-    pm_library->load(Config::Library::paths());
+    m_library.setSorted(true);
+    m_library.load(Config::Library::paths());
 }
 
 /*
@@ -65,8 +65,8 @@ void EggPlayer::closeEvent(QCloseEvent *event)
  */
 void EggPlayer::onMusicLibraryDoubleClicked(const QModelIndex &index)
 {
-    pm_musicBar->player()->loadPlaylist(pm_library->audios(), index.row());
-    pm_musicBar->player()->play();
+    m_musicBar.player()->loadPlaylist(m_library.audios(), index.row());
+    m_musicBar.player()->play();
 }
 
 /*
@@ -78,17 +78,17 @@ void EggPlayer::setupUi()
     west->setFixedWidth(315);
     west->setStyleSheet("QLabel {background-color: #666666;}");
 
-    pm_musicLibrary->showColumn(MusicLibrary::Title);
-    pm_musicLibrary->showColumn(MusicLibrary::Artist);
-    pm_musicLibrary->showColumn(MusicLibrary::Album);
-    pm_musicLibrary->showColumn(MusicLibrary::Year, Qt::AlignLeft, false);
-    pm_musicLibrary->showColumn(MusicLibrary::Genre);
-    pm_musicLibrary->showColumn(MusicLibrary::Length, Qt::AlignRight, false);
+    m_musicLibrary.showColumn(MusicLibrary::Title);
+    m_musicLibrary.showColumn(MusicLibrary::Artist);
+    m_musicLibrary.showColumn(MusicLibrary::Album);
+    m_musicLibrary.showColumn(MusicLibrary::Year, Qt::AlignLeft, false);
+    m_musicLibrary.showColumn(MusicLibrary::Genre);
+    m_musicLibrary.showColumn(MusicLibrary::Length, Qt::AlignRight, false);
 
     BorderLayout *layout = new BorderLayout(0, this);
-    layout->addWidget(pm_musicLibrary, BorderLayout::Center);
+    layout->addWidget(&m_musicLibrary, BorderLayout::Center);
     layout->addWidget(west, BorderLayout::West);
-    layout->addWidget(pm_musicBar, BorderLayout::South);
+    layout->addWidget(&m_musicBar, BorderLayout::South);
     setLayout(layout);
 }
 

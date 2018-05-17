@@ -2,6 +2,7 @@
  * The css files should only be used to edit color related things. All other
  * values can and should changed through the config. The following values will
  * be replaced by config values.
+ * - cell-padding
  * - scrollbar-width
  */
 
@@ -13,7 +14,7 @@ MusicLibrary {
 
 MusicLibrary:item {
 	border: 0;
-	padding: 20;
+	padding: cell-padding;
 }
 
 MusicLibrary::item:hover {

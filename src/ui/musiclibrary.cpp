@@ -95,9 +95,11 @@ QString MusicLibrary::loadStyleSheet()
 {
     return Utils::read(CSS_MUSICLIBRARY)
             .replace(
+                "cell-padding",
+                QString::number(Config::Library::cellPadding()))
+            .replace(
                 "scrollbar-width",
                 QString::number(Config::Library::scrollBarWidth()));
-
 }
 
 /*
@@ -112,6 +114,7 @@ void MusicLibrary::setup()
     setItemDelegate(new RowHoverDelegate(this, this));
     setSelectionMode(QAbstractItemView::NoSelection);
     setShowGrid(false);
+    setStyle(new ClickableStyle(style()));
     setStyleSheet(loadStyleSheet());
     setVerticalScrollMode(QAbstractItemView::ScrollPerPixel);
     setWordWrap(false);

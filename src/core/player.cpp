@@ -6,18 +6,18 @@
  * :param parent: parent, default nullptr
  */
 Player::Player(QObject *parent) :
-    QObject(parent)
+    QObject(parent),
+    m_stream(0),
+    m_index(-1),
+    m_volume(0),
+    m_loop(false),
+    m_shuffle(false),
+    m_playing(false),
+    pm_timer(new Timer(1000, this))
 {
     qsrand(time(0));
 
     bassCreate();
-    m_stream = 0;
-    m_index = -1;
-    m_volume = 0;
-    m_loop = false;
-    m_shuffle = false;
-    m_playing = false;
-    pm_timer = new Timer(1000, this);
 
     connect(pm_timer, SIGNAL(timeout(qint64)), this, SLOT(onTimeout(qint64)));
 

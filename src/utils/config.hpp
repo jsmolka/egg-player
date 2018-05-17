@@ -92,6 +92,9 @@ public:
     public:
         static void create();
 
+        static void setCellPadding(int padding);
+        static int cellPadding();
+
         static void setItemHeight(int height);
         static int itemHeight();
 
@@ -102,10 +105,12 @@ public:
         static int scrollBarWidth();
 
     private:
+        static const QString kCellPadding;
         static const QString kItemHeight;
         static const QString kPaths;
         static const QString kScrollBarWidth;
 
+        static const int dCellPadding;
         static const int dItemHeight;
         static const QJsonArray dPaths;
         static const int dScrollBarWidth;

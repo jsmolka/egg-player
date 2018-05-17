@@ -3,17 +3,6 @@
 /*
  * Constructor.
  *
- * :param parent: parent, default nullptr
- */
-Shortcut::Shortcut(QObject *parent) :
-    QObject(parent)
-{
-
-}
-
-/*
- * Constructor.
- *
  * :param shortcut: shortcut
  * :param repeat: repeat signal while pressed
  * :param parent: parent, default nullptr

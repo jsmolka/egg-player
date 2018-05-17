@@ -6,6 +6,7 @@
 #include <QTableWidget>
 #include <QVector>
 
+#include "clickablestyle.hpp"
 #include "constants.hpp"
 #include "config.hpp"
 #include "library.hpp"

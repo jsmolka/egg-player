@@ -29,9 +29,9 @@ private:
     void setupUi();
     void savePosition();
 
-    Library *pm_library;
-    MusicLibrary *pm_musicLibrary;
-    MusicBar *pm_musicBar;
+    Library m_library;
+    MusicLibrary m_musicLibrary;
+    MusicBar m_musicBar;
 };
 
 #endif // EGGPLAYER_HPP

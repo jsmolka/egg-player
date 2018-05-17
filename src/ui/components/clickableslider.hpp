@@ -3,7 +3,7 @@
 
 #include <QSlider>
 
-#include "clickablesliderstyle.hpp"
+#include "clickablestyle.hpp"
 
 class ClickableSlider : public QSlider
 {

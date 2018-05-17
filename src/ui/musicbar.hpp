@@ -86,28 +86,28 @@ private:
     void setVolumeSlider(int volume);
     void changeVolume(int volume, int step);
 
-    Player *pm_player;
+    Player m_player;
 
-    QLabel *pm_coverLabel;
-    QLabel *pm_trackLabel;
-    QLabel *pm_currentTimeLabel;
-    QLabel *pm_totalTimeLabel;
+    QLabel m_coverLabel;
+    QLabel m_trackLabel;
+    QLabel m_currentTimeLabel;
+    QLabel m_totalTimeLabel;
 
-    IconButton *pm_playPauseButton;
-    IconButton *pm_nextButton;
-    IconButton *pm_previousButton;
-    IconButton *pm_shuffleButton;
-    IconButton *pm_loopButton;
-    IconButton *pm_volumeButton;
+    IconButton m_playPauseButton;
+    IconButton m_nextButton;
+    IconButton m_previousButton;
+    IconButton m_shuffleButton;
+    IconButton m_loopButton;
+    IconButton m_volumeButton;
 
-    ClickableSlider *pm_lengthSlider;
-    ClickableSlider *pm_volumeSlider;
+    ClickableSlider m_lengthSlider;
+    ClickableSlider m_volumeSlider;
 
-    Shortcut *pm_scPlayPause;
-    Shortcut *pm_scNext;
-    Shortcut *pm_scPrevious;
-    Shortcut *pm_scVolumeUp;
-    Shortcut *pm_scVolumeDown;
+    Shortcut m_scPlayPause;
+    Shortcut m_scNext;
+    Shortcut m_scPrevious;
+    Shortcut m_scVolumeUp;
+    Shortcut m_scVolumeDown;
 };
 
 #endif // MUSICBAR_HPP

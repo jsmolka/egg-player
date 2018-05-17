@@ -3,16 +3,16 @@
 /*
  * Constructor.
  *
- * :param tableWidget: widget
+ * :param table: table
  * :param parent: parent, default nullptr
  */
-RowHoverDelegate::RowHoverDelegate(QTableWidget *tableWidget, QObject *parent) :
+RowHoverDelegate::RowHoverDelegate(QTableWidget *table, QObject *parent) :
     QStyledItemDelegate(parent),
-    pm_tableWidget(tableWidget),
-    m_hoveredRow(-1)
+    pm_table(table),
+    m_row(-1)
 {
-    pm_tableWidget->setMouseTracking(true);
-    connect(pm_tableWidget, SIGNAL(itemEntered(QTableWidgetItem *)), this, SLOT(onItemEntered(QTableWidgetItem *)));
+    pm_table->setMouseTracking(true);
+    connect(pm_table, SIGNAL(itemEntered(QTableWidgetItem *)), this, SLOT(onItemEntered(QTableWidgetItem *)));
 }
 
 /*
@@ -22,8 +22,8 @@ RowHoverDelegate::RowHoverDelegate(QTableWidget *tableWidget, QObject *parent) :
  */
 void RowHoverDelegate::onItemEntered(QTableWidgetItem *item)
 {
-    m_hoveredRow = item->row();
-    pm_tableWidget->viewport()->update();
+    m_row = item->row();
+    pm_table->viewport()->update();
 }
 
 /*
@@ -36,7 +36,7 @@ void RowHoverDelegate::onItemEntered(QTableWidgetItem *item)
 void RowHoverDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
     QStyleOptionViewItem opt = option;
-    if (index.row() == m_hoveredRow)
+    if (index.row() == m_row)
     {
         opt.state |= QStyle::State_MouseOver;
     }

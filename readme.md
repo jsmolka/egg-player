@@ -28,11 +28,6 @@ A Groove Music like music player.
 - setting song to end should start next one
 - BASS proper error handling
 - prevent moving slider with arrow keys
-- minimize amount of new allocations
-- app minimum size
-- clickable scrollbar
-- music bar padding in config
-- do not allow icon buttons to get focus
 - remove unnecessary description from events
 
 ### Cosmetic

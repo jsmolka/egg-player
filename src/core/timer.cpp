@@ -3,29 +3,17 @@
 /*
  * Constructor.
  *
- * :param parent: parent, default nullptr
- */
-Timer::Timer(QObject *parent) :
-    QObject(parent)
-{
-
-}
-
-/*
- * Constructor.
- *
  * :param interval: interval in milliseconds
  * :param parent: parent, default nullptr
  */
 Timer::Timer(int interval, QObject *parent) :
-    QObject(parent)
+    QObject(parent),
+    pm_timer(new QTimer(this)),
+    m_elapsed(0),
+    m_interval(interval),
+    m_remaining(interval)
 {
-    pm_timer = new QTimer(this);
     pm_timer->setTimerType(Qt::PreciseTimer);
-
-    m_elapsed = 0;
-    m_interval = interval;
-    m_remaining = m_interval;
 
     connect(pm_timer, SIGNAL(timeout()), this, SLOT(onTimeout()));
 }

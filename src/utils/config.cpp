@@ -293,9 +293,30 @@ const int Config::Bar::dTrackWidth       = 240;
  */
 void Config::Library::create()
 {
-    setDefault(oLibrary, kPaths, dPaths);
+    setDefault(oLibrary, kCellPadding, dCellPadding);
     setDefault(oLibrary, kItemHeight, dItemHeight);
+    setDefault(oLibrary, kPaths, dPaths);
     setDefault(oLibrary, kScrollBarWidth, dScrollBarWidth);
+}
+
+/*
+ * Setter for cell padding.
+ *
+ * :param padding: padding
+ */
+void Config::Library::setCellPadding(int padding)
+{
+    setValue(oLibrary, kCellPadding, padding);
+}
+
+/*
+ * Getter for cell padding.
+ *
+ * :return: padding
+ */
+int Config::Library::cellPadding()
+{
+    return scale(oLibrary[kCellPadding].toInt());
 }
 
 /*
@@ -369,6 +390,7 @@ int Config::Library::scrollBarWidth()
 /*
  * Library keys.
  */
+const QString Config::Library::kCellPadding    = "cellPadding";
 const QString Config::Library::kItemHeight     = "itemHeight";
 const QString Config::Library::kPaths          = "paths";
 const QString Config::Library::kScrollBarWidth = "scrollBarWidth";
@@ -376,6 +398,7 @@ const QString Config::Library::kScrollBarWidth = "scrollBarWidth";
 /*
  * Library default values.
  */
+const int Config::Library::dCellPadding        = 5;
 const int Config::Library::dItemHeight         = 50;
 const QJsonArray Config::Library::dPaths       = {QStandardPaths::writableLocation(QStandardPaths::MusicLocation)};
 const int Config::Library::dScrollBarWidth     = 10;

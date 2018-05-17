@@ -39,6 +39,8 @@ private slots:
     void onClicked();
 
 private:
+    void setup();
+
     QVector<QIcon> m_icons;
     bool m_index;
     bool m_lockable;

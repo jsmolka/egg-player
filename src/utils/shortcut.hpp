@@ -16,7 +16,6 @@ class Shortcut : public QObject, public QAbstractNativeEventFilter
     Q_OBJECT
 
 public:
-    Shortcut(QObject *parent = nullptr);
     Shortcut(const QString &shortcut, bool repeat, QObject *parent = nullptr);
     ~Shortcut();
 

@@ -10,7 +10,7 @@ ClickableSlider::ClickableSlider(QWidget *parent) :
     QSlider(parent)
 {
     setOrientation(Qt::Horizontal);
-    setStyle(new ClickableSliderStyle(style()));
+    setStyle(new ClickableStyle(style()));
 
     m_pressed = false;
 

@@ -1,9 +1,9 @@
-#ifndef CLICKABLESLIDERSTYLE_HPP
-#define CLICKABLESLIDERSTYLE_HPP
+#ifndef CLICKABLESTYLE_HPP
+#define CLICKABLESTYLE_HPP
 
 #include <QProxyStyle>
 
-class ClickableSliderStyle : public QProxyStyle
+class ClickableStyle : public QProxyStyle
 {
 public:
     using QProxyStyle::QProxyStyle;
@@ -11,4 +11,4 @@ public:
     int styleHint(QStyle::StyleHint hint, const QStyleOption* option, const QWidget* widget, QStyleHintReturn* returnData) const;
 };
 
-#endif // CLICKABLESLIDERSTYLE_HPP
+#endif // CLICKABLESTYLE_HPP

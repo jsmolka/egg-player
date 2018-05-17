@@ -11,6 +11,8 @@ IconButton::IconButton(QWidget *parent) :
     m_lockable(false),
     m_locked(false)
 {
+    setup();
+
     connect(this, SIGNAL(clicked(bool)), this, SLOT(onClicked()));
 }
 
@@ -130,11 +132,9 @@ void IconButton::init(const QStringList &icons, int size, bool lockable)
     for (const QString &icon : icons)
         m_icons << QPixmap(icon);
 
-    QSize iconSize = QSize(size, size);
-
     setIcon(m_icons.first());
-    setIconSize(iconSize);
-    setFixedSize(iconSize);
+    setIconSize(QSize(size, size));
+    setFixedSize(QSize(size, size));
 }
 
 /*
@@ -144,4 +144,12 @@ void IconButton::init(const QStringList &icons, int size, bool lockable)
 void IconButton::onClicked()
 {
     setLocked(!m_locked);
+}
+
+/*
+ * Sets up widget.
+ */
+void IconButton::setup()
+{
+    setFocusPolicy(Qt::NoFocus);
 }
