@@ -12,14 +12,13 @@ A Groove Music like music player.
 
 ## Changes since lastest release
 - add UTF-8 support
+- add thread for audio loading
 - improve startup times
 - improve load times
 - improve memory usage
 
 ## Things to do
 ### Internal
-- add egg_old.log to store old logs
-- more detailed logs, especially for player 
 - char-by-char conversion instead of TStringToQString
 - use namespaces or classes in utils
 - max property for timer

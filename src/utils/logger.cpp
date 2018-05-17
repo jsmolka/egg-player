@@ -1,14 +1,11 @@
 #include "logger.hpp"
 
 /*
- * Creates and clears the logger file.
+ * Creates the logger file.
  */
 void Logger::create()
 {
     file = new QFile(LOG_PATH, qApp);
-    file->open(QIODevice::Append | QIODevice::Text);
-    file->resize(0);
-    file->close();
 }
 
 /*
