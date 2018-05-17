@@ -11,15 +11,9 @@ A Groove Music like music player.
 - [ ] reactive cache
 
 ## Changes since lastest release
-- add UTF-8 support
-- add thread for audio loading
-- improve startup times
-- improve load times
-- improve memory usage
 
 ## Things to do
 ### Internal
-- char-by-char conversion instead of TStringToQString
 - use namespaces or classes in utils
 - max property for timer
 - use milliseconds song time as timer max

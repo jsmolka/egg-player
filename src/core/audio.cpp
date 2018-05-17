@@ -169,10 +169,15 @@ bool Audio::readTags()
     if (fileRef.tag())
     {
         Tag *tag = fileRef.tag();
-        m_title = TStringToQString(tag->title());
-        m_artist = TStringToQString(tag->artist());
-        m_album = TStringToQString(tag->album());
-        m_genre = TStringToQString(tag->genre());
+        TagLib::String title = tag->title();
+        TagLib::String artist = tag->artist();
+        TagLib::String album = tag->album();
+        TagLib::String genre = tag->genre();
+
+        m_title = QString::fromWCharArray(title.toCWString(), title.size());
+        m_artist = QString::fromWCharArray(artist.toCWString(), artist.size());
+        m_album = QString::fromWCharArray(album.toCWString(), album.size());
+        m_genre = QString::fromWCharArray(genre.toCWString(), genre.size());
         m_year = tag->year();
         m_track = tag->track();
     }
