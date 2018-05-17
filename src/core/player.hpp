@@ -18,8 +18,6 @@ public:
 
     enum State {Playing, Paused};
 
-    static Player * instance();
-
     void setIndex(int index);
     int index() const;
 
@@ -104,8 +102,6 @@ private:
     bool m_loop;
     bool m_shuffle;
     bool m_playing;
-
-    static Player *pm_instance;
 };
 
 #endif // PLAYER_HPP

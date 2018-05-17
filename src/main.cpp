@@ -58,7 +58,6 @@ QFont loadFont()
 void setup()
 {
     Config::create();
-    Logger::create();
     Logger::log("Application: Start");
 
     checkResources();

@@ -13,10 +13,12 @@ A Groove Music like music player.
 ## Changes since lastest release
 
 ## Things to do
+
 ### Internal
 - use namespaces or classes in utils
 - max property for timer
 - use milliseconds song time as timer max
+- singleton for config
 
 ### Cosmetic
 - [black title bar](https://msdn.microsoft.com/en-us/library/windows/desktop/ms724940%28v=vs.85%29.aspx)
@@ -25,3 +27,5 @@ A Groove Music like music player.
 - highlight active song
 - scrollbar with [round corners](https://stackoverflow.com/questions/12438095/qt-vertical-scroll-bar-stylesheets)
 - [smooth scrolling](https://github.com/zhou13/qsmoothscrollarea)
+- remove library hover style after exit
+- proper hover style while and after resizing

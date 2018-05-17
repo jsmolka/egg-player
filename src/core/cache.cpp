@@ -314,7 +314,7 @@ QString Cache::lastQuery(const QSqlQuery &query)
     QString string = query.lastQuery();
     QMapIterator<QString, QVariant> iter(query.boundValues());
 
-    while(iter.hasNext())
+    while (iter.hasNext())
     {
         iter.next();
         string.replace(iter.key(), iter.value().toString());

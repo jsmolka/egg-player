@@ -14,14 +14,13 @@
 class Logger
 {
 public:
-    static void create();
-
     static void log(const QString &message, const QStringList &args = {});
 
-private:
-    static QString createLog(const QString &message, const QStringList &args);
+private:    
+    static QString createLog(QString message, const QStringList &args);
 
-    static QFile *file;
+    static QFile * file();
+    static QFile *_file;
 };
 
 #endif // LOGGER_HPP
