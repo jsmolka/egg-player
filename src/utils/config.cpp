@@ -1,8 +1,7 @@
 #include "config.hpp"
 
 /*
- * Loads the json file and sets all default
- * values.
+ * Loads the json file and sets all default values.
  */
 void Config::create()
 {
@@ -16,8 +15,7 @@ void Config::create()
 }
 
 /*
- * Sets all non existing keys to their default
- * value.
+ * Sets all non existing keys to their default value.
  */
 void Config::App::create()
 {
@@ -78,8 +76,7 @@ const double Config::App::dFontSize  = 10.25;
 const bool Config::App::dLog         = true;
 
 /*
- * Sets all non existing keys to their default
- * value.
+ * Sets all non existing keys to their default value.
  */
 void Config::Bar::create()
 {
@@ -288,8 +285,7 @@ const int Config::Bar::dTimeWidth        = 50;
 const int Config::Bar::dTrackWidth       = 240;
 
 /*
- * Sets all non existing keys to their default
- * value.
+ * Sets all non existing keys to their default value.
  */
 void Config::Library::create()
 {
@@ -404,8 +400,7 @@ const QJsonArray Config::Library::dPaths       = {QStandardPaths::writableLocati
 const int Config::Library::dScrollBarWidth     = 10;
 
 /*
- * Sets all non existing keys to their default
- * value.
+ * Sets all non existing keys to their default value.
  */
 void Config::Player::create()
 {
@@ -489,8 +484,7 @@ const bool Config::Player::dShuffle    = false;
 const int Config::Player::dVolume      = 25;
 
 /*
- * Sets all non existing keys to their default
- * value.
+ * Sets all non existing keys to their default value.
  */
 void Config::Shortcut::create()
 {
@@ -749,8 +743,7 @@ int Config::scale(int value)
 }
 
 /*
- * Makes a value even to prevent user
- * interface alignment problems.
+ * Makes a value even to prevent user interface alignment problems.
  *
  * :param value: value
  * :return even: value

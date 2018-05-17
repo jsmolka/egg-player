@@ -7,7 +7,7 @@
  */
 EggPlayer::EggPlayer(QWidget *parent) :
     QWidget(parent),
-    m_library(this),
+    m_library(true, this),
     m_musicLibrary(this),
     m_musicBar(this)
 {
@@ -16,7 +16,6 @@ EggPlayer::EggPlayer(QWidget *parent) :
     connect(&m_library, SIGNAL(inserted(Audio*, int)), &m_musicLibrary, SLOT(insert(Audio*, int)));
     connect(&m_musicLibrary, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(onMusicLibraryDoubleClicked(QModelIndex)));
 
-    m_library.setSorted(true);
     m_library.load(Config::Library::paths());
 }
 
@@ -29,8 +28,7 @@ EggPlayer::~EggPlayer()
 }
 
 /*
- * Loads the saved registry position and shows
- * the window. Should be called instead of show().
+ * Loads the saved registry position and shows the window.
  */
 void EggPlayer::showSavedPosition()
 {
@@ -46,8 +44,7 @@ void EggPlayer::showSavedPosition()
 }
 
 /*
- * Implemented close event to save current
- * position before closing.
+ * Saves the current position before closing.
  *
  * :param event: event
  */
@@ -58,8 +55,7 @@ void EggPlayer::closeEvent(QCloseEvent *event)
 }
 
 /*
- * Musc library double clicked event. It starts
- * the player with the clicked audio.
+ * Starts the player with the clicked audio.
  *
  * :param index: index
  */
@@ -93,9 +89,7 @@ void EggPlayer::setupUi()
 }
 
 /*
- * Saves current position in registry. Does not
- * need to be in config because position is not
- * really relevant there.
+ * Saves the current position in registry.
  */
 void EggPlayer::savePosition()
 {

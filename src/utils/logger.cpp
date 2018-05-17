@@ -12,8 +12,8 @@ void Logger::create()
 }
 
 /*
- * Logs a message with args. Also writes the
- * message into the console.
+ * Logs a message with args. Also writes the message into the console if the
+ * application is in debug mode.
  *
  * :param message: message
  * :param args: arguments, default empty
@@ -31,7 +31,9 @@ void Logger::log(const QString &message, const QStringList &args)
         file->close();
     }
 
+#ifdef QT_DEBUG
     qDebug().noquote() << createLog(message, args);
+#endif
 }
 
 /*

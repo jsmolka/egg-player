@@ -17,6 +17,18 @@ Library::Library(QObject *parent) :
 }
 
 /*
+ * Constructor.
+ *
+ * :param sorted: sorted
+ * :param parent: parent, defaul nullptr
+ */
+Library::Library(bool sorted, QObject *parent) :
+    Library(parent)
+{
+    m_sorted = sorted;
+}
+
+/*
  * Destructor.
  */
 Library::~Library()
@@ -56,9 +68,8 @@ Audios Library::audios() const
 }
 
 /*
- * Loads the library by creating an audio
- * builder. This function should not be called
- * multiple times for the same paths.
+ * Loads the library by creating an audio builder. This function should not be
+ * called multiple times for the same paths or they will all be loaded.
  *
  * :param paths: paths
  */
@@ -69,8 +80,8 @@ void Library::load(const QStringList &paths)
 }
 
 /*
- * Inserts an audio into the library. Depeding on
- * the sorted propery it will be inserted binary.
+ * Inserts an audio into the library. Depeding on the sorted propery it will be
+ * inserted binary.
  *
  * :param audio: audio
  */
@@ -92,8 +103,9 @@ void Library::onAudioLoaderFinished()
 }
 
 /*
- * Gets the lower bound for an audio using a
- * binary search like approach.
+ * Gets the lower bound for an audio using a binary search like approach. This
+ * function is used insead of std::lower_bound because it has a better
+ * complexity and returns an index instead.
  *
  * :param audio: audio
  */
@@ -113,7 +125,7 @@ int Library::lowerBound(Audio *audio)
 }
 
 /*
- * Inserts audio in library. Keeps it sorted.
+ * Inserts audio into the library and keeps it sorted.
  *
  * :param audio: audio
  * :emit inserted: audio, index

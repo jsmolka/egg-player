@@ -1,18 +1,15 @@
 #include "clickableslider.hpp"
 
 /*
- * Constructor. Sets slider style to make
- * the slider clickable.
+ * Constructor.
  *
  * :param parent: parent, default nullptr
  */
 ClickableSlider::ClickableSlider(QWidget *parent) :
-    QSlider(parent)
+    QSlider(parent),
+    m_pressed(false)
 {
-    setOrientation(Qt::Horizontal);
-    setStyle(new ClickableStyle(style()));
-
-    m_pressed = false;
+    setup();
 
     connect(this, SIGNAL(sliderPressed()), this, SLOT(onSliderPressed()));
     connect(this, SIGNAL(sliderReleased()), this, SLOT(onSliderReleased()));
@@ -37,8 +34,7 @@ bool ClickableSlider::isPressed() const
 }
 
 /*
- * Pressed event. Makes clicking the slider a
- * move.
+ * Makes clicking the slider a move.
  *
  * :emit sliderMoved: position
  */
@@ -49,10 +45,7 @@ void ClickableSlider::onSliderPressed()
 }
 
 /*
- * Released event. It sets the pressed property
- * and emits the current value. It also removes
- * to focus to prevent accidently moving the
- * slider with key presses.
+ * Sets the pressed property and emits the current value.
  *
  * :emit sliderValueChanged: value
  */
@@ -60,4 +53,14 @@ void ClickableSlider::onSliderReleased()
 {
     m_pressed = false;
     emit sliderValueChanged(value());
+}
+
+/*
+ * Sets up widget.
+ */
+void ClickableSlider::setup()
+{
+    setFocusPolicy(Qt::NoFocus);
+    setOrientation(Qt::Horizontal);
+    setStyle(new ClickableStyle(style()));
 }

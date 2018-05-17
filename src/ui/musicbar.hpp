@@ -69,10 +69,6 @@ private:
 
     void setup();
     void setupUi();
-    void createAudioInfo();
-    void createLengthSlider();
-    void createButtons();
-    void createLayout();
 
     void setColor(const QColor &color);
 

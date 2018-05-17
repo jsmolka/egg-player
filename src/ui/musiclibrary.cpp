@@ -20,7 +20,7 @@ MusicLibrary::~MusicLibrary()
 }
 
 /*
- * Shows column.
+ * Shows a column.
  *
  * :param info: info
  * :param horizontal: horizontal, default left
@@ -34,8 +34,7 @@ void MusicLibrary::showColumn(SongInfo info, Qt::Alignment horizontal, bool expa
 }
 
 /*
- * Inserts audio into library. If row is
- * -1 it will be appended to the last one.
+ * Inserts an audio into the library. If row is -1 it will be appended.
  *
  * :param audio: audio
  * :param row: row, default -1

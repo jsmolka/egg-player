@@ -7,8 +7,8 @@
 #include <QVector>
 
 #include "clickablestyle.hpp"
-#include "constants.hpp"
 #include "config.hpp"
+#include "constants.hpp"
 #include "library.hpp"
 #include "rowhoverdelegate.hpp"
 #include "utils.hpp"

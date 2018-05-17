@@ -6,9 +6,8 @@
 using namespace TagLib;
 
 /*
- * Constructor. Creates an audio object and tries
- * to read its tags. If the title tag is empty it
- * will be set to the file name of the read file.
+ * Constructor. Creates an audio object and tries to read its tags. If the title
+ * tag is empty it will be set to the file name of the read file.
  *
  * :param path: audio path
  */
@@ -18,7 +17,7 @@ Audio::Audio(const QString &path) :
     m_valid = readTags();
     if (!m_valid)
     {
-        Logger::log("Audio: Cannot read tags '%1'", {m_path});
+        Logger::log("Audio: Cannot read tags %1", {m_path});
         return;
     }
 
@@ -115,23 +114,24 @@ int Audio::track() const
 }
 
 /*
- * Getter for length property. Returns the
- * length either in seconds or in milliseconds.
- * The length in seconds will be ceiled to get
- * a smooth transition between songs.
+ * Getter for length property. Returns the* length either in seconds or in
+ * milliseconds. The length in seconds will be ceiled to prevent playing the
+ * next audio while the current one has not finished yet.
  *
  * :param seconds: use seconds, default true
  * :return: length
  */
 int Audio::length(bool seconds) const
 {
-    return seconds ? qCeil(static_cast<float>(m_length) / 1000.0) : m_length;
+    if (seconds)
+        return qCeil(static_cast<float>(m_length) / 1000.0);
+    else
+        return m_length;
 }
 
 /*
- * Returns the path in wide char form. Needs to
- * be used for taglib and BASS. Reinterpret cast
- * only works in Windows.
+ * Returns the path in wide char form. Needs to be used for taglib and BASS.
+ * Reinterpret cast only works in Windows.
  *
  * :return: path
  */
@@ -151,10 +151,8 @@ QPixmap Audio::cover(int size)
 }
 
 /*
- * Reads audio tags. If either the tags or the
- * audio properties cannot be read the function
- * returns false. If the file has a tag it will
- * be read.
+ * Reads audio tags. If either the tags or the audio properties cannot be read
+ * the function returns false. If the file has a tag it will be read.
  *
  * :return: success
  */
@@ -182,10 +180,8 @@ bool Audio::readTags()
 }
 
 /*
- * Reads cover of audio file. Because covers
- * should always be squares, the read cover
- * will be drawn onto a transparent square
- * if it is not square.
+ * Reads cover of audio file. Because covers should always be squares, the read
+ * cover will be drawn onto a transparent square if it is not square.
  *
  * :return: cover
  */
@@ -227,7 +223,7 @@ QPixmap Audio::readCover()
     else
     {
         image = Utils::defaultCover();
-        Logger::log("Audio: Cannot read cover '%1'", {m_path});
+        Logger::log("Audio: Cannot read cover %1", {m_path});
     }
     return image;
 }

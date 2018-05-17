@@ -5,6 +5,7 @@
 #include "config.hpp"
 #include "constants.hpp"
 #include "eggplayer.hpp"
+#include "logger.hpp"
 #include "utils.hpp"
 
 /*
@@ -58,6 +59,7 @@ void setup()
 {
     Config::create();
     Logger::create();
+    Logger::log("Application: Start");
 
     checkResources();
 

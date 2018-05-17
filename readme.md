@@ -18,17 +18,12 @@ A Groove Music like music player.
 
 ## Things to do
 ### Internal
-- add application startup to log
 - add egg_old.log to store old logs
 - more detailed logs, especially for player 
 - char-by-char conversion instead of TStringToQString
 - use namespaces or classes in utils
 - max property for timer
 - use milliseconds song time as timer max
-- setting song to end should start next one
-- BASS proper error handling
-- prevent moving slider with arrow keys
-- remove unnecessary description from events
 
 ### Cosmetic
 - [black title bar](https://msdn.microsoft.com/en-us/library/windows/desktop/ms724940%28v=vs.85%29.aspx)

@@ -1,9 +1,8 @@
 #include "cache.hpp"
 
 /*
- * Constructor. If the QSqlDatabase does not
- * contain the database it gets added and the
- * tables get created.
+ * Constructor. If the QSqlDatabase does not contain the database it gets added
+ * and the tables get created.
  */
 Cache::Cache()
 {
@@ -25,12 +24,9 @@ Cache::~Cache()
 }
 
 /*
- * Inserts audio into cache. It adds the cover
- * into the covers table and the path with a
- * cover id into the audios table.
- * No tags are stored inside the cache because
- * TagLib is fast enough to reload tags at every
- * startup.
+ * Inserts audio into cache. It adds the cover into the covers table and the
+ * path with a cover id into the audios table. No tags are stored inside the
+ * cache because TagLib is fast enough to reload tags at every startup.
  *
  * :param audio: audio
  * :param size: cover size, default 200
@@ -105,21 +101,9 @@ QPixmap Cache::cover(const QString &path, int size)
     if (image.isNull())
     {
         image = Utils::defaultCover();
-        Logger::log("Cache: Cannot load cover '%1'", {path});
+        Logger::log("Cache: Cannot load cover %1", {path});
     }
     return Utils::resize(image, size);
-}
-
-/*
- * Overloaded function.
- *
- * :param audio: audio
- * :param size: cover size, default 200
- * :return: cover
- */
-QPixmap Cache::cover(Audio *audio, int size)
-{
-    return cover(audio->path(), size);
 }
 
 /*
@@ -139,17 +123,16 @@ QSqlDatabase Cache::db()
 }
 
 /*
- * Creates the covers table if it does not exist
- * already.
+ * Creates the covers table if it does not exist already.
  */
 void Cache::createCovers()
 {
     QString createCovers =
-       "CREATE TABLE IF NOT EXISTS covers("
-       " id INTEGER PRIMARY KEY,"
-       " len INTEGER,"
-       " cover BLOB"
-       ")";
+        "CREATE TABLE IF NOT EXISTS covers("
+        " id INTEGER PRIMARY KEY,"
+        " len INTEGER,"
+        " cover BLOB"
+        ")";
 
     QSqlQuery query(db());
     if (!query.exec(createCovers))
@@ -157,17 +140,16 @@ void Cache::createCovers()
 }
 
 /*
- * Creates the audios table if it does not exist
- * already.
+ * Creates the audios table if it does not exist already.
  */
 void Cache::createAudios()
 {
     QString createAudios =
-       "CREATE TABLE IF NOT EXISTS audios("
-       " path TEXT PRIMARY KEY,"
-       " coverid INTEGER,"
-       " FOREIGN KEY (coverid) REFERENCES covers(id)"
-       ")";
+        "CREATE TABLE IF NOT EXISTS audios("
+        " path TEXT PRIMARY KEY,"
+        " coverid INTEGER,"
+        " FOREIGN KEY (coverid) REFERENCES covers(id)"
+        ")";
 
     QSqlQuery query(db());
     if (!query.exec(createAudios))
@@ -175,8 +157,8 @@ void Cache::createAudios()
 }
 
 /*
- * Either gets the cover id or inserts it into the
- * covers tables and returns its id.
+ * Either gets the cover id or inserts it into the covers tables and returns its
+ * id.
  *
  * :param cover: cover
  * :return: id, -1 at failure
@@ -193,8 +175,7 @@ int Cache::getOrInsertCover(const QPixmap &cover)
 }
 
 /*
- * Inserts cover into database. Assumes that the
- * cover does not exist already.
+ * Inserts cover into database. Assumes that the cover does not exist already.
  *
  * :param bytes: byte array cover
  * :return: id, -1 at failure
@@ -218,10 +199,8 @@ int Cache::insertCover(const QByteArray &bytes)
 }
 
 /*
- * Returns cover id for byte array cover. For
- * performance reasons it first tries to query
- * based on the byte array length and then by
- * blob comparison.
+ * Returns cover id for byte array cover. For performance reasons it first tries
+ * to query based on the byte array length and then by blob comparison.
  *
  * :param bytes: byte array cover
  * :return: id, -1 at failure
@@ -256,10 +235,8 @@ int Cache::lastCoverId()
 }
 
 /*
- * Tries to query the current cover by length
- * comparison. If there are multiple results this
- * function is not able to query the correct
- * cover.
+ * Tries to query the current cover by length comparison. If there are multiple
+ * results this function is not able to query the correct cover.
  *
  * :param length: length
  * :return: id, -1 at failure
@@ -285,8 +262,7 @@ int Cache::queryCoverIdByLength(int length)
 }
 
 /*
- * Tries to query the current cover by blob
- * comparison.
+ * Tries to query the current cover by blob comparison.
  *
  * :param bytes: byte array cover
  * :return: id
@@ -307,8 +283,7 @@ int Cache::queryCoverIdByBlob(const QByteArray &bytes)
 }
 
 /*
- * Handles query errors by logging the used query
- * with bound values.
+ * Handles query errors by logging the used query with bound values.
  *
  * :param query: query
  */
@@ -318,7 +293,7 @@ void Cache::handleError(const QSqlQuery &query)
     if (error.isValid())
     {
         Logger::log(
-            "Cache: Querying '%1' failed with error '%2'",
+            "Cache: Querying \"%1\" failed with error \"%2\"",
             {
                 lastQuery(query),
                 error.databaseText()
@@ -328,8 +303,8 @@ void Cache::handleError(const QSqlQuery &query)
 }
 
 /*
- * Gets the last query in string form by binding
- * all used values to show them properly.
+ * Gets the last query in string form by binding all used values to show them
+ * properly.
  *
  * :param query: query
  * :return: query string
@@ -339,7 +314,7 @@ QString Cache::lastQuery(const QSqlQuery &query)
     QString string = query.lastQuery();
     QMapIterator<QString, QVariant> iter(query.boundValues());
 
-    while (iter.hasNext())
+    while(iter.hasNext())
     {
         iter.next();
         string.replace(iter.key(), iter.value().toString());

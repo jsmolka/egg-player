@@ -66,7 +66,7 @@ void AudioLoader::run()
         if (Utils::exists(path))
             load(path);
         else
-            Logger::log("AudioLoader: Path does not exist '%1'", {path});
+            Logger::log("AudioLoader: Path does not exist %1", {path});
     }
 }
 
@@ -78,7 +78,11 @@ void AudioLoader::run()
  */
 void AudioLoader::load(const QString &path)
 {
-    for (const QString &file : Utils::glob(path, "mp3"))
+    QStringList files = Utils::glob(path, "mp3");
+    if (files.isEmpty())
+        Logger::log("AudioLoader: Path contains no files %1", {path});
+
+    for (const QString &file : files)
     {
         if (m_abort)
             return;

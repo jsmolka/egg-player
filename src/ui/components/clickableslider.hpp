@@ -23,6 +23,8 @@ private slots:
     void onSliderReleased();
 
 private:
+    void setup();
+
     bool m_pressed;
 };
 

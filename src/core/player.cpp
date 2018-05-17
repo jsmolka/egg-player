@@ -240,9 +240,8 @@ void Player::setLoop(bool loop)
 }
 
 /*
- * Setter for shuffle property. The playlist can
- * only be shuffled or unshuffled if the player
- * has a valid index.
+ * Setter for shuffle property. The playlist can only be shuffled or unshuffled
+ * if the player has a valid index.
  *
  * :param shuffle: shuffle
  */
@@ -294,9 +293,8 @@ void Player::pause()
 }
 
 /*
- * Switches to the next song in the playlist. If
- * there is not next song the position gets reset
- * and the stream gets paused.
+ * Switches to the next song in the playlist. If there is not next song the
+ * position gets reset and the stream gets paused.
  */
 void Player::next()
 {
@@ -304,9 +302,8 @@ void Player::next()
 }
 
 /*
- * Switches to the previous song in the playlist.
- * If there is not previous song the position
- * gets reset and the stream gets paused.
+ * Switches to the previous song in the playlist. If there is not previous song
+ * the position gets reset and the stream gets paused.
  */
 void Player::previous()
 {
@@ -314,9 +311,8 @@ void Player::previous()
 }
 
 /*
- * Timer timeout event. Emits the current
- * position and manages automatically playing the
- * next song if the current one finishes.
+ * Emits the current position and manages automatically playing the next song if
+ * the current one finishes.
  *
  * :param elapsed: elapsed time in milliseconds
  * :emit positionChanged: position in seconds
@@ -366,9 +362,8 @@ bool Player::bassFree()
 }
 
 /*
- * Creates a BASS stream from an audio. If the
- * stream is currently occupied it gets freed
- * before reassigning.
+ * Creates a BASS stream from an audio. If the stream is currently occupied it
+ * gets freed before reassigning.
  *
  * :param audio: audio
  * :return: success
@@ -414,12 +409,9 @@ bool Player::bassValidStream()
 }
 
 /*
- * Sets the volume of the current channel. The
- * volume gets divided to get the float value
- * BASS needs.
- * The quotient is 1000 which seems to be a
- * reasonable value. For a higher volume ceiling
- * this value should be lowered.
+ * Sets the volume of the current channel. The volume gets divided to get the
+ * float value BASS needs. The quotient is 1000 which seems to be a reasonable
+ * value. For a higher volume ceiling this value should be lowered.
  *
  * :param volume: volume
  * :return: success
@@ -501,21 +493,18 @@ bool Player::bassPause()
 }
 
 /*
- * Small function for logging purposes. If there
- * is a current audio it gets added to the
- * message.
+ * Small function for logging purposes. If there is a current audio it gets
+ * added to the message.
  *
  * :param message: message
  */
 void Player::logAudio(const QString &message)
 {
-    QString log = message;
-
     Audio *audio = currentAudio();
     if (audio)
-        log.append(QString(" '%1'").arg(audio->path()));
-
-    Logger::log(log);
+        Logger::log(message + QString(" %1").arg(audio->path()));
+    else
+        Logger::log(message);
 }
 
 /*
@@ -529,8 +518,7 @@ bool Player::validIndex(int index)
 }
 
 /*
- * Smoothly switches to an index and pauses if
- * the index is invalid.
+ * Smoothly switches to an index and pauses if the index is invalid.
  *
  * :param index: index
  */
@@ -580,9 +568,8 @@ int Player::previousIndex()
 }
 
 /*
- * Shuffles the playlist and swaps the current
- * audio with first audio. Because of that the
- * full shuffled playlist is pending.
+ * Shuffles the playlist and swaps the current audio with first audio. Because
+ * of that the full shuffled playlist is pending.
  */
 void Player::shuffle()
 {
@@ -604,10 +591,9 @@ void Player::shuffle()
 }
 
 /*
- * Unshuffles the playlist and sets the current
- * index to the current audio. Because of that
- * the audio is in the current position inside
- * the unshuffled playlist.
+ * Unshuffles the playlist and sets the current index to the current audio.
+ * Because of that the audio is in the current position inside the unshuffled
+ * playlist.
  */
 void Player::unshuffle()
 {
@@ -632,11 +618,9 @@ void Player::unshuffle()
 }
 
 /*
- * Sets active audio. This involves freeing the
- * current stream, creating a new one, setting
- * the volume and restarting the timer. If the
- * player is was previouly playing it gets
- * started automatically, otherwise it pauses.
+ * Sets active audio. This involves freeing the current stream, creating a new
+ * one, setting the volume and restarting the timer. If the player is was
+ * previouly playing it gets started automatically, otherwise it pauses.
  *
  * :param index: audio index
  * :emit audioChanged: audio

@@ -14,6 +14,7 @@ class Library : public QObject
 
 public:
     Library(QObject *parent = nullptr);
+    Library(bool sorted, QObject *parent = nullptr);
     ~Library();
 
     void setSorted(bool sorted);

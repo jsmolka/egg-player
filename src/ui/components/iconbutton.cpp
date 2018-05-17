@@ -66,8 +66,8 @@ int IconButton::selectedIcon() const
 }
 
 /*
- * Setter for locked property. Reloads the
- * buttons stylesheet.
+ * Setter for locked property. Reloads the buttons stylesheet to apply the made
+ * changes.
  *
  * :param locked: locked
  * :emit locked: locked
@@ -95,9 +95,8 @@ bool IconButton::isLocked() const
 }
 
 /*
- * Setter for lockable property. If the button
- * is lockable it will update based on the locked
- * property if it gets clicked.
+ * Setter for lockable property. If the button is lockable it will update its
+ * locked  property when it gets clicked.
  *
  * :param lockable: lockable
  */
@@ -117,20 +116,16 @@ bool IconButton::isLockable() const
 }
 
 /*
- * Initialize function for button. It sets the
- * button icon to the first item in icons and
- * resizes it.
+ * Initializes the button.
  *
  * :param icons: icon paths
  * :param size: icon size
  * :param lockable: is lockable, default false
  */
-void IconButton::init(const QStringList &icons, int size, bool lockable)
+void IconButton::init(const QVector<QIcon> &icons, int size, bool lockable)
 {
     m_lockable = lockable;
-    m_icons.clear();
-    for (const QString &icon : icons)
-        m_icons << QPixmap(icon);
+    m_icons = icons;
 
     setIcon(m_icons.first());
     setIconSize(QSize(size, size));
@@ -138,8 +133,7 @@ void IconButton::init(const QStringList &icons, int size, bool lockable)
 }
 
 /*
- * Clicked event. Switches the locked
- * property.
+ * Switches the locked property.
  */
 void IconButton::onClicked()
 {
@@ -152,4 +146,5 @@ void IconButton::onClicked()
 void IconButton::setup()
 {
     setFocusPolicy(Qt::NoFocus);
+    setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 }
