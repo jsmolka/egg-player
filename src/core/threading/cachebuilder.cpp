@@ -6,11 +6,9 @@
  * param parent: parent, default nullptr
  */
 CacheBuilder::CacheBuilder(QObject *parent) :
-    QThread(parent),
-    m_abort(false)
+    AbstractThread(parent)
 {
-    connect(qApp, SIGNAL(aboutToQuit()), this, SLOT(abort()));
-    connect(this, SIGNAL(finished()), this, SLOT(deleteLater()));
+
 }
 
 /*
@@ -20,9 +18,10 @@ CacheBuilder::CacheBuilder(QObject *parent) :
  * :param parent: parent, default nullptr
  */
 CacheBuilder::CacheBuilder(const Audios &audios, QObject *parent) :
-    CacheBuilder(parent)
+    AbstractThread(parent),
+    m_audios(audios)
 {
-    m_audios = audios;
+
 }
 
 /*
@@ -41,16 +40,6 @@ CacheBuilder::~CacheBuilder()
 void CacheBuilder::setAudios(const Audios &audios)
 {
     m_audios = audios;
-}
-
-/*
- * Exits thread cleanly.
- */
-void CacheBuilder::abort()
-{
-    m_abort = true;
-    quit();
-    wait();
 }
 
 /*

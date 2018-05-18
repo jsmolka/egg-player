@@ -1,13 +1,11 @@
 #ifndef CACHEBUILDER_HPP
 #define CACHEBUILDER_HPP
 
-#include <QApplication>
-#include <QThread>
-
+#include "abstractthread.hpp"
 #include "audio.hpp"
 #include "cache.hpp"
 
-class CacheBuilder : public QThread
+class CacheBuilder : public AbstractThread
 {
     Q_OBJECT
 
@@ -18,14 +16,10 @@ public:
 
     void setAudios(const Audios &audios);
 
-public slots:
-    void abort();
-
 protected:
     void run() override;
 
 private:
-    bool m_abort;
     Audios m_audios;
 };
 

@@ -23,6 +23,9 @@ A Groove Music like music player.
 - static variable prefixes
 - glob suffix vs endsWith
 - test multiple audio loader threads
+- create custom threading
+  - implement abstract thread
+  - implement custom threadpool
 
 ### Cosmetic
 - [black title bar](https://msdn.microsoft.com/en-us/library/windows/desktop/ms724940%28v=vs.85%29.aspx)

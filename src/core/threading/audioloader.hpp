@@ -1,14 +1,12 @@
 #ifndef AUDIOLOADER_HPP
 #define AUDIOLOADER_HPP
 
-#include <QApplication>
-#include <QThread>
-
+#include "abstractthread.hpp"
 #include "audio.hpp"
 #include "logger.hpp"
 #include "utils.hpp"
 
-class AudioLoader : public QThread
+class AudioLoader : public AbstractThread
 {
     Q_OBJECT
 
@@ -19,9 +17,6 @@ public:
 
     void setPaths(const QStringList &paths);
 
-public slots:
-    void abort();
-
 signals:
     void loaded(Audio *);
 
@@ -31,7 +26,6 @@ protected:
 private:
     void load(const QString &path);
 
-    bool m_abort;
     QStringList m_paths;
 };
 #endif // AUDIOLOADER_HPP

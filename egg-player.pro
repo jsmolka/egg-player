@@ -13,6 +13,7 @@ INCLUDEPATH += \
     $$PWD/ext/taglib-1.11.1/include \
     $$PWD/src/constants \
     $$PWD/src/core \
+    $$PWD/src/core/threading \
     $$PWD/src/ui \
     $$PWD/src/ui/components \
     $$PWD/src/ui/layouts \
@@ -42,12 +43,13 @@ CONFIG(release, debug|release) {
 
 HEADERS += \
     $$PWD/src/core/audio.hpp \
-    $$PWD/src/core/audioloader.hpp \
     $$PWD/src/core/cache.hpp \
-    $$PWD/src/core/cachebuilder.hpp \
     $$PWD/src/core/library.hpp \
     $$PWD/src/core/player.hpp \
     $$PWD/src/core/timer.hpp \
+    $$PWD/src/core/threading/abstractthread.hpp \
+    $$PWD/src/core/threading/audioloader.hpp \
+    $$PWD/src/core/threading/cachebuilder.hpp \
     $$PWD/src/constants/constants.hpp \
     $$PWD/src/ui/eggplayer.hpp \
     $$PWD/src/ui/musicbar.hpp \
@@ -65,12 +67,13 @@ HEADERS += \
 SOURCES += \
     $$PWD/src/main.cpp \
     $$PWD/src/core/audio.cpp \
-    $$PWD/src/core/audioloader.cpp \
     $$PWD/src/core/cache.cpp \
-    $$PWD/src/core/cachebuilder.cpp \
     $$PWD/src/core/library.cpp \
     $$PWD/src/core/player.cpp \
     $$PWD/src/core/timer.cpp \
+    $$PWD/src/core/threading/abstractthread.cpp \
+    $$PWD/src/core/threading/audioloader.cpp \
+    $$PWD/src/core/threading/cachebuilder.cpp \
     $$PWD/src/constants/constants.cpp \
     $$PWD/src/ui/eggplayer.cpp \
     $$PWD/src/ui/musicbar.cpp \

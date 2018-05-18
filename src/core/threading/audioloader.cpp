@@ -6,11 +6,9 @@
  * :param parent: parent, default nullptr
  */
 AudioLoader::AudioLoader(QObject *parent) :
-    QThread(parent),
-    m_abort(false)
+    AbstractThread(parent)
 {
-    connect(qApp, SIGNAL(aboutToQuit()), this, SLOT(abort()));
-    connect(this, SIGNAL(finished()), this, SLOT(deleteLater()));
+
 }
 
 /*
@@ -20,9 +18,10 @@ AudioLoader::AudioLoader(QObject *parent) :
  * :param parent: parent, default nullptr
  */
 AudioLoader::AudioLoader(const QStringList &paths, QObject *parent) :
-    AudioLoader(parent)
+    AbstractThread(parent),
+    m_paths(paths)
 {
-    m_paths = paths;
+
 }
 
 /*
@@ -41,16 +40,6 @@ AudioLoader::~AudioLoader()
 void AudioLoader::setPaths(const QStringList &paths)
 {
     m_paths = paths;
-}
-
-/*
- * Exits the thread cleanly.
- */
-void AudioLoader::abort()
-{
-    m_abort = true;
-    quit();
-    wait();
 }
 
 /*
