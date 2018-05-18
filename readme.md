@@ -16,9 +16,13 @@ A Groove Music like music player.
 
 ### Internal
 - use namespaces or classes in utils
+- review utils functions
 - max property for timer
 - use milliseconds song time as timer max
 - singleton for config
+- static variable prefixes
+- glob suffix vs endsWith
+- test multiple audio loader threads
 
 ### Cosmetic
 - [black title bar](https://msdn.microsoft.com/en-us/library/windows/desktop/ms724940%28v=vs.85%29.aspx)

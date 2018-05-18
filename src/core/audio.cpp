@@ -130,7 +130,7 @@ int Audio::length(bool seconds) const
 }
 
 /*
- * Returns the path in wide char form. Needs to be used for taglib and BASS.
+ * Returns the path in wide char form. Needs to be used for TagLib and BASS.
  * Reinterpret cast only works in Windows.
  *
  * :return: path
@@ -163,16 +163,15 @@ bool Audio::readTags()
     if (fileRef.isNull() || !fileRef.audioProperties())
         return false;
 
-    AudioProperties *audioProp = fileRef.audioProperties();
-    m_length = audioProp->lengthInMilliseconds();
+    m_length = fileRef.audioProperties()->lengthInMilliseconds();
 
     if (fileRef.tag())
     {
         Tag *tag = fileRef.tag();
-        TagLib::String title = tag->title();
-        TagLib::String artist = tag->artist();
-        TagLib::String album = tag->album();
-        TagLib::String genre = tag->genre();
+        String title = tag->title();
+        String artist = tag->artist();
+        String album = tag->album();
+        String genre = tag->genre();
 
         m_title = QString::fromWCharArray(title.toCWString(), title.size());
         m_artist = QString::fromWCharArray(artist.toCWString(), artist.size());
@@ -193,11 +192,11 @@ bool Audio::readTags()
 QPixmap Audio::readCover()
 {
     MPEG::File file(pathWChar());
-    ID3v2::Tag *tag = file.ID3v2Tag();
     QPixmap image;
 
-    if (tag)
+    if (file.hasID3v2Tag())
     {
+        ID3v2::Tag *tag = file.ID3v2Tag();
         ID3v2::FrameListMap frameMap = tag->frameListMap();
         if (frameMap.contains("APIC"))
         {
