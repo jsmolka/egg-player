@@ -12,10 +12,12 @@ public:
     AbstractThread(QObject *parent = nullptr);
     ~AbstractThread();
 
+    bool isAbort() const;
+
 public slots:
     void abort();
 
-protected:
+private:
     bool m_abort;
 };
 

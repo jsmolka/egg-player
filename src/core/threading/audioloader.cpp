@@ -14,12 +14,12 @@ AudioLoader::AudioLoader(QObject *parent) :
 /*
  * Constructor.
  *
- * :param paths: paths
+ * :param files: files
  * :param parent: parent, default nullptr
  */
-AudioLoader::AudioLoader(const QStringList &paths, QObject *parent) :
+AudioLoader::AudioLoader(const QStringList &files, QObject *parent) :
     AbstractThread(parent),
-    m_paths(paths)
+    m_files(files)
 {
 
 }
@@ -33,47 +33,23 @@ AudioLoader::~AudioLoader()
 }
 
 /*
- * Setter for paths property.
+ * Setter for files property.
  *
- * :param paths: paths
+ * :param files: files
  */
-void AudioLoader::setPaths(const QStringList &paths)
+void AudioLoader::setFiles(const QStringList &files)
 {
-    m_paths = paths;
+    m_files = files;
 }
 
 /*
- * Loads audios from paths.
+ * Loads audios.
  */
 void AudioLoader::run()
 {
-    for (const QString &path : m_paths)
+    for (const QString &file : m_files)
     {
-        if (m_abort)
-            return;
-
-        if (Utils::exists(path))
-            load(path);
-        else
-            Logger::log("AudioLoader: Path does not exist %1", {path});
-    }
-}
-
-/*
- * Loads audios from a path.
- *
- * :param path: path
- * :emit loaded: audio
- */
-void AudioLoader::load(const QString &path)
-{
-    QStringList files = Utils::glob(path, "mp3");
-    if (files.isEmpty())
-        Logger::log("AudioLoader: Path contains no files %1", {path});
-
-    for (const QString &file : files)
-    {
-        if (m_abort)
+        if (isAbort())
             return;
 
         Audio *audio = new Audio(file);

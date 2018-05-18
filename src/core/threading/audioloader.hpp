@@ -12,10 +12,10 @@ class AudioLoader : public AbstractThread
 
 public:
     AudioLoader(QObject *parent = nullptr);
-    AudioLoader(const QStringList &paths, QObject *parent = nullptr);
+    AudioLoader(const QStringList &files, QObject *parent = nullptr);
     ~AudioLoader();
 
-    void setPaths(const QStringList &paths);
+    void setFiles(const QStringList &paths);
 
 signals:
     void loaded(Audio *);
@@ -24,8 +24,6 @@ protected:
     void run() override;
 
 private:
-    void load(const QString &path);
-
-    QStringList m_paths;
+    QStringList m_files;
 };
 #endif // AUDIOLOADER_HPP

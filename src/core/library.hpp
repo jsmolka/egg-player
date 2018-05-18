@@ -5,8 +5,9 @@
 #include <QStringList>
 
 #include "audio.hpp"
-#include "cachebuilder.hpp"
 #include "audioloader.hpp"
+#include "cachebuilder.hpp"
+#include "threadpool.hpp"
 
 class Library : public QObject
 {
@@ -31,7 +32,7 @@ signals:
     void inserted(Audio *, int);
 
 private slots:
-    void onAudioLoaderFinished();
+    void onPoolFinished();
 
 private:
     int lowerBound(Audio *audio);
@@ -40,8 +41,7 @@ private:
 
     bool m_sorted;
     Audios m_audios;
-    CacheBuilder *pm_cacheBuilder;
-    AudioLoader *pm_audioLoader;
+    ThreadPool *pm_pool;
 };
 
 #endif // LIBRARY_HPP

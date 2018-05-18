@@ -50,7 +50,7 @@ void CacheBuilder::run()
     Cache cache;
     for (Audio *audio : m_audios)
     {
-        if (m_abort)
+        if (isAbort())
             return;
 
         if (!cache.contains(audio))

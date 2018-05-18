@@ -8,12 +8,10 @@
 Library::Library(QObject *parent) :
     QObject(parent),
     m_sorted(false),
-    pm_cacheBuilder(new CacheBuilder(this)),
-    pm_audioLoader(new AudioLoader(this))
+    pm_pool(new ThreadPool(this))
 {
-    connect(pm_audioLoader, SIGNAL(finished()), this, SLOT(onAudioLoaderFinished()));
-    connect(pm_audioLoader, SIGNAL(finished()), this, SIGNAL(loaded()));
-    connect(pm_audioLoader, SIGNAL(loaded(Audio*)), this, SLOT(insert(Audio*)));
+    connect(pm_pool, SIGNAL(finished()), this, SLOT(onPoolFinished()));
+    connect(pm_pool, SIGNAL(finished()), this, SIGNAL(loaded()));
 }
 
 /*
@@ -75,8 +73,18 @@ Audios Library::audios() const
  */
 void Library::load(const QStringList &paths)
 {
-    pm_audioLoader->setPaths(paths);
-    pm_audioLoader->start();
+    QStringList files;
+    for (const QString &path : paths)
+        files << Utils::glob(path, "mp3");
+
+    int count = pm_pool->advisedCount();
+    for (int i = 0; i < count; i++)
+    {
+        AudioLoader *loader = new AudioLoader(files.mid(i * (files.size() / count), files.size() / count));
+        connect(loader, SIGNAL(loaded(Audio*)), this, SLOT(insert(Audio*)));
+        pm_pool->add(loader);
+    }
+    pm_pool->start();
 }
 
 /*
@@ -94,12 +102,14 @@ void Library::insert(Audio *audio)
 }
 
 /*
- * Starts the cache builder.
+ * Gets called when the library is loaded. Creates the cache builder and
+ * disconnects to prevent being called again once the cache builder finishes.
  */
-void Library::onAudioLoaderFinished()
+void Library::onPoolFinished()
 {
-    pm_cacheBuilder->setAudios(m_audios);
-    pm_cacheBuilder->start();
+    disconnect(pm_pool, SIGNAL(finished()), this, SLOT(onPoolFinished()));
+    pm_pool->add(new CacheBuilder(m_audios));
+    pm_pool->start();
 }
 
 /*

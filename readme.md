@@ -11,21 +11,22 @@ A Groove Music like music player.
 - [ ] reactive cache
 
 ## Changes since lastest release
+- improve start time
+- improve load time
 
 ## Things to do
 
 ### Internal
 - use namespaces or classes in utils
-- review utils functions
+- review utils functions / comments
 - max property for timer
 - use milliseconds song time as timer max
 - singleton for config
 - static variable prefixes
 - glob suffix vs endsWith
-- test multiple audio loader threads
-- create custom threading
-  - implement abstract thread
-  - implement custom threadpool
+- move library into music library
+- move library loading into thread (costly insert method)
+- proper chunk function for lists
 
 ### Cosmetic
 - [black title bar](https://msdn.microsoft.com/en-us/library/windows/desktop/ms724940%28v=vs.85%29.aspx)

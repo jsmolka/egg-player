@@ -50,6 +50,7 @@ HEADERS += \
     $$PWD/src/core/threading/abstractthread.hpp \
     $$PWD/src/core/threading/audioloader.hpp \
     $$PWD/src/core/threading/cachebuilder.hpp \
+    $$PWD/src/core/threading/threadpool.hpp \
     $$PWD/src/constants/constants.hpp \
     $$PWD/src/ui/eggplayer.hpp \
     $$PWD/src/ui/musicbar.hpp \
@@ -74,6 +75,7 @@ SOURCES += \
     $$PWD/src/core/threading/abstractthread.cpp \
     $$PWD/src/core/threading/audioloader.cpp \
     $$PWD/src/core/threading/cachebuilder.cpp \
+    $$PWD/src/core/threading/threadpool.cpp \
     $$PWD/src/constants/constants.cpp \
     $$PWD/src/ui/eggplayer.cpp \
     $$PWD/src/ui/musicbar.cpp \

@@ -11,13 +11,9 @@ void Logger::log(const QString &message, const QStringList &args)
     if (!Config::App::log())
         return;
 
-    if (file()->open(QIODevice::Append | QIODevice::Text))
-    {
-        QTextStream out(file());
-        out.setCodec("UTF-8");
-        out << createLog(message, args) << "\n";
-        file()->close();
-    }
+    QTextStream out(file());
+    out.setCodec("UTF-8");
+    out << createLog(message, args) << "\n";
 
 #ifdef QT_DEBUG
     qDebug().noquote() << createLog(message, args);
@@ -48,7 +44,10 @@ QString Logger::createLog(QString message, const QStringList &args)
 QFile * Logger::file()
 {
     if (!_file)
+    {
         _file = new QFile(LOG_PATH, qApp);
+        _file->open(QIODevice::Append | QIODevice::Text);
+    }
 
     return _file;
 }

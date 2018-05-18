@@ -1,11 +1,10 @@
 #include "abstractthread.hpp"
 
 /*
- * Constructor. Connects the thread to the app so that it terminates cleanly
- * when it shots down. Also schedules the object for deletion once it finished
- * so that it does not have to be deleted manually (even though it should be).
+ * Constructor. It is advised to use classes derived from this one in
+ * combination with the thread pool.
  *
- * :param parent: parent
+ * :param parent: parent, default nullptr
  */
 AbstractThread::AbstractThread(QObject *parent) :
     QThread(parent),
@@ -22,6 +21,16 @@ AbstractThread::~AbstractThread()
 {
     if (isRunning())
         abort();
+}
+
+/*
+ * Getter for abort property.
+ *
+ * :return: abort
+ */
+bool AbstractThread::isAbort() const
+{
+    return m_abort;
 }
 
 /*
