@@ -77,6 +77,7 @@ void Library::load(const QStringList &paths)
     for (const QString &path : paths)
         files << Utils::glob(path, "mp3");
 
+    /*
     int count = pm_pool->advisedCount();
     for (int i = 0; i < count; i++)
     {
@@ -84,6 +85,10 @@ void Library::load(const QStringList &paths)
         connect(loader, SIGNAL(loaded(Audio*)), this, SLOT(insert(Audio*)));
         pm_pool->add(loader);
     }
+    */
+    AudioLoader *loader = new AudioLoader(files);
+    connect(loader, SIGNAL(loaded(Audio*)), this, SLOT(insert(Audio*)));
+    pm_pool->add(loader);
     pm_pool->start();
 }
 

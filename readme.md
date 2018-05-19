@@ -11,7 +11,6 @@ A Groove Music like music player.
 - [ ] reactive cache
 
 ## Changes since lastest release
-- improve start time
 - improve load time
 
 ## Things to do
@@ -27,6 +26,11 @@ A Groove Music like music player.
 - move library into music library
 - move library loading into thread (costly insert method)
 - proper chunk function for lists
+- thread pool global instance, define eggThreadPool
+- remove abstract thread connections
+- remove duplicates in path
+- ideal thread count exceeded log
+- edit documents function in constants
 
 ### Cosmetic
 - [black title bar](https://msdn.microsoft.com/en-us/library/windows/desktop/ms724940%28v=vs.85%29.aspx)
@@ -37,3 +41,7 @@ A Groove Music like music player.
 - [smooth scrolling](https://github.com/zhou13/qsmoothscrollarea)
 - remove library hover style after exit
 - proper hover style while and after resizing
+
+### Future
+- search the library by typing
+- themes

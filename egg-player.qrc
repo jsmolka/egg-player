@@ -1,0 +1,19 @@
+<RCC>
+    <qresource prefix="/">
+        <file>resource/css/musicbar.css</file>
+        <file>resource/css/musiclibrary.css</file>
+        <file>resource/fonts/Lato.ttf</file>
+        <file>resource/images/default-cover.png</file>
+        <file>resource/images/egg/egg.png</file>
+        <file>resource/images/icons/loop.png</file>
+        <file>resource/images/icons/next.png</file>
+        <file>resource/images/icons/pause.png</file>
+        <file>resource/images/icons/play.png</file>
+        <file>resource/images/icons/previous.png</file>
+        <file>resource/images/icons/shuffle.png</file>
+        <file>resource/images/icons/volume-full.png</file>
+        <file>resource/images/icons/volume-low.png</file>
+        <file>resource/images/icons/volume-medium.png</file>
+        <file>resource/images/icons/volume-mute.png</file>
+    </qresource>
+</RCC>

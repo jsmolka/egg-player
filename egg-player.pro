@@ -41,6 +41,8 @@ CONFIG(release, debug|release) {
     QMAKE_CXXFLAGS_RELEASE *= -O2
 }
 
+RESOURCES = egg-player.qrc
+
 HEADERS += \
     $$PWD/src/core/audio.hpp \
     $$PWD/src/core/cache.hpp \

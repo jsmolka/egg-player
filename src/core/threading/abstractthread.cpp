@@ -2,7 +2,7 @@
 
 /*
  * Constructor. It is advised to use classes derived from this one in
- * combination with the thread pool.
+ * combination with a thread pool.
  *
  * :param parent: parent, default nullptr
  */

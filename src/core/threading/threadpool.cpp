@@ -97,6 +97,6 @@ void ThreadPool::onThreadFinished()
 }
 
 /*
- * Current threat count.
+ * Current thread count.
  */
 int ThreadPool::_count = 0;

@@ -9,33 +9,6 @@
 #include "utils.hpp"
 
 /*
- * Checks if all resources are available.
- */
-void checkResources()
-{
-    QStringList resources =
-    {
-        FONT_LATO,
-        ICO_LOOP,
-        ICO_NEXT,
-        ICO_PAUSE,
-        ICO_PLAY,
-        ICO_PREVIOUS,
-        ICO_SHUFFLE,
-        ICO_VOLUME_FULL,
-        ICO_VOLUME_LOW,
-        ICO_VOLUME_MEDIUM,
-        ICO_VOLUME_MUTE,
-        IMG_DEFAULT_COVER,
-        IMG_EGGPLAYER
-    };
-
-    for (const QString &resource : resources)
-        if (!Utils::exists(resource))
-            Logger::log("Resource does not exist '%1'", {resource});
-}
-
-/*
  * Loads custom font.
  *
  * :return: font
@@ -59,8 +32,6 @@ void setup()
 {
     Config::create();
     Logger::log("Application: Start");
-
-    checkResources();
 
     qApp->setApplicationName(APP_NAME);
     qApp->setOrganizationName(APP_ORG_NAME);
