@@ -24,8 +24,6 @@ public:
     MusicBar(QWidget *parent = nullptr);
     ~MusicBar();
 
-    Player * player();
-
     QLabel * coverLabel();
     QLabel * trackLabel();
     QLabel * currentTimeLabel();
@@ -81,8 +79,6 @@ private:
     void setVolumePlayer(int volume);
     void setVolumeSlider(int volume);
     void changeVolume(int volume, int step);
-
-    Player m_player;
 
     QLabel m_coverLabel;
     QLabel m_trackLabel;

@@ -8,6 +8,8 @@
 #include "audio.hpp"
 #include "timer.hpp"
 
+#define eggPlayer (Player::instance())
+
 class Player : public QObject
 {
     Q_OBJECT
@@ -48,6 +50,8 @@ public slots:
 
     void next();
     void previous();
+
+    static Player * instance();
 
 signals:
     void audioChanged(Audio *audio);
@@ -102,6 +106,8 @@ private:
     bool m_loop;
     bool m_shuffle;
     bool m_playing;
+
+    static Player *_instance;
 };
 
 #endif // PLAYER_HPP

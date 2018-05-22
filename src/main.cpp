@@ -51,8 +51,8 @@ int main(int argc, char *argv[])
 
     setup();
 
-    EggPlayer player;
-    player.showSavedPosition();
+    EggPlayer egg;
+    egg.showSavedPosition();
 
     return app.exec();
 }

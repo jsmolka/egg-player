@@ -7,7 +7,6 @@
  */
 MusicBar::MusicBar(QWidget *parent) :
     QWidget(parent),
-    m_player(this),
     m_coverLabel(this),
     m_trackLabel(this),
     m_currentTimeLabel(this),
@@ -26,21 +25,21 @@ MusicBar::MusicBar(QWidget *parent) :
     m_scVolumeUp(Config::Shortcut::volumeUp(), true, this),
     m_scVolumeDown(Config::Shortcut::volumeDown(), true, this)
 {
-    m_player.setVolume(Config::Player::volume());
-    m_player.setShuffle(Config::Player::shuffle());
-    m_player.setLoop(Config::Player::loop());
+    eggPlayer->setVolume(Config::Player::volume());
+    eggPlayer->setShuffle(Config::Player::shuffle());
+    eggPlayer->setLoop(Config::Player::loop());
 
     setup();
     setupUi();
 
-    connect(&m_player, SIGNAL(audioChanged(Audio *)), this, SLOT(onPlayerAudioChanged(Audio *)));
-    connect(&m_player, SIGNAL(stateChanged(Player::State)), this, SLOT(onPlayerStateChanged(Player::State)));
-    connect(&m_player, SIGNAL(positionChanged(int)), this, SLOT(onPlayerPositionChanged(int)));
-    connect(&m_player, SIGNAL(volumeChanged(int)), this, SLOT(onPlayerVolumeChanged(int)));
+    connect(eggPlayer, SIGNAL(audioChanged(Audio *)), this, SLOT(onPlayerAudioChanged(Audio *)));
+    connect(eggPlayer, SIGNAL(stateChanged(Player::State)), this, SLOT(onPlayerStateChanged(Player::State)));
+    connect(eggPlayer, SIGNAL(positionChanged(int)), this, SLOT(onPlayerPositionChanged(int)));
+    connect(eggPlayer, SIGNAL(volumeChanged(int)), this, SLOT(onPlayerVolumeChanged(int)));
 
-    connect(&m_nextButton, SIGNAL(pressed()), &m_player, SLOT(next()));
+    connect(&m_nextButton, SIGNAL(pressed()), eggPlayer, SLOT(next()));
     connect(&m_playPauseButton, SIGNAL(pressed()), this, SLOT(onPlayPauseButtonPressed()));
-    connect(&m_previousButton, SIGNAL(pressed()), &m_player, SLOT(previous()));
+    connect(&m_previousButton, SIGNAL(pressed()), eggPlayer, SLOT(previous()));
     connect(&m_shuffleButton, SIGNAL(locked(bool)), this, SLOT(onShuffleButtonLocked(bool)));
     connect(&m_loopButton, SIGNAL(locked(bool)), this, SLOT(onLoopButtonLocked(bool)));
     connect(&m_volumeButton, SIGNAL(pressed()), this, SLOT(onVolumeButtonPressed()));
@@ -51,8 +50,8 @@ MusicBar::MusicBar(QWidget *parent) :
     connect(&m_volumeSlider, SIGNAL(sliderValueChanged(int)), SLOT(onVolumeSliderValueChanged(int)));
 
     connect(&m_scPlayPause, SIGNAL(pressed()), this, SLOT(onShortcutPlayPausePressed()));
-    connect(&m_scNext, SIGNAL(pressed()), &m_player, SLOT(next()));
-    connect(&m_scPrevious, SIGNAL(pressed()), &m_player, SLOT(previous()));
+    connect(&m_scNext, SIGNAL(pressed()), eggPlayer, SLOT(next()));
+    connect(&m_scPrevious, SIGNAL(pressed()), eggPlayer, SLOT(previous()));
     connect(&m_scVolumeUp, SIGNAL(pressed()), this, SLOT(onShortcutVolumeUpPressed()));
     connect(&m_scVolumeDown, SIGNAL(pressed()), this, SLOT(onShortcutVolumeDownPressed()));
 }
@@ -63,16 +62,6 @@ MusicBar::MusicBar(QWidget *parent) :
 MusicBar::~MusicBar()
 {
 
-}
-
-/*
- * Getter for player property.
- *
- * :return: player
- */
-Player * MusicBar::player()
-{
-    return &m_player;
 }
 
 /*
@@ -266,9 +255,9 @@ void MusicBar::onPlayerVolumeChanged(int volume)
 void MusicBar::onPlayPauseButtonPressed()
 {
     if (m_playPauseButton.selectedIcon() == 0)
-        m_player.play();
+        eggPlayer->play();
     else
-        m_player.pause();
+        eggPlayer->pause();
 }
 
 /*
@@ -279,7 +268,7 @@ void MusicBar::onPlayPauseButtonPressed()
  */
 void MusicBar::onShuffleButtonLocked(bool locked)
 {
-    m_player.setShuffle(locked);
+    eggPlayer->setShuffle(locked);
     Config::Player::setShuffle(locked);
 }
 
@@ -290,7 +279,7 @@ void MusicBar::onShuffleButtonLocked(bool locked)
  */
 void MusicBar::onLoopButtonLocked(bool locked)
 {
-    m_player.setLoop(locked);
+    eggPlayer->setLoop(locked);
     Config::Player::setLoop(locked);
 }
 
@@ -329,10 +318,10 @@ void MusicBar::onLengthSliderMoved(int value)
  */
 void MusicBar::onLengthSliderValueChanged(int value)
 {
-    if (value != m_player.currentAudio()->length())
-        m_player.setPosition(value);
+    if (value != eggPlayer->currentAudio()->length())
+        eggPlayer->setPosition(value);
     else
-        m_player.next();
+        eggPlayer->next();
 }
 
 /*
@@ -362,10 +351,10 @@ void MusicBar::onVolumeSliderValueChanged(int value)
  */
 void MusicBar::onShortcutPlayPausePressed()
 {
-    if (m_player.isPlaying())
-        m_player.pause();
+    if (eggPlayer->isPlaying())
+        eggPlayer->pause();
     else
-        m_player.play();
+        eggPlayer->play();
 }
 
 /*
@@ -373,7 +362,7 @@ void MusicBar::onShortcutPlayPausePressed()
  */
 void MusicBar::onShortcutVolumeUpPressed()
 {
-    changeVolume(m_player.volume(), 1);
+    changeVolume(eggPlayer->volume(), 1);
 }
 
 /*
@@ -381,7 +370,7 @@ void MusicBar::onShortcutVolumeUpPressed()
  */
 void MusicBar::onShortcutVolumeDownPressed()
 {
-    changeVolume(m_player.volume(), -1);
+    changeVolume(eggPlayer->volume(), -1);
 }
 
 /*
@@ -547,7 +536,7 @@ void MusicBar::setVolumeIcon(int volume)
  */
 void MusicBar::setVolumePlayer(int volume)
 {
-    m_player.setVolume(volume);
+    eggPlayer->setVolume(volume);
 }
 
 /*

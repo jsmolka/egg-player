@@ -26,11 +26,9 @@ A Groove Music like music player.
 - move library into music library
 - move library loading into thread (costly insert method)
 - proper chunk function for lists
-- thread pool global instance, define eggThreadPool
 - remove abstract thread connections
 - remove duplicates in path
 - ideal thread count exceeded log
-- single player with define
 
 ### Cosmetic
 - [black title bar](https://msdn.microsoft.com/en-us/library/windows/desktop/ms724940%28v=vs.85%29.aspx)

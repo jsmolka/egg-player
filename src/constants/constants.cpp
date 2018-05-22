@@ -22,8 +22,8 @@ QString documents(const QString &file)
  * release mode the Qt resource system will be used to remove the need to
  * include the resource folder.
  *
- * :param path: path
- * :return: resource path
+ * :param file: file
+ * :return: resource file
  */
 QString resource(const QString &file)
 {

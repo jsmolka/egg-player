@@ -61,8 +61,8 @@ void EggPlayer::closeEvent(QCloseEvent *event)
  */
 void EggPlayer::onMusicLibraryDoubleClicked(const QModelIndex &index)
 {
-    m_musicBar.player()->loadPlaylist(m_library.audios(), index.row());
-    m_musicBar.player()->play();
+    eggPlayer->loadPlaylist(m_library.audios(), index.row());
+    eggPlayer->play();
 }
 
 /*

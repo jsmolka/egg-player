@@ -298,6 +298,17 @@ void Player::previous()
 }
 
 /*
+ * Returns the global player instance.
+ */
+Player * Player::instance()
+{
+    if (!_instance)
+        _instance = new Player(qApp);
+
+    return _instance;
+}
+
+/*
  * Emits the current position and manages automatically playing the next song if
  * the current one finishes.
  *
@@ -635,3 +646,8 @@ void Player::setAudio(int index)
     emit audioChanged(audio);
     emit positionChanged(0);
 }
+
+/*
+ * Global player instance.
+ */
+Player * Player::_instance = nullptr;
