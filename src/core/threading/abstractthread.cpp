@@ -2,7 +2,7 @@
 
 /*
  * Constructor. It is advised to use classes derived from this one in
- * combination with a thread pool.
+ * combination with a thread pool because it manages their life time.
  *
  * :param parent: parent, default nullptr
  */
@@ -10,8 +10,7 @@ AbstractThread::AbstractThread(QObject *parent) :
     QThread(parent),
     m_abort(false)
 {
-    connect(qApp, SIGNAL(aboutToQuit()), this, SLOT(abort()));
-    connect(this, SIGNAL(finished()), this, SLOT(deleteLater()));
+
 }
 
 /*

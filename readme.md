@@ -30,7 +30,7 @@ A Groove Music like music player.
 - remove abstract thread connections
 - remove duplicates in path
 - ideal thread count exceeded log
-- edit documents function in constants
+- single player with define
 
 ### Cosmetic
 - [black title bar](https://msdn.microsoft.com/en-us/library/windows/desktop/ms724940%28v=vs.85%29.aspx)

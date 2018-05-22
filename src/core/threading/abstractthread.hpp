@@ -1,7 +1,6 @@
 #ifndef ABSTRACTTHREAD_HPP
 #define ABSTRACTTHREAD_HPP
 
-#include <QApplication>
 #include <QThread>
 
 class AbstractThread : public QThread
