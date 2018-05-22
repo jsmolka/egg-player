@@ -6,7 +6,7 @@
  * :param message: message
  * :param args: args, default empty
  */
-void Logger::log(const QString &message, const QStringList &args)
+void Logger::log(const QString &message, const StringList &args)
 {
     if (!Config::App::log())
         return;
@@ -27,7 +27,7 @@ void Logger::log(const QString &message, const QStringList &args)
  * :param args: args
  * :return: log message
  */
-QString Logger::createLog(QString message, const QStringList &args)
+QString Logger::createLog(QString message, const StringList &args)
 {
     for (const QString &arg : args)
         message = message.arg(arg);

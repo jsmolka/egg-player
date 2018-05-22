@@ -100,10 +100,10 @@ QPixmap Cache::cover(const QString &path, int size)
 
     if (image.isNull())
     {
-        image = Utils::defaultCover();
+        image = Util::cover();
         Logger::log("Cache: Cannot load cover %1", {path});
     }
-    return Utils::resize(image, size);
+    return Util::resize(image, size);
 }
 
 /*

@@ -626,7 +626,8 @@ void Player::unshuffle()
  */
 void Player::setAudio(int index)
 {
-    bassFreeStream();
+    if (!bassFreeStream())
+        return;
 
     Audio *audio = audioAt(index);
     if (!audio)

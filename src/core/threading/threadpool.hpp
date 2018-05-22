@@ -22,8 +22,8 @@ public:
     int currentCount() const;
     int advisedCount() const;
 
-    void add(AbstractThread *thread);
-    void start();
+    int add(AbstractThread *thread);
+    void start(int index = -1);
 
 signals:
     void finished();
@@ -31,7 +31,7 @@ signals:
 private slots:
     void onThreadFinished();
 
-private:
+private:    
     QVector<AbstractThread *> m_threads;
     int m_finished;
 

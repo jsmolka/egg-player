@@ -11,6 +11,7 @@
 
 #include "constants.hpp"
 #include "utils.hpp"
+#include "types.hpp"
 
 class Config
 {
@@ -98,8 +99,8 @@ public:
         static void setItemHeight(int height);
         static int itemHeight();
 
-        static void setPaths(const QStringList &paths);
-        static QStringList paths();
+        static void setPaths(const StringList &paths);
+        static StringList paths();
 
         static void setScrollBarWidth(int width);
         static int scrollBarWidth();

@@ -55,8 +55,8 @@ private:
     bool m_registered;
     QString m_shortcut;
 
-    static int m_count;
-    static const QHash<QString, int> m_map;
+    static int _count;
+    static const QHash<QString, int> _map;
 };
 
 #endif // SHORTCUT_HPP

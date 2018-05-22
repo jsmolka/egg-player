@@ -1,6 +1,7 @@
 #ifndef LIBRARY_HPP
 #define LIBRARY_HPP
 
+#include <QMutex>
 #include <QObject>
 #include <QStringList>
 
@@ -8,6 +9,7 @@
 #include "audioloader.hpp"
 #include "cachebuilder.hpp"
 #include "threadpool.hpp"
+#include "types.hpp"
 
 class Library : public QObject
 {
@@ -22,7 +24,7 @@ public:
     bool isSorted() const;
     Audios audios() const;
 
-    void load(const QStringList &paths);
+    void load(const StringList &paths);
 
 public slots:
     void insert(Audio *audio);
@@ -42,6 +44,7 @@ private:
     bool m_sorted;
     Audios m_audios;
     ThreadPool *pm_pool;
+    QMutex m_mutex;
 };
 
 #endif // LIBRARY_HPP

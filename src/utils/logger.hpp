@@ -10,14 +10,15 @@
 
 #include "config.hpp"
 #include "constants.hpp"
+#include "types.hpp"
 
 class Logger
 {
 public:
-    static void log(const QString &message, const QStringList &args = {});
+    static void log(const QString &message, const StringList &args = {});
 
 private:    
-    static QString createLog(QString message, const QStringList &args);
+    static QString createLog(QString message, const StringList &args);
 
     static QFile * file();
     static QFile *_file;

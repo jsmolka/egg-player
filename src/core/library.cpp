@@ -66,29 +66,24 @@ Audios Library::audios() const
 }
 
 /*
- * Loads the library by creating an audio builder. This function should not be
- * called multiple times for the same paths or they will all be loaded.
+ * Loads the library by creating multiple audio builder. This function should
+ * not be called multiple times for the same paths or they will all be loaded.
  *
  * :param paths: paths
  */
-void Library::load(const QStringList &paths)
+void Library::load(const StringList &paths)
 {
-    QStringList files;
+    StringList files;
     for (const QString &path : paths)
-        files << Utils::glob(path, "mp3");
+        files << FileUtil::glob(path, "mp3");
 
-    /*
-    int count = pm_pool->advisedCount();
-    for (int i = 0; i < count; i++)
+    QVector<StringList> chunks = Util::chunk(files, pm_pool->advisedCount());
+    for (const StringList &chunk : chunks)
     {
-        AudioLoader *loader = new AudioLoader(files.mid(i * (files.size() / count), files.size() / count));
-        connect(loader, SIGNAL(loaded(Audio*)), this, SLOT(insert(Audio*)));
+        AudioLoader *loader = new AudioLoader(chunk);
+        connect(loader, SIGNAL(loaded(Audio *)), this, SLOT(insert(Audio *)));
         pm_pool->add(loader);
     }
-    */
-    AudioLoader *loader = new AudioLoader(files);
-    connect(loader, SIGNAL(loaded(Audio*)), this, SLOT(insert(Audio*)));
-    pm_pool->add(loader);
     pm_pool->start();
 }
 
@@ -100,10 +95,12 @@ void Library::load(const QStringList &paths)
  */
 void Library::insert(Audio *audio)
 {
+    m_mutex.lock();
     if (m_sorted)
         insertBinary(audio);
     else
         append(audio);
+    m_mutex.unlock();
 }
 
 /*
@@ -113,8 +110,9 @@ void Library::insert(Audio *audio)
 void Library::onPoolFinished()
 {
     disconnect(pm_pool, SIGNAL(finished()), this, SLOT(onPoolFinished()));
-    pm_pool->add(new CacheBuilder(m_audios));
-    pm_pool->start();
+
+    int index = pm_pool->add(new CacheBuilder(m_audios));
+    pm_pool->start(index);
 }
 
 /*

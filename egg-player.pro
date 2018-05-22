@@ -11,9 +11,9 @@ QT += \
 INCLUDEPATH += \
     $$PWD/ext/bass-2.4/include \
     $$PWD/ext/taglib-1.11.1/include \
-    $$PWD/src/constants \
     $$PWD/src/core \
     $$PWD/src/core/threading \
+    $$PWD/src/globals \
     $$PWD/src/ui \
     $$PWD/src/ui/components \
     $$PWD/src/ui/layouts \
@@ -53,7 +53,8 @@ HEADERS += \
     $$PWD/src/core/threading/audioloader.hpp \
     $$PWD/src/core/threading/cachebuilder.hpp \
     $$PWD/src/core/threading/threadpool.hpp \
-    $$PWD/src/constants/constants.hpp \
+    $$PWD/src/globals/constants.hpp \
+    $$PWD/src/globals/types.hpp \
     $$PWD/src/ui/eggplayer.hpp \
     $$PWD/src/ui/musicbar.hpp \
     $$PWD/src/ui/musiclibrary.hpp \
@@ -78,7 +79,7 @@ SOURCES += \
     $$PWD/src/core/threading/audioloader.cpp \
     $$PWD/src/core/threading/cachebuilder.cpp \
     $$PWD/src/core/threading/threadpool.cpp \
-    $$PWD/src/constants/constants.cpp \
+    $$PWD/src/globals/constants.cpp \
     $$PWD/src/ui/eggplayer.cpp \
     $$PWD/src/ui/musicbar.cpp \
     $$PWD/src/ui/musiclibrary.cpp \

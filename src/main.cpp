@@ -6,7 +6,6 @@
 #include "constants.hpp"
 #include "eggplayer.hpp"
 #include "logger.hpp"
-#include "utils.hpp"
 
 /*
  * Loads custom font.

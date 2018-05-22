@@ -25,10 +25,6 @@ MusicBar::MusicBar(QWidget *parent) :
     m_scVolumeUp(Config::Shortcut::volumeUp(), true, this),
     m_scVolumeDown(Config::Shortcut::volumeDown(), true, this)
 {
-    eggPlayer->setVolume(Config::Player::volume());
-    eggPlayer->setShuffle(Config::Player::shuffle());
-    eggPlayer->setLoop(Config::Player::loop());
-
     setup();
     setupUi();
 
@@ -207,13 +203,13 @@ void MusicBar::onPlayerAudioChanged(Audio *audio)
     m_coverLabel.setPixmap(cover);
     m_trackLabel.setText(QString("%1\n%2").arg(audio->title(), audio->artist()));
 
-    m_currentTimeLabel.setText(Utils::timeString(0));
-    m_totalTimeLabel.setText(Utils::timeString(audio->length()));
+    m_currentTimeLabel.setText(Util::time(0));
+    m_totalTimeLabel.setText(Util::time(audio->length()));
 
     m_lengthSlider.setRange(0, audio->length());
     m_lengthSlider.setEnabled(true);
 
-    setColor(Utils::backgroundColor(cover));
+    setColor(ColorUtil::background(cover));
 }
 
 /*
@@ -235,7 +231,7 @@ void MusicBar::onPlayerPositionChanged(int position)
 {
     if (!m_lengthSlider.isPressed())
     {
-        m_currentTimeLabel.setText(Utils::timeString(position));
+        m_currentTimeLabel.setText(Util::time(position));
         m_lengthSlider.setValue(position);
     }
 }
@@ -307,7 +303,7 @@ void MusicBar::onVolumeButtonPressed()
  */
 void MusicBar::onLengthSliderMoved(int value)
 {
-    m_currentTimeLabel.setText(Utils::timeString(value));
+    m_currentTimeLabel.setText(Util::time(value));
 }
 
 /*
@@ -380,7 +376,7 @@ void MusicBar::onShortcutVolumeDownPressed()
  */
 QString MusicBar::loadStyleSheet()
 {
-    return Utils::read(CSS_MUSICBAR)
+    return FileUtil::read(CSS_MUSICBAR)
             .replace(
                 "groove-height",
                 QString::number(Config::Bar::grooveHeight()))
@@ -403,7 +399,7 @@ void MusicBar::setup()
     setAutoFillBackground(true);
     setFixedHeight(Config::Bar::height());
     setStyleSheet(loadStyleSheet());
-    setColor(Utils::backgroundColor(Utils::defaultCover()));
+    setColor(ColorUtil::background(Util::cover()));
 }
 
 /*
@@ -411,7 +407,7 @@ void MusicBar::setup()
  */
 void MusicBar::setupUi()
 {
-    m_coverLabel.setPixmap(Utils::defaultCover(Config::Bar::coverSize()));
+    m_coverLabel.setPixmap(Util::cover(Config::Bar::coverSize()));
     m_coverLabel.setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
     m_trackLabel.setFixedWidth(Config::Bar::trackWidth());
     m_trackLabel.setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
@@ -443,8 +439,7 @@ void MusicBar::setupUi()
 
     QGridLayout *layout = new QGridLayout(this);
     layout->setHorizontalSpacing(Config::Bar::spacing());
-    layout->setContentsMargins(Config::Bar::margin(), Config::Bar::margin(),
-                               Config::Bar::margin(), Config::Bar::margin());
+    layout->setContentsMargins(Config::Bar::margin(), Config::Bar::margin(), Config::Bar::margin(), Config::Bar::margin());
     layout->addWidget(&m_coverLabel, 0, 0);
     layout->addWidget(&m_trackLabel, 0, 1);
     layout->addWidget(&m_currentTimeLabel, 0, 2);

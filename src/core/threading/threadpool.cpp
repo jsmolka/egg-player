@@ -64,22 +64,39 @@ int ThreadPool::advisedCount() const
  * Adds a thread into the pool. Takes ownership.
  *
  * :param thread: thread
+ * :return: index
  */
-void ThreadPool::add(AbstractThread *thread)
+int ThreadPool::add(AbstractThread *thread)
 {
     thread->setParent(this);
     m_threads << thread;
     connect(thread, SIGNAL(finished()), this, SLOT(onThreadFinished()));
+
+    _count++;
+    if (_count > idealCount())
+        Logger::log("ThreadPool: Thread count exceeded ideal count");
+
+    return m_threads.size() - 1;
 }
 
 /*
- * Starts all threads.
+ * Starts a thread if is has not finished yet. Starts all if -1.
+ *
+ * :param index: index, default -1
  */
-void ThreadPool::start()
+void ThreadPool::start(int index)
 {
-    for (AbstractThread *thread : m_threads)
-        if (!thread->isFinished())
-            thread->start();
+    if (index == -1)
+    {
+        for (AbstractThread *thread : m_threads)
+            if (!thread->isFinished())
+                thread->start();
+    }
+    else
+    {
+        if (!m_threads[index]->isFinished())
+            m_threads[index]->start();
+    }
 }
 
 /*

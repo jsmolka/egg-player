@@ -2,6 +2,7 @@
 #define MUSICLIBRARY_HPP
 
 #include <QHeaderView>
+#include <QPair>
 #include <QScrollBar>
 #include <QTableWidget>
 #include <QVector>
@@ -29,25 +30,11 @@ public slots:
     void insert(Audio *audio, int row = -1);
 
 private:
-    struct ColumnInfo
-    {
-        ColumnInfo(SongInfo info = None, Qt::Alignment alignment = Qt::AlignLeft, bool expand = true)
-        {
-            this->info = info;
-            this->alignment = alignment;
-            this->expand = expand;
-        }
-
-        SongInfo info;
-        Qt::Alignment alignment;
-        bool expand;
-    };
-
     QString loadStyleSheet();
 
     void setup();
 
-    QVector<ColumnInfo> m_columns;
+    QVector<QPair<SongInfo, Qt::Alignment>> m_columns;
 };
 
 #endif // MUSICLIBRARY_HPP

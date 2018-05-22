@@ -16,19 +16,16 @@ A Groove Music like music player.
 ## Things to do
 
 ### Internal
-- use namespaces or classes in utils
-- review utils functions / comments
 - max property for timer
 - use milliseconds song time as timer max
 - singleton for config
 - static variable prefixes
-- glob suffix vs endsWith
 - move library into music library
 - move library loading into thread (costly insert method)
-- proper chunk function for lists
-- remove abstract thread connections
-- remove duplicates in path
-- ideal thread count exceeded log
+- do not load duplicates in library
+- remove library loaded signal
+- remove finished signal from thread pool
+- pair in shortcut
 
 ### Cosmetic
 - [black title bar](https://msdn.microsoft.com/en-us/library/windows/desktop/ms724940%28v=vs.85%29.aspx)

@@ -22,7 +22,7 @@ Audio::Audio(const QString &path) :
     }
 
     if (m_title.isEmpty())
-        m_title = Utils::fileName(m_path);
+        m_title = FileUtil::fileName(m_path);
 }
 
 /*
@@ -147,7 +147,7 @@ const wchar_t * Audio::pathWChar() const
  */
 QPixmap Audio::cover(int size)
 {
-    return Utils::resize(readCover(), size);
+    return Util::resize(readCover(), size);
 }
 
 /*
@@ -226,7 +226,7 @@ QPixmap Audio::readCover()
     }
     else
     {
-        image = Utils::defaultCover();
+        image = Util::cover();
         Logger::log("Audio: Cannot read cover %1", {m_path});
     }
     return image;

@@ -11,9 +11,9 @@ Shortcut::Shortcut(const QString &shortcut, bool repeat, QObject *parent) :
     QObject(parent),
     m_shortcut(shortcut)
 {
-    m_count++;
+    _count++;
 
-    m_id = m_count;
+    m_id = _count;
     m_registered = registerShortcut(shortcut, repeat);
 
     if (m_registered)
@@ -97,7 +97,7 @@ Shortcut::Combination Shortcut::parseShortcut(const QString &shortcut)
     QStringList keys = shortcut.toUpper().replace(" ", "").split("+");
     for (const QString &key : keys)
     {
-        if (!m_map.contains(key))
+        if (!_map.contains(key))
         {
             vk = 0;
             break;
@@ -118,7 +118,7 @@ Shortcut::Combination Shortcut::parseShortcut(const QString &shortcut)
             continue;
         }
 
-        vk = m_map.value(key);
+        vk = _map.value(key);
     }
     return Combination(vk, modifier);
 }
@@ -157,12 +157,12 @@ bool Shortcut::unregisterShortcut()
  * Counts the number of instances and is the
  * identifier for each shortcut.
  */
-int Shortcut::m_count = 0;
+int Shortcut::_count = 0;
 
 /*
  * Map key string to int.
  */
-const QHash<QString, int> Shortcut::m_map =
+const QHash<QString, int> Shortcut::_map =
 {
     {"CANCEL"   , 0x0001},
     {"BACK"     , 0x0008},

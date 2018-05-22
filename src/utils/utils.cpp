@@ -1,14 +1,13 @@
 #include "utils.hpp"
 
 /*
- * Converts a length in seconds into a time
- * string. If automatically uses the correct
- * format depending on the length.
+ * Converts a length in seconds into a time string. If automatically uses the
+ * correct format depending on the length.
  *
  * :param length: length in seconds
  * :return: time string
  */
-QString Utils::timeString(int length)
+QString Util::time(int length)
 {
     int seconds = length % 60;
     int minutes = (length / 60) % 60;
@@ -26,18 +25,17 @@ QString Utils::timeString(int length)
 }
 
 /*
- * Loads the default cover and resizes it into
- * a certain size. If the size is -1 the cover
- * does not get resized.
+ * Loads the default cover and resizes it to a certain size. If the size is -1
+ * the cover does not get resized.
  *
  * :param size: size, default -1
  * :return: default cover
  */
-QPixmap Utils::defaultCover(int size)
+QPixmap Util::cover(int size)
 {
     QPixmap pixmap(IMG_DEFAULT_COVER);
     if (size != -1)
-        return Utils::resize(pixmap, size);
+        return Util::resize(pixmap, size);
     else
         return pixmap;
 }
@@ -49,7 +47,7 @@ QPixmap Utils::defaultCover(int size)
  * :param size: size
  * :return: scaled pixmap
  */
-QPixmap Utils::resize(const QPixmap &pixmap, int size)
+QPixmap Util::resize(const QPixmap &pixmap, int size)
 {
     return pixmap.scaled(size, size, Qt::KeepAspectRatio, Qt::SmoothTransformation);
 }
@@ -61,88 +59,64 @@ QPixmap Utils::resize(const QPixmap &pixmap, int size)
  * :param size: size
  * :return: scaled image
  */
-QImage Utils::resize(const QImage &image, int size)
+QImage Util::resize(const QImage &image, int size)
 {
     return image.scaled(size, size, Qt::KeepAspectRatio, Qt::SmoothTransformation);
 }
 
 /*
- * Reads a file and returns its content. If the
- * file cannot be opened or read, an empty
- * string gets returned.
+ * Chunks a list into n evenly sized parts.
  *
- * :param path: file
- * :return: file content, empty string at failure
+ * :param list: list
+ * :param n: n
+ * :return: chunked list
  */
-QString Utils::read(const QString &path)
+QVector<StringList> Util::chunk(const StringList &list, int n)
 {
-    QFile file(path);
-    if (!file.open(QFile::ReadOnly | QFile::Text))
+    n = qMin(qMax(1, n), list.size());
+    int quo = list.size() / n;
+    int rem = list.size() % n;
+
+    QVector<int> indices;
+    for (int i = 0; i < n + 1; i++)
+        indices << quo * i + qMin(i, rem);
+
+    QVector<StringList> result;
+    for (int i = 0; i < n; i++)
     {
-        Logger::log("FileUtil: Cannot read file '%1'", {path});
-        return QString();
+        int left = indices[i];
+        int right = indices[i + 1];
+        result << list.mid(left, right - left);
     }
+    return result;
+}
 
-    QTextStream stream(&file);
-    QString text = stream.readAll();
-    file.close();
+/*
+ * Reads a file and returns its content. If the file cannot be opened or read,
+ * an empty string gets returned.
+ *
+ * :param path: path
+ * :return: file content
+ */
+QString FileUtil::read(const QString &file)
+{
+    QFile qFile(file);
+    if (!qFile.open(QFile::ReadOnly | QFile::Text))
+        return QString();
 
-    return text;
+    QTextStream stream(&qFile);
+    return stream.readAll();
 }
 
 /*
  * Checks if a file exists.
  *
  * :param path: file
- * :return: file exists
+ * :return: exists
  */
-bool Utils::exists(const QString &path)
+bool FileUtil::exists(const QString &path)
 {
     return QFileInfo(path).exists();
-}
-
-/*
- * Returns the directory for a given path. If the
- * path is a directory it will get returned. If
- * it is a file, the directory of the file gets
- * returned.
- *
- * :param path: path
- * :return: directory, empty dir at failure
- */
-QDir Utils::dir(const QString &path)
-{
-    QFileInfo info(path);
-
-    if (info.isDir())
-        return QDir(path);
-
-    if (info.isFile())
-        return info.absoluteDir();
-
-    return QDir();
-}
-
-/*
- * Globbes files with a certain pattern. Behaves
- * very simular to Pythons glob function.
- *
- * :param path: path
- * :param suffix: suffix
- * :return: list of paths
- */
-QStringList Utils::glob(const QString &path, const QString &suffix)
-{
-    QStringList result;
-    QDirIterator iterator(dir(path), QDirIterator::Subdirectories);
-    while (iterator.hasNext())
-    {
-        iterator.next();
-        if (iterator.fileInfo().isFile())
-            if (iterator.fileInfo().suffix() == suffix)
-                result << iterator.filePath();
-    }
-    return result;
 }
 
 /*
@@ -151,41 +125,56 @@ QStringList Utils::glob(const QString &path, const QString &suffix)
  * :param file: file
  * :return: file name
  */
-QString Utils::fileName(const QString &file)
+QString FileUtil::fileName(const QString &file)
 {
     return QFileInfo(file).baseName();
 }
 
 /*
- * Calculates dominent color of an image. The
- * algorithm iterates over every pixel, converts
- * them into the HSV color space and creates two
- * mapped heuristics out of them.
- * Those hold colorful and grey scale colors. The
- * algorithm tries to return a colorful color. If
- * there is none, a grey scale gets returned.
+ * Globbes files with a certain suffix.
+ *
+ * :param path: path
+ * :param suffix: suffix
+ * :return: list of paths
+ */
+StringList FileUtil::glob(const QString &path, const QString &suffix)
+{
+    StringList result;
+    QDirIterator iterator(path, QDirIterator::Subdirectories);
+    while (iterator.hasNext())
+    {
+        iterator.next();
+        if (iterator.fileInfo().isFile())
+            if (iterator.fileInfo().suffix().compare(suffix, Qt::CaseInsensitive) == 0)
+                result << iterator.filePath();
+    }
+    return result;
+}
+
+/*
+ * Calculates dominent color of an image. The algorithm iterates over every
+ * pixel, converts them into the HSV color space and creates two mapped
+ * heuristics out of them.
+ * Those hold colorful and grey scale colors. The algorithm tries to return a
+ * colorful color. If there is none, a grey scale gets returned.
  *
  * :param image: image
  * :return: dominant color
  */
-QColor Utils::dominantColor(const QImage &image)
+QColor ColorUtil::dominant(const QImage &image)
 {
-    // Map 360 hues to RANGE
     const quint32 RANGE = 60;
 
-    // Initialize arrays for colorful colors
     std::array<quint32, RANGE> cCounts;
     std::array<quint32, RANGE> cHues;
     std::array<quint32, RANGE> cSaturations;
     std::array<quint32, RANGE> cValues;
 
-    // Initialize arrays for grey scale colors
     std::array<quint32, RANGE> gCounts;
     std::array<quint32, RANGE> gHues;
     std::array<quint32, RANGE> gSaturations;
     std::array<quint32, RANGE> gValues;
 
-    // Fill arrays
     for (quint32 i = 0; i < RANGE; i++)
     {
         cCounts[i] = 0;
@@ -215,7 +204,6 @@ QColor Utils::dominantColor(const QImage &image)
 
         quint32 index = hue / (360 / RANGE);
 
-        // Check if color is a grey scale or colorful
         if (qAbs(red - green) < 25 && qAbs(green - blue) < 25 && qAbs(red - blue) < 25)
         {
             gCounts[index]++;
@@ -232,7 +220,6 @@ QColor Utils::dominantColor(const QImage &image)
         }
     }
 
-    // Try to get the dominant colorful color
     quint32 index = 0;
     quint32 max = 0;
     for (quint32 i = 0; i < RANGE; i++)
@@ -255,7 +242,6 @@ QColor Utils::dominantColor(const QImage &image)
     }
     else
     {
-        // Choose a grey scale instead
         index = 0;
         max = 0;
         for (quint32 i = 0; i < RANGE; i++)
@@ -277,18 +263,16 @@ QColor Utils::dominantColor(const QImage &image)
 }
 
 /*
- * Gets the dominant color of an image and edits
- * some values to prevent too bright values. It
- * also resizes the image to keep processing the
- * constant.
+ * Gets the dominant color of an image and edits some values to prevent too
+ * bright values. It also resizes the image to keep processing the constant.
  *
  * :param image: image
  * :param size: size for scaling, default 25
  * :return: background color
  */
-QColor Utils::backgroundColor(const QImage &image, quint32 size)
+QColor ColorUtil::background(const QImage &image, quint32 size)
 {
-    QColor color = dominantColor(image.scaled(size, size));
+    QColor color = dominant(image.scaled(size, size));
 
     qreal hue = color.hsvHueF();
     qreal saturation = color.hsvSaturationF();
@@ -309,7 +293,7 @@ QColor Utils::backgroundColor(const QImage &image, quint32 size)
  * :param size: size for scaling
  * :return: background color
  */
-QColor Utils::backgroundColor(const QPixmap &image, quint32 size)
+QColor ColorUtil::background(const QPixmap &image, quint32 size)
 {
-    return backgroundColor(image.toImage(), size);
+    return background(image.toImage(), size);
 }

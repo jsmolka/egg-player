@@ -340,7 +340,7 @@ int Config::Library::itemHeight()
  *
  * :param string: paths
  */
-void Config::Library::setPaths(const QStringList &paths)
+void Config::Library::setPaths(const StringList &paths)
 {
     QJsonArray array;
     for (const QString &path : paths)
@@ -354,9 +354,9 @@ void Config::Library::setPaths(const QStringList &paths)
  *
  * :return: path
  */
-QStringList Config::Library::paths()
+StringList Config::Library::paths()
 {
-    QStringList list;
+    StringList list;
     for (const QJsonValue &element : oLibrary[kPaths].toArray())
         list << element.toString();
 
@@ -632,7 +632,7 @@ void Config::save()
 void Config::load()
 {
     jDocument = QJsonDocument::fromJson("{}");
-    if (Utils::exists(CFG_PATH))
+    if (FileUtil::exists(CFG_PATH))
     {
         QFile file(CFG_PATH);
         if (file.open(QIODevice::ReadOnly))

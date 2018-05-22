@@ -17,7 +17,7 @@ AudioLoader::AudioLoader(QObject *parent) :
  * :param files: files
  * :param parent: parent, default nullptr
  */
-AudioLoader::AudioLoader(const QStringList &files, QObject *parent) :
+AudioLoader::AudioLoader(const StringList &files, QObject *parent) :
     AbstractThread(parent),
     m_files(files)
 {
@@ -37,7 +37,7 @@ AudioLoader::~AudioLoader()
  *
  * :param files: files
  */
-void AudioLoader::setFiles(const QStringList &files)
+void AudioLoader::setFiles(const StringList &files)
 {
     m_files = files;
 }

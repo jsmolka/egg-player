@@ -24,13 +24,16 @@ MusicLibrary::~MusicLibrary()
  *
  * :param info: info
  * :param horizontal: horizontal, default left
- * :param expand: expand
+ * :param expand: expand, default true
  */
 void MusicLibrary::showColumn(SongInfo info, Qt::Alignment horizontal, bool expand)
 {
     Qt::Alignment alignment = Qt::AlignVCenter | horizontal;
-    m_columns << ColumnInfo(info, alignment, expand);
+    m_columns << QPair<SongInfo, Qt::Alignment>(info, alignment);
+
     setColumnCount(m_columns.size());
+    if (!expand)
+        horizontalHeader()->setSectionResizeMode(m_columns.size() - 1, QHeaderView::ResizeToContents);
 }
 
 /*
@@ -50,7 +53,7 @@ void MusicLibrary::insert(Audio *audio, int row)
     for (int i = 0; i < m_columns.size(); i++)
     {
         QString text;
-        switch(m_columns[i].info)
+        switch(m_columns[i].first)
         {
             case Title:
                 text = audio->title();
@@ -71,16 +74,13 @@ void MusicLibrary::insert(Audio *audio, int row)
                 text = audio->genre();
                 break;
             case Length:
-                text = Utils::timeString(audio->length());
+                text = Util::time(audio->length());
                 break;
         }
 
         QTableWidgetItem *item = new QTableWidgetItem(text);
-        item->setTextAlignment(m_columns[i].alignment);
+        item->setTextAlignment(m_columns[i].second);
         setItem(row, i, item);
-
-        if (!m_columns[i].expand)
-            horizontalHeader()->setSectionResizeMode(i, QHeaderView::ResizeToContents);
     }
     setUpdatesEnabled(true);
 }
@@ -92,7 +92,7 @@ void MusicLibrary::insert(Audio *audio, int row)
  */
 QString MusicLibrary::loadStyleSheet()
 {
-    return Utils::read(CSS_MUSICLIBRARY)
+    return FileUtil::read(CSS_MUSICLIBRARY)
             .replace(
                 "cell-padding",
                 QString::number(Config::Library::cellPadding()))
