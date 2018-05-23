@@ -19,7 +19,8 @@ Player::Player(QObject *parent) :
 
     bassCreate();
 
-    connect(pm_timer, SIGNAL(timeout(qint64)), this, SLOT(onTimeout(qint64)));
+    connect(pm_timer, SIGNAL(timeout(qint64)), this, SLOT(onTimerTimeout(qint64)));
+    connect(pm_timer, SIGNAL(finished()), this, SLOT(onTimerFinished()));
 }
 
 /*
@@ -269,9 +270,9 @@ void Player::play()
         return;
 
     m_playing = true;
-    pm_timer->start();
+    pm_timer->start(currentAudio()->length(false));
 
-    emit stateChanged(State::Playing);
+    emit stateChanged(PlayerState::Playing);
 }
 
 /*
@@ -287,7 +288,7 @@ void Player::pause()
     m_playing = false;
     pm_timer->pause();
 
-    emit stateChanged(State::Paused);
+    emit stateChanged(PlayerState::Paused);
 }
 
 /*
@@ -315,17 +316,21 @@ void Player::previous()
  * :param elapsed: elapsed time in milliseconds
  * :emit positionChanged: position in seconds
  */
-void Player::onTimeout(qint64 elapsed)
+void Player::onTimerTimeout(qint64 elapsed)
 {
     Audio *audio = currentAudio();
     if (!audio)
         return;
 
-    elapsed = elapsed / 1000;
-    if (elapsed <= audio->length())
-        emit positionChanged(elapsed);
-    else
-        next();
+    emit positionChanged(elapsed / 1000);
+}
+
+/*
+ * Plays the next song.
+ */
+void Player::onTimerFinished()
+{
+    next();
 }
 
 /*
@@ -637,7 +642,7 @@ void Player::setAudio(int index)
         return;
 
     setVolume(m_volume);
-    pm_timer->restart();
+    pm_timer->restart(audio->length(false));
 
     if (m_playing)
         play();

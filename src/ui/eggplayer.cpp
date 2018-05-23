@@ -78,12 +78,12 @@ void EggPlayer::setupUi()
     west->setFixedWidth(315);
     west->setStyleSheet("QLabel {background-color: #666666;}");
 
-    m_musicLibrary.addColumn(SongInfo::Title);
-    m_musicLibrary.addColumn(SongInfo::Artist);
-    m_musicLibrary.addColumn(SongInfo::Album);
-    m_musicLibrary.addColumn(SongInfo::Year, Qt::AlignLeft, false);
-    m_musicLibrary.addColumn(SongInfo::Genre);
-    m_musicLibrary.addColumn(SongInfo::Length, Qt::AlignRight, false);
+    m_musicLibrary.addColumn(MusicLibrary::Title);
+    m_musicLibrary.addColumn(MusicLibrary::Artist);
+    m_musicLibrary.addColumn(MusicLibrary::Album);
+    m_musicLibrary.addColumn(MusicLibrary::Year, Qt::AlignLeft, false);
+    m_musicLibrary.addColumn(MusicLibrary::Genre);
+    m_musicLibrary.addColumn(MusicLibrary::Length, Qt::AlignRight, false);
 
     BorderLayout *layout = new BorderLayout(0, this);
     layout->addWidget(&m_musicLibrary, BorderLayout::Center);

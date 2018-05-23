@@ -16,16 +16,17 @@ public:
     int interval() const;
     int remaining() const;
 
-    void start();
+    void start(qint64 max);
     void pause();
     void stop();
-    void restart();
+    void restart(qint64 max);
 
 public slots:
     void setElapsed(qint64 elapsed);
 
 signals:
     void timeout(qint64);
+    void finished();
 
 private slots:
     void onTimeout();
@@ -33,6 +34,7 @@ private slots:
 private:
     QTimer *pm_timer;
     qint64 m_elapsed;
+    qint64 m_max;
     int m_interval;
     int m_remaining;
 };

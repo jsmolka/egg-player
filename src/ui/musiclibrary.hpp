@@ -2,7 +2,6 @@
 #define MUSICLIBRARY_HPP
 
 #include <QHeaderView>
-#include <QPair>
 #include <QScrollBar>
 #include <QTableWidget>
 #include <QVector>
@@ -14,8 +13,6 @@
 #include "rowhoverdelegate.hpp"
 #include "utils.hpp"
 
-enum SongInfo {None, Title, Artist, Album, Track, Year, Genre, Length};
-
 class MusicLibrary : public QTableWidget
 {
     Q_OBJECT
@@ -23,6 +20,8 @@ class MusicLibrary : public QTableWidget
 public:
     MusicLibrary(QWidget *parent = nullptr);
     ~MusicLibrary();
+
+    enum SongInfo {None, Title, Artist, Album, Track, Year, Genre, Length};
 
     void addColumn(SongInfo info, Qt::Alignment horizontal = Qt::AlignLeft, bool expand = true);
 

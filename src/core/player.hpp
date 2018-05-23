@@ -20,7 +20,7 @@ public:
 
     static Player * instance();
 
-    enum State {Playing, Paused};
+    enum PlayerState {None, Playing, Paused};
 
     void setIndex(int index);
     int index() const;
@@ -55,12 +55,13 @@ public slots:
 
 signals:
     void audioChanged(Audio *audio);
-    void stateChanged(Player::State state);
+    void stateChanged(Player::PlayerState state);
     void positionChanged(int position);
     void volumeChanged(int volume);
 
 private slots:
-    void onTimeout(qint64 elapsed);
+    void onTimerTimeout(qint64 elapsed);
+    void onTimerFinished();
 
 private:
     struct AudioPosition

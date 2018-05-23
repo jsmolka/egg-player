@@ -11,13 +11,14 @@ A Groove Music like music player.
 - [ ] reactive cache
 
 ## Changes since lastest release
+- improve song transition
 - improve load time
 
 ## Things to do
 
 ### Internal
-- max property for timer
-- use milliseconds song time as timer max
+- round song time
+- stretch length slider and use different interval
 - singleton for config
 - move library into music library
 
@@ -26,7 +27,6 @@ A Groove Music like music player.
 - do not show certain info at low size
 - library scroll acceleration
 - highlight active song
-- scrollbar with [round corners](https://stackoverflow.com/questions/12438095/qt-vertical-scroll-bar-stylesheets)
 - [smooth scrolling](https://github.com/zhou13/qsmoothscrollarea)
 - remove library hover style after exit
 - proper hover style while and after resizing

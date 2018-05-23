@@ -29,7 +29,7 @@ MusicBar::MusicBar(QWidget *parent) :
     setupUi();
 
     connect(eggPlayer, SIGNAL(audioChanged(Audio *)), this, SLOT(onPlayerAudioChanged(Audio *)));
-    connect(eggPlayer, SIGNAL(stateChanged(Player::State)), this, SLOT(onPlayerStateChanged(Player::State)));
+    connect(eggPlayer, SIGNAL(stateChanged(Player::PlayerState)), this, SLOT(onPlayerStateChanged(Player::PlayerState)));
     connect(eggPlayer, SIGNAL(positionChanged(int)), this, SLOT(onPlayerPositionChanged(int)));
     connect(eggPlayer, SIGNAL(volumeChanged(int)), this, SLOT(onPlayerVolumeChanged(int)));
 
@@ -217,9 +217,9 @@ void MusicBar::onPlayerAudioChanged(Audio *audio)
  *
  * :param state: player state
  */
-void MusicBar::onPlayerStateChanged(Player::State state)
+void MusicBar::onPlayerStateChanged(Player::PlayerState state)
 {
-    m_playPauseButton.setSelectedIcon(state == Player::State::Playing ? 1 : 0);
+    m_playPauseButton.setSelectedIcon(state == Player::PlayerState::Playing ? 1 : 0);
 }
 
 /*

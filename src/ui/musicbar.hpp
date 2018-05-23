@@ -44,7 +44,7 @@ protected:
 
 private slots:
     void onPlayerAudioChanged(Audio *audio);
-    void onPlayerStateChanged(Player::State state);
+    void onPlayerStateChanged(Player::PlayerState state);
     void onPlayerPositionChanged(int position);
     void onPlayerVolumeChanged(int volume);
 
