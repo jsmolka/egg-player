@@ -370,25 +370,17 @@ void MusicBar::onShortcutVolumeDownPressed()
 }
 
 /*
- * Loads style sheet and replaces placeholders.
- *
- * :return: style sheet
+ * Loads the style sheet and replaces placeholders.
  */
-QString MusicBar::loadStyleSheet()
+void MusicBar::loadCss()
 {
-    return FileUtil::read(CSS_MUSICBAR)
-            .replace(
-                "groove-height",
-                QString::number(Config::Bar::grooveHeight()))
-            .replace(
-                "handle-size-half",
-                QString::number(Config::Bar::handleSize() / 2))
-            .replace(
-                "handle-size",
-                QString::number(Config::Bar::handleSize()))
-            .replace(
-                "icon-size-half",
-                QString::number(Config::Bar::iconSize() / 2));
+    setStyleSheet(
+        FileUtil::read(CSS_MUSICBAR)
+            .replace("groove-height", QString::number(Config::Bar::grooveHeight()))
+            .replace("handle-size-half", QString::number(Config::Bar::handleSize() / 2))
+            .replace("handle-size", QString::number(Config::Bar::handleSize()))
+            .replace("icon-size-half", QString::number(Config::Bar::iconSize() / 2))
+    );
 }
 
 /*
@@ -396,9 +388,10 @@ QString MusicBar::loadStyleSheet()
  */
 void MusicBar::setup()
 {
+    loadCss();
+
     setAutoFillBackground(true);
     setFixedHeight(Config::Bar::height());
-    setStyleSheet(loadStyleSheet());
     setColor(ColorUtil::background(Util::cover()));
 }
 

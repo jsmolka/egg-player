@@ -19,9 +19,9 @@ public:
     bool isFinished() const;
     bool isRunning() const;
 
-    int idealCount() const;
-    int currentCount() const;
-    int advisedCount() const;
+    int current(bool global = false) const;
+    int ideal() const;
+    int advised() const;
 
     int add(AbstractThread *thread);
     void start(int index = -1);
@@ -33,6 +33,9 @@ private slots:
     void onThreadFinished();
 
 private:    
+    void startAll();
+    void startAt(int index);
+
     QVector<AbstractThread *> m_threads;
     int m_finished;
 

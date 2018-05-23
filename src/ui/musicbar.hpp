@@ -63,8 +63,7 @@ private slots:
     void onShortcutVolumeDownPressed();
 
 private:
-    QString loadStyleSheet();
-
+    void loadCss();
     void setup();
     void setupUi();
 

@@ -5,11 +5,8 @@
 #include <QVector>
 
 /*
- * Forward declaration.
+ * Use vector instead of list for better performance.
  */
-class Audio;
-
-typedef QVector<Audio *> Audios;
 typedef QVector<QString> StringList;
 
 #endif // TYPES_HPP

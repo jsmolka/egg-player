@@ -76,14 +76,14 @@ QImage Util::resize(const QImage &image, int size, bool fast)
 QVector<StringList> Util::chunk(const StringList &list, int n)
 {
     n = qMin(qMax(1, n), list.size());
-    int q = list.size() / n;
-    int r = list.size() % n;
+    int quo = list.size() / n;
+    int rem = list.size() % n;
 
     QVector<StringList> result;
     for (int i = 0; i < n; i++)
     {
-        int l = i * q + qMin(i, r);
-        int r = (i + 1) * q + qMin(i + 1, r);
+        int l = i * quo + qMin(i, rem);
+        int r = (i + 1) * quo + qMin(i + 1, rem);
         result << list.mid(l, r - l);
     }
     return result;

@@ -45,33 +45,34 @@ bool ThreadPool::isRunning() const
 }
 
 /*
+ * Gets the current pool thread count.
+ *
+ * :param global: use global count, default false
+ * :return: count
+ */
+int ThreadPool::current(bool global) const
+{
+    return global ? _count : m_threads.size();
+}
+
+/*
  * Gets the ideal thread count.
  *
- * :return: ideal thread count
+ * :return: count
  */
-int ThreadPool::idealCount() const
+int ThreadPool::ideal() const
 {
     return QThread::idealThreadCount();
 }
 
 /*
- * Gets the current thread count.
- *
- * :return: current thread count
- */
-int ThreadPool::currentCount() const
-{
-    return _count;
-}
-
-/*
  * Gets the advised thread count.
  *
- * :return: advised thread count
+ * :return: count
  */
-int ThreadPool::advisedCount() const
+int ThreadPool::advised() const
 {
-    return idealCount() - currentCount();
+    return ideal() - current(true);
 }
 
 /*
@@ -86,8 +87,7 @@ int ThreadPool::add(AbstractThread *thread)
     m_threads << thread;
     connect(thread, SIGNAL(finished()), this, SLOT(onThreadFinished()));
 
-    _count++;
-    if (_count > idealCount())
+    if (++_count > ideal())
         Logger::log("ThreadPool: Thread count exceeded ideal count");
 
     return m_threads.size() - 1;
@@ -101,16 +101,9 @@ int ThreadPool::add(AbstractThread *thread)
 void ThreadPool::start(int index)
 {
     if (index == -1)
-    {
-        for (AbstractThread *thread : m_threads)
-            if (!thread->isFinished())
-                thread->start();
-    }
+        startAll();
     else
-    {
-        if (!m_threads[index]->isFinished())
-            m_threads[index]->start();
-    }
+        startAt(index);
 }
 
 /*
@@ -120,14 +113,34 @@ void ThreadPool::start(int index)
  */
 void ThreadPool::onThreadFinished()
 {
-    m_finished++;
     _count--;
-
-    if (isFinished())
+    if (++m_finished == m_threads.size())
         emit finished();
 }
 
 /*
- * Current thread count.
+ * Starts all threads if they have not finished yet.
+ */
+void ThreadPool::startAll()
+{
+    for (AbstractThread *thread : m_threads)
+        if (!thread->isFinished())
+            thread->start();
+}
+
+/*
+ * Starts a thread at an index if it has not finished yet.
+ *
+ * :param index: index
+ */
+void ThreadPool::startAt(int index)
+{
+    AbstractThread *thread = m_threads[index];
+    if (!thread->isRunning())
+        thread->start();
+}
+
+/*
+ * Global thread count.
  */
 int ThreadPool::_count = 0;

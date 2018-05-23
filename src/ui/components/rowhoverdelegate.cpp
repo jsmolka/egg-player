@@ -37,8 +37,7 @@ void RowHoverDelegate::paint(QPainter *painter, const QStyleOptionViewItem &opti
 {
     QStyleOptionViewItem opt = option;
     if (index.row() == m_row)
-    {
         opt.state |= QStyle::State_MouseOver;
-    }
+
     QStyledItemDelegate::paint(painter, opt, index);
 }

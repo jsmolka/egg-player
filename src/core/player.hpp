@@ -65,11 +65,8 @@ private slots:
 private:
     struct AudioPosition
     {
-        AudioPosition(int index = -1, Audio *audio = nullptr)
-        {
-            this->index = index;
-            this->audio = audio;
-        }
+        AudioPosition(int index = 0, Audio *audio = nullptr) :
+            index(index), audio(audio) {}
 
         int index;
         Audio *audio;

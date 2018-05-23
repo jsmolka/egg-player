@@ -89,7 +89,7 @@ Audios Library::audios() const
  */
 void Library::load(const StringList &paths)
 {
-    QVector<StringList> chunks = Util::chunk(uniqueFiles(paths), pm_audioPool->advisedCount());
+    QVector<StringList> chunks = Util::chunk(uniqueFiles(paths), pm_audioPool->advised());
     for (const StringList &chunk : chunks)
     {
         AudioLoader *loader = new AudioLoader(chunk);

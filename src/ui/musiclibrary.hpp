@@ -14,6 +14,8 @@
 #include "rowhoverdelegate.hpp"
 #include "utils.hpp"
 
+enum SongInfo {None, Title, Artist, Album, Track, Year, Genre, Length};
+
 class MusicLibrary : public QTableWidget
 {
     Q_OBJECT
@@ -22,19 +24,28 @@ public:
     MusicLibrary(QWidget *parent = nullptr);
     ~MusicLibrary();
 
-    enum SongInfo {Title, Artist, Album, Track, Year, Genre, Length, None};
-
-    void showColumn(SongInfo info, Qt::Alignment horizontal = Qt::AlignLeft, bool expand = true);
+    void addColumn(SongInfo info, Qt::Alignment horizontal = Qt::AlignLeft, bool expand = true);
 
 public slots:
     void insert(Audio *audio, int row = -1);
 
 private:
-    QString loadStyleSheet();
+    struct Column
+    {
+        Column(SongInfo info = SongInfo::None, Qt::Alignment alignment = 0) :
+            info(info), alignment(alignment) {}
 
+        SongInfo info;
+        Qt::Alignment alignment;
+    };
+
+    void loadCss();
     void setup();
 
-    QVector<QPair<SongInfo, Qt::Alignment>> m_columns;
+    QString audioText(Audio *audio, int column);
+
+    Library *pm_library;
+    QVector<Column> m_columns;
 };
 
 #endif // MUSICLIBRARY_HPP
