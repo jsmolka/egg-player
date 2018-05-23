@@ -17,6 +17,7 @@ public:
     ~ThreadPool();
 
     bool isFinished() const;
+    bool isRunning() const;
 
     int idealCount() const;
     int currentCount() const;

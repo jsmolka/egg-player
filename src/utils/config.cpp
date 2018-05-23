@@ -607,11 +607,11 @@ const QString Config::Shortcut::kVolumeUp   = "volumeUp";
 /*
  * Shortcut default values.
  */
-const QString Config::Shortcut::dNext       = "Ctrl+F12";
-const QString Config::Shortcut::dPlayPause  = "Ctrl+F11";
-const QString Config::Shortcut::dPrevious   = "Ctrl+F10";
-const QString Config::Shortcut::dVolumeDown = "Ctrl+F7";
-const QString Config::Shortcut::dVolumeUp   = "Ctrl+F8";
+const QString Config::Shortcut::dNext       = "Ctrl F12";
+const QString Config::Shortcut::dPlayPause  = "Ctrl F11";
+const QString Config::Shortcut::dPrevious   = "Ctrl F10";
+const QString Config::Shortcut::dVolumeDown = "Ctrl F7";
+const QString Config::Shortcut::dVolumeUp   = "Ctrl F8";
 
 
 /*

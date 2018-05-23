@@ -8,10 +8,11 @@
 Library::Library(QObject *parent) :
     QObject(parent),
     m_sorted(false),
-    pm_pool(new ThreadPool(this))
+    pm_audioPool(new ThreadPool(this)),
+    pm_cachePool(new ThreadPool(this))
 {
-    connect(pm_pool, SIGNAL(finished()), this, SLOT(onPoolFinished()));
-    connect(pm_pool, SIGNAL(finished()), this, SIGNAL(loaded()));
+    connect(pm_audioPool, SIGNAL(finished()), this, SLOT(onAudioPoolFinished()));
+    connect(pm_audioPool, SIGNAL(finished()), this, SIGNAL(loaded()));
 }
 
 /*
@@ -33,6 +34,19 @@ Library::~Library()
 {
     while (!m_audios.isEmpty())
         delete m_audios.takeFirst();
+}
+
+/*
+ * Returns the global instance.
+ *
+ * :return: instance
+ */
+Library * Library::instance()
+{
+    if (!_instance)
+        _instance = new Library(true, qApp);
+
+    return _instance;
 }
 
 /*
@@ -66,25 +80,23 @@ Audios Library::audios() const
 }
 
 /*
- * Loads the library by creating multiple audio builder. This function should
- * not be called multiple times for the same paths or they will all be loaded.
+ * Loads the library for multiple paths by creating audio builder threads. It
+ * checks if the paths have already been loaded and ignores them if they have.
+ * This function should not be called twice because it might create database
+ * problems.
  *
  * :param paths: paths
  */
 void Library::load(const StringList &paths)
 {
-    StringList files;
-    for (const QString &path : paths)
-        files << FileUtil::glob(path, "mp3");
-
-    QVector<StringList> chunks = Util::chunk(files, pm_pool->advisedCount());
+    QVector<StringList> chunks = Util::chunk(uniqueFiles(paths), pm_audioPool->advisedCount());
     for (const StringList &chunk : chunks)
     {
         AudioLoader *loader = new AudioLoader(chunk);
         connect(loader, SIGNAL(loaded(Audio *)), this, SLOT(insert(Audio *)));
-        pm_pool->add(loader);
+        pm_audioPool->add(loader);
     }
-    pm_pool->start();
+    pm_audioPool->start();
 }
 
 /*
@@ -104,15 +116,12 @@ void Library::insert(Audio *audio)
 }
 
 /*
- * Gets called when the library is loaded. Creates the cache builder and
- * disconnects to prevent being called again once the cache builder finishes.
+ * Gets called when the library is loaded and creates the cache builder.
  */
-void Library::onPoolFinished()
+void Library::onAudioPoolFinished()
 {
-    disconnect(pm_pool, SIGNAL(finished()), this, SLOT(onPoolFinished()));
-
-    int index = pm_pool->add(new CacheBuilder(m_audios));
-    pm_pool->start(index);
+    pm_cachePool->add(new CacheBuilder(m_audios));
+    pm_cachePool->start();
 }
 
 /*
@@ -162,3 +171,31 @@ void Library::append(Audio *audio)
     m_audios << audio;
     emit inserted(audio, -1);
 }
+
+/*
+ * Loads unique files from paths. Prevents double loading a path.
+ *
+ * :param paths: paths
+ */
+StringList Library::uniqueFiles(const StringList &paths)
+{
+    StringList files;
+    for (const QString &path : paths)
+    {
+        if (!m_paths.contains(path))
+        {
+            files << FileUtil::glob(path, "mp3");
+            m_paths << path;
+        }
+        else
+        {
+            Logger::log("Library: Path has already been loaded %1", {path});
+        }
+    }
+    return files;
+}
+
+/*
+ * Global library instance.
+ */
+Library * Library::_instance = nullptr;

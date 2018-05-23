@@ -9,18 +9,18 @@
  */
 Shortcut::Shortcut(const QString &shortcut, bool repeat, QObject *parent) :
     QObject(parent),
+    m_id(++_count),
+    m_vk(0),
+    m_modifier(0),
+    m_repeat(repeat),
+    m_registered(false),
     m_shortcut(shortcut)
 {
-    _count++;
-
-    m_id = _count;
-    m_registered = registerShortcut(shortcut, repeat);
-
+    m_registered = registerShortcut();
     if (m_registered)
         qApp->eventDispatcher()->installNativeEventFilter(this);
     else
         Logger::log("Shortcut: Cannot register shortcut %1", {shortcut});
-
 }
 
 /*
@@ -40,6 +40,36 @@ Shortcut::~Shortcut()
 int Shortcut::id() const
 {
     return m_id;
+}
+
+/*
+ * Getter for vk property.
+ *
+ * :return: vk
+ */
+UINT Shortcut::vk() const
+{
+    return m_vk;
+}
+
+/*
+ * Getter for modifier property.
+ *
+ * :return: modifier
+ */
+UINT Shortcut::modifier() const
+{
+    return m_modifier;
+}
+
+/*
+ * Getter for repeat property.
+ *
+ * :return: repeat
+ */
+bool Shortcut::isRepeat() const
+{
+    return m_repeat;
 }
 
 /*
@@ -65,7 +95,7 @@ QString Shortcut::shortcut() const
 /*
  * Event filter.
  *
- * :param eventType: eventType
+ * :param eventType: event type
  * :param message: message
  * :param result: result
  * :emit pressed: pressed
@@ -77,7 +107,7 @@ bool Shortcut::nativeEventFilter(const QByteArray &eventType, void *message, lon
     Q_UNUSED(result);
 
     MSG* msg = static_cast<MSG *>(message);
-    if (msg->message == WM_HOTKEY && msg->wParam == m_id)
+    if ((msg->message == WM_HOTKEY) && (msg->wParam == m_id))
         emit pressed();
 
     return false;
@@ -86,61 +116,52 @@ bool Shortcut::nativeEventFilter(const QByteArray &eventType, void *message, lon
 /*
  * Parses a shortcut.
  *
- * :param shortcut: shortcut
- * :return: combination
+ * :return: success
  */
-Shortcut::Combination Shortcut::parseShortcut(const QString &shortcut)
+bool Shortcut::parseShortcut()
 {
-    UINT vk = 0;
-    UINT modifier = 0;
-
-    QStringList keys = shortcut.toUpper().replace(" ", "").split("+");
-    for (const QString &key : keys)
+    for (const QString &key : m_shortcut.toUpper().split(" "))
     {
-        if (!_map.contains(key))
-        {
-            vk = 0;
-            break;
-        }
         if (key.compare("SHIFT") == 0)
         {
-            modifier |= MOD_SHIFT;
-            continue;
+            m_modifier |= MOD_SHIFT;
         }
-        if (key.compare("CTRL") == 0)
+        else if (key.compare("CTRL") == 0)
         {
-            modifier |= MOD_CONTROL;
-            continue;
+            m_modifier |= MOD_CONTROL;
         }
-        if (key.compare("ALT") == 0)
+        else if (key.compare("ALT") == 0)
         {
-            modifier |= MOD_ALT;
-            continue;
+            m_modifier |= MOD_ALT;
         }
-
-        vk = _map.value(key);
+        else if (_map.contains(key))
+        {
+            m_vk = _map.value(key);
+        }
+        else
+        {
+            Logger::log("Shortcut: Unknown key %1", {key});
+            return false;
+        }
     }
-    return Combination(vk, modifier);
+
+    if (!m_repeat)
+        m_modifier |= MOD_NOREPEAT;
+
+    return true;
 }
 
 /*
  * Registers a shortcut.
  *
- * :param repeat: repeat signal while pressed
- * :param combination: combination
  * :return: success
  */
-bool Shortcut::registerShortcut(const QString &shortcut, bool repeat)
+bool Shortcut::registerShortcut()
 {
-    Combination combination = parseShortcut(shortcut);
-
-    if (!combination.isValid())
+    if (!parseShortcut())
         return false;
 
-    if (!repeat)
-        combination.modifier |= MOD_NOREPEAT;
-
-    return (bool) RegisterHotKey(NULL, m_id, combination.modifier, combination.vk);
+    return static_cast<bool>(RegisterHotKey(NULL, m_id, m_modifier, m_vk));
 }
 
 /*
@@ -150,17 +171,16 @@ bool Shortcut::registerShortcut(const QString &shortcut, bool repeat)
  */
 bool Shortcut::unregisterShortcut()
 {
-    return (bool) UnregisterHotKey(NULL, m_id);
+    return static_cast<bool>(UnregisterHotKey(NULL, m_id));
 }
 
 /*
- * Counts the number of instances and is the
- * identifier for each shortcut.
+ * Counts the number of shortcuts.
  */
 int Shortcut::_count = 0;
 
 /*
- * Map key string to int.
+ * Key string to int map.
  */
 const QHash<QString, int> Shortcut::_map =
 {

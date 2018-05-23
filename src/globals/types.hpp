@@ -1,15 +1,15 @@
-#ifndef GLOBALS_HPP
-#define GLOBALS_HPP
+#ifndef TYPES_HPP
+#define TYPES_HPP
 
 #include <QString>
 #include <QVector>
 
 /*
- * Forward declare audio class.
+ * Forward declaration.
  */
 class Audio;
 
 typedef QVector<Audio *> Audios;
 typedef QVector<QString> StringList;
 
-#endif // GLOBALS_HPP
+#endif // TYPES_HPP

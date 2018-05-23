@@ -1,8 +1,7 @@
 #include "utils.hpp"
 
 /*
- * Converts a length in seconds into a time string. If automatically uses the
- * correct format depending on the length.
+ * Converts a length in seconds into a time string.
  *
  * :param length: length in seconds
  * :return: time string
@@ -10,23 +9,24 @@
 QString Util::time(int length)
 {
     int seconds = length % 60;
-    int minutes = (length / 60) % 60;
-    int hours = (length / 3600) % 60;
+    int minutes = length / 60 % 60;
+    int hours = length / 3600 % 60;
 
-    QString pattern = "m:ss";
-    if (minutes > 9)
-        pattern = "mm:ss";
-    if (hours > 0)
-        pattern = "h:mm:ss";
+    QString format;
     if (hours > 9)
-        pattern = "hh:mm:ss";
+        format = "hh:mm:ss";
+    else if (hours > 0)
+        format = "h:mm:ss";
+    else if (minutes > 9)
+        format = "mm:ss";
+    else
+        format = "m:ss";
 
-    return QTime(hours, minutes, seconds).toString(pattern);
+    return QTime(hours, minutes, seconds).toString(format);
 }
 
 /*
- * Loads the default cover and resizes it to a certain size. If the size is -1
- * the cover does not get resized.
+ * Loads the default cover and resizes it to a certain size.
  *
  * :param size: size, default -1
  * :return: default cover
@@ -45,11 +45,12 @@ QPixmap Util::cover(int size)
  *
  * :param pixmap: pixmap
  * :param size: size
+ * :param fast: fast, default false
  * :return: scaled pixmap
  */
-QPixmap Util::resize(const QPixmap &pixmap, int size)
+QPixmap Util::resize(const QPixmap &pixmap, int size, bool fast)
 {
-    return pixmap.scaled(size, size, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+    return pixmap.scaled(size, size, Qt::KeepAspectRatio, fast ? Qt::FastTransformation : Qt::SmoothTransformation);
 }
 
 /*
@@ -57,11 +58,12 @@ QPixmap Util::resize(const QPixmap &pixmap, int size)
  *
  * :param image: image
  * :param size: size
+ * :param fast: fast, default false
  * :return: scaled image
  */
-QImage Util::resize(const QImage &image, int size)
+QImage Util::resize(const QImage &image, int size, bool fast)
 {
-    return image.scaled(size, size, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+    return image.scaled(size, size, Qt::KeepAspectRatio, fast ? Qt::FastTransformation : Qt::SmoothTransformation);
 }
 
 /*
@@ -74,26 +76,21 @@ QImage Util::resize(const QImage &image, int size)
 QVector<StringList> Util::chunk(const StringList &list, int n)
 {
     n = qMin(qMax(1, n), list.size());
-    int quo = list.size() / n;
-    int rem = list.size() % n;
-
-    QVector<int> indices;
-    for (int i = 0; i < n + 1; i++)
-        indices << quo * i + qMin(i, rem);
+    int q = list.size() / n;
+    int r = list.size() % n;
 
     QVector<StringList> result;
     for (int i = 0; i < n; i++)
     {
-        int left = indices[i];
-        int right = indices[i + 1];
-        result << list.mid(left, right - left);
+        int l = i * q + qMin(i, r);
+        int r = (i + 1) * q + qMin(i + 1, r);
+        result << list.mid(l, r - l);
     }
     return result;
 }
 
 /*
- * Reads a file and returns its content. If the file cannot be opened or read,
- * an empty string gets returned.
+ * Reads a file and returns its content.
  *
  * :param path: path
  * :return: file content
@@ -141,6 +138,7 @@ StringList FileUtil::glob(const QString &path, const QString &suffix)
 {
     StringList result;
     QDirIterator iterator(path, QDirIterator::Subdirectories);
+
     while (iterator.hasNext())
     {
         iterator.next();
@@ -152,11 +150,8 @@ StringList FileUtil::glob(const QString &path, const QString &suffix)
 }
 
 /*
- * Calculates dominent color of an image. The algorithm iterates over every
- * pixel, converts them into the HSV color space and creates two mapped
- * heuristics out of them.
- * Those hold colorful and grey scale colors. The algorithm tries to return a
- * colorful color. If there is none, a grey scale gets returned.
+ * Calculates the dominant color of an image by creating heuristics for the HSV
+ * color space. If no colorful color can be found, a grey scale will be returned.
  *
  * :param image: image
  * :return: dominant color
@@ -165,28 +160,15 @@ QColor ColorUtil::dominant(const QImage &image)
 {
     const quint32 RANGE = 60;
 
-    std::array<quint32, RANGE> cCounts;
-    std::array<quint32, RANGE> cHues;
-    std::array<quint32, RANGE> cSaturations;
-    std::array<quint32, RANGE> cValues;
+    quint32 cCounts[RANGE] = {};
+    quint32 cHues[RANGE] = {};
+    quint32 cSaturations[RANGE] = {};
+    quint32 cValues[RANGE] = {};
 
-    std::array<quint32, RANGE> gCounts;
-    std::array<quint32, RANGE> gHues;
-    std::array<quint32, RANGE> gSaturations;
-    std::array<quint32, RANGE> gValues;
-
-    for (quint32 i = 0; i < RANGE; i++)
-    {
-        cCounts[i] = 0;
-        cHues[i] = 0;
-        cSaturations[i] = 0;
-        cValues[i] = 0;
-
-        gCounts[i] = 0;
-        gHues[i] = 0;
-        gSaturations[i] = 0;
-        gValues[i] = 0;
-    }
+    quint32 gCounts[RANGE] = {};
+    quint32 gHues[RANGE] = {};
+    quint32 gSaturations[RANGE] = {};
+    quint32 gValues[RANGE] = {};
 
     QRgb *pixels = (QRgb *) image.bits();
     quint32 pixelCount = image.height() * image.width();
@@ -198,13 +180,14 @@ QColor ColorUtil::dominant(const QImage &image)
         qint32 blue = rgb.blue();
 
         QColor hsv = rgb.toHsv();
-        quint32 hue = hsv.hsvHue() == -1 ? 0 : rgb.hsvHue();
-        quint32 saturation = hsv.hsvSaturation();
-        quint32 value = hsv.value();
+        qint32 hue = qMax(0, hsv.hsvHue());
+        qint32 saturation = hsv.hsvSaturation();
+        qint32 value = hsv.value();
 
         quint32 index = hue / (360 / RANGE);
 
-        if (qAbs(red - green) < 25 && qAbs(green - blue) < 25 && qAbs(red - blue) < 25)
+        const qint32 limit = 25;
+        if (qAbs(red - green) < limit && qAbs(green - blue) < limit && qAbs(red - blue) < limit)
         {
             gCounts[index]++;
             gHues[index] += hue;
@@ -267,12 +250,11 @@ QColor ColorUtil::dominant(const QImage &image)
  * bright values. It also resizes the image to keep processing the constant.
  *
  * :param image: image
- * :param size: size for scaling, default 25
  * :return: background color
  */
-QColor ColorUtil::background(const QImage &image, quint32 size)
+QColor ColorUtil::background(const QImage &image)
 {
-    QColor color = dominant(image.scaled(size, size));
+    QColor color = dominant(Util::resize(image, 25, true));
 
     qreal hue = color.hsvHueF();
     qreal saturation = color.hsvSaturationF();
@@ -281,19 +263,16 @@ QColor ColorUtil::background(const QImage &image, quint32 size)
     value = qMin(value, 0.36);
     saturation = qMin(saturation, 0.8);
 
-    color = QColor::fromHsvF(hue, saturation, value);
-
-    return color.toRgb();
+    return QColor::fromHsvF(hue, saturation, value);
 }
 
 /*
  * Overloaded function.
  *
- * :param image: image
- * :param size: size for scaling
+ * :param pixmap: pixmap
  * :return: background color
  */
-QColor ColorUtil::background(const QPixmap &image, quint32 size)
+QColor ColorUtil::background(const QPixmap &pixmap)
 {
-    return background(image.toImage(), size);
+    return background(pixmap.toImage());
 }

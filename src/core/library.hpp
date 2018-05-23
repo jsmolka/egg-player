@@ -3,6 +3,7 @@
 
 #include <QMutex>
 #include <QObject>
+#include <QSet>
 #include <QStringList>
 
 #include "audio.hpp"
@@ -10,6 +11,8 @@
 #include "cachebuilder.hpp"
 #include "threadpool.hpp"
 #include "types.hpp"
+
+# define eggLibrary (Library::instance());
 
 class Library : public QObject
 {
@@ -19,6 +22,8 @@ public:
     Library(QObject *parent = nullptr);
     Library(bool sorted, QObject *parent = nullptr);
     ~Library();
+
+    static Library * instance();
 
     void setSorted(bool sorted);
     bool isSorted() const;
@@ -34,17 +39,23 @@ signals:
     void inserted(Audio *, int);
 
 private slots:
-    void onPoolFinished();
+    void onAudioPoolFinished();
 
 private:
     int lowerBound(Audio *audio);
     void insertBinary(Audio *audio);
     void append(Audio *audio);
 
+    StringList uniqueFiles(const StringList &paths);
+
     bool m_sorted;
     Audios m_audios;
-    ThreadPool *pm_pool;
+    ThreadPool *pm_audioPool;
+    ThreadPool *pm_cachePool;
     QMutex m_mutex;
+    QSet<QString> m_paths;
+
+    static Library *_instance;
 };
 
 #endif // LIBRARY_HPP

@@ -1,8 +1,6 @@
 #ifndef UTILS_HPP
 #define UTILS_HPP
 
-#include <array>
-
 #include <QColor>
 #include <QDirIterator>
 #include <QImage>
@@ -18,8 +16,8 @@ class Util
 public:
     static QString time(int length);
     static QPixmap cover(int size = -1);
-    static QPixmap resize(const QPixmap &pixmap, int size);
-    static QImage resize(const QImage &image, int size);
+    static QPixmap resize(const QPixmap &pixmap, int size, bool fast = false);
+    static QImage resize(const QImage &image, int size, bool fast = false);
     static QVector<StringList> chunk(const StringList &list, int n);
 };
 
@@ -36,8 +34,8 @@ class ColorUtil
 {
 public:
     static QColor dominant(const QImage &image);
-    static QColor background(const QImage &image, quint32 size = 25);
-    static QColor background(const QPixmap &image, quint32 size = 25);
+    static QColor background(const QImage &image);
+    static QColor background(const QPixmap &pixmap);
 };
 
 #endif // UTILS_HPP

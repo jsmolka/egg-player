@@ -7,6 +7,7 @@
 #include <QAbstractNativeEventFilter>
 #include <QHash>
 #include <QObject>
+#include <QPair>
 #include <QStringList>
 
 #include "logger.hpp"
@@ -20,6 +21,9 @@ public:
     ~Shortcut();
 
     int id() const;
+    UINT vk() const;
+    UINT modifier() const;
+    bool isRepeat() const;
     bool isRegistered() const;
     QString shortcut() const;
 
@@ -30,28 +34,14 @@ protected:
     bool nativeEventFilter(const QByteArray &eventType, void *message, long *result) override;
 
 private:
-    struct Combination
-    {
-        Combination(UINT vk = 0, UINT modifier = 0)
-        {
-            this->vk = vk;
-            this->modifier = modifier;
-        }
-
-        bool isValid()
-        {
-            return vk != 0;
-        }
-
-        UINT vk;
-        UINT modifier;
-    };
-
-    Combination parseShortcut(const QString &shortcut);
-    bool registerShortcut(const QString &shortcut, bool repeat);
+    bool parseShortcut();
+    bool registerShortcut();
     bool unregisterShortcut();
 
     int m_id;
+    UINT m_vk;
+    UINT m_modifier;
+    bool m_repeat;
     bool m_registered;
     QString m_shortcut;
 

@@ -31,6 +31,17 @@ Player::~Player()
 }
 
 /*
+ * Returns the global instance.
+ */
+Player * Player::instance()
+{
+    if (!_instance)
+        _instance = new Player(qApp);
+
+    return _instance;
+}
+
+/*
  * Setter for index property.
  *
  * :param index: index
@@ -295,17 +306,6 @@ void Player::next()
 void Player::previous()
 {
     switchOrPause(previousIndex());
-}
-
-/*
- * Returns the global player instance.
- */
-Player * Player::instance()
-{
-    if (!_instance)
-        _instance = new Player(qApp);
-
-    return _instance;
 }
 
 /*

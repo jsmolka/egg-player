@@ -18,6 +18,8 @@ public:
     Player(QObject *parent = nullptr);
     ~Player();
 
+    static Player * instance();
+
     enum State {Playing, Paused};
 
     void setIndex(int index);
@@ -50,8 +52,6 @@ public slots:
 
     void next();
     void previous();
-
-    static Player * instance();
 
 signals:
     void audioChanged(Audio *audio);

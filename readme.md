@@ -19,13 +19,7 @@ A Groove Music like music player.
 - max property for timer
 - use milliseconds song time as timer max
 - singleton for config
-- static variable prefixes
 - move library into music library
-- move library loading into thread (costly insert method)
-- do not load duplicates in library
-- remove library loaded signal
-- remove finished signal from thread pool
-- pair in shortcut
 
 ### Cosmetic
 - [black title bar](https://msdn.microsoft.com/en-us/library/windows/desktop/ms724940%28v=vs.85%29.aspx)

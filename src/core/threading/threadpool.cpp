@@ -31,6 +31,20 @@ bool ThreadPool::isFinished() const
 }
 
 /*
+ * Checks if a thread is still running.
+ *
+ * :return: running
+ */
+bool ThreadPool::isRunning() const
+{
+    for (AbstractThread *thread : m_threads)
+        if (thread->isRunning())
+            return true;
+
+    return false;
+}
+
+/*
  * Gets the ideal thread count.
  *
  * :return: ideal thread count
