@@ -8,22 +8,31 @@
  */
 RowHoverDelegate::RowHoverDelegate(QTableWidget *table, QObject *parent) :
     QStyledItemDelegate(parent),
-    pm_table(table),
+    pm_table(static_cast<TableWidget *>(table)),
     m_row(-1)
 {
-    pm_table->setMouseTracking(true);
-    connect(pm_table, SIGNAL(itemEntered(QTableWidgetItem *)), this, SLOT(onItemEntered(QTableWidgetItem *)));
+    pm_table->viewport()->setMouseTracking(true);
+    connect(pm_table, SIGNAL(mouseLeft()), this, SLOT(onMouseLeft()));
+    connect(pm_table, SIGNAL(entered(QModelIndex)), this, SLOT(onEntered(QModelIndex)));
 }
 
 /*
- * Item entered event.
+ * Item entered.
  *
- * :param item: item
+ * :param index: index
  */
-void RowHoverDelegate::onItemEntered(QTableWidgetItem *item)
+void RowHoverDelegate::onEntered(QModelIndex index)
 {
-    m_row = item->row();
+    m_row = index.row();
     pm_table->viewport()->update();
+}
+
+/*
+ * Mouse left.
+ */
+void RowHoverDelegate::onMouseLeft()
+{
+    m_row = -1;
 }
 
 /*

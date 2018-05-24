@@ -59,6 +59,17 @@ void MusicLibrary::insert(Audio *audio, int row)
 }
 
 /*
+ * Emits the leave signal. This function needs to be declared because we are
+ * casting this widget to another widget with the same signal.
+ *
+ * :emit mouseLeft: mouse left
+ */
+void MusicLibrary::leaveEvent(QEvent *)
+{
+    emit mouseLeft();
+}
+
+/*
  * Loads the style sheet and replaces placeholders.
  */
 void MusicLibrary::loadCss()

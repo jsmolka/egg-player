@@ -114,9 +114,9 @@ int Audio::track() const
 }
 
 /*
- * Getter for length property. Returns the* length either in seconds or in
- * milliseconds. The length in seconds will be ceiled to prevent playing the
- * next audio while the current one has not finished yet.
+ * Getter for length property. Returns the length either in seconds or in
+ * milliseconds. The length in seconds will be round to next integer value
+ * to make the song transition as smooth as possible.
  *
  * :param seconds: use seconds, default true
  * :return: length
@@ -124,7 +124,7 @@ int Audio::track() const
 int Audio::length(bool seconds) const
 {
     if (seconds)
-        return qCeil(static_cast<float>(m_length) / 1000.0);
+        return static_cast<int>(round(static_cast<float>(m_length) / 1000.0));
     else
         return m_length;
 }

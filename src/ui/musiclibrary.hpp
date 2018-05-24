@@ -28,6 +28,12 @@ public:
 public slots:
     void insert(Audio *audio, int row = -1);
 
+signals:
+    void mouseLeft();
+
+protected:
+    void leaveEvent(QEvent *);
+
 private:
     struct Column
     {
