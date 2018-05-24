@@ -61,7 +61,7 @@ void MusicLibrary::insert(Audio *audio, int row)
 }
 
 /*
- * Leave event. Signals the delegate to remove the row hover style.
+ * Emits -1 to remove the row hover style.
  *
  * :param event: event
  * :emit rowChanged: row
@@ -74,8 +74,8 @@ void MusicLibrary::leaveEvent(QEvent *event)
 }
 
 /*
- * Resize event. Emits the current row if the cursor is still inside the widget.
- * Processes the event first to get the row for the resized widget.
+ * Emits the row where the cursor is hovering over. Calls the resize event first
+ * to get the cursor position for the resized widget.
  *
  * :param event: event
  * :emit rowChanged: row
@@ -88,7 +88,7 @@ void MusicLibrary::resizeEvent(QResizeEvent *event)
 }
 
 /*
- * Emits the current row if a table item has been entered.
+ * Emits the row of the entered item.
  *
  * :param index: index
  * :emit rowChanged: row

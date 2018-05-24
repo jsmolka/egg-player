@@ -15,6 +15,9 @@ RowHoverDelegate::RowHoverDelegate(QTableWidget *table, QObject *parent) :
 }
 
 /*
+ * Sets the row and updates the widget if it is valid.
+ *
+ * :param row: row
  */
 void RowHoverDelegate::onRowChanged(int row)
 {

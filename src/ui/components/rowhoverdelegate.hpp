@@ -5,8 +5,8 @@
 #include <QTableWidget>
 
 /*
- * Create a custom widget to process events because I am too stupid for forward
- * declaration and moving the class into the same file is ugly.
+ * Create a class which we can cast MusicLibrary to because I am too stupid for
+ * forward declaration. It only contains the necessary signal.
  */
 class TableWidget : public QTableWidget
 {
@@ -16,10 +16,6 @@ signals:
     void rowChanged(int);
 };
 
-/*
- * This class is made specifically for the MusicLibrary class and some functions
- * might not work for other classes.
- */
 class RowHoverDelegate : public QStyledItemDelegate
 {
     Q_OBJECT
