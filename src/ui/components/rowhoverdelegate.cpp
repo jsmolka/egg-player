@@ -11,28 +11,16 @@ RowHoverDelegate::RowHoverDelegate(QTableWidget *table, QObject *parent) :
     pm_table(static_cast<TableWidget *>(table)),
     m_row(-1)
 {
-    pm_table->viewport()->setMouseTracking(true);
-    connect(pm_table, SIGNAL(mouseLeft()), this, SLOT(onMouseLeft()));
-    connect(pm_table, SIGNAL(entered(QModelIndex)), this, SLOT(onEntered(QModelIndex)));
+    connect(pm_table, SIGNAL(rowChanged(int)), this, SLOT(onRowChanged(int)));
 }
 
 /*
- * Item entered.
- *
- * :param index: index
  */
-void RowHoverDelegate::onEntered(QModelIndex index)
+void RowHoverDelegate::onRowChanged(int row)
 {
-    m_row = index.row();
-    pm_table->viewport()->update();
-}
-
-/*
- * Mouse left.
- */
-void RowHoverDelegate::onMouseLeft()
-{
-    m_row = -1;
+    m_row = row;
+    if (m_row != -1)
+        pm_table->viewport()->update();
 }
 
 /*

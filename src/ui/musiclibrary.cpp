@@ -9,6 +9,8 @@ MusicLibrary::MusicLibrary(QWidget *parent) :
     QTableWidget(parent)
 {
     setup();
+
+    connect(this, SIGNAL(entered(QModelIndex)), this, SLOT(onEntered(QModelIndex)));
 }
 
 /*
@@ -59,14 +61,41 @@ void MusicLibrary::insert(Audio *audio, int row)
 }
 
 /*
- * Emits the leave signal. This function needs to be declared because we are
- * casting this widget to another widget with the same signal.
+ * Leave event. Signals the delegate to remove the row hover style.
  *
- * :emit mouseLeft: mouse left
+ * :param event: event
+ * :emit rowChanged: row
  */
-void MusicLibrary::leaveEvent(QEvent *)
+void MusicLibrary::leaveEvent(QEvent *event)
 {
-    emit mouseLeft();
+    emit rowChanged(-1);
+
+    QTableWidget::leaveEvent(event);
+}
+
+/*
+ * Resize event. Emits the current row if the cursor is still inside the widget.
+ * Processes the event first to get the row for the resized widget.
+ *
+ * :param event: event
+ * :emit rowChanged: row
+ */
+void MusicLibrary::resizeEvent(QResizeEvent *event)
+{
+    QTableWidget::resizeEvent(event);
+
+    emit rowChanged(indexAt(mapFromGlobal(QCursor::pos())).row());
+}
+
+/*
+ * Emits the current row if a table item has been entered.
+ *
+ * :param index: index
+ * :emit rowChanged: row
+ */
+void MusicLibrary::onEntered(QModelIndex index)
+{
+    emit rowChanged(index.row());
 }
 
 /*
@@ -93,6 +122,7 @@ void MusicLibrary::setup()
     setFocusPolicy(Qt::NoFocus);
     setFrameStyle(QFrame::NoFrame);
     setItemDelegate(new RowHoverDelegate(this, this));
+    setMouseTracking(true);
     setSelectionMode(QAbstractItemView::NoSelection);
     setShowGrid(false);
     setVerticalScrollMode(QAbstractItemView::ScrollPerPixel);

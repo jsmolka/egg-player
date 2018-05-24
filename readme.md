@@ -26,7 +26,6 @@ A Groove Music like music player.
 - do not show certain info at low size
 - library scroll acceleration
 - [smooth scrolling](https://github.com/zhou13/qsmoothscrollarea)
-- proper hover style while and after resizing
 
 ### Future
 - search the library by typing

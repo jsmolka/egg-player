@@ -5,17 +5,21 @@
 #include <QTableWidget>
 
 /*
- * Create a custom widget to process the leave event because I am too stupid for
- * forward declaration and moving the class into the same file is ugly.
+ * Create a custom widget to process events because I am too stupid for forward
+ * declaration and moving the class into the same file is ugly.
  */
 class TableWidget : public QTableWidget
 {
     Q_OBJECT
 
 signals:
-    void mouseLeft();
+    void rowChanged(int);
 };
 
+/*
+ * This class is made specifically for the MusicLibrary class and some functions
+ * might not work for other classes.
+ */
 class RowHoverDelegate : public QStyledItemDelegate
 {
     Q_OBJECT
@@ -25,8 +29,7 @@ public:
     void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const;
 
 private slots:
-    void onEntered(QModelIndex index);
-    void onMouseLeft();
+    void onRowChanged(int row);
 
 private:
     TableWidget *pm_table;

@@ -2,6 +2,7 @@
 #define MUSICLIBRARY_HPP
 
 #include <QHeaderView>
+#include <QMouseEvent>
 #include <QScrollBar>
 #include <QTableWidget>
 #include <QVector>
@@ -29,10 +30,14 @@ public slots:
     void insert(Audio *audio, int row = -1);
 
 signals:
-    void mouseLeft();
+    void rowChanged(int);
 
 protected:
-    void leaveEvent(QEvent *);
+    void leaveEvent(QEvent *event);
+    void resizeEvent(QResizeEvent *event);
+
+private slots:
+    void onEntered(QModelIndex index);
 
 private:
     struct Column
