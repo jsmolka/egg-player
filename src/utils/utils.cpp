@@ -248,31 +248,43 @@ QColor ColorUtil::dominant(const QImage &image)
 /*
  * Gets the dominant color of an image and edits some values to prevent too
  * bright values. It also resizes the image to keep processing the constant.
+ * Tries to load a cached value if the id is valid.
  *
  * :param image: image
+ * :param id: id, default -1
  * :return: background color
  */
-QColor ColorUtil::background(const QImage &image)
+QColor ColorUtil::background(const QImage &image, int id)
 {
+    if (id != -1)
+        if (_colorCache.contains(id))
+            return _colorCache.value(id);
+
     QColor color = dominant(Util::resize(image, 25, true));
-
     qreal hue = color.hsvHueF();
-    qreal saturation = color.hsvSaturationF();
-    qreal value = color.valueF();
+    qreal saturation = qMin(color.hsvSaturationF(), 0.8);
+    qreal value = qMin(color.valueF(), 0.36);
+    color = QColor::fromHsvF(hue, saturation, value);
 
-    value = qMin(value, 0.36);
-    saturation = qMin(saturation, 0.8);
+    if (id != -1)
+        _colorCache[id] = color;
 
-    return QColor::fromHsvF(hue, saturation, value);
+    return color;
 }
 
 /*
  * Overloaded function.
  *
  * :param pixmap: pixmap
+ * :param id: id, default -1
  * :return: background color
  */
-QColor ColorUtil::background(const QPixmap &pixmap)
+QColor ColorUtil::background(const QPixmap &pixmap, int id)
 {
-    return background(pixmap.toImage());
+    return background(pixmap.toImage(), id);
 }
+
+/*
+ * Background color cache.
+ */
+QHash<int, QColor> ColorUtil::_colorCache;

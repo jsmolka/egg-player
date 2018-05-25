@@ -3,6 +3,7 @@
 
 #include <QColor>
 #include <QDirIterator>
+#include <QHash>
 #include <QImage>
 #include <QPixmap>
 #include <QTextStream>
@@ -34,8 +35,11 @@ class ColorUtil
 {
 public:
     static QColor dominant(const QImage &image);
-    static QColor background(const QImage &image);
-    static QColor background(const QPixmap &pixmap);
+    static QColor background(const QImage &image, int id = -1);
+    static QColor background(const QPixmap &pixmap, int id = -1);
+
+private:
+    static QHash<int, QColor> _colorCache;
 };
 
 #endif // UTILS_HPP

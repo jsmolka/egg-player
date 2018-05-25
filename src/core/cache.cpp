@@ -2,13 +2,15 @@
 
 /*
  * Constructor. If the QSqlDatabase does not contain the database it gets added
- * and the tables get created.
+ * and the tables get created. Also sets the QPixmapCache size to a value of up
+ * to 100 megabyte which should be enough.
  */
 Cache::Cache()
-{
+{    
     if (QSqlDatabase::contains(SQL_CONNECTION))
         return;
 
+    QPixmapCache::setCacheLimit(102400);
     QSqlDatabase::addDatabase("QSQLITE", SQL_CONNECTION);
 
     createCovers();
@@ -27,6 +29,7 @@ Cache::~Cache()
  * Inserts audio into cache. It adds the cover into the covers table and the
  * path with a cover id into the audios table. No tags are stored inside the
  * cache because TagLib is fast enough to reload tags at every startup.
+ * Also sets the cover id for later use.
  *
  * :param audio: audio
  * :param size: cover size, default 200
@@ -38,10 +41,12 @@ bool Cache::insert(Audio *audio, int size)
     if (id == -1)
         return false;
 
+    audio->setId(id);
+
     QSqlQuery query(db());
-    query.prepare("INSERT INTO audios VALUES (:PATH, :COVERID)");
-    query.bindValue(":PATH", audio->path());
-    query.bindValue(":COVERID", id);
+    query.prepare("INSERT INTO audios VALUES (:path, :coverid)");
+    query.bindValue(":path", audio->path());
+    query.bindValue(":coverid", id);
 
     if (!query.exec())
     {
@@ -52,58 +57,78 @@ bool Cache::insert(Audio *audio, int size)
 }
 
 /*
- * Checks if database contains audio.
+ * Checks if database contains audio. Also sets the cover id for later use.
  *
  * :param audio: audio
  * :return: contains
  */
 bool Cache::contains(Audio *audio)
 {
+    if (audio->id() != -1)
+        return true;
+
     QSqlQuery query(db());
-    query.prepare("SELECT 1 FROM audios WHERE path = :PATH");
-    query.bindValue(":PATH", audio->path());
+    query.prepare("SELECT coverid FROM audios WHERE path = :path");
+    query.bindValue(":path", audio->path());
 
     if (!query.exec())
     {
         handleError(query);
         return true;
     }
-    return query.first();
+
+    if (!query.first())
+        return false;
+
+    audio->setId(query.value(0).toInt());
+
+    return true;
 }
 
 /*
- * Retrieves cover from database.
+ * Retrieves cover from database. If the cover has already been loaded
+ * previously, a cached version will be used.
  *
- * :param path: audio path
+ * :param audio: audio
  * :param size: cover size, default 200
  * :return: cover
  */
-QPixmap Cache::cover(const QString &path, int size)
+QPixmap Cache::cover(Audio *audio, int size)
 {
+    QPixmap pixmap;
+    if (QPixmapCache::find(QString::number(audio->id()), &pixmap))
+    {
+        Logger::log("Using cached version %1", {QString::number(audio->id())});
+        return pixmap;
+    }
+
     QSqlQuery query = QSqlQuery(db());
     query.prepare(
         "SELECT covers.cover FROM audios "
         "JOIN covers ON audios.coverid = covers.id "
-        "WHERE path = :PATH"
+        "WHERE path = :path"
     );
-    query.bindValue(":PATH", path);
+    query.bindValue(":path", audio->path());
 
     if (!query.exec())
         handleError(query);
 
-    QPixmap image;
     if (query.first())
     {
         QByteArray bytes = query.value(0).toByteArray();
-        image.loadFromData(bytes);
+        pixmap.loadFromData(bytes);
     }
 
-    if (image.isNull())
+    if (pixmap.isNull())
     {
-        image = Util::cover();
-        Logger::log("Cache: Cannot load cover %1", {path});
+        pixmap = Util::cover();
+        Logger::log("Cache: Cannot load cover %1", {audio->path()});
     }
-    return Util::resize(image, size);
+
+    pixmap = Util::resize(pixmap, size);
+    QPixmapCache::insert(QString::number(audio->id()), pixmap);
+
+    return pixmap;
 }
 
 /*
@@ -185,10 +210,10 @@ int Cache::insertCover(const QByteArray &bytes)
     int id = lastCoverId() + 1;
 
     QSqlQuery query(db());
-    query.prepare("INSERT INTO covers VALUES (:ID, :LEN, :COVER)");
-    query.bindValue(":ID", id);
-    query.bindValue(":LEN", bytes.length());
-    query.bindValue(":COVER", bytes);
+    query.prepare("INSERT INTO covers VALUES (:id, :len, :cover)");
+    query.bindValue(":id", id);
+    query.bindValue(":len", bytes.length());
+    query.bindValue(":cover", bytes);
 
     if (!query.exec())
     {
@@ -223,9 +248,8 @@ int Cache::coverId(const QByteArray &bytes)
 int Cache::lastCoverId()
 {
     QSqlQuery query(db());
-    query.prepare("SELECT max(id) FROM covers");
 
-    if (!query.exec())
+    if (!query.exec("SELECT max(id) FROM covers"))
         handleError(query);
 
     if (query.first())
@@ -246,8 +270,8 @@ int Cache::queryCoverIdByLength(int length)
     int id = -1;
 
     QSqlQuery query(db());
-    query.prepare("SELECT id FROM covers WHERE len = :LEN");
-    query.bindValue(":LEN", length);
+    query.prepare("SELECT id FROM covers WHERE len = :len");
+    query.bindValue(":len", length);
 
     if (!query.exec())
         handleError(query);
@@ -270,8 +294,8 @@ int Cache::queryCoverIdByLength(int length)
 int Cache::queryCoverIdByBlob(const QByteArray &bytes)
 {
     QSqlQuery query(db());
-    query.prepare("SELECT id FROM covers WHERE cover = :COVER");
-    query.bindValue(":COVER", bytes);
+    query.prepare("SELECT id FROM covers WHERE cover = :cover");
+    query.bindValue(":cover", bytes);
 
     if (!query.exec())
         handleError(query);

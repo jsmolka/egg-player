@@ -4,6 +4,7 @@
 #include <QtMath>
 #include <QPainter>
 #include <QPixmap>
+#include <QPixmapCache>
 #include <QVector>
 
 #include <taglib/attachedpictureframe.h>
@@ -33,6 +34,9 @@ public:
     int track() const;
     int length(bool seconds = true) const;
 
+    void setId(int id);
+    int id() const;
+
     const wchar_t * pathWChar() const;
     QPixmap cover(int size = 200);
 
@@ -49,6 +53,7 @@ private:
     int m_year;
     int m_track;
     int m_length;
+    int m_id;
 };
 
 typedef QVector<Audio *> Audios;

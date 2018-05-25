@@ -3,6 +3,7 @@
 
 #include <QBuffer>
 #include <QPixmap>
+#include <QPixmapCache>
 #include <QSqlDatabase>
 #include <QSqlError>
 #include <QSqlQuery>
@@ -19,7 +20,7 @@ public:
 
     bool insert(Audio *audio, int size = 200);
     bool contains(Audio *audio);
-    QPixmap cover(const QString &path, int size = 200);
+    QPixmap cover(Audio *audio, int size = 200);
 
 private:
     QSqlDatabase db();
@@ -40,6 +41,8 @@ private:
 
     QString lastQuery(const QSqlQuery &query);
     QByteArray coverToBytes(const QPixmap &cover);
+
+    QSqlQuery m_query;
 };
 
 #endif // CACHE_HPP

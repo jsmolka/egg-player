@@ -12,7 +12,8 @@ using namespace TagLib;
  * :param path: audio path
  */
 Audio::Audio(const QString &path) :
-    m_path(path)
+    m_path(path),
+    m_id(-1)
 {
     m_valid = readTags();
     if (!m_valid)
@@ -127,6 +128,29 @@ int Audio::length(bool seconds) const
         return static_cast<int>(round(static_cast<float>(m_length) / 1000.0));
     else
         return m_length;
+}
+
+/*
+ * Setter for id property.
+ *
+ * :param id: id
+ */
+void Audio::setId(int id)
+{
+    m_id = id;
+}
+
+/*
+ * Getter for id property. This property will be used in combination with the
+ * cache where it gets set once a cover is inserted or queried. It prevents
+ * loading the cover multiple times by saving saving a copy in the QPixmapCache
+ * with the key being the id.
+ *
+ * :return: id
+ */
+int Audio::id() const
+{
+    return m_id;
 }
 
 /*

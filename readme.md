@@ -15,19 +15,20 @@ A Groove Music like music player.
 - fix library hovering
 - improve song transition
 - improve load time
+- improve cache performance
 
 ## Things to do
 
 ### Internal
 - move library into music library
+- use a member query
+- consider using QCache
 
 ### Cosmetic
 - do not show certain info at low size
 - library scroll acceleration
 - [smooth scrolling](https://github.com/zhou13/qsmoothscrollarea)
 - color transition in bar
-- pixmap cache in cache
-- cache id for audio, add when querying
 
 ### Future
 - search the library by typing

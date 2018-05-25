@@ -198,7 +198,7 @@ void MusicBar::paintEvent(QPaintEvent *)
  */
 void MusicBar::onPlayerAudioChanged(Audio *audio)
 {
-    QPixmap cover = Cache().cover(audio->path(), Config::Bar::coverSize());
+    QPixmap cover = Cache().cover(audio, Config::Bar::coverSize());
 
     m_coverLabel.setPixmap(cover);
     m_trackLabel.setText(QString("%1\n%2").arg(audio->title(), audio->artist()));
@@ -209,7 +209,7 @@ void MusicBar::onPlayerAudioChanged(Audio *audio)
     m_lengthSlider.setRange(0, audio->length());
     m_lengthSlider.setEnabled(true);
 
-    setColor(ColorUtil::background(cover));
+    setColor(ColorUtil::background(cover, audio->id()));
 }
 
 /*
