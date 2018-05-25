@@ -19,7 +19,6 @@ A Groove Music like music player.
 ## Things to do
 
 ### Internal
-- singleton for config
 - move library into music library
 
 ### Cosmetic

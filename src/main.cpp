@@ -29,9 +29,6 @@ QFont loadFont()
  */
 void setup()
 {
-    Config::create();
-    Logger::log("Application: Start");
-
     qApp->setApplicationName(APP_NAME);
     qApp->setOrganizationName(APP_ORG_NAME);
     qApp->setFont(loadFont());
@@ -47,6 +44,8 @@ void setup()
 int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
+
+    Logger::log("Application: Start");
 
     setup();
 

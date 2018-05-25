@@ -1,36 +1,13 @@
 #include "config.hpp"
 
 /*
- * Loads the json file and sets all default values.
- */
-void Config::create()
-{
-    load();
-
-    App::create();
-    Bar::create();
-    Library::create();
-    Player::create();
-    Shortcut::create();
-}
-
-/*
- * Sets all non existing keys to their default value.
- */
-void Config::App::create()
-{
-    setDefault(oApp, kFontSize, dFontSize);
-    setDefault(oApp, kLog, dLog);
-}
-
-/*
  * Setter for app font size.
  *
  * :param size: size
  */
 void Config::App::setFontSize(double size)
 {
-    setValue(oApp, kFontSize, size);
+    setValue(app(), "fontSize", size);
 }
 
 /*
@@ -40,7 +17,7 @@ void Config::App::setFontSize(double size)
  */
 double Config::App::fontSize()
 {
-    return oApp[kFontSize].toDouble();
+    return app()["fontSize"].toDouble();
 }
 
 /*
@@ -50,7 +27,7 @@ double Config::App::fontSize()
  */
 void Config::App::setLog(bool log)
 {
-    setValue(oApp, kLog, log);
+    setValue(app(), "log", log);
 }
 
 /*
@@ -60,34 +37,7 @@ void Config::App::setLog(bool log)
  */
 bool Config::App::log()
 {
-    return oApp[kLog].toBool();
-}
-
-/*
- * App keys.
- */
-const QString Config::App::kFontSize = "fontSize";
-const QString Config::App::kLog      = "log";
-
-/*
- * App default values.
- */
-const double Config::App::dFontSize  = 10.25;
-const bool Config::App::dLog         = true;
-
-/*
- * Sets all non existing keys to their default value.
- */
-void Config::Bar::create()
-{
-    setDefault(oBar, kGrooveHeight, dGrooveHeight);
-    setDefault(oBar, kHandleSize, dHandleSize);
-    setDefault(oBar, kHeight, dHeight);
-    setDefault(oBar, kIconSize, dIconSize);
-    setDefault(oBar, kMargin, dMargin);
-    setDefault(oBar, kSpacing, dSpacing);
-    setDefault(oBar, kTimeWidth, dTimeWidth);
-    setDefault(oBar, kTrackWidth, dTrackWidth);
+    return app()["log"].toBool();
 }
 
 /*
@@ -97,7 +47,7 @@ void Config::Bar::create()
  */
 void Config::Bar::setGrooveHeight(int height)
 {
-    setValue(oBar, kGrooveHeight, height);
+    setValue(bar(), "grooveHeight", height);
 }
 
 /*
@@ -107,7 +57,7 @@ void Config::Bar::setGrooveHeight(int height)
  */
 int Config::Bar::grooveHeight()
 {
-    return makeEven(scale(oBar[kGrooveHeight].toInt()));
+    return makeEven(scale(bar()["grooveHeight"].toInt()));
 }
 
 /*
@@ -117,7 +67,7 @@ int Config::Bar::grooveHeight()
  */
 void Config::Bar::setHandleSize(int size)
 {
-    setValue(oBar, kHandleSize, size);
+    setValue(bar(), "handleSize", size);
 }
 
 /*
@@ -127,7 +77,7 @@ void Config::Bar::setHandleSize(int size)
  */
 int Config::Bar::handleSize()
 {
-    return  makeEven(scale(oBar[kHandleSize].toInt()));
+    return  makeEven(scale(bar()["handleSize"].toInt()));
 }
 
 /*
@@ -137,7 +87,7 @@ int Config::Bar::handleSize()
  */
 void Config::Bar::setHeight(int height)
 {
-    setValue(oBar, kHeight, height);
+    setValue(bar(), "height", height);
 }
 
 /*
@@ -147,7 +97,7 @@ void Config::Bar::setHeight(int height)
  */
 int Config::Bar::height()
 {
-    return makeEven(scale(oBar[kHeight].toInt()));
+    return makeEven(scale(bar()["height"].toInt()));
 }
 
 /*
@@ -157,7 +107,7 @@ int Config::Bar::height()
  */
 void Config::Bar::setIconSize(int size)
 {
-    setValue(oBar, kIconSize, size);
+    setValue(bar(), "iconSize", size);
 }
 
 /*
@@ -167,7 +117,7 @@ void Config::Bar::setIconSize(int size)
  */
 int Config::Bar::iconSize()
 {
-    return makeEven(scale(oBar[kIconSize].toInt()));
+    return makeEven(scale(bar()["iconSize"].toInt()));
 }
 
 /*
@@ -177,7 +127,7 @@ int Config::Bar::iconSize()
  */
 void Config::Bar::setMargin(int margin)
 {
-    setValue(oBar, kMargin, margin);
+    setValue(bar(), "margin", margin);
 }
 
 /*
@@ -187,7 +137,7 @@ void Config::Bar::setMargin(int margin)
  */
 int Config::Bar::margin()
 {
-    return scale(oBar[kMargin].toInt());
+    return scale(bar()["margin"].toInt());
 }
 
 /*
@@ -197,7 +147,7 @@ int Config::Bar::margin()
  */
 void Config::Bar::setSpacing(int spacing)
 {
-    setValue(oBar, kSpacing, spacing);
+    setValue(bar(), "spacing", spacing);
 }
 
 /*
@@ -207,7 +157,7 @@ void Config::Bar::setSpacing(int spacing)
  */
 int Config::Bar::spacing()
 {
-    return scale(oBar[kSpacing].toInt());
+    return scale(bar()["spacing"].toInt());
 }
 
 /*
@@ -227,7 +177,7 @@ int Config::Bar::coverSize()
  */
 void Config::Bar::setTimeWidth(int width)
 {
-    setValue(oBar, kTimeWidth, width);
+    setValue(bar(), "timeWidth", width);
 }
 
 /*
@@ -237,7 +187,7 @@ void Config::Bar::setTimeWidth(int width)
  */
 int Config::Bar::timeWidth()
 {
-    return scale(oBar[kTimeWidth].toInt());
+    return scale(bar()["timeWidth"].toInt());
 }
 
 /*
@@ -247,7 +197,7 @@ int Config::Bar::timeWidth()
  */
 void Config::Bar::setTrackWidth(int width)
 {
-    setValue(oBar, kTimeWidth, width);
+    setValue(bar(), "timeWidth", width);
 }
 
 /*
@@ -257,42 +207,7 @@ void Config::Bar::setTrackWidth(int width)
  */
 int Config::Bar::trackWidth()
 {
-    return scale(oBar[kTrackWidth].toInt());
-}
-
-/*
- * Bar keys.
- */
-const QString Config::Bar::kGrooveHeight = "grooveHeight";
-const QString Config::Bar::kHandleSize   = "handleSize";
-const QString Config::Bar::kHeight       = "height";
-const QString Config::Bar::kIconSize     = "iconSize";
-const QString Config::Bar::kMargin       = "margin";
-const QString Config::Bar::kSpacing      = "spacing";
-const QString Config::Bar::kTimeWidth    = "timeWidth";
-const QString Config::Bar::kTrackWidth   = "trackWidth";
-
-/*
- * Bar default values.
- */
-const int Config::Bar::dGrooveHeight     = 2;
-const int Config::Bar::dHandleSize       = 16;
-const int Config::Bar::dHeight           = 68;
-const int Config::Bar::dIconSize         = 32;
-const int Config::Bar::dMargin           = 8;
-const int Config::Bar::dSpacing          = 8;
-const int Config::Bar::dTimeWidth        = 50;
-const int Config::Bar::dTrackWidth       = 240;
-
-/*
- * Sets all non existing keys to their default value.
- */
-void Config::Library::create()
-{
-    setDefault(oLibrary, kCellPadding, dCellPadding);
-    setDefault(oLibrary, kItemHeight, dItemHeight);
-    setDefault(oLibrary, kPaths, dPaths);
-    setDefault(oLibrary, kScrollBarWidth, dScrollBarWidth);
+    return scale(bar()["trackWidth"].toInt());
 }
 
 /*
@@ -302,7 +217,7 @@ void Config::Library::create()
  */
 void Config::Library::setCellPadding(int padding)
 {
-    setValue(oLibrary, kCellPadding, padding);
+    setValue(library(), "cellPadding", padding);
 }
 
 /*
@@ -312,7 +227,7 @@ void Config::Library::setCellPadding(int padding)
  */
 int Config::Library::cellPadding()
 {
-    return scale(oLibrary[kCellPadding].toInt());
+    return scale(library()["cellPadding"].toInt());
 }
 
 /*
@@ -322,7 +237,7 @@ int Config::Library::cellPadding()
  */
 void Config::Library::setItemHeight(int height)
 {
-    setValue(oLibrary, kItemHeight, height);
+    setValue(library(), "itemHeight", height);
 }
 
 /*
@@ -332,7 +247,7 @@ void Config::Library::setItemHeight(int height)
  */
 int Config::Library::itemHeight()
 {
-    return scale(oLibrary[kItemHeight].toInt());
+    return scale(library()["itemHeight"].toInt());
 }
 
 /*
@@ -346,7 +261,7 @@ void Config::Library::setPaths(const StringList &paths)
     for (const QString &path : paths)
         array << QJsonValue::fromVariant(path);
 
-    setValue(oLibrary, kPaths, array);
+    setValue(library(), "paths", array);
 }
 
 /*
@@ -357,7 +272,7 @@ void Config::Library::setPaths(const StringList &paths)
 StringList Config::Library::paths()
 {
     StringList list;
-    for (const QJsonValue &element : oLibrary[kPaths].toArray())
+    for (const QJsonValue &element : library()["paths"].toArray())
         list << element.toString();
 
     return list;
@@ -370,7 +285,7 @@ StringList Config::Library::paths()
  */
 void Config::Library::setScrollBarWidth(int width)
 {
-    setValue(oLibrary, kScrollBarWidth, width);
+    setValue(library(), "scrollBarWidth", width);
 }
 
 /*
@@ -380,33 +295,7 @@ void Config::Library::setScrollBarWidth(int width)
  */
 int Config::Library::scrollBarWidth()
 {
-    return scale(oLibrary[kScrollBarWidth].toInt());
-}
-
-/*
- * Library keys.
- */
-const QString Config::Library::kCellPadding    = "cellPadding";
-const QString Config::Library::kItemHeight     = "itemHeight";
-const QString Config::Library::kPaths          = "paths";
-const QString Config::Library::kScrollBarWidth = "scrollBarWidth";
-
-/*
- * Library default values.
- */
-const int Config::Library::dCellPadding        = 5;
-const int Config::Library::dItemHeight         = 50;
-const QJsonArray Config::Library::dPaths       = {QStandardPaths::writableLocation(QStandardPaths::MusicLocation)};
-const int Config::Library::dScrollBarWidth     = 10;
-
-/*
- * Sets all non existing keys to their default value.
- */
-void Config::Player::create()
-{
-    setDefault(oPlayer, kVolume, dVolume);
-    setDefault(oPlayer, kShuffle, dShuffle);
-    setDefault(oPlayer, kLoop, dLoop);
+    return scale(library()["scrollBarWidth"].toInt());
 }
 
 /*
@@ -416,7 +305,7 @@ void Config::Player::create()
  */
 void Config::Player::setLoop(bool loop)
 {
-    setValue(oPlayer, kLoop, loop);
+    setValue(player(), "loop", loop);
 }
 
 /*
@@ -426,7 +315,7 @@ void Config::Player::setLoop(bool loop)
  */
 bool Config::Player::loop()
 {
-    return oPlayer[kLoop].toBool();
+    return player()["loop"].toBool();
 }
 
 /*
@@ -436,7 +325,7 @@ bool Config::Player::loop()
  */
 void Config::Player::setShuffle(bool shuffle)
 {
-    setValue(oPlayer, kShuffle, shuffle);
+    setValue(player(), "shuffle", shuffle);
 }
 
 /*
@@ -446,7 +335,7 @@ void Config::Player::setShuffle(bool shuffle)
  */
 bool Config::Player::shuffle()
 {
-    return oPlayer[kShuffle].toBool();
+    return player()["shuffle"].toBool();
 }
 
 /*
@@ -456,7 +345,7 @@ bool Config::Player::shuffle()
  */
 void Config::Player::setVolume(int volume)
 {
-    setValue(oPlayer, kVolume, volume);
+    setValue(player(), "volume", volume);
 }
 
 /*
@@ -466,33 +355,7 @@ void Config::Player::setVolume(int volume)
  */
 int Config::Player::volume()
 {
-    return oPlayer[kVolume].toInt();
-}
-
-/*
- * Player keys.
- */
-const QString Config::Player::kLoop    = "loop";
-const QString Config::Player::kShuffle = "shuffle";
-const QString Config::Player::kVolume  = "volume";
-
-/*
- * Player default values.
- */
-const bool Config::Player::dLoop       = false;
-const bool Config::Player::dShuffle    = false;
-const int Config::Player::dVolume      = 25;
-
-/*
- * Sets all non existing keys to their default value.
- */
-void Config::Shortcut::create()
-{
-    setDefault(oShortcut, kNext, dNext);
-    setDefault(oShortcut, kPlayPause, dPlayPause);
-    setDefault(oShortcut, kPrevious, dPrevious);
-    setDefault(oShortcut, kVolumeDown, dVolumeDown);
-    setDefault(oShortcut, kVolumeUp, dVolumeUp);
+    return player()["volume"].toInt();
 }
 
 /*
@@ -502,7 +365,7 @@ void Config::Shortcut::create()
  */
 void Config::Shortcut::setNext(const QString &shortcut)
 {
-    setValue(oShortcut, kNext, shortcut);
+    setValue(Config::shortcut(), "next", shortcut);
 }
 
 /*
@@ -512,7 +375,7 @@ void Config::Shortcut::setNext(const QString &shortcut)
  */
 QString Config::Shortcut::next()
 {
-    return oShortcut[kNext].toString();
+    return shortcut()["next"].toString();
 }
 
 /*
@@ -522,7 +385,7 @@ QString Config::Shortcut::next()
  */
 void Config::Shortcut::setPlayPause(const QString &shortcut)
 {
-    setValue(oShortcut, kPlayPause, shortcut);
+    setValue(Config::shortcut(), "playPause", shortcut);
 }
 
 /*
@@ -532,7 +395,7 @@ void Config::Shortcut::setPlayPause(const QString &shortcut)
  */
 QString Config::Shortcut::playPause()
 {
-    return oShortcut[kPlayPause].toString();
+    return shortcut()["playPause"].toString();
 }
 
 /*
@@ -542,7 +405,7 @@ QString Config::Shortcut::playPause()
  */
 void Config::Shortcut::setPrevious(const QString &shortcut)
 {
-    setValue(oShortcut, kPrevious, shortcut);
+    setValue(Config::shortcut(), "previous", shortcut);
 }
 
 /*
@@ -552,7 +415,7 @@ void Config::Shortcut::setPrevious(const QString &shortcut)
  */
 QString Config::Shortcut::previous()
 {
-    return oShortcut[kPrevious].toString();
+    return shortcut()["previous"].toString();
 }
 
 /*
@@ -562,7 +425,7 @@ QString Config::Shortcut::previous()
  */
 void Config::Shortcut::setVolumeDown(const QString &shortcut)
 {
-    setValue(oShortcut, kVolumeDown, shortcut);
+    setValue(Config::shortcut(), "volumeDown", shortcut);
 }
 
 /*
@@ -572,7 +435,7 @@ void Config::Shortcut::setVolumeDown(const QString &shortcut)
  */
 QString Config::Shortcut::volumeDown()
 {
-    return oShortcut[kVolumeDown].toString();
+    return shortcut()["volumeDown"].toString();
 }
 
 /*
@@ -582,7 +445,7 @@ QString Config::Shortcut::volumeDown()
  */
 void Config::Shortcut::setVolumeUp(const QString &shortcut)
 {
-    setValue(oShortcut, kVolumeUp, shortcut);
+    setValue(Config::shortcut(), "volumeUp", shortcut);
 }
 
 /*
@@ -592,27 +455,8 @@ void Config::Shortcut::setVolumeUp(const QString &shortcut)
  */
 QString Config::Shortcut::volumeUp()
 {
-    return oShortcut[kVolumeUp].toString();
+    return shortcut()["volumeUp"].toString();
 }
-
-/*
- * Shortcut keys.
- */
-const QString Config::Shortcut::kNext       = "next";
-const QString Config::Shortcut::kPlayPause  = "playPause";
-const QString Config::Shortcut::kPrevious   = "previous";
-const QString Config::Shortcut::kVolumeDown = "volumeDown";
-const QString Config::Shortcut::kVolumeUp   = "volumeUp";
-
-/*
- * Shortcut default values.
- */
-const QString Config::Shortcut::dNext       = "Ctrl F12";
-const QString Config::Shortcut::dPlayPause  = "Ctrl F11";
-const QString Config::Shortcut::dPrevious   = "Ctrl F10";
-const QString Config::Shortcut::dVolumeDown = "Ctrl F7";
-const QString Config::Shortcut::dVolumeUp   = "Ctrl F8";
-
 
 /*
  * Saves the made changes by writing it to the file.
@@ -623,7 +467,7 @@ void Config::save()
 
     QFile file(CFG_PATH);
     if (file.open(QFile::WriteOnly))
-        file.write(jDocument.toJson());
+        file.write(_json.toJson());
 }
 
 /*
@@ -631,14 +475,16 @@ void Config::save()
  */
 void Config::load()
 {
-    jDocument = QJsonDocument::fromJson("{}");
+    _json = QJsonDocument::fromJson("{}");
     if (FileUtil::exists(CFG_PATH))
     {
         QFile file(CFG_PATH);
-        if (file.open(QIODevice::ReadOnly))
-            jDocument = QJsonDocument::fromJson(file.readAll());
+        if (file.open(QIODevice::ReadOnly | QIODevice::Text))
+            _json = QJsonDocument::fromJson(file.readAll());
     }
+
     loadObjects();
+    setDefaults();
 }
 
 /*
@@ -646,13 +492,13 @@ void Config::load()
  */
 void Config::saveObjects()
 {
-    QJsonObject object = jDocument.object();
-    object[kApp] = oApp;
-    object[kBar] = oBar;
-    object[kLibrary] = oLibrary;
-    object[kPlayer] = oPlayer;
-    object[kShortcut] = oShortcut;
-    jDocument.setObject(object);
+    QJsonObject object = _json.object();
+    object["app"] = _app;
+    object["bar"] = _bar;
+    object["library"] = _library;
+    object["player"] = _player;
+    object["shortcut"] = _shortcut;
+    _json.setObject(object);
 }
 
 /*
@@ -660,12 +506,80 @@ void Config::saveObjects()
  */
 void Config::loadObjects()
 {
-    QJsonObject object = jDocument.object();
-    oApp = object[kApp].toObject();
-    oBar = object[kBar].toObject();
-    oLibrary = object[kLibrary].toObject();
-    oPlayer = object[kPlayer].toObject();
-    oShortcut = object[kShortcut].toObject();
+    QJsonObject object = _json.object();
+    _app = object["app"].toObject();
+    _bar = object["bar"].toObject();
+    _library = object["library"].toObject();
+    _player = object["player"].toObject();
+    _shortcut = object["shortcut"].toObject();
+}
+
+/*
+ * Gets the json document.
+ *
+ * :return: json
+ */
+QJsonDocument Config::json()
+{
+    if (_json.isNull())
+        load();
+
+    return _json;
+}
+
+/*
+ * Gets the app object.
+ *
+ * :return: app
+ */
+QJsonObject & Config::app()
+{
+    json();
+    return _app;
+}
+
+/*
+ * Gets the bar object.
+ *
+ * :return: bar
+ */
+QJsonObject & Config::bar()
+{
+    json();
+    return _bar;
+}
+
+/*
+ * Gets library object.
+ *
+ * :return: library
+ */
+QJsonObject & Config::library()
+{
+    json();
+    return _library;
+}
+
+/*
+ * Gets player object.
+ *
+ * :return: player
+ */
+QJsonObject & Config::player()
+{
+    json();
+    return _player;
+}
+
+/*
+ * Gets shortcut object.
+ *
+ * :return shortcut
+ */
+QJsonObject & Config::shortcut()
+{
+    json();
+    return _shortcut;
 }
 
 /*
@@ -721,6 +635,39 @@ void Config::setDefault(QJsonObject &object, const QString &key, const QJsonArra
 }
 
 /*
+ * Sets all default values.
+ */
+void Config::setDefaults()
+{
+    setDefault(app(), "fontSize", 10.25);
+    setDefault(app(), "log", true);
+
+    setDefault(bar(), "grooveHeight", 2);
+    setDefault(bar(), "handleSize", 16);
+    setDefault(bar(), "height", 68);
+    setDefault(bar(), "iconSize", 32);
+    setDefault(bar(), "margin", 8);
+    setDefault(bar(), "spacing", 8);
+    setDefault(bar(), "timeWidth", 50);
+    setDefault(bar(), "trackWidth", 240);
+
+    setDefault(library(), "cellPadding", 5);
+    setDefault(library(), "itemHeight", 50);
+    setDefault(library(), "paths", QJsonArray({QStandardPaths::writableLocation(QStandardPaths::MusicLocation)}));
+    setDefault(library(), "scrollBarWidth", 12);
+
+    setDefault(player(), "loop", false);
+    setDefault(player(), "shuffle", false);
+    setDefault(player(), "volume", 25);
+
+    setDefault(shortcut(), "next", "Ctrl F12");
+    setDefault(shortcut(), "playPause", "Ctrl F11");
+    setDefault(shortcut(), "previous", "Ctrl F10");
+    setDefault(shortcut(), "volumeDown", "Ctrl F7");
+    setDefault(shortcut(), "volumeUp", "Ctrl F8");
+}
+
+/*
  * Scales value.
  *
  * :param value: value
@@ -756,22 +703,13 @@ int Config::makeEven(int value)
 /*
  * Json document.
  */
-QJsonDocument Config::jDocument;
+QJsonDocument Config::_json;
 
 /*
- * Main json objects.
+ * Json objects.
  */
-QJsonObject Config::oApp;
-QJsonObject Config::oBar;
-QJsonObject Config::oLibrary;
-QJsonObject Config::oPlayer;
-QJsonObject Config::oShortcut;
-
-/*
- * Main json object keys.
- */
-const QString Config::kApp      = "app";
-const QString Config::kBar      = "bar";
-const QString Config::kLibrary  = "library";
-const QString Config::kPlayer   = "player";
-const QString Config::kShortcut = "shortcut";
+QJsonObject Config::_app;
+QJsonObject Config::_bar;
+QJsonObject Config::_library;
+QJsonObject Config::_player;
+QJsonObject Config::_shortcut;
