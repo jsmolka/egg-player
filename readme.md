@@ -25,6 +25,9 @@ A Groove Music like music player.
 - do not show certain info at low size
 - library scroll acceleration
 - [smooth scrolling](https://github.com/zhou13/qsmoothscrollarea)
+- color transition in bar
+- pixmap cache in cache
+- cache id for audio, add when querying
 
 ### Future
 - search the library by typing

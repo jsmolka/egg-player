@@ -105,13 +105,14 @@ public:
     };
 
 private:
-    static void save();
-    static void load();
-
     static void saveObjects();
     static void loadObjects();
 
-    static QJsonDocument json();
+    static void save();
+    static void load();
+
+    static void checkJson();
+
     static QJsonObject & app();
     static QJsonObject & bar();
     static QJsonObject & library();
@@ -119,10 +120,8 @@ private:
     static QJsonObject & shortcut();
 
     static void setValue(QJsonObject &object, const QString &key, const QJsonValue &value);
-    static void setValue(QJsonObject &object, const QString &key, const QJsonArray &value);
 
     static void setDefault(QJsonObject &object, const QString &key, const QJsonValue &value);
-    static void setDefault(QJsonObject &object, const QString &key, const QJsonArray &value);
     static void setDefaults();
 
     static float scale(float value);

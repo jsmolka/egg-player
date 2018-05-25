@@ -261,7 +261,7 @@ void Config::Library::setPaths(const StringList &paths)
     for (const QString &path : paths)
         array << QJsonValue::fromVariant(path);
 
-    setValue(library(), "paths", array);
+    setValue(library(), "paths", QJsonValue(array));
 }
 
 /*
@@ -459,35 +459,6 @@ QString Config::Shortcut::volumeUp()
 }
 
 /*
- * Saves the made changes by writing it to the file.
- */
-void Config::save()
-{
-    saveObjects();
-
-    QFile file(CFG_PATH);
-    if (file.open(QFile::WriteOnly))
-        file.write(_json.toJson());
-}
-
-/*
- * Reads or creates the config file.
- */
-void Config::load()
-{
-    _json = QJsonDocument::fromJson("{}");
-    if (FileUtil::exists(CFG_PATH))
-    {
-        QFile file(CFG_PATH);
-        if (file.open(QIODevice::ReadOnly | QIODevice::Text))
-            _json = QJsonDocument::fromJson(file.readAll());
-    }
-
-    loadObjects();
-    setDefaults();
-}
-
-/*
  * Saves objects.
  */
 void Config::saveObjects()
@@ -515,16 +486,44 @@ void Config::loadObjects()
 }
 
 /*
- * Gets the json document.
- *
- * :return: json
+ * Saves the made changes by writing it to the file.
  */
-QJsonDocument Config::json()
+void Config::save()
+{
+    saveObjects();
+
+    QFile file(CFG_PATH);
+    if (file.open(QFile::WriteOnly))
+        file.write(_json.toJson());
+}
+
+/*
+ * Reads or creates the config file.
+ */
+void Config::load()
+{
+    if (FileUtil::exists(CFG_PATH))
+    {
+        QFile file(CFG_PATH);
+        if (file.open(QIODevice::ReadOnly | QIODevice::Text))
+            _json = QJsonDocument::fromJson(file.readAll());
+    }
+    else
+    {
+        _json = QJsonDocument::fromJson("{}");
+    }
+
+    loadObjects();
+    setDefaults();
+}
+
+/*
+ * Loads the json file if it does not exist.
+ */
+void Config::checkJson()
 {
     if (_json.isNull())
         load();
-
-    return _json;
 }
 
 /*
@@ -534,7 +533,7 @@ QJsonDocument Config::json()
  */
 QJsonObject & Config::app()
 {
-    json();
+    checkJson();
     return _app;
 }
 
@@ -545,7 +544,7 @@ QJsonObject & Config::app()
  */
 QJsonObject & Config::bar()
 {
-    json();
+    checkJson();
     return _bar;
 }
 
@@ -556,7 +555,7 @@ QJsonObject & Config::bar()
  */
 QJsonObject & Config::library()
 {
-    json();
+    checkJson();
     return _library;
 }
 
@@ -567,7 +566,7 @@ QJsonObject & Config::library()
  */
 QJsonObject & Config::player()
 {
-    json();
+    checkJson();
     return _player;
 }
 
@@ -578,31 +577,18 @@ QJsonObject & Config::player()
  */
 QJsonObject & Config::shortcut()
 {
-    json();
+    checkJson();
     return _shortcut;
 }
 
 /*
- * Sets value at key and saves changes.
+ * Sets the value at key and saves changes.
  *
  * :param object: object
  * :param key: key
  * :param value: value
  */
 void Config::setValue(QJsonObject &object, const QString &key, const QJsonValue &value)
-{
-    object[key] = value;
-    save();
-}
-
-/*
- * Sets value at key and saves changes.
- *
- * :param object: object
- * :param key: key
- * :param value: value
- */
-void Config::setValue(QJsonObject &object, const QString &key, const QJsonArray &value)
 {
     object[key] = value;
     save();
@@ -616,19 +602,6 @@ void Config::setValue(QJsonObject &object, const QString &key, const QJsonArray 
  * :param value: value
  */
 void Config::setDefault(QJsonObject &object, const QString &key, const QJsonValue &value)
-{
-    if (!object.contains(key))
-        setValue(object, key, value);
-}
-
-/*
- * Sets value if the key does not exist.
- *
- * :param object: object
- * :param key: key
- * :param value: value
- */
-void Config::setDefault(QJsonObject &object, const QString &key, const QJsonArray &value)
 {
     if (!object.contains(key))
         setValue(object, key, value);
@@ -653,7 +626,7 @@ void Config::setDefaults()
 
     setDefault(library(), "cellPadding", 5);
     setDefault(library(), "itemHeight", 50);
-    setDefault(library(), "paths", QJsonArray({QStandardPaths::writableLocation(QStandardPaths::MusicLocation)}));
+    setDefault(library(), "paths", QJsonValue(QJsonArray({QStandardPaths::writableLocation(QStandardPaths::MusicLocation)})));
     setDefault(library(), "scrollBarWidth", 12);
 
     setDefault(player(), "loop", false);
