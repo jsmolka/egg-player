@@ -13,7 +13,7 @@ using namespace TagLib;
  */
 Audio::Audio(const QString &path) :
     m_path(path),
-    m_id(-1)
+    m_coverId(-1)
 {
     m_valid = readTags();
     if (!m_valid)
@@ -135,9 +135,9 @@ int Audio::length(bool seconds) const
  *
  * :param id: id
  */
-void Audio::setId(int id)
+void Audio::setCoverId(int id)
 {
-    m_id = id;
+    m_coverId = id;
 }
 
 /*
@@ -148,9 +148,9 @@ void Audio::setId(int id)
  *
  * :return: id
  */
-int Audio::id() const
+int Audio::coverId() const
 {
-    return m_id;
+    return m_coverId;
 }
 
 /*

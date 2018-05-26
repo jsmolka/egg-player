@@ -209,7 +209,7 @@ void MusicBar::onPlayerAudioChanged(Audio *audio)
     m_lengthSlider.setRange(0, audio->length());
     m_lengthSlider.setEnabled(true);
 
-    setColor(ColorUtil::background(cover, audio->id()));
+    setColor(ColorUtil::background(cover, audio->coverId()));
 }
 
 /*

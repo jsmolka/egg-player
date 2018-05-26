@@ -23,6 +23,9 @@ A Groove Music like music player.
 - move library into music library
 - use a member query
 - consider using QCache
+- split utils but keep header
+- cache all audio information
+- use QFileSystemWatcher
 
 ### Cosmetic
 - do not show certain info at low size

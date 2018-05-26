@@ -34,8 +34,8 @@ public:
     int track() const;
     int length(bool seconds = true) const;
 
-    void setId(int id);
-    int id() const;
+    void setCoverId(int coverId);
+    int coverId() const;
 
     const wchar_t * pathWChar() const;
     QPixmap cover(int size = 200);
@@ -53,7 +53,7 @@ private:
     int m_year;
     int m_track;
     int m_length;
-    int m_id;
+    int m_coverId;
 };
 
 typedef QVector<Audio *> Audios;

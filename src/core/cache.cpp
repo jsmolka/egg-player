@@ -41,7 +41,7 @@ bool Cache::insert(Audio *audio, int size)
     if (id == -1)
         return false;
 
-    audio->setId(id);
+    audio->setCoverId(id);
 
     QSqlQuery query(db());
     query.prepare("INSERT INTO audios VALUES (:path, :coverid)");
@@ -64,7 +64,7 @@ bool Cache::insert(Audio *audio, int size)
  */
 bool Cache::contains(Audio *audio)
 {
-    if (audio->id() != -1)
+    if (audio->coverId() != -1)
         return true;
 
     QSqlQuery query(db());
@@ -80,7 +80,7 @@ bool Cache::contains(Audio *audio)
     if (!query.first())
         return false;
 
-    audio->setId(query.value(0).toInt());
+    audio->setCoverId(query.value(0).toInt());
 
     return true;
 }
@@ -96,9 +96,9 @@ bool Cache::contains(Audio *audio)
 QPixmap Cache::cover(Audio *audio, int size)
 {
     QPixmap pixmap;
-    if (QPixmapCache::find(QString::number(audio->id()), &pixmap))
+    if (QPixmapCache::find(QString::number(audio->coverId()), &pixmap))
     {
-        Logger::log("Using cached version %1", {QString::number(audio->id())});
+        Logger::log("Using cached version %1", {QString::number(audio->coverId())});
         return pixmap;
     }
 
@@ -126,7 +126,7 @@ QPixmap Cache::cover(Audio *audio, int size)
     }
 
     pixmap = Util::resize(pixmap, size);
-    QPixmapCache::insert(QString::number(audio->id()), pixmap);
+    QPixmapCache::insert(QString::number(audio->coverId()), pixmap);
 
     return pixmap;
 }
