@@ -97,10 +97,7 @@ QPixmap Cache::cover(Audio *audio, int size)
 {
     QPixmap pixmap;
     if (QPixmapCache::find(QString::number(audio->coverId()), &pixmap))
-    {
-        Logger::log("Using cached version %1", {QString::number(audio->coverId())});
         return pixmap;
-    }
 
     QSqlQuery query = QSqlQuery(db());
     query.prepare(

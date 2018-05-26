@@ -9,15 +9,15 @@ QT += \
     sql
 
 INCLUDEPATH += \
-    $$PWD/ext/bass-2.4/include \
-    $$PWD/ext/taglib-1.11.1/include \
-    $$PWD/src/core \
-    $$PWD/src/globals \
-    $$PWD/src/threading \
-    $$PWD/src/ui \
-    $$PWD/src/ui/components \
-    $$PWD/src/ui/layouts \
-    $$PWD/src/utils
+    ext/bass-2.4/include \
+    ext/taglib-1.11.1/include \
+    src/core \
+    src/core/threading \
+    src/globals \
+    src/ui \
+    src/ui/components \
+    src/ui/layouts \
+    src/utils
 
 LIBS += \
     -luser32 \
@@ -44,51 +44,56 @@ CONFIG(release, debug|release) {
 RESOURCES = egg-player.qrc
 
 HEADERS += \
-    $$PWD/src/core/audio.hpp \
-    $$PWD/src/core/cache.hpp \
-    $$PWD/src/core/library.hpp \
-    $$PWD/src/core/player.hpp \
-    $$PWD/src/core/timer.hpp \
-    $$PWD/src/globals/constants.hpp \
-    $$PWD/src/globals/types.hpp \
-    $$PWD/src/threading/abstractthread.hpp \
-    $$PWD/src/threading/audioloader.hpp \
-    $$PWD/src/threading/cachebuilder.hpp \
-    $$PWD/src/threading/threadpool.hpp \
-    $$PWD/src/ui/eggplayer.hpp \
-    $$PWD/src/ui/musicbar.hpp \
-    $$PWD/src/ui/musiclibrary.hpp \
-    $$PWD/src/ui/components/clickableslider.hpp \
-    $$PWD/src/ui/components/clickablestyle.hpp \
-    $$PWD/src/ui/components/iconbutton.hpp \
-    $$PWD/src/ui/components/rowhoverdelegate.hpp \
-    $$PWD/src/ui/layouts/borderlayout.hpp \
-    $$PWD/src/utils/config.hpp \
-    $$PWD/src/utils/logger.hpp \
-    $$PWD/src/utils/shortcut.hpp \
-    $$PWD/src/utils/utils.hpp
+    src/core/audio.hpp \
+    src/core/cache.hpp \
+    src/core/config.hpp \
+    src/core/library.hpp \
+    src/core/logger.hpp \
+    src/core/player.hpp \
+    src/core/shortcut.hpp \
+    src/core/timer.hpp \
+    src/core/threading/abstractthread.hpp \
+    src/core/threading/audioloader.hpp \
+    src/core/threading/cachebuilder.hpp \
+    src/core/threading/threadpool.hpp \
+    src/globals/constants.hpp \
+    src/globals/types.hpp \
+    src/ui/eggplayer.hpp \
+    src/ui/musicbar.hpp \
+    src/ui/musiclibrary.hpp \
+    src/ui/components/clickableslider.hpp \
+    src/ui/components/clickablestyle.hpp \
+    src/ui/components/iconbutton.hpp \
+    src/ui/components/rowhoverdelegate.hpp \
+    src/ui/layouts/borderlayout.hpp \
+    src/utils/colorutil.hpp \
+    src/utils/fileutil.hpp \
+    src/utils/util.hpp \
+    src/utils/utils.hpp
 
 SOURCES += \
-    $$PWD/src/main.cpp \
-    $$PWD/src/core/audio.cpp \
-    $$PWD/src/core/cache.cpp \
-    $$PWD/src/core/library.cpp \
-    $$PWD/src/core/player.cpp \
-    $$PWD/src/core/timer.cpp \
-    $$PWD/src/globals/constants.cpp \
-    $$PWD/src/threading/abstractthread.cpp \
-    $$PWD/src/threading/audioloader.cpp \
-    $$PWD/src/threading/cachebuilder.cpp \
-    $$PWD/src/threading/threadpool.cpp \
-    $$PWD/src/ui/eggplayer.cpp \
-    $$PWD/src/ui/musicbar.cpp \
-    $$PWD/src/ui/musiclibrary.cpp \
-    $$PWD/src/ui/components/clickableslider.cpp \
-    $$PWD/src/ui/components/clickablestyle.cpp \
-    $$PWD/src/ui/components/iconbutton.cpp \
-    $$PWD/src/ui/components/rowhoverdelegate.cpp \
-    $$PWD/src/ui/layouts/borderlayout.cpp \
-    $$PWD/src/utils/config.cpp \
-    $$PWD/src/utils/logger.cpp \
-    $$PWD/src/utils/shortcut.cpp \
-    $$PWD/src/utils/utils.cpp
+    src/main.cpp \
+    src/core/audio.cpp \
+    src/core/cache.cpp \
+    src/core/config.cpp \
+    src/core/library.cpp \
+    src/core/logger.cpp \
+    src/core/player.cpp \
+    src/core/shortcut.cpp \
+    src/core/timer.cpp \
+    src/core/threading/abstractthread.cpp \
+    src/core/threading/audioloader.cpp \
+    src/core/threading/cachebuilder.cpp \
+    src/core/threading/threadpool.cpp \
+    src/globals/constants.cpp \
+    src/ui/eggplayer.cpp \
+    src/ui/musicbar.cpp \
+    src/ui/musiclibrary.cpp \
+    src/ui/components/clickableslider.cpp \
+    src/ui/components/clickablestyle.cpp \
+    src/ui/components/iconbutton.cpp \
+    src/ui/components/rowhoverdelegate.cpp \
+    src/ui/layouts/borderlayout.cpp \
+    src/utils/colorutil.cpp \
+    src/utils/fileutil.cpp \
+    src/utils/util.cpp \
