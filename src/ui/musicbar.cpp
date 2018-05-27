@@ -183,8 +183,10 @@ ClickableSlider * MusicBar::volumeSlider()
 /*
  * Paint event for custom css.
  */
-void MusicBar::paintEvent(QPaintEvent *)
+void MusicBar::paintEvent(QPaintEvent *event)
 {
+    Q_UNUSED(event);
+
     QStyleOption option;
     option.init(this);
     QPainter painter(this);

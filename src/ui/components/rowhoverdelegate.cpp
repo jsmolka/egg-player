@@ -11,7 +11,7 @@ RowHoverDelegate::RowHoverDelegate(QTableWidget *table, QObject *parent) :
     pm_table(static_cast<TableWidget *>(table)),
     m_row(-1)
 {
-    connect(pm_table, SIGNAL(rowChanged(int)), this, SLOT(onRowChanged(int)));
+    connect(pm_table, SIGNAL(hoverRowChanged(int)), this, SLOT(onRowChanged(int)));
 }
 
 /*

@@ -25,6 +25,7 @@ public:
     bool insertCover(Audio *audio, int size = 200);
 
     bool contains(Audio *audio);
+
     QPixmap cover(Audio *audio, int size = 200);
 
 private:

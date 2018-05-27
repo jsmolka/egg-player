@@ -40,7 +40,7 @@ public:
     ClickableSlider * volumeSlider();
 
 protected:
-    void paintEvent(QPaintEvent *);
+    void paintEvent(QPaintEvent *event);
 
 private slots:
     void onPlayerAudioChanged(Audio *audio);

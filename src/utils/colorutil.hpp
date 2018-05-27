@@ -16,7 +16,7 @@ public:
     static QColor background(const QPixmap &pixmap, int id = -1);
 
 private:
-    static QHash<int, QColor> _colorCache;
+    static QHash<int, QColor> _colors;
 };
 
 #endif // COLORUTIL_HPP

@@ -17,7 +17,7 @@ void Config::App::setFontSize(double size)
  */
 double Config::App::fontSize()
 {
-    return app()["fontSize"].toDouble();
+    return app().value("fontSize").toDouble();
 }
 
 /*
@@ -37,7 +37,7 @@ void Config::App::setLog(bool log)
  */
 bool Config::App::log()
 {
-    return app()["log"].toBool();
+    return app().value("log").toBool();
 }
 
 /*
@@ -57,7 +57,7 @@ void Config::Bar::setGrooveHeight(int height)
  */
 int Config::Bar::grooveHeight()
 {
-    return makeEven(scale(bar()["grooveHeight"].toInt()));
+    return makeEven(scale(bar().value("grooveHeight").toInt()));
 }
 
 /*
@@ -77,7 +77,7 @@ void Config::Bar::setHandleSize(int size)
  */
 int Config::Bar::handleSize()
 {
-    return  makeEven(scale(bar()["handleSize"].toInt()));
+    return  makeEven(scale(bar().value("handleSize").toInt()));
 }
 
 /*
@@ -97,7 +97,7 @@ void Config::Bar::setHeight(int height)
  */
 int Config::Bar::height()
 {
-    return makeEven(scale(bar()["height"].toInt()));
+    return makeEven(scale(bar().value("height").toInt()));
 }
 
 /*
@@ -117,7 +117,7 @@ void Config::Bar::setIconSize(int size)
  */
 int Config::Bar::iconSize()
 {
-    return makeEven(scale(bar()["iconSize"].toInt()));
+    return makeEven(scale(bar().value("iconSize").toInt()));
 }
 
 /*
@@ -137,7 +137,7 @@ void Config::Bar::setMargin(int margin)
  */
 int Config::Bar::margin()
 {
-    return scale(bar()["margin"].toInt());
+    return scale(bar().value("margin").toInt());
 }
 
 /*
@@ -157,7 +157,7 @@ void Config::Bar::setSpacing(int spacing)
  */
 int Config::Bar::spacing()
 {
-    return scale(bar()["spacing"].toInt());
+    return scale(bar().value("spacing").toInt());
 }
 
 /*
@@ -187,7 +187,7 @@ void Config::Bar::setTimeWidth(int width)
  */
 int Config::Bar::timeWidth()
 {
-    return scale(bar()["timeWidth"].toInt());
+    return scale(bar().value("timeWidth").toInt());
 }
 
 /*
@@ -207,7 +207,7 @@ void Config::Bar::setTrackWidth(int width)
  */
 int Config::Bar::trackWidth()
 {
-    return scale(bar()["trackWidth"].toInt());
+    return scale(bar().value("trackWidth").toInt());
 }
 
 /*
@@ -227,7 +227,7 @@ void Config::Library::setCellPadding(int padding)
  */
 int Config::Library::cellPadding()
 {
-    return scale(library()["cellPadding"].toInt());
+    return scale(library().value("cellPadding").toInt());
 }
 
 /*
@@ -247,7 +247,7 @@ void Config::Library::setItemHeight(int height)
  */
 int Config::Library::itemHeight()
 {
-    return scale(library()["itemHeight"].toInt());
+    return scale(library().value("itemHeight").toInt());
 }
 
 /*
@@ -272,7 +272,7 @@ void Config::Library::setPaths(const StringList &paths)
 StringList Config::Library::paths()
 {
     StringList list;
-    for (const QJsonValue &element : library()["paths"].toArray())
+    for (const QJsonValue &element : library().value("paths").toArray())
         list << element.toString();
 
     return list;
@@ -295,7 +295,7 @@ void Config::Library::setScrollBarWidth(int width)
  */
 int Config::Library::scrollBarWidth()
 {
-    return scale(library()["scrollBarWidth"].toInt());
+    return scale(library().value("scrollBarWidth").toInt());
 }
 
 /*
@@ -315,7 +315,7 @@ void Config::Player::setLoop(bool loop)
  */
 bool Config::Player::loop()
 {
-    return player()["loop"].toBool();
+    return player().value("loop").toBool();
 }
 
 /*
@@ -335,7 +335,7 @@ void Config::Player::setShuffle(bool shuffle)
  */
 bool Config::Player::shuffle()
 {
-    return player()["shuffle"].toBool();
+    return player().value("shuffle").toBool();
 }
 
 /*
@@ -355,7 +355,7 @@ void Config::Player::setVolume(int volume)
  */
 int Config::Player::volume()
 {
-    return player()["volume"].toInt();
+    return player().value("volume").toInt();
 }
 
 /*
@@ -375,7 +375,7 @@ void Config::Shortcut::setNext(const QString &shortcut)
  */
 QString Config::Shortcut::next()
 {
-    return shortcut()["next"].toString();
+    return shortcut().value("next").toString();
 }
 
 /*
@@ -395,7 +395,7 @@ void Config::Shortcut::setPlayPause(const QString &shortcut)
  */
 QString Config::Shortcut::playPause()
 {
-    return shortcut()["playPause"].toString();
+    return shortcut().value("playPause").toString();
 }
 
 /*
@@ -415,7 +415,7 @@ void Config::Shortcut::setPrevious(const QString &shortcut)
  */
 QString Config::Shortcut::previous()
 {
-    return shortcut()["previous"].toString();
+    return shortcut().value("previous").toString();
 }
 
 /*
@@ -435,7 +435,7 @@ void Config::Shortcut::setVolumeDown(const QString &shortcut)
  */
 QString Config::Shortcut::volumeDown()
 {
-    return shortcut()["volumeDown"].toString();
+    return shortcut().value("volumeDown").toString();
 }
 
 /*
@@ -455,7 +455,7 @@ void Config::Shortcut::setVolumeUp(const QString &shortcut)
  */
 QString Config::Shortcut::volumeUp()
 {
-    return shortcut()["volumeUp"].toString();
+    return shortcut().value("volumeUp").toString();
 }
 
 /*
@@ -464,11 +464,11 @@ QString Config::Shortcut::volumeUp()
 void Config::saveObjects()
 {
     QJsonObject object = _json.object();
-    object["app"] = _app;
-    object["bar"] = _bar;
-    object["library"] = _library;
-    object["player"] = _player;
-    object["shortcut"] = _shortcut;
+    object.insert("app", _app);
+    object.insert("bar", _bar);
+    object.insert("library", _library);
+    object.insert("player", _player);
+    object.insert("shortcut", _shortcut);
     _json.setObject(object);
 }
 
@@ -478,11 +478,11 @@ void Config::saveObjects()
 void Config::loadObjects()
 {
     QJsonObject object = _json.object();
-    _app = object["app"].toObject();
-    _bar = object["bar"].toObject();
-    _library = object["library"].toObject();
-    _player = object["player"].toObject();
-    _shortcut = object["shortcut"].toObject();
+    _app = object.value("app").toObject();
+    _bar = object.value("bar").toObject();
+    _library = object.value("library").toObject();
+    _player = object.value("player").toObject();
+    _shortcut = object.value("shortcut").toObject();
 }
 
 /*
@@ -590,7 +590,7 @@ QJsonObject & Config::shortcut()
  */
 void Config::setValue(QJsonObject &object, const QString &key, const QJsonValue &value)
 {
-    object[key] = value;
+    object.insert(key, value);
     save();
 }
 

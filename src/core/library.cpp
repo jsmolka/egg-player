@@ -51,7 +51,8 @@ Library * Library::instance()
 }
 
 /*
- * Setter for sorted property.
+ * Setter for sorted property. Setting this value does not sort the library. It
+ * is meant to be set before the load function gets called.
  *
  * :param sorted: sorted
  */
@@ -81,10 +82,9 @@ Audios Library::audios() const
 }
 
 /*
- * Loads the library for multiple paths by creating audio builder threads. It
- * checks if the paths have already been loaded and ignores them if they have.
- * This function should not be called twice because it might create database
- * problems.
+ * Loads the library in the background by creating an audio loader thread. If
+ * this function gets called mulitple times for the same paths it will have no
+ * effect.
  *
  * :param paths: paths
  */
@@ -95,7 +95,7 @@ void Library::load(const StringList &paths)
 }
 
 /*
- * Inserts an audio into the library. Depeding on the sorted propery it will be
+ * Inserts an audio into the library. If the sorted property is true, it will be
  * inserted binary.
  *
  * :param audio: audio
@@ -119,8 +119,8 @@ void Library::onAudioLoaderFinished()
 
 /*
  * Gets the lower bound for an audio using a binary search like approach. This
- * function is used insead of std::lower_bound because it has a better
- * complexity and returns an index instead.
+ * function is being used insead of std::lower_bound because it has a better
+ * complexity and returns an index instead of an iterator.
  *
  * :param audio: audio
  */

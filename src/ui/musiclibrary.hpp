@@ -30,7 +30,7 @@ public slots:
     void insert(Audio *audio, int row = -1);
 
 signals:
-    void rowChanged(int);
+    void hoverRowChanged(int);
 
 protected:
     void leaveEvent(QEvent *event);
@@ -54,7 +54,6 @@ private:
 
     QString audioText(Audio *audio, int column);
 
-    Library *pm_library;
     QVector<Column> m_columns;
 };
 

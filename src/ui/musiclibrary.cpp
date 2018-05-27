@@ -64,11 +64,11 @@ void MusicLibrary::insert(Audio *audio, int row)
  * Emits -1 to remove the row hover style.
  *
  * :param event: event
- * :emit rowChanged: row
+ * :emit hoverRowChanged: row
  */
 void MusicLibrary::leaveEvent(QEvent *event)
 {
-    emit rowChanged(-1);
+    emit hoverRowChanged(-1);
 
     QTableWidget::leaveEvent(event);
 }
@@ -78,24 +78,24 @@ void MusicLibrary::leaveEvent(QEvent *event)
  * to get the cursor position for the resized widget.
  *
  * :param event: event
- * :emit rowChanged: row
+ * :emit hoverRowChanged: row
  */
 void MusicLibrary::resizeEvent(QResizeEvent *event)
 {
     QTableWidget::resizeEvent(event);
 
-    emit rowChanged(indexAt(mapFromGlobal(QCursor::pos())).row());
+    emit hoverRowChanged(indexAt(mapFromGlobal(QCursor::pos())).row());
 }
 
 /*
  * Emits the row of the entered item.
  *
  * :param index: index
- * :emit rowChanged: row
+ * :emit hoverRowChanged: row
  */
 void MusicLibrary::onEntered(QModelIndex index)
 {
-    emit rowChanged(index.row());
+    emit hoverRowChanged(index.row());
 }
 
 /*

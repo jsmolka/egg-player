@@ -13,7 +13,7 @@ class TableWidget : public QTableWidget
     Q_OBJECT
 
 signals:
-    void rowChanged(int);
+    void hoverRowChanged(int);
 };
 
 class RowHoverDelegate : public QStyledItemDelegate
