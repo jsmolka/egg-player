@@ -27,7 +27,7 @@ Audio::Audio(const QString &path) :
 }
 
 /*
- * Constructor. Used to read audios from the sql database.
+ * Constructor. Used to create an audio object without parsing a file.
  *
  * :param path: path
  * :param title: title

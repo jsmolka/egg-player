@@ -35,7 +35,7 @@ private:
     void createAudios();
 
     int getOrInsertCover(const QPixmap &cover);
-    int insertCover(const QByteArray &bytes);
+    int insertByteCover(const QByteArray &bytes);
 
     int coverId(const QByteArray &bytes);
     int lastCoverId();

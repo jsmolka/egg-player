@@ -25,7 +25,7 @@ Cache::~Cache()
 
 /*
  * Loads an audio file from the cache. If it does not exist a nullptr will be
- * returned instead.
+ * returned.
  *
  * :param path: path
  * :return: audio, nullptr at failure
@@ -35,7 +35,10 @@ Audio * Cache::load(const QString &path)
     Audio *audio = nullptr;
 
     QSqlQuery query(db());
-    query.prepare("SELECT * FROM audios WHERE path = :path");
+    query.prepare(
+        "SELECT * FROM audios "
+        "WHERE path = :path"
+    );
     query.bindValue(":path", path);
 
     if (!query.exec())
@@ -100,7 +103,8 @@ bool Cache::insertAudio(Audio *audio)
 
 /*
  * Inserts an audio cover into the cache. This assumes that the audio already
- * has an entry in the audio table.
+ * inside the audio table because it will also set the audios cover id to the
+ * covers id.
  *
  * :param audio: audio
  * :param size: cover size, default 200
@@ -133,8 +137,8 @@ bool Cache::insertCover(Audio *audio, int size)
 
 /*
  * Checks if database contains audio. Also sets the cover id for later use. If
- * an audio object has a valid cover id it definitely exists already because it
- * only gets set inside the cache.
+ * the audios cover id is unequal to -1, the audio exist already because the
+ * cover id only exists inside the cache.
  *
  * :param audio: audio
  * :return: contains
@@ -145,7 +149,10 @@ bool Cache::contains(Audio *audio)
         return true;
 
     QSqlQuery query(db());
-    query.prepare("SELECT coverid FROM audios WHERE path = :path");
+    query.prepare(
+        "SELECT coverid FROM audios "
+        "WHERE path = :path"
+    );
     query.bindValue(":path", audio->path());
 
     if (!query.exec())
@@ -167,7 +174,7 @@ bool Cache::contains(Audio *audio)
 }
 
 /*
- * Retrieves cover from database. If the cover has already been loaded
+ * Retrieves a cover from the database. If the cover has already been loaded
  * previously, a cached version will be used.
  *
  * :param audio: audio
@@ -210,8 +217,9 @@ QPixmap Cache::cover(Audio *audio, int size)
 }
 
 /*
- * Gets the database name for the current thread. This is because connections
- * must be unique for every thread as stated in the documentation:
+ * Gets the database name for the current thread by converting its pointer
+ * address to a  number. This is because connections must be unique for every
+ * thread as stated in the documentation:
  *
  * "A connection can only be used from within the thread that created it. Moving
  * connections between threads or creating queries from a different thread is
@@ -245,7 +253,7 @@ QSqlDatabase Cache::db()
  */
 void Cache::createCovers()
 {
-    QString createCovers =
+    QString create =
         "CREATE TABLE IF NOT EXISTS covers("
         " id INTEGER PRIMARY KEY,"
         " len INTEGER,"
@@ -253,7 +261,7 @@ void Cache::createCovers()
         ")";
 
     QSqlQuery query(db());
-    if (!query.exec(createCovers))
+    if (!query.exec(create))
         handleError((query));
 }
 
@@ -262,7 +270,7 @@ void Cache::createCovers()
  */
 void Cache::createAudios()
 {
-    QString createAudios =
+    QString create =
         "CREATE TABLE IF NOT EXISTS audios("
         " path TEXT PRIMARY KEY,"
         " title TEXT,"
@@ -276,13 +284,13 @@ void Cache::createAudios()
         ")";
 
     QSqlQuery query(db());
-    if (!query.exec(createAudios))
+    if (!query.exec(create))
         handleError(query);
 }
 
 /*
- * Either gets the cover id or inserts it into the covers tables and returns its
- * id.
+ * Either gets the cover id or inserts the cover into the covers tables and
+ * returns its id.
  *
  * :param cover: cover
  * :return: id, -1 at failure
@@ -293,23 +301,30 @@ int Cache::getOrInsertCover(const QPixmap &cover)
 
     int id = coverId(bytes);
     if (id == -1)
-        id = insertCover(bytes);
+        id = insertByteCover(bytes);
 
     return id;
 }
 
 /*
- * Inserts cover into database. Assumes that the cover does not exist already.
+ * Inserts the cover into the database. Assumes that the cover does not exist
+ * already.
  *
  * :param bytes: byte array cover
  * :return: id, -1 at failure
  */
-int Cache::insertCover(const QByteArray &bytes)
+int Cache::insertByteCover(const QByteArray &bytes)
 {
     int id = lastCoverId() + 1;
 
     QSqlQuery query(db());
-    query.prepare("INSERT INTO covers VALUES (:id, :len, :cover)");
+    query.prepare(
+        "INSERT INTO covers VALUES ("
+        " :id,"
+        " :len,"
+        " :cover"
+        ")"
+    );
     query.bindValue(":id", id);
     query.bindValue(":len", bytes.length());
     query.bindValue(":cover", bytes);
@@ -323,8 +338,9 @@ int Cache::insertCover(const QByteArray &bytes)
 }
 
 /*
- * Returns cover id for byte array cover. For performance reasons it first tries
- * to query based on the byte array length and then by blob comparison.
+ * Returns the cover id for a byte array cover. For performance reasons it first
+ * tries to query the cover based on the byte array length and then, if it gets
+ * multiple results, by blob comparison.
  *
  * :param bytes: byte array cover
  * :return: id, -1 at failure
@@ -369,7 +385,10 @@ int Cache::queryCoverIdByLength(int length)
     int id = -1;
 
     QSqlQuery query(db());
-    query.prepare("SELECT id FROM covers WHERE len = :len");
+    query.prepare(
+        "SELECT id FROM covers "
+        "WHERE len = :len"
+    );
     query.bindValue(":len", length);
 
     if (!query.exec())
@@ -393,7 +412,10 @@ int Cache::queryCoverIdByLength(int length)
 int Cache::queryCoverIdByBlob(const QByteArray &bytes)
 {
     QSqlQuery query(db());
-    query.prepare("SELECT id FROM covers WHERE cover = :cover");
+    query.prepare(
+        "SELECT id FROM covers "
+        "WHERE cover = :cover"
+    );
     query.bindValue(":cover", bytes);
 
     if (!query.exec())
@@ -413,7 +435,7 @@ int Cache::queryCoverIdByBlob(const QByteArray &bytes)
 void Cache::handleError(const QSqlQuery &query)
 {
     QSqlError error = query.lastError();
-    if (error.isValid())
+    if (error.type() != QSqlError::NoError)
     {
         Logger::log(
             "Cache: Querying \"%1\" failed with error \"%2\"",

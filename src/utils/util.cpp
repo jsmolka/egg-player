@@ -50,7 +50,10 @@ QPixmap Util::cover(int size)
  */
 QPixmap Util::resize(const QPixmap &pixmap, int size, bool fast)
 {
-    return pixmap.scaled(size, size, Qt::KeepAspectRatio, fast ? Qt::FastTransformation : Qt::SmoothTransformation);
+    if (pixmap.height() == size && pixmap.width() == size)
+        return pixmap;
+    else
+        return pixmap.scaled(size, size, Qt::KeepAspectRatio, fast ? Qt::FastTransformation : Qt::SmoothTransformation);
 }
 
 /*
@@ -63,7 +66,10 @@ QPixmap Util::resize(const QPixmap &pixmap, int size, bool fast)
  */
 QImage Util::resize(const QImage &image, int size, bool fast)
 {
-    return image.scaled(size, size, Qt::KeepAspectRatio, fast ? Qt::FastTransformation : Qt::SmoothTransformation);
+    if (image.height() == size && image.width() == size)
+        return image;
+    else
+        return image.scaled(size, size, Qt::KeepAspectRatio, fast ? Qt::FastTransformation : Qt::SmoothTransformation);
 }
 
 /*

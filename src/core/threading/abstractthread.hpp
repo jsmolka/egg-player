@@ -18,6 +18,9 @@ public:
 public slots:
     void abort();
 
+private slots:
+    void onStarted();
+
 private:
     bool m_abort;
 };
