@@ -12,18 +12,18 @@ A Groove Music like music player.
 
 ## Changes since lastest release
 - add resource collection
+- add tag caching
 - fix library hovering
-- improve song transition
+- improve start time
 - improve load time
 - improve cache performance
+- improve song transition
 
 ## Things to do
 
 ### Internal
 - move library into music library
 - use a member query
-- split utils but keep header
-- cache all audio information
 - use QFileSystemWatcher
 
 ### Cosmetic

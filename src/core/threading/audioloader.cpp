@@ -47,12 +47,19 @@ void AudioLoader::setFiles(const StringList &files)
  */
 void AudioLoader::run()
 {
+    Cache cache;
     for (const QString &file : m_files)
     {
         if (isAbort())
             return;
 
-        Audio *audio = new Audio(file);
+        Audio *audio = cache.load(file);
+        if (!audio)
+        {
+            audio = new Audio(file);
+            cache.insertAudio(audio);
+        }
+
         if (audio->isValid())
             emit loaded(audio);
         else

@@ -40,6 +40,7 @@ bool AbstractThread::isAbort() const
 void AbstractThread::abort()
 {
     m_abort = true;
-    quit();
-    wait();
+
+    if (!wait(5000))
+        Logger::log("AbstractThread: Could not abort within 5 seconds");
 }

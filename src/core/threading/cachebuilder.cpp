@@ -45,15 +45,19 @@ void CacheBuilder::setAudios(const Audios &audios)
 /*
  * Loads audio covers.
  */
+#include <QDebug>
 void CacheBuilder::run()
 {
     Cache cache;
     for (Audio *audio : m_audios)
     {
         if (isAbort())
+        {
+            qDebug() << "aborted :|";
             return;
+        }
 
         if (!cache.contains(audio))
-            cache.insert(audio);
+            cache.insertCover(audio);
     }
 }

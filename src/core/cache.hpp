@@ -19,7 +19,11 @@ public:
     Cache();
     ~Cache();
 
-    bool insert(Audio *audio, int size = 200);
+    Audio * load(const QString &path);
+
+    bool insertAudio(Audio *audio);
+    bool insertCover(Audio *audio, int size = 200);
+
     bool contains(Audio *audio);
     QPixmap cover(Audio *audio, int size = 200);
 

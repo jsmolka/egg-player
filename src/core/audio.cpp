@@ -27,6 +27,34 @@ Audio::Audio(const QString &path) :
 }
 
 /*
+ * Constructor. Used to read audios from the sql database.
+ *
+ * :param path: path
+ * :param title: title
+ * :param artist: artist
+ * :param album: album
+ * :param genre: genre
+ * :param year: year
+ * :param length: length
+ * :param coverId: cover id
+ */
+Audio::Audio(const QString &path, const QString &title, const QString &artist, const QString &album,
+             const QString &genre, int year, int track, int length, int coverId) :
+    m_valid(true),
+    m_path(path),
+    m_title(title),
+    m_artist(artist),
+    m_album(album),
+    m_genre(genre),
+    m_year(year),
+    m_track(track),
+    m_length(length),
+    m_coverId(coverId)
+{
+
+}
+
+/*
  * Destructor.
  */
 Audio::~Audio()

@@ -3,6 +3,8 @@
 
 #include <QThread>
 
+#include "logger.hpp"
+
 class AbstractThread : public QThread
 {
     Q_OBJECT

@@ -8,11 +8,12 @@
 Library::Library(QObject *parent) :
     QObject(parent),
     m_sorted(false),
-    pm_audioPool(new ThreadPool(this)),
-    pm_cachePool(new ThreadPool(this))
+    pm_audioLoader(new AudioLoader(this)),
+    pm_cacheBuilder(new CacheBuilder(this))
 {
-    connect(pm_audioPool, SIGNAL(finished()), this, SLOT(onAudioPoolFinished()));
-    connect(pm_audioPool, SIGNAL(finished()), this, SIGNAL(loaded()));
+    connect(pm_audioLoader, SIGNAL(loaded(Audio *)), this, SLOT(insert(Audio *)));
+    connect(pm_audioLoader, SIGNAL(finished()), this, SLOT(onAudioLoaderFinished()));
+    connect(pm_audioLoader, SIGNAL(finished()), this, SIGNAL(loaded()));
 }
 
 /*
@@ -89,14 +90,8 @@ Audios Library::audios() const
  */
 void Library::load(const StringList &paths)
 {
-    QVector<StringList> chunks = Util::chunk(uniqueFiles(paths), pm_audioPool->advised());
-    for (const StringList &chunk : chunks)
-    {
-        AudioLoader *loader = new AudioLoader(chunk);
-        connect(loader, SIGNAL(loaded(Audio *)), this, SLOT(insert(Audio *)));
-        pm_audioPool->add(loader);
-    }
-    pm_audioPool->start();
+    pm_audioLoader->setFiles(uniqueFiles(paths));
+    pm_audioLoader->start();
 }
 
 /*
@@ -107,21 +102,19 @@ void Library::load(const StringList &paths)
  */
 void Library::insert(Audio *audio)
 {
-    m_mutex.lock();
     if (m_sorted)
         insertBinary(audio);
     else
         append(audio);
-    m_mutex.unlock();
 }
 
 /*
  * Gets called when the library is loaded and creates the cache builder.
  */
-void Library::onAudioPoolFinished()
+void Library::onAudioLoaderFinished()
 {
-    pm_cachePool->add(new CacheBuilder(m_audios));
-    pm_cachePool->start();
+    pm_cacheBuilder->setAudios(m_audios);
+    pm_cacheBuilder->start();
 }
 
 /*

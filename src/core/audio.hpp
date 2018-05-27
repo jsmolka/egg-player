@@ -22,6 +22,8 @@ class Audio
 {
 public:
     Audio(const QString &path);
+    Audio(const QString &path, const QString &title, const QString &artist, const QString &album,
+          const QString &genre, int year, int track, int length, int coverId);
     ~Audio();
 
     bool isValid() const;

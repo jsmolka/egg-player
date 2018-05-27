@@ -39,7 +39,7 @@ signals:
     void inserted(Audio *, int);
 
 private slots:
-    void onAudioPoolFinished();
+    void onAudioLoaderFinished();
 
 private:
     int lowerBound(Audio *audio);
@@ -50,8 +50,8 @@ private:
 
     bool m_sorted;
     Audios m_audios;
-    ThreadPool *pm_audioPool;
-    ThreadPool *pm_cachePool;
+    AudioLoader *pm_audioLoader;
+    CacheBuilder *pm_cacheBuilder;
     QMutex m_mutex;
     QSet<QString> m_paths;
 

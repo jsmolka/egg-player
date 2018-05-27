@@ -6,13 +6,13 @@
  */
 Cache::Cache()
 {    
-    if (QSqlDatabase::contains(dbName()))
-        return;
+    if (!QSqlDatabase::contains(dbName()))
+    {
+        QSqlDatabase::addDatabase("QSQLITE", dbName());
 
-    QSqlDatabase::addDatabase("QSQLITE", dbName());
-
-    createCovers();
-    createAudios();
+        createCovers();
+        createAudios();
+    }
 }
 
 /*
@@ -24,16 +24,89 @@ Cache::~Cache()
 }
 
 /*
- * Inserts audio into cache. It adds the cover into the covers table and the
- * path with a cover id into the audios table. No tags are stored inside the
- * cache because TagLib is fast enough to reload tags at every startup.
- * Also sets the cover id for later use.
+ * Loads an audio file from the cache. If it does not exist a nullptr will be
+ * returned instead.
+ *
+ * :param path: path
+ * :return: audio, nullptr at failure
+ */
+Audio * Cache::load(const QString &path)
+{
+    Audio *audio = nullptr;
+
+    QSqlQuery query(db());
+    query.prepare("SELECT * FROM audios WHERE path = :path");
+    query.bindValue(":path", path);
+
+    if (!query.exec())
+        handleError(query);
+
+    if (query.first())
+    {
+        audio = new Audio(
+            query.value(0).toString(),
+            query.value(1).toString(),
+            query.value(2).toString(),
+            query.value(3).toString(),
+            query.value(4).toString(),
+            query.value(5).toInt(),
+            query.value(6).toInt(),
+            query.value(7).toInt(),
+            query.value(8).toInt()
+        );
+    }
+    return audio;
+}
+
+/*
+ * Inserts audio tags into the cache.
+ *
+ * :param audio: audio
+ * :return: success
+ */
+bool Cache::insertAudio(Audio *audio)
+{
+    QSqlQuery query(db());
+    query.prepare(
+        "INSERT INTO audios VALUES ("
+        " :path,"
+        " :title,"
+        " :artist,"
+        " :album,"
+        " :genre,"
+        " :year,"
+        " :track,"
+        " :length,"
+        " :coverid"
+        ")"
+    );
+    query.bindValue(":path", audio->path());
+    query.bindValue(":title", audio->title());
+    query.bindValue(":artist", audio->artist());
+    query.bindValue(":album", audio->album());
+    query.bindValue(":genre", audio->genre());
+    query.bindValue(":year", audio->year());
+    query.bindValue(":track", audio->track());
+    query.bindValue(":length", audio->length(false));
+    query.bindValue(":coverid", audio->coverId());
+
+    if (!query.exec())
+    {
+        handleError(query);
+        return false;
+    }
+    return true;
+}
+
+/*
+ * Inserts an audio cover into the cache. This assumes that the audio already
+ * has an entry in the audio table.
  *
  * :param audio: audio
  * :param size: cover size, default 200
  * :return: success
  */
-bool Cache::insert(Audio *audio, int size)
+bool Cache::insertCover(Audio *audio, int size)
 {
     int id = getOrInsertCover(audio->cover(size));
     if (id == -1)
@@ -42,7 +115,11 @@ bool Cache::insert(Audio *audio, int size)
     audio->setCoverId(id);
 
     QSqlQuery query(db());
-    query.prepare("INSERT INTO audios VALUES (:path, :coverid)");
+    query.prepare(
+        "UPDATE audios "
+        "SET coverid = :coverid "
+        "WHERE path = :path"
+    );
     query.bindValue(":path", audio->path());
     query.bindValue(":coverid", id);
 
@@ -55,7 +132,9 @@ bool Cache::insert(Audio *audio, int size)
 }
 
 /*
- * Checks if database contains audio. Also sets the cover id for later use.
+ * Checks if database contains audio. Also sets the cover id for later use. If
+ * an audio object has a valid cover id it definitely exists already because it
+ * only gets set inside the cache.
  *
  * :param audio: audio
  * :return: contains
@@ -78,7 +157,11 @@ bool Cache::contains(Audio *audio)
     if (!query.first())
         return false;
 
-    audio->setCoverId(query.value(0).toInt());
+    int id = query.value(0).toInt();
+    if (id == -1)
+        return false;
+
+    audio->setCoverId(id);
 
     return true;
 }
@@ -182,8 +265,14 @@ void Cache::createAudios()
     QString createAudios =
         "CREATE TABLE IF NOT EXISTS audios("
         " path TEXT PRIMARY KEY,"
-        " coverid INTEGER,"
-        " FOREIGN KEY (coverid) REFERENCES covers(id)"
+        " title TEXT,"
+        " artist TEXT,"
+        " album TEXT,"
+        " genre TEXT,"
+        " year INTEGER,"
+        " track INTEGER,"
+        " length INTEGER,"
+        " coverid INTEGER"
         ")";
 
     QSqlQuery query(db());
