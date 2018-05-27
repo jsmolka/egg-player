@@ -2,16 +2,14 @@
 
 /*
  * Constructor. If the QSqlDatabase does not contain the database it gets added
- * and the tables get created. Also sets the QPixmapCache size to a value of up
- * to 100 megabyte which should be enough.
+ * and the tables get created if they do not exist already.
  */
 Cache::Cache()
 {    
-    if (QSqlDatabase::contains(SQL_CONNECTION))
+    if (QSqlDatabase::contains(dbName()))
         return;
 
-    QPixmapCache::setCacheLimit(102400);
-    QSqlDatabase::addDatabase("QSQLITE", SQL_CONNECTION);
+    QSqlDatabase::addDatabase("QSQLITE", dbName());
 
     createCovers();
     createAudios();
@@ -95,11 +93,10 @@ bool Cache::contains(Audio *audio)
  */
 QPixmap Cache::cover(Audio *audio, int size)
 {
-    QPixmap pixmap;
-    if (QPixmapCache::find(QString::number(audio->coverId()), &pixmap))
-        return pixmap;
+    if (_covers.contains(audio->coverId()))
+        return _covers.value(audio->coverId());
 
-    QSqlQuery query = QSqlQuery(db());
+    QSqlQuery query(db());
     query.prepare(
         "SELECT covers.cover FROM audios "
         "JOIN covers ON audios.coverid = covers.id "
@@ -110,6 +107,7 @@ QPixmap Cache::cover(Audio *audio, int size)
     if (!query.exec())
         handleError(query);
 
+    QPixmap pixmap;
     if (query.first())
     {
         QByteArray bytes = query.value(0).toByteArray();
@@ -123,9 +121,24 @@ QPixmap Cache::cover(Audio *audio, int size)
     }
 
     pixmap = Util::resize(pixmap, size);
-    QPixmapCache::insert(QString::number(audio->coverId()), pixmap);
+    _covers.insert(audio->coverId(), pixmap);
 
     return pixmap;
+}
+
+/*
+ * Gets the database name for the current thread. This is because connections
+ * must be unique for every thread as stated in the documentation:
+ *
+ * "A connection can only be used from within the thread that created it. Moving
+ * connections between threads or creating queries from a different thread is
+ * not supported."
+ *
+ * :return: database name
+ */
+QString Cache::dbName()
+{
+    return SQL_CONNECTION + QString::number(reinterpret_cast<quint64>(QThread::currentThread()), 16);
 }
 
 /*
@@ -135,7 +148,7 @@ QPixmap Cache::cover(Audio *audio, int size)
  */
 QSqlDatabase Cache::db()
 {
-    QSqlDatabase db = QSqlDatabase::database(SQL_CONNECTION, false);
+    QSqlDatabase db = QSqlDatabase::database(dbName(), false);
     db.setDatabaseName(SQL_PATH);
     if (!db.isOpen())
         if (!db.open())
@@ -359,3 +372,9 @@ QByteArray Cache::coverToBytes(const QPixmap &cover)
 
     return bytes;
 }
+
+/*
+ * The cache within the cache. Prevents loading covers multiple times and
+ * thereby decreases loading times.
+ */
+QHash<int, QPixmap> Cache::_covers;

@@ -2,11 +2,12 @@
 #define CACHE_HPP
 
 #include <QBuffer>
+#include <QHash>
 #include <QPixmap>
-#include <QPixmapCache>
 #include <QSqlDatabase>
 #include <QSqlError>
 #include <QSqlQuery>
+#include <QThread>
 
 #include "audio.hpp"
 #include "constants.hpp"
@@ -23,6 +24,7 @@ public:
     QPixmap cover(Audio *audio, int size = 200);
 
 private:
+    QString dbName();
     QSqlDatabase db();
 
     void createCovers();
@@ -42,7 +44,7 @@ private:
     QString lastQuery(const QSqlQuery &query);
     QByteArray coverToBytes(const QPixmap &cover);
 
-    QSqlQuery m_query;
+    static QHash<int, QPixmap> _covers;
 };
 
 #endif // CACHE_HPP
