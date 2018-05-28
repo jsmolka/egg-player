@@ -11,20 +11,18 @@ A Groove Music like music player.
 - [ ] reactive cache
 
 ## Changes since lastest release
-- add resource collection
-- add tag caching
-- fix library hovering
-- improve start time
-- improve load time
-- improve cache performance
-- improve song transition
 
 ## Things to do
 
 ### Internal
 - move library into music library
 - use a member query
+- multithreaded loading for uncached songs
 - use QFileSystemWatcher
+- duration instead of length
+- cache transaction (commit in destructor)
+- load uncached audios in multiple threads
+- test for max in timer pause
 
 ### Cosmetic
 - do not show certain info at low size
