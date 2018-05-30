@@ -16,20 +16,29 @@ A Groove Music like music player.
 
 ### Internal
 - move library into music library
-- use a member query
-- multithreaded loading for uncached songs
+- use member query
+- use member database
+- cache transaction
+  - start in constructor
+  - commit in destructor
+  - consider passing a flag for read only
 - use QFileSystemWatcher
+  - update library accordingly
+- multithreaded loading for uncached songs
+  - store uncached songs in vector
+  - load audios in multiple threads
+  - store audios in vector
+  - insert all in a background thread
 - duration instead of length
-- cache transaction (commit in destructor)
-- load uncached audios in multiple threads
-- test for max in timer pause
+- check max in timer pause
+- store file size in cache
+- update audio if size changed
+- search the library by typing
+  - search based on sorted
+  - store last result, show it if there is no current
+  - reset search string after certain time
 
 ### Cosmetic
 - do not show certain info at low size
-- library scroll acceleration
 - [smooth scrolling](https://github.com/zhou13/qsmoothscrollarea)
 - color transition in bar
-
-### Future
-- search the library by typing
-- themes
