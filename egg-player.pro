@@ -9,8 +9,8 @@ QT += \
     sql
 
 INCLUDEPATH += \
-    ext/bass-2.4/include \
-    ext/taglib-1.11.1/include \
+    lib/bass-2.4/include \
+    lib/taglib-1.11.1/include \
     src/core \
     src/core/threading \
     src/globals \
@@ -22,14 +22,14 @@ INCLUDEPATH += \
 LIBS += \
     -luser32 \
     -lshcore \
-    -L"$$PWD/ext/bass-2.4/lib" -lbass
+    -L"$$PWD/lib/bass-2.4/lib" -lbass
 
 CONFIG(debug, debug|release) {
-    LIBS += -L"$$PWD/ext/taglib-1.11.1/lib" -ltagd
+    LIBS += -L"$$PWD/lib/taglib-1.11.1/lib" -ltagd
     DESTDIR = $$PWD/bin/debug
 }
 CONFIG(release, debug|release) {
-    LIBS += -L"$$PWD/ext/taglib-1.11.1/lib" -ltag
+    LIBS += -L"$$PWD/lib/taglib-1.11.1/lib" -ltag
     DESTDIR = $$PWD/bin/release
 
     QMAKE_CFLAGS_RELEASE -= -O
