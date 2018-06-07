@@ -54,6 +54,18 @@ A Groove Music like music player.
   - search based on sorted
   - store last result, show it if there is no current
   - reset search string after certain time
+- completely rewrite documentation before next release
+  - place the docstrings in the header instead of the source file
+```cpp
+/*!
+ * Describe what the function does rather than
+ * listing all arguments. Explain possible unclear
+ * things / variable names.
+ */
+int Class::function(int a, double t);
+```
+- rename the widgets
+- use `h` postfix for headers instead of `hpp`
 
 ### Cosmetic
 - do not show certain info at low size
