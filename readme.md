@@ -35,15 +35,13 @@ A Groove Music like music player.
   - update audio if size changed
   - use QFileSystemWatcher
   - update library / cache accordingly
+- cache
+  - member query
+  - functions for transaction and commit (maybe use while loading audios, not covers)
+  - reload function for database
 - expand thread pool
   - remove threads once finished
   - add function to abort all
-- cache transaction (important)
-  - start in constructor
-  - commit in destructor
-  - use member query
-  - use member database
-  - pass a flag for read only to prevent creating a transaction
 - proper mulithreaded library loading
   - look into write-ahead-logging
   - a single LibraryLoaderThread which gets called from the library and emits audios
@@ -65,7 +63,9 @@ A Groove Music like music player.
 int Class::function(int a, double t);
 ```
 - rename the widgets
-- use `h` postfix for headers instead of `hpp`
+- [namespace](https://stackoverflow.com/a/10493005/7057528) instead of class for utils
+  - use templates for functions
+  - time from milliseconds (do not split it up before)
 
 ### Cosmetic
 - do not show certain info at low size
