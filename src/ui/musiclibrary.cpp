@@ -105,8 +105,8 @@ void MusicLibrary::loadCss()
 {
     setStyleSheet(
         FileUtil::read(CSS_MUSICLIBRARY)
-            .replace("cell-padding", QString::number(cfgLibrary.cellPadding()))
-            .replace("scrollbar-width", QString::number(cfgLibrary.scrollBarWidth()))
+            .replace("cell-padding", QString::number(cfgLibrary->cellPadding()))
+            .replace("scrollbar-width", QString::number(cfgLibrary->scrollBarWidth()))
     );
 }
 
@@ -132,7 +132,7 @@ void MusicLibrary::setup()
     horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
     verticalHeader()->hide();
     verticalHeader()->setSectionResizeMode(QHeaderView::Fixed);
-    verticalHeader()->setDefaultSectionSize(cfgLibrary.itemHeight());
+    verticalHeader()->setDefaultSectionSize(cfgLibrary->itemHeight());
 
     horizontalScrollBar()->hide();
     verticalScrollBar()->setStyle(new ClickableStyle(style()));

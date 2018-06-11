@@ -11,16 +11,16 @@ EggPlayer::EggPlayer(QWidget *parent) :
     m_musicLibrary(this),
     m_musicBar(this)
 {
-    eggPlayer->setVolume(cfgPlayer.volume());
-    eggPlayer->setShuffle(cfgPlayer.shuffle());
-    eggPlayer->setLoop(cfgPlayer.loop());
+    eggPlayer->setVolume(cfgPlayer->volume());
+    eggPlayer->setShuffle(cfgPlayer->shuffle());
+    eggPlayer->setLoop(cfgPlayer->loop());
 
     setupUi();
 
     connect(&m_library, SIGNAL(inserted(Audio*, int)), &m_musicLibrary, SLOT(insert(Audio*, int)));
     connect(&m_musicLibrary, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(onMusicLibraryDoubleClicked(QModelIndex)));
 
-    m_library.load(cfgLibrary.paths());
+    m_library.load(cfgLibrary->paths());
 }
 
 /*

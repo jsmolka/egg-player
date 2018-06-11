@@ -1,5 +1,5 @@
-#ifndef CFGABSTRACT_HPP
-#define CFGABSTRACT_HPP
+#ifndef CONFIGITEM_HPP
+#define CONFIGITEM_HPP
 
 #include <ShellScalingApi.h>
 
@@ -7,19 +7,23 @@
 #include <QJsonValue>
 
 /*!
- * Represents the abstract parent class for every config item.
+ * Represents an abstract config item.
  */
-class CfgAbstract
+class ConfigItem
 {
 public:
     /*!
      * Constructor.
      */
-    CfgAbstract();
+    ConfigItem();
     /*!
      * Constructor.
      */
-    CfgAbstract(QJsonObject object);
+    ConfigItem(const QJsonObject &object);
+    /*!
+     * Destructor.
+     */
+    ~ConfigItem();
     /*!
      * Getter for object property.
      */
@@ -30,6 +34,14 @@ public:
     virtual void setDefaults() = 0;
 
 protected:
+    /*!
+     * Sets the value at a key.
+     */
+    void set(const QString &key, const QJsonValue &value);
+    /*!
+     * Gets the value at a key.
+     */
+    QJsonValue get(const QString &key);
     /*!
      * Sets a value if it does not exist already.
      */
@@ -46,10 +58,12 @@ protected:
      * Makes a value even.
      */
     int makeEven(int value);
+
+private:
     /*!
      * Member variables.
      */
     QJsonObject m_object;
 };
 
-#endif // CFGABSTRACT_HPP
+#endif // CONFIGITEM_HPP

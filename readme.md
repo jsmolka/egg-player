@@ -20,11 +20,7 @@ A Groove Music like music player.
 - check for the max property in timer pause
 - consider loading covers with multiple threads
 - move library into music library
-- rework config
-  - load the config once and save it when the object gets destroyed
-  - rework the players volume part in the music bar accordingly
-  - inherit from QObject to destroy on application closing (maybe set the parent later)
-  - create one global instance and define the fields `cfgApp.log()`
+- adjust bar to config changes
 - reactive cache / library
   - use QFileSystemWatcher
   - update library / cache accordingly

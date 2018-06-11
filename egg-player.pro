@@ -11,8 +11,8 @@ QT += \
 INCLUDEPATH += \
     lib/bass-2.4/include \
     lib/taglib-1.11.1/include \
+    src/config \
     src/core \
-    src/core/config \
     src/core/threading \
     src/globals \
     src/ui \
@@ -45,6 +45,13 @@ CONFIG(release, debug|release) {
 RESOURCES = egg-player.qrc
 
 HEADERS += \
+    src/config/config.hpp \
+    src/config/configapp.hpp \
+    src/config/configbar.hpp \
+    src/config/configitem.hpp \
+    src/config/configlibrary.hpp \
+    src/config/configplayer.hpp \
+    src/config/configshortcut.hpp \
     src/core/audio.hpp \
     src/core/cache.hpp \
     src/core/library.hpp \
@@ -52,7 +59,6 @@ HEADERS += \
     src/core/player.hpp \
     src/core/shortcut.hpp \
     src/core/timer.hpp \
-    src/core/config/config.hpp \
     src/core/threading/abstractthread.hpp \
     src/core/threading/audioloader.hpp \
     src/core/threading/cachebuilder.hpp \
@@ -70,16 +76,17 @@ HEADERS += \
     src/utils/colorutil.hpp \
     src/utils/fileutil.hpp \
     src/utils/util.hpp \
-    src/utils/utils.hpp \
-    src/core/config/cfgabstract.hpp \
-    src/core/config/cfgapp.hpp \
-    src/core/config/cfgbar.hpp \
-    src/core/config/cfglibrary.hpp \
-    src/core/config/cfgplayer.hpp \
-    src/core/config/cfgshortcut.hpp
+    src/utils/utils.hpp
 
 SOURCES += \
     src/main.cpp \
+    src/config/config.cpp \
+    src/config/configapp.cpp \
+    src/config/configbar.cpp \
+    src/config/configitem.cpp \
+    src/config/configlibrary.cpp \
+    src/config/configplayer.cpp \
+    src/config/configshortcut.cpp \
     src/core/audio.cpp \
     src/core/cache.cpp \
     src/core/library.cpp \
@@ -87,7 +94,6 @@ SOURCES += \
     src/core/player.cpp \
     src/core/shortcut.cpp \
     src/core/timer.cpp \
-    src/core/config/config.cpp \
     src/core/threading/abstractthread.cpp \
     src/core/threading/audioloader.cpp \
     src/core/threading/cachebuilder.cpp \
@@ -103,10 +109,4 @@ SOURCES += \
     src/ui/layouts/borderlayout.cpp \
     src/utils/colorutil.cpp \
     src/utils/fileutil.cpp \
-    src/utils/util.cpp \
-    src/core/config/cfgabstract.cpp \
-    src/core/config/cfgapp.cpp \
-    src/core/config/cfgbar.cpp \
-    src/core/config/cfglibrary.cpp \
-    src/core/config/cfgplayer.cpp \
-    src/core/config/cfgshortcut.cpp
+    src/utils/util.cpp
