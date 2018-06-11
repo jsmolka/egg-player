@@ -270,7 +270,7 @@ void Player::play()
         return;
 
     m_playing = true;
-    pm_timer->start(currentAudio()->length(false));
+    pm_timer->start(currentAudio()->duration(false));
 
     emit stateChanged(PlayerState::Playing);
 }
@@ -642,7 +642,7 @@ void Player::setAudio(int index)
         return;
 
     setVolume(m_volume);
-    pm_timer->restart(audio->length(false));
+    pm_timer->restart(audio->duration(false));
 
     if (m_playing)
         play();

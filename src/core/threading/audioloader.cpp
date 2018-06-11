@@ -58,7 +58,7 @@ void AudioLoader::run()
         {
             audio = new Audio(file);
             if (audio->isValid())
-                cache.insertAudio(audio);
+                cache.insertTags(audio);
         }
 
         if (audio->isValid())

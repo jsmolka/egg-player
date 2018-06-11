@@ -1,213 +1,135 @@
 #include "audio.hpp"
 
-/*
- * Use TagLib namespace for whole class.
- */
 using namespace TagLib;
 
-/*
- * Constructor. Creates an audio object and tries to read its tags. If the title
- * tag is empty it will be set to the file name of the read file.
- *
- * :param path: audio path
- */
-Audio::Audio(const QString &path) :
-    m_path(path),
-    m_coverId(-1)
+Audio::Audio(const QString &path)
+    : m_valid(true)
+    , m_path(path)
+    , m_coverId(-1)
+    , m_outdated(false)
+    , m_size(FileUtil::size(path))
 {
-    m_valid = readTags();
-    if (!m_valid)
+    if (!readTags())
     {
+        m_valid = false;
         Logger::log("Audio: Cannot read tags %1", {m_path});
-        return;
     }
-
-    if (m_title.isEmpty())
-        m_title = FileUtil::fileName(m_path);
 }
 
-/*
- * Constructor. Used to create an audio object without parsing a file.
- *
- * :param path: path
- * :param title: title
- * :param artist: artist
- * :param album: album
- * :param genre: genre
- * :param year: year
- * :param length: length
- * :param coverId: cover id
- */
-Audio::Audio(const QString &path, const QString &title, const QString &artist, const QString &album,
-             const QString &genre, int year, int track, int length, int coverId) :
-    m_valid(true),
-    m_path(path),
-    m_title(title),
-    m_artist(artist),
-    m_album(album),
-    m_genre(genre),
-    m_year(year),
-    m_track(track),
-    m_length(length),
-    m_coverId(coverId)
+Audio::Audio(const QString &path,
+             const QString &title,
+             const QString &artist,
+             const QString &album,
+             const QString &genre,
+             int year,
+             int track,
+             int length,
+             int coverId,
+             int size)
+    : m_valid(true)
+    , m_path(path)
+    , m_title(title)
+    , m_artist(artist)
+    , m_album(album)
+    , m_genre(genre)
+    , m_year(year)
+    , m_track(track)
+    , m_duration(length)
+    , m_coverId(coverId)
+    , m_size(size)
 {
-
+    m_outdated = size != FileUtil::size(path);
 }
 
-/*
- * Destructor.
- */
 Audio::~Audio()
 {
 
 }
 
-/*
- * Getter for valid property.
- *
- * :return: valid
- */
 bool Audio::isValid() const
 {
     return m_valid;
 }
 
-/*
- * Getter for path property.
- *
- * :return: path
- */
 QString Audio::path() const
 {
     return m_path;
 }
 
-/*
- * Getter for title property.
- *
- * :return: title
- */
 QString Audio::title() const
 {
     return m_title;
 }
 
-/*
- * Getter for artist property.
- *
- * :return: artist
- */
 QString Audio::artist() const
 {
     return m_artist;
 }
 
-/*
- * Getter for album property.
- *
- * :return: album
- */
 QString Audio::album() const
 {
     return m_album;
 }
 
-/*
- * Getter for genre property.
- *
- * :return: genre
- */
 QString Audio::genre() const
 {
     return m_genre;
 }
 
-/*
- * Getter for year property.
- *
- * :return: year
- */
 int Audio::year() const
 {
     return m_year;
 }
 
-/*
- * Getter for track property.
- *
- * :return: track
- */
 int Audio::track() const
 {
     return m_track;
 }
 
-/*
- * Getter for length property. Returns the length either in seconds or in
- * milliseconds. The length in seconds will be round to next integer value
- * to make the song transition as smooth as possible.
- *
- * :param seconds: use seconds, default true
- * :return: length
- */
-int Audio::length(bool seconds) const
+int Audio::duration(bool seconds) const
 {
     if (seconds)
-        return static_cast<int>(round(static_cast<float>(m_length) / 1000.0));
+        return static_cast<int>(round(static_cast<float>(m_duration) / 1000.0));
     else
-        return m_length;
+        return m_duration;
 }
 
-/*
- * Setter for id property.
- *
- * :param id: id
- */
 void Audio::setCoverId(int id)
 {
     m_coverId = id;
 }
 
-/*
- * Getter for id property. This property will be used in combination with the
- * cache where it gets set once a cover is inserted or queried. It prevents
- * loading the cover multiple times by saving saving a copy in the QPixmapCache
- * with the key being the id.
- *
- * :return: id
- */
 int Audio::coverId() const
 {
     return m_coverId;
 }
 
-/*
- * Returns the path in wide char form. Needs to be used for TagLib and BASS.
- * Reinterpret cast only works in Windows.
- *
- * :return: path
- */
+quint64 Audio::size() const
+{
+    return m_size;
+}
+
+bool Audio::isOutdated() const
+{
+    return m_outdated;
+}
+
 const wchar_t * Audio::pathWChar() const
 {
     return reinterpret_cast<const wchar_t *>(m_path.constData());
 }
 
-/*
- * Returns audio cover.
- *
- * :param size: cover size, default 200
- */
 QPixmap Audio::cover(int size)
 {
-    return Util::resize(readCover(), size);
+    QPixmap cover = readCover();
+    if (cover.isNull())
+    {
+        cover = Util::defaultCover();
+        Logger::log("Audio: Cannot read cover %1", {m_path});
+    }
+    return Util::resize(cover, size);
 }
 
-/*
- * Reads audio tags. If either the tags or the audio properties cannot be read
- * the function returns false. If the file has a tag it will be read.
- *
- * :return: success
- */
 bool Audio::readTags()
 {
     FileRef fileRef(pathWChar());
@@ -215,7 +137,7 @@ bool Audio::readTags()
     if (fileRef.isNull() || !fileRef.audioProperties())
         return false;
 
-    m_length = fileRef.audioProperties()->lengthInMilliseconds();
+    m_duration = fileRef.audioProperties()->lengthInMilliseconds();
 
     if (fileRef.tag())
     {
@@ -231,20 +153,37 @@ bool Audio::readTags()
         m_genre = QString::fromWCharArray(genre.toCWString(), genre.size());
         m_year = tag->year();
         m_track = tag->track();
+
+        if (m_title.isEmpty())
+            m_title = FileUtil::fileName(m_path);
     }
     return true;
 }
 
-/*
- * Reads cover of audio file. Because covers should always be squares, the read
- * cover will be drawn onto a transparent square if it is not square.
- *
- * :return: cover
- */
+QPixmap Audio::coverify(const QPixmap &cover)
+{
+    int height = cover.height();
+    int width = cover.width();
+
+    if (height != width)
+    {
+        int size = std::max(height, width);
+        QPixmap square(size, size);
+        square.fill(Qt::transparent);
+
+        QPainter painter(&square);
+        int x = (size - width) / 2;
+        int y = (size - height) / 2;
+        painter.drawPixmap(x, y, cover);
+        return square;
+    }
+    return cover;
+}
+
 QPixmap Audio::readCover()
 {
     MPEG::File file(pathWChar());
-    QPixmap image;
+    QPixmap cover;
 
     if (file.hasID3v2Tag())
     {
@@ -256,30 +195,10 @@ QPixmap Audio::readCover()
             if (!frameList.isEmpty())
             {
                 ID3v2::AttachedPictureFrame *frame = static_cast<ID3v2::AttachedPictureFrame *>(frameList.front());
-                image.loadFromData((const uchar *) frame->picture().data(), frame->picture().size());
+                cover.loadFromData((const uchar *) frame->picture().data(), frame->picture().size());
+                cover = coverify(cover);
             }
         }
     }
-
-    if (!image.isNull())
-    {
-        if (image.height() != image.width())
-        {
-            int size = std::max(image.height(), image.width());
-            QPixmap background(size, size);
-            background.fill(Qt::transparent);
-
-            QPainter painter(&background);
-            int x = (size - image.width()) / 2;
-            int y = (size - image.height()) / 2;
-            painter.drawPixmap(x, y, image);
-            image = background;
-        }
-    }
-    else
-    {
-        image = Util::cover();
-        Logger::log("Audio: Cannot read cover %1", {m_path});
-    }
-    return image;
+    return cover;
 }

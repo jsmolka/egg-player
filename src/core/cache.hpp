@@ -14,7 +14,7 @@
 #include "logger.hpp"
 
 /*!
- * This class represents a cache in form of an sqlite database.
+ * This class represents an audio cache in form of an sqlite database.
  */
 class Cache
 {
@@ -28,24 +28,43 @@ public:
      */
     ~Cache();
     /*!
-     * Loads an audio object for a given path. If the audio cannot be loaded a
-     * nullptr will be returned.
+     * Starts a transaction.
+     */
+    bool transaction();
+    /*!
+     * Commits the current transaction.
+     */
+    bool commit();
+    /*!
+     * Rolls the current transaction back.
+     */
+    bool rollback();
+    /*!
+     * Loads an audio object for a given path. A nullptr will be returned if the
+     * audio cannot be loaded.
      */
     Audio * load(const QString &path);
     /*!
      * Inserts the tags of an audio object into the cache.
      */
-    bool insertAudio(Audio *audio);
+    void insertTags(Audio *audio);
     /*!
-     * Inserts the cover of an audio object into the cache.
+     * Inserts the cover of an audio object into the cache. Returns the cover
+     * id.
      */
-    bool insertCover(Audio *audio, int size = 200);
+    int insertCover(Audio *audio, int size = 200);
     /*!
-     * Checks if the cache contains an audio object.
+     * Updates the tags of an audio object. Note that this function will reset
+     * the cover id.
      */
-    bool contains(Audio *audio);
+    void updateTags(Audio *audio);
     /*!
-     * Loads the cover of an audio object from the cache.
+     * Returns the cover id of an audio.
+     */
+    int coverId(Audio *audio);
+    /*!
+     * Loads the cover of an audio object from the cache. Uses a cached version
+     * if the cover has already been loaded.
      */
     QPixmap cover(Audio *audio, int size = 200);
 
@@ -79,7 +98,7 @@ private:
     /*!
      * Retrieves the cover id for a given cover in byte array form. For
      * performance reasons it first tries to query the cover by byte array
-     * length and then by blob comparison.
+     * size and then by blob comparison.
      */
     int coverId(const QByteArray &bytes);
     /*!
@@ -87,9 +106,9 @@ private:
      */
     int lastCoverId();
     /*!
-     * Queries a cover by length.
+     * Queries a cover by size.
      */
-    int queryCoverIdByLength(int length);
+    int queryCoverIdBySize(int size);
     /*!
      * Queries a cover by blob comparison.
      */
@@ -97,12 +116,12 @@ private:
     /*!
      * Handles database errors.
      */
-    void handleError(const QSqlQuery &query);
+    void handleError();
     /*!
      * Gets the last used query by replacing all bounded values with the used
      * ones.
      */
-    QString lastQuery(const QSqlQuery &query);
+    QString lastQuery();
     /*!
      * Converts a cover to a byte array.
      */

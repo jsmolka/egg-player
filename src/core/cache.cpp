@@ -3,18 +3,14 @@
 Cache::Cache()
 {    
     if (!QSqlDatabase::contains(dbName()))
-    {
         QSqlDatabase::addDatabase("QSQLITE", dbName());
 
-        m_db = db();
+    m_db = db();
+    m_query = QSqlQuery(m_db);
+    m_query.setForwardOnly(true);
 
-        createCovers();
-        createAudios();
-    }
-    else
-    {
-        m_db = db();
-    }
+    createCovers();
+    createAudios();
 }
 
 Cache::~Cache()
@@ -22,124 +18,151 @@ Cache::~Cache()
 
 }
 
+bool Cache::transaction()
+{
+    return m_db.transaction();
+}
+
+bool Cache::commit()
+{
+    return m_db.commit();
+}
+
+bool Cache::rollback()
+{
+    return m_db.rollback();
+}
+
 Audio * Cache::load(const QString &path)
 {
     Audio *audio = nullptr;
 
-    QSqlQuery query(m_db);
-    query.prepare(
+    m_query.prepare(
         "SELECT * FROM audios "
         "WHERE path = :path"
     );
-    query.bindValue(":path", path);
+    m_query.bindValue(":path", path);
 
-    if (!query.exec())
-        handleError(query);
+    if (!m_query.exec())
+        handleError();
 
-    if (query.first())
+    if (m_query.first())
     {
         audio = new Audio(
-            query.value(0).toString(),
-            query.value(1).toString(),
-            query.value(2).toString(),
-            query.value(3).toString(),
-            query.value(4).toString(),
-            query.value(5).toInt(),
-            query.value(6).toInt(),
-            query.value(7).toInt(),
-            query.value(8).toInt()
+            m_query.value(0).toString(),
+            m_query.value(1).toString(),
+            m_query.value(2).toString(),
+            m_query.value(3).toString(),
+            m_query.value(4).toString(),
+            m_query.value(5).toInt(),
+            m_query.value(6).toInt(),
+            m_query.value(7).toInt(),
+            m_query.value(8).toInt(),
+            m_query.value(9).toUInt()
         );
     }
     return audio;
 }
 
-bool Cache::insertAudio(Audio *audio)
+void Cache::insertTags(Audio *audio)
 {
-    QSqlQuery query(m_db);
-    query.prepare(
+    m_query.prepare(
         "INSERT INTO audios VALUES ("
-        " :path,"
-        " :title,"
-        " :artist,"
-        " :album,"
-        " :genre,"
-        " :year,"
-        " :track,"
-        " :length,"
-        " :coverid"
+        "  :path,"
+        "  :title,"
+        "  :artist,"
+        "  :album,"
+        "  :genre,"
+        "  :year,"
+        "  :track,"
+        "  :duration,"
+        "  :coverid,"
+        "  :size"
         ")"
     );
-    query.bindValue(":path", audio->path());
-    query.bindValue(":title", audio->title());
-    query.bindValue(":artist", audio->artist());
-    query.bindValue(":album", audio->album());
-    query.bindValue(":genre", audio->genre());
-    query.bindValue(":year", audio->year());
-    query.bindValue(":track", audio->track());
-    query.bindValue(":length", audio->length(false));
-    query.bindValue(":coverid", audio->coverId());
+    m_query.bindValue(":path", audio->path());
+    m_query.bindValue(":title", audio->title());
+    m_query.bindValue(":artist", audio->artist());
+    m_query.bindValue(":album", audio->album());
+    m_query.bindValue(":genre", audio->genre());
+    m_query.bindValue(":year", audio->year());
+    m_query.bindValue(":track", audio->track());
+    m_query.bindValue(":duration", audio->duration(false));
+    m_query.bindValue(":coverid", audio->coverId());
+    m_query.bindValue(":size", audio->size());
 
-    if (!query.exec())
-    {
-        handleError(query);
-        return false;
-    }
-    return true;
+    if (!m_query.exec())
+        handleError();
 }
 
-bool Cache::insertCover(Audio *audio, int size)
+int Cache::insertCover(Audio *audio, int size)
 {
     int id = getOrInsertCover(audio->cover(size));
-    if (id == -1)
-        return false;
 
-    audio->setCoverId(id);
-
-    QSqlQuery query(m_db);
-    query.prepare(
-        "UPDATE audios "
-        "SET coverid = :coverid "
-        "WHERE path = :path"
-    );
-    query.bindValue(":path", audio->path());
-    query.bindValue(":coverid", id);
-
-    if (!query.exec())
+    if (id != -1)
     {
-        handleError(query);
-        return false;
+        m_query.prepare(
+            "UPDATE audios SET"
+            "  coverid = :coverid "
+            "WHERE path = :path"
+        );
+        m_query.bindValue(":path", audio->path());
+        m_query.bindValue(":coverid", id);
+
+        if (!m_query.exec())
+            handleError();
     }
-    return true;
+    return id;
 }
 
-bool Cache::contains(Audio *audio)
+void Cache::updateTags(Audio *audio)
 {
-    if (audio->coverId() != -1)
-        return true;
+    audio->setCoverId(-1);
 
-    QSqlQuery query(m_db);
-    query.prepare(
+    m_query.prepare(
+        "UPDATE audios SET"
+        "  path = :path,"
+        "  title = :title,"
+        "  artist = :artist,"
+        "  album = :album,"
+        "  genre = :genre,"
+        "  year = :year,"
+        "  track = :track,"
+        "  duration = :duration,"
+        "  coverid = :coverid,"
+        "  size = :size "
+        "WHERE path = :path"
+    );
+    m_query.bindValue(":path", audio->path());
+    m_query.bindValue(":title", audio->title());
+    m_query.bindValue(":artist", audio->artist());
+    m_query.bindValue(":album", audio->album());
+    m_query.bindValue(":genre", audio->genre());
+    m_query.bindValue(":year", audio->year());
+    m_query.bindValue(":track", audio->track());
+    m_query.bindValue(":duration", audio->duration(false));
+    m_query.bindValue(":coverid", audio->coverId());
+    m_query.bindValue(":size", audio->size());
+
+    if (!m_query.exec())
+        handleError();
+}
+
+int Cache::coverId(Audio *audio)
+{
+    m_query.prepare(
         "SELECT coverid FROM audios "
         "WHERE path = :path"
     );
-    query.bindValue(":path", audio->path());
+    m_query.bindValue(":path", audio->path());
 
-    if (!query.exec())
-    {
-        handleError(query);
-        return true;
-    }
+    if (!m_query.exec())
+        handleError();
 
-    if (!query.first())
-        return false;
+    if (!m_query.first())
+        return m_query.value(0).toInt();
 
-    int id = query.value(0).toInt();
-    if (id == -1)
-        return false;
-
-    audio->setCoverId(id);
-
-    return true;
+    return -1;
 }
 
 QPixmap Cache::cover(Audio *audio, int size)
@@ -147,34 +170,33 @@ QPixmap Cache::cover(Audio *audio, int size)
     if (_covers.contains(audio->coverId()))
         return _covers.value(audio->coverId());
 
-    QSqlQuery query(m_db);
-    query.prepare(
+    m_query.prepare(
         "SELECT covers.cover FROM audios "
         "JOIN covers ON audios.coverid = covers.id "
         "WHERE path = :path"
     );
-    query.bindValue(":path", audio->path());
+    m_query.bindValue(":path", audio->path());
 
-    if (!query.exec())
-        handleError(query);
+    if (!m_query.exec())
+        handleError();
 
-    QPixmap pixmap;
-    if (query.first())
+    QPixmap cover;
+    if (m_query.first())
     {
-        QByteArray bytes = query.value(0).toByteArray();
-        pixmap.loadFromData(bytes);
+        QByteArray bytes = m_query.value(0).toByteArray();
+        cover.loadFromData(bytes);
     }
 
-    if (pixmap.isNull())
+    if (cover.isNull())
     {
-        pixmap = Util::cover();
+        cover = Util::defaultCover();
         Logger::log("Cache: Cannot load cover %1", {audio->path()});
     }
 
-    pixmap = Util::resize(pixmap, size);
-    _covers.insert(audio->coverId(), pixmap);
+    cover = Util::resize(cover, size);
+    _covers.insert(audio->coverId(), cover);
 
-    return pixmap;
+    return cover;
 }
 
 QString Cache::dbName()
@@ -186,9 +208,7 @@ QSqlDatabase Cache::db()
 {
     QSqlDatabase db = QSqlDatabase::database(dbName(), false);
     db.setDatabaseName(SQL_PATH);
-    if (!db.isOpen())
-        if (!db.open())
-            Logger::log("Cache: Cannot open database");
+    db.open();
 
     return db;
 }
@@ -197,34 +217,33 @@ void Cache::createCovers()
 {
     QString create =
         "CREATE TABLE IF NOT EXISTS covers("
-        " id INTEGER PRIMARY KEY,"
-        " len INTEGER,"
-        " cover BLOB"
+        "  id INTEGER PRIMARY KEY,"
+        "  size INTEGER,"
+        "  cover BLOB"
         ")";
 
-    QSqlQuery query(m_db);
-    if (!query.exec(create))
-        handleError((query));
+    if (m_query.exec(create))
+        handleError();
 }
 
 void Cache::createAudios()
 {
     QString create =
         "CREATE TABLE IF NOT EXISTS audios("
-        " path TEXT PRIMARY KEY,"
-        " title TEXT,"
-        " artist TEXT,"
-        " album TEXT,"
-        " genre TEXT,"
-        " year INTEGER,"
-        " track INTEGER,"
-        " length INTEGER,"
-        " coverid INTEGER"
+        "  path TEXT PRIMARY KEY,"
+        "  title TEXT,"
+        "  artist TEXT,"
+        "  album TEXT,"
+        "  genre TEXT,"
+        "  year INTEGER,"
+        "  track INTEGER,"
+        "  length INTEGER,"
+        "  coverid INTEGER,"
+        "  size INTEGER"
         ")";
 
-    QSqlQuery query(m_db);
-    if (!query.exec(create))
-        handleError(query);
+    if (!m_query.exec(create))
+        handleError();
 }
 
 int Cache::getOrInsertCover(const QPixmap &cover)
@@ -242,21 +261,20 @@ int Cache::insertByteCover(const QByteArray &bytes)
 {
     int id = lastCoverId() + 1;
 
-    QSqlQuery query(m_db);
-    query.prepare(
+    m_query.prepare(
         "INSERT INTO covers VALUES ("
-        " :id,"
-        " :len,"
-        " :cover"
+        "  :id,"
+        "  :size,"
+        "  :cover"
         ")"
     );
-    query.bindValue(":id", id);
-    query.bindValue(":len", bytes.length());
-    query.bindValue(":cover", bytes);
+    m_query.bindValue(":id", id);
+    m_query.bindValue(":size", bytes.size());
+    m_query.bindValue(":cover", bytes);
 
-    if (!query.exec())
+    if (!m_query.exec())
     {
-        handleError(query);
+        handleError();
         return -1;
     }
     return id;
@@ -264,7 +282,7 @@ int Cache::insertByteCover(const QByteArray &bytes)
 
 int Cache::coverId(const QByteArray &bytes)
 {
-    int id = queryCoverIdByLength(bytes.length());
+    int id = queryCoverIdBySize(bytes.size());
 
     if (id == -1)
         id = queryCoverIdByBlob(bytes);
@@ -274,35 +292,32 @@ int Cache::coverId(const QByteArray &bytes)
 
 int Cache::lastCoverId()
 {
-    QSqlQuery query(m_db);
+    if (!m_query.exec("SELECT max(id) FROM covers"))
+        handleError();
 
-    if (!query.exec("SELECT max(id) FROM covers"))
-        handleError(query);
-
-    if (query.first())
-        return query.value(0).toInt();
+    if (m_query.first())
+        return m_query.value(0).toInt();
 
     return -1;
 }
 
-int Cache::queryCoverIdByLength(int length)
+int Cache::queryCoverIdBySize(int size)
 {
     int id = -1;
 
-    QSqlQuery query(m_db);
-    query.prepare(
+    m_query.prepare(
         "SELECT id FROM covers "
-        "WHERE len = :len"
+        "WHERE size = :size"
     );
-    query.bindValue(":len", length);
+    m_query.bindValue(":size", size);
 
-    if (!query.exec())
-        handleError(query);
+    if (!m_query.exec())
+        handleError();
 
-    if (query.first())
-        id = query.value(0).toInt();
+    if (m_query.first())
+        id = m_query.value(0).toInt();
 
-    if (query.next())
+    if (m_query.next())
         id = -1;
 
     return id;
@@ -310,48 +325,47 @@ int Cache::queryCoverIdByLength(int length)
 
 int Cache::queryCoverIdByBlob(const QByteArray &bytes)
 {
-    QSqlQuery query(m_db);
-    query.prepare(
+    m_query.prepare(
         "SELECT id FROM covers "
         "WHERE cover = :cover"
     );
-    query.bindValue(":cover", bytes);
+    m_query.bindValue(":cover", bytes);
 
-    if (!query.exec())
-        handleError(query);
+    if (!m_query.exec())
+        handleError();
 
-    if (query.first())
-        return query.value(0).toInt();
+    if (m_query.first())
+        return m_query.value(0).toInt();
 
     return -1;
 }
 
-void Cache::handleError(const QSqlQuery &query)
+void Cache::handleError()
 {
-    QSqlError error = query.lastError();
+    QSqlError error = m_query.lastError();
     if (error.type() != QSqlError::NoError)
     {
         Logger::log(
             "Cache: Querying \"%1\" failed with error \"%2\"",
             {
-                lastQuery(query),
+                lastQuery(),
                 error.databaseText()
             }
         );
     }
 }
 
-QString Cache::lastQuery(const QSqlQuery &query)
+QString Cache::lastQuery()
 {
-    QString string = query.lastQuery();
-    QMapIterator<QString, QVariant> iter(query.boundValues());
+    QString query = m_query.lastQuery();
+    QMapIterator<QString, QVariant> iter(m_query.boundValues());
 
     while (iter.hasNext())
     {
         iter.next();
-        string.replace(iter.key(), iter.value().toString());
+        query.replace(iter.key(), iter.value().toString());
     }
-    return string;
+    return query;
 }
 
 QByteArray Cache::coverToBytes(const QPixmap &cover)

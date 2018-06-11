@@ -31,14 +31,8 @@ A Groove Music like music player.
   - use [cstdarg](https://en.wikipedia.org/wiki/Stdarg.h#.3Cvarargs.h.3E) to process arguments
   - use a static variable which holds the value of `Config::App::log`
 - reactive cache / library
-  - store file size in cache
-  - update audio if size changed
   - use QFileSystemWatcher
   - update library / cache accordingly
-- cache
-  - member query
-  - functions for transaction and commit (maybe use while loading audios, not covers)
-  - reload function for database
 - expand thread pool
   - remove threads once finished
   - add function to abort all
@@ -48,10 +42,8 @@ A Groove Music like music player.
   - if the audio does it exists it gets pushed into a vector (new vector vs remove)
   - load the missing audios in multiple AudioLoaderThreads and emit them to the LibraryLoaderThread
   - the LibraryLoaderThread inserts them into the cache (use mutex with mutex locker) and emits them
-- search the library by typing
-  - search based on sorted
+- fuzzy library searching
   - store last result, show it if there is no current
-  - reset search string after certain time
 - completely rewrite documentation before next release
   - place the docstrings in the header instead of the source file
 ```cpp
@@ -66,6 +58,7 @@ int Class::function(int a, double t);
 - [namespace](https://stackoverflow.com/a/10493005/7057528) instead of class for utils
   - use templates for functions
   - time from milliseconds (do not split it up before)
+- change app background color to black to prevent white flashing when resizing
 
 ### Cosmetic
 - do not show certain info at low size

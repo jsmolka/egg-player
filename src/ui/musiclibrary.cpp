@@ -163,7 +163,7 @@ QString MusicLibrary::audioText(Audio *audio, int column)
         case SongInfo::Genre:
             return audio->genre();
         case SongInfo::Length:
-            return Util::time(audio->length());
+            return Util::time(audio->duration());
     }
     return QString();
 }

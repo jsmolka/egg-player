@@ -53,7 +53,10 @@ void CacheBuilder::run()
         if (isAbort())
             return;
 
-        if (!cache.contains(audio))
-            cache.insertCover(audio);
+        int id = cache.coverId(audio);
+        if (id == -1)
+            id = cache.insertCover(audio);
+
+        audio->setCoverId(id);
     }
 }

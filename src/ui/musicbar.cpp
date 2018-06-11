@@ -206,9 +206,9 @@ void MusicBar::onPlayerAudioChanged(Audio *audio)
     m_trackLabel.setText(QString("%1\n%2").arg(audio->title(), audio->artist()));
 
     m_currentTimeLabel.setText(Util::time(0));
-    m_totalTimeLabel.setText(Util::time(audio->length()));
+    m_totalTimeLabel.setText(Util::time(audio->duration()));
 
-    m_lengthSlider.setRange(0, audio->length());
+    m_lengthSlider.setRange(0, audio->duration());
     m_lengthSlider.setEnabled(true);
 
     setColor(ColorUtil::background(cover, audio->coverId()));
@@ -316,7 +316,7 @@ void MusicBar::onLengthSliderMoved(int value)
  */
 void MusicBar::onLengthSliderValueChanged(int value)
 {
-    if (value != eggPlayer->currentAudio()->length())
+    if (value != eggPlayer->currentAudio()->duration())
         eggPlayer->setPosition(value);
     else
         eggPlayer->next();
@@ -394,7 +394,7 @@ void MusicBar::setup()
 
     setAutoFillBackground(true);
     setFixedHeight(Config::Bar::height());
-    setColor(ColorUtil::background(Util::cover()));
+    setColor(ColorUtil::background(Util::defaultCover()));
 }
 
 /*
@@ -402,7 +402,7 @@ void MusicBar::setup()
  */
 void MusicBar::setupUi()
 {
-    m_coverLabel.setPixmap(Util::cover(Config::Bar::coverSize()));
+    m_coverLabel.setPixmap(Util::defaultCover(Config::Bar::coverSize()));
     m_coverLabel.setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
     m_trackLabel.setFixedWidth(Config::Bar::trackWidth());
     m_trackLabel.setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);

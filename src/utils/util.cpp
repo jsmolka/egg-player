@@ -31,7 +31,7 @@ QString Util::time(int length)
  * :param size: size, default -1
  * :return: default cover
  */
-QPixmap Util::cover(int size)
+QPixmap Util::defaultCover(int size)
 {
     QPixmap pixmap(IMG_DEFAULT_COVER);
     if (size != -1)
