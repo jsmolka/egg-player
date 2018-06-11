@@ -2,7 +2,7 @@
 
 void Logger::log(const QString &message, const StringList &args)
 {
-    if (!Config::App::log())
+    if (!cfgApp.log())
         return;
 
     QFile file(LOG_PATH);

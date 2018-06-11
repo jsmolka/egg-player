@@ -12,6 +12,7 @@ INCLUDEPATH += \
     lib/bass-2.4/include \
     lib/taglib-1.11.1/include \
     src/core \
+    src/core/config \
     src/core/threading \
     src/globals \
     src/ui \
@@ -46,12 +47,12 @@ RESOURCES = egg-player.qrc
 HEADERS += \
     src/core/audio.hpp \
     src/core/cache.hpp \
-    src/core/config.hpp \
     src/core/library.hpp \
     src/core/logger.hpp \
     src/core/player.hpp \
     src/core/shortcut.hpp \
     src/core/timer.hpp \
+    src/core/config/config.hpp \
     src/core/threading/abstractthread.hpp \
     src/core/threading/audioloader.hpp \
     src/core/threading/cachebuilder.hpp \
@@ -69,18 +70,24 @@ HEADERS += \
     src/utils/colorutil.hpp \
     src/utils/fileutil.hpp \
     src/utils/util.hpp \
-    src/utils/utils.hpp
+    src/utils/utils.hpp \
+    src/core/config/cfgabstract.hpp \
+    src/core/config/cfgapp.hpp \
+    src/core/config/cfgbar.hpp \
+    src/core/config/cfglibrary.hpp \
+    src/core/config/cfgplayer.hpp \
+    src/core/config/cfgshortcut.hpp
 
 SOURCES += \
     src/main.cpp \
     src/core/audio.cpp \
     src/core/cache.cpp \
-    src/core/config.cpp \
     src/core/library.cpp \
     src/core/logger.cpp \
     src/core/player.cpp \
     src/core/shortcut.cpp \
     src/core/timer.cpp \
+    src/core/config/config.cpp \
     src/core/threading/abstractthread.cpp \
     src/core/threading/audioloader.cpp \
     src/core/threading/cachebuilder.cpp \
@@ -97,3 +104,9 @@ SOURCES += \
     src/utils/colorutil.cpp \
     src/utils/fileutil.cpp \
     src/utils/util.cpp \
+    src/core/config/cfgabstract.cpp \
+    src/core/config/cfgapp.cpp \
+    src/core/config/cfgbar.cpp \
+    src/core/config/cfglibrary.cpp \
+    src/core/config/cfgplayer.cpp \
+    src/core/config/cfgshortcut.cpp

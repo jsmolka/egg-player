@@ -19,11 +19,11 @@ MusicBar::MusicBar(QWidget *parent) :
     m_volumeButton(this),
     m_lengthSlider(this),
     m_volumeSlider(this),
-    m_scPlayPause(Config::Shortcut::playPause(), false, this),
-    m_scNext(Config::Shortcut::next(), false, this),
-    m_scPrevious(Config::Shortcut::previous(), false, this),
-    m_scVolumeUp(Config::Shortcut::volumeUp(), true, this),
-    m_scVolumeDown(Config::Shortcut::volumeDown(), true, this)
+    m_scPlayPause(cfgShortcut.playPause(), false, this),
+    m_scNext(cfgShortcut.next(), false, this),
+    m_scPrevious(cfgShortcut.previous(), false, this),
+    m_scVolumeUp(cfgShortcut.volumeUp(), true, this),
+    m_scVolumeDown(cfgShortcut.volumeDown(), true, this)
 {
     setup();
     setupUi();
@@ -200,7 +200,7 @@ void MusicBar::paintEvent(QPaintEvent *event)
  */
 void MusicBar::onPlayerAudioChanged(Audio *audio)
 {
-    QPixmap cover = Cache().cover(audio, Config::Bar::coverSize());
+    QPixmap cover = Cache().cover(audio, cfgBar.coverSize());
 
     m_coverLabel.setPixmap(cover);
     m_trackLabel.setText(QString("%1\n%2").arg(audio->title(), audio->artist()));
@@ -267,7 +267,7 @@ void MusicBar::onPlayPauseButtonPressed()
 void MusicBar::onShuffleButtonLocked(bool locked)
 {
     eggPlayer->setShuffle(locked);
-    Config::Player::setShuffle(locked);
+    cfgPlayer.setShuffle(locked);
 }
 
 /*
@@ -278,7 +278,7 @@ void MusicBar::onShuffleButtonLocked(bool locked)
 void MusicBar::onLoopButtonLocked(bool locked)
 {
     eggPlayer->setLoop(locked);
-    Config::Player::setLoop(locked);
+    cfgPlayer.setLoop(locked);
 }
 
 /*
@@ -378,10 +378,10 @@ void MusicBar::loadCss()
 {
     setStyleSheet(
         FileUtil::read(CSS_MUSICBAR)
-            .replace("groove-height", QString::number(Config::Bar::grooveHeight()))
-            .replace("handle-size-half", QString::number(Config::Bar::handleSize() / 2))
-            .replace("handle-size", QString::number(Config::Bar::handleSize()))
-            .replace("icon-size-half", QString::number(Config::Bar::iconSize() / 2))
+            .replace("groove-height", QString::number(cfgBar.grooveHeight()))
+            .replace("handle-size-half", QString::number(cfgBar.handleSize() / 2))
+            .replace("handle-size", QString::number(cfgBar.handleSize()))
+            .replace("icon-size-half", QString::number(cfgBar.iconSize() / 2))
     );
 }
 
@@ -393,7 +393,7 @@ void MusicBar::setup()
     loadCss();
 
     setAutoFillBackground(true);
-    setFixedHeight(Config::Bar::height());
+    setFixedHeight(cfgBar.height());
     setColor(ColorUtil::background(Util::defaultCover()));
 }
 
@@ -402,39 +402,39 @@ void MusicBar::setup()
  */
 void MusicBar::setupUi()
 {
-    m_coverLabel.setPixmap(Util::defaultCover(Config::Bar::coverSize()));
+    m_coverLabel.setPixmap(Util::defaultCover(cfgBar.coverSize()));
     m_coverLabel.setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
-    m_trackLabel.setFixedWidth(Config::Bar::trackWidth());
+    m_trackLabel.setFixedWidth(cfgBar.trackWidth());
     m_trackLabel.setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
-    m_currentTimeLabel.setFixedWidth(Config::Bar::timeWidth());
+    m_currentTimeLabel.setFixedWidth(cfgBar.timeWidth());
     m_currentTimeLabel.setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Maximum);
     m_currentTimeLabel.setAlignment(Qt::AlignRight | Qt::AlignHCenter);
-    m_totalTimeLabel.setFixedWidth(Config::Bar::timeWidth());
+    m_totalTimeLabel.setFixedWidth(cfgBar.timeWidth());
     m_totalTimeLabel.setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Maximum);
 
     m_lengthSlider.setEnabled(false);
     m_lengthSlider.setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding);
     m_volumeSlider.setVisible(false);
     m_volumeSlider.setRange(0, 100);
-    m_volumeSlider.setValue(Config::Player::volume());
+    m_volumeSlider.setValue(cfgPlayer.volume());
     m_volumeSlider.setSizePolicy(QSizePolicy::Fixed, QSizePolicy::MinimumExpanding);
-    m_volumeSlider.setFixedWidth(5 * Config::Bar::iconSize() + 4 * Config::Bar::spacing());
+    m_volumeSlider.setFixedWidth(5 * cfgBar.iconSize() + 4 * cfgBar.spacing());
 
-    m_playPauseButton.init({QIcon(ICO_PLAY), QIcon(ICO_PAUSE)}, Config::Bar::iconSize());
-    m_previousButton.init({QIcon(ICO_PREVIOUS)}, Config::Bar::iconSize());
-    m_nextButton.init({QIcon(ICO_NEXT)}, Config::Bar::iconSize());
-    m_shuffleButton.init({QIcon(ICO_SHUFFLE)}, Config::Bar::iconSize(), true);
-    m_loopButton.init({QIcon(ICO_LOOP)}, Config::Bar::iconSize(), true);
+    m_playPauseButton.init({QIcon(ICO_PLAY), QIcon(ICO_PAUSE)}, cfgBar.iconSize());
+    m_previousButton.init({QIcon(ICO_PREVIOUS)}, cfgBar.iconSize());
+    m_nextButton.init({QIcon(ICO_NEXT)}, cfgBar.iconSize());
+    m_shuffleButton.init({QIcon(ICO_SHUFFLE)}, cfgBar.iconSize(), true);
+    m_loopButton.init({QIcon(ICO_LOOP)}, cfgBar.iconSize(), true);
     m_volumeButton.init({QIcon(ICO_VOLUME_FULL), QIcon(ICO_VOLUME_MEDIUM),
-                         QIcon(ICO_VOLUME_LOW), QIcon(ICO_VOLUME_MUTE)}, Config::Bar::iconSize());
+                         QIcon(ICO_VOLUME_LOW), QIcon(ICO_VOLUME_MUTE)}, cfgBar.iconSize());
 
-    m_shuffleButton.setLocked(Config::Player::shuffle());
-    m_loopButton.setLocked(Config::Player::loop());
-    setVolumeIcon(Config::Player::volume());
+    m_shuffleButton.setLocked(cfgPlayer.shuffle());
+    m_loopButton.setLocked(cfgPlayer.loop());
+    setVolumeIcon(cfgPlayer.volume());
 
     QGridLayout *layout = new QGridLayout(this);
-    layout->setHorizontalSpacing(Config::Bar::spacing());
-    layout->setContentsMargins(Config::Bar::margin(), Config::Bar::margin(), Config::Bar::margin(), Config::Bar::margin());
+    layout->setHorizontalSpacing(cfgBar.spacing());
+    layout->setContentsMargins(cfgBar.margin(), cfgBar.margin(), cfgBar.margin(), cfgBar.margin());
     layout->addWidget(&m_coverLabel, 0, 0);
     layout->addWidget(&m_trackLabel, 0, 1);
     layout->addWidget(&m_currentTimeLabel, 0, 2);
@@ -499,7 +499,7 @@ void MusicBar::showButtons()
  */
 void MusicBar::setVolumeConfig(int volume)
 {
-    Config::Player::setVolume(volume);
+    cfgPlayer.setVolume(volume);
 }
 
 /*

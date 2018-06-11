@@ -1,6 +1,7 @@
 #ifndef LIBRARY_HPP
 #define LIBRARY_HPP
 
+#include <QApplication>
 #include <QMutex>
 #include <QObject>
 #include <QSet>
@@ -12,7 +13,7 @@
 #include "threadpool.hpp"
 #include "types.hpp"
 
-# define eggLibrary (Library::instance());
+#define eggLibrary (Library::instance())
 
 class Library : public QObject
 {

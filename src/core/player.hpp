@@ -1,6 +1,7 @@
 #ifndef PLAYER_HPP
 #define PLAYER_HPP
 
+#include <QApplication>
 #include <QObject>
 
 #include <bass/bass.h>

@@ -10,6 +10,9 @@
 #include "constants.hpp"
 #include "types.hpp"
 
+/*!
+ * This namespace contains functions used for logging.
+ */
 namespace Logger
 {
     /*!

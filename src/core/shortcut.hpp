@@ -3,6 +3,7 @@
 
 #include <Windows.h>
 
+#include <QApplication>
 #include <QAbstractEventDispatcher>
 #include <QAbstractNativeEventFilter>
 #include <QHash>
