@@ -1,27 +1,25 @@
 #ifndef LOGGER_HPP
 #define LOGGER_HPP
 
-#include <QApplication>
 #include <QDateTime>
 #include <QDebug>
 #include <QFile>
-#include <QStringList>
 #include <QTextStream>
 
 #include "config.hpp"
 #include "constants.hpp"
 #include "types.hpp"
 
-class Logger
+namespace Logger
 {
-public:
-    static void log(const QString &message, const StringList &args = {});
-
-private:    
-    static QString createLog(QString message, const StringList &args);
-
-    static QFile * file();
-    static QFile *_file;
-};
+    /*!
+     * Logs a message.
+     */
+    extern void log(const QString &message, const StringList &args = {});
+    /*!
+     * Creates a log message.
+     */
+    extern QString createLog(QString message, const StringList &args);
+}
 
 #endif // LOGGER_HPP

@@ -7,11 +7,6 @@
 #include "eggplayer.hpp"
 #include "logger.hpp"
 
-/*
- * Loads custom font.
- *
- * :return: font
- */
 QFont loadFont()
 {
     int id = QFontDatabase::addApplicationFont(FONT_LATO);
@@ -24,9 +19,6 @@ QFont loadFont()
     return font;
 }
 
-/*
- * Sets up application.
- */
 void setup()
 {
     qApp->setApplicationName(APP_NAME);
@@ -34,13 +26,6 @@ void setup()
     qApp->setFont(loadFont());
 }
 
-/*
- * Main function.
- *
- * :param argc: argc
- * :param argv: argv
- * :return: exit code
- */
 int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
