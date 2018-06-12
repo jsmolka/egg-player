@@ -6,7 +6,7 @@
 #include "cache.hpp"
 #include "logger.hpp"
 #include "types.hpp"
-#include "utils.hpp"
+#include "util.hpp"
 
 class AudioLoader : public AbstractThread
 {

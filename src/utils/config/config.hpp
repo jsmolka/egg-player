@@ -10,7 +10,7 @@
 #include "configplayer.hpp"
 #include "configshortcut.hpp"
 #include "constants.hpp"
-#include "utils.hpp"
+#include "fileutil.hpp"
 
 #define cfgApp (Config::instance()->app())
 #define cfgBar (Config::instance()->bar())

@@ -11,7 +11,7 @@
 
 #include "audio.hpp"
 #include "constants.hpp"
-#include "logger.hpp"
+#include "util.hpp"
 
 /*!
  * This class represents an audio cache in form of an sqlite database.

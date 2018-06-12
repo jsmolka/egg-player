@@ -12,7 +12,7 @@
 #include "constants.hpp"
 #include "library.hpp"
 #include "rowhoverdelegate.hpp"
-#include "utils.hpp"
+#include "util.hpp"
 
 class MusicLibrary : public QTableWidget
 {

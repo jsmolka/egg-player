@@ -6,7 +6,7 @@
 #include <QStyle>
 #include <QVector>
 
-#include "utils.hpp"
+#include "util.hpp"
 
 class IconButton : public QPushButton
 {
