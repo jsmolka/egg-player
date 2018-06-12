@@ -12,8 +12,8 @@ INCLUDEPATH += \
     lib/bass-2.4/include \
     lib/taglib-1.11.1/include \
     src/core \
-    src/core/threading \
     src/globals \
+    src/threading \
     src/utils \
     src/utils/config \
     src/widgets \
@@ -50,12 +50,12 @@ HEADERS += \
     src/core/library.hpp \
     src/core/player.hpp \
     src/core/timer.hpp \
-    src/core/threading/abstractthread.hpp \
-    src/core/threading/audioloader.hpp \
-    src/core/threading/cachebuilder.hpp \
-    src/core/threading/threadpool.hpp \
     src/globals/constants.hpp \
     src/globals/types.hpp \
+    src/threading/abstractthread.hpp \
+    src/threading/audioloader.hpp \
+    src/threading/cachebuilder.hpp \
+    src/threading/threadpool.hpp \
     src/utils/colorutil.hpp \
     src/utils/fileutil.hpp \
     src/utils/logger.hpp \
@@ -84,11 +84,11 @@ SOURCES += \
     src/core/library.cpp \
     src/core/player.cpp \
     src/core/timer.cpp \
-    src/core/threading/abstractthread.cpp \
-    src/core/threading/audioloader.cpp \
-    src/core/threading/cachebuilder.cpp \
-    src/core/threading/threadpool.cpp \
     src/globals/constants.cpp \
+    src/threading/abstractthread.cpp \
+    src/threading/audioloader.cpp \
+    src/threading/cachebuilder.cpp \
+    src/threading/threadpool.cpp \
     src/utils/colorutil.cpp \
     src/utils/fileutil.cpp \
     src/utils/logger.cpp \

@@ -50,15 +50,6 @@ int Class::function(int a, double t);
   - use templates for functions
   - time from milliseconds (do not split it up before)
 - change app background color to black to prevent white flashing when resizing
-- change dir structure
-  - core
-    - threading
-  - globals
-  - utils
-    - config
-  - widgets
-    - components
-    - layouts
 - create a bass wrapper and use it in the player
 
 ### Cosmetic
