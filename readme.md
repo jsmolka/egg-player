@@ -51,6 +51,14 @@ int Class::function(int a, double t);
   - time from milliseconds (do not split it up before)
 - change app background color to black to prevent white flashing when resizing
 - create a bass wrapper and use it in the player
+  - try to reinitiate bass after the audio device changed
+  - consider using a bass plugin for tag loading instead of taglib
+- rewrite row hover style based on one of the following ansers
+  - [first](https://stackoverflow.com/a/35418703/7057528) answer
+  - [second](https://stackoverflow.com/a/48586435/7057528) answer
+  - [third](https://forum.qt.io/topic/33723/solved-mousehover-entire-row-selection-in-qtableview/8) answer
+- use a timer inside the config to save it periodically (in a background thread?)
+- play around with VA list for logger, just use log as a function, move other function into private namespace
 
 ### Cosmetic
 - do not show certain info at low size
