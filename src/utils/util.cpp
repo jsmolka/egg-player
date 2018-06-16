@@ -1,11 +1,5 @@
 #include "util.hpp"
 
-/*
- * Converts a length in seconds into a time string.
- *
- * :param length: length in seconds
- * :return: time string
- */
 QString Util::time(int length)
 {
     int seconds = length % 60;
@@ -25,12 +19,6 @@ QString Util::time(int length)
     return QTime(hours, minutes, seconds).toString(format);
 }
 
-/*
- * Loads the default cover and resizes it to a certain size.
- *
- * :param size: size, default -1
- * :return: default cover
- */
 QPixmap Util::defaultCover(int size)
 {
     QPixmap pixmap(IMG_DEFAULT_COVER);
@@ -40,14 +28,6 @@ QPixmap Util::defaultCover(int size)
         return pixmap;
 }
 
-/*
- * Resizes a pixmap.
- *
- * :param pixmap: pixmap
- * :param size: size
- * :param fast: fast, default false
- * :return: scaled pixmap
- */
 QPixmap Util::resize(const QPixmap &pixmap, int size, bool fast)
 {
     if (pixmap.height() == size && pixmap.width() == size)
@@ -56,14 +36,6 @@ QPixmap Util::resize(const QPixmap &pixmap, int size, bool fast)
         return pixmap.scaled(size, size, Qt::KeepAspectRatio, fast ? Qt::FastTransformation : Qt::SmoothTransformation);
 }
 
-/*
- * Resizes an image.
- *
- * :param image: image
- * :param size: size
- * :param fast: fast, default false
- * :return: scaled image
- */
 QImage Util::resize(const QImage &image, int size, bool fast)
 {
     if (image.height() == size && image.width() == size)
@@ -72,13 +44,6 @@ QImage Util::resize(const QImage &image, int size, bool fast)
         return image.scaled(size, size, Qt::KeepAspectRatio, fast ? Qt::FastTransformation : Qt::SmoothTransformation);
 }
 
-/*
- * Chunks a list into n evenly sized parts.
- *
- * :param list: list
- * :param n: n
- * :return: chunked list
- */
 QVector<StringList> Util::chunk(const StringList &list, int n)
 {
     n = qMin(qMax(1, n), list.size());

@@ -186,11 +186,10 @@ QPixmap Cache::cover(Audio *audio, int size)
         QByteArray bytes = m_query.value(0).toByteArray();
         cover.loadFromData(bytes);
     }
-
-    if (cover.isNull())
+    else
     {
         cover = Util::defaultCover();
-        Logger::log("Cache: Cannot load cover %1", {audio->path()});
+        log("Cache: Cannot load cover %1", {audio->path()});
     }
 
     cover = Util::resize(cover, size);
@@ -344,15 +343,7 @@ void Cache::handleError()
 {
     QSqlError error = m_query.lastError();
     if (error.type() != QSqlError::NoError)
-    {
-        Logger::log(
-            "Cache: Querying \"%1\" failed with error \"%2\"",
-            {
-                lastQuery(),
-                error.databaseText()
-            }
-        );
-    }
+        log("Cache: Querying \"%1\" failed with error \"%2\"", {lastQuery(), error.databaseText()});
 }
 
 QString Cache::lastQuery()

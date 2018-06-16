@@ -1,15 +1,10 @@
 #include "eggplayer.hpp"
 
-/*
- * Constructor.
- *
- * :param parent: parent, default nullptr
- */
-EggPlayer::EggPlayer(QWidget *parent) :
-    QWidget(parent),
-    m_library(true, this),
-    m_musicLibrary(this),
-    m_musicBar(this)
+EggPlayer::EggPlayer(QWidget *parent)
+    : QWidget(parent)
+    , m_library(true, this)
+    , m_musicLibrary(this)
+    , m_musicBar(this)
 {
     eggPlayer->setVolume(cfgPlayer->volume());
     eggPlayer->setShuffle(cfgPlayer->shuffle());
@@ -17,23 +12,17 @@ EggPlayer::EggPlayer(QWidget *parent) :
 
     setupUi();
 
-    connect(&m_library, SIGNAL(inserted(Audio*, int)), &m_musicLibrary, SLOT(insert(Audio*, int)));
+    connect(&m_library, SIGNAL(inserted(Audio *, int)), &m_musicLibrary, SLOT(insert(Audio *, int)));
     connect(&m_musicLibrary, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(onMusicLibraryDoubleClicked(QModelIndex)));
 
     m_library.load(cfgLibrary->paths());
 }
 
-/*
- * Destructor.
- */
 EggPlayer::~EggPlayer()
 {
 
 }
 
-/*
- * Loads the saved registry position and shows the window.
- */
 void EggPlayer::showSavedPosition()
 {
     QSettings settings;
@@ -47,31 +36,18 @@ void EggPlayer::showSavedPosition()
         show();
 }
 
-/*
- * Saves the current position before closing.
- *
- * :param event: event
- */
 void EggPlayer::closeEvent(QCloseEvent *event)
 {
     savePosition();
     QWidget::closeEvent(event);
 }
 
-/*
- * Starts the player with the clicked audio.
- *
- * :param index: index
- */
 void EggPlayer::onMusicLibraryDoubleClicked(const QModelIndex &index)
 {
     eggPlayer->loadPlaylist(m_library.audios(), index.row());
     eggPlayer->play();
 }
 
-/*
- * Sets up user interface.
- */
 void EggPlayer::setupUi()
 {
     QLabel *west = new QLabel(this);
@@ -92,9 +68,6 @@ void EggPlayer::setupUi()
     setLayout(layout);
 }
 
-/*
- * Saves the current position in registry.
- */
 void EggPlayer::savePosition()
 {
     QSettings settings;

@@ -1,106 +1,57 @@
 #include "shortcut.hpp"
 
-/*
- * Constructor.
- *
- * :param shortcut: shortcut
- * :param repeat: repeat signal while pressed
- * :param parent: parent, default nullptr
- */
-Shortcut::Shortcut(const QString &shortcut, bool repeat, QObject *parent) :
-    QObject(parent),
-    m_id(++_count),
-    m_vk(0),
-    m_modifier(0),
-    m_repeat(repeat),
-    m_registered(false),
-    m_shortcut(shortcut)
+Shortcut::Shortcut(const QString &shortcut, bool repeat, QObject *parent)
+    : QObject(parent)
+    , m_id(++_count)
+    , m_vk(0)
+    , m_modifier(0)
+    , m_repeat(repeat)
+    , m_registered(false)
+    , m_shortcut(shortcut)
 {
     m_registered = registerShortcut();
     if (m_registered)
         qApp->eventDispatcher()->installNativeEventFilter(this);
     else
-        Logger::log("Shortcut: Cannot register shortcut %1", {shortcut});
+        log("Shortcut: Cannot register shortcut %1", {shortcut});
 }
 
-/*
- * Destructor.
- */
 Shortcut::~Shortcut()
 {
     if (m_registered)
         unregisterShortcut();
 }
 
-/*
- * Getter for id property.
- *
- * :return: id
- */
 int Shortcut::id() const
 {
     return m_id;
 }
 
-/*
- * Getter for vk property.
- *
- * :return: vk
- */
 UINT Shortcut::vk() const
 {
     return m_vk;
 }
 
-/*
- * Getter for modifier property.
- *
- * :return: modifier
- */
 UINT Shortcut::modifier() const
 {
     return m_modifier;
 }
 
-/*
- * Getter for repeat property.
- *
- * :return: repeat
- */
 bool Shortcut::isRepeat() const
 {
     return m_repeat;
 }
 
-/*
- * Getter for registered property.
- *
- * :return: registered
- */
 bool Shortcut::isRegistered() const
 {
     return m_registered;
 }
 
-/*
- * Getter for shortcut property.
- *
- * :return: shortcut
- */
 QString Shortcut::shortcut() const
 {
     return m_shortcut;
 }
 
-/*
- * Event filter.
- *
- * :param eventType: event type
- * :param message: message
- * :param result: result
- * :emit pressed: pressed
- * :return: false
- */
 bool Shortcut::nativeEventFilter(const QByteArray &eventType, void *message, long *result)
 {
     Q_UNUSED(eventType);
@@ -113,11 +64,6 @@ bool Shortcut::nativeEventFilter(const QByteArray &eventType, void *message, lon
     return false;
 }
 
-/*
- * Parses a shortcut.
- *
- * :return: success
- */
 bool Shortcut::parseShortcut()
 {
     for (const QString &key : m_shortcut.toUpper().split(" "))
@@ -140,7 +86,7 @@ bool Shortcut::parseShortcut()
         }
         else
         {
-            Logger::log("Shortcut: Unknown key %1", {key});
+            log("Shortcut: Unknown key %1", {key});
             return false;
         }
     }
@@ -151,11 +97,6 @@ bool Shortcut::parseShortcut()
     return true;
 }
 
-/*
- * Registers a shortcut.
- *
- * :return: success
- */
 bool Shortcut::registerShortcut()
 {
     if (!parseShortcut())
@@ -164,24 +105,13 @@ bool Shortcut::registerShortcut()
     return static_cast<bool>(RegisterHotKey(NULL, m_id, m_modifier, m_vk));
 }
 
-/*
- * Unregisters shortcut.
- *
- * :return: success
- */
 bool Shortcut::unregisterShortcut()
 {
     return static_cast<bool>(UnregisterHotKey(NULL, m_id));
 }
 
-/*
- * Counts the number of shortcuts.
- */
 int Shortcut::_count = 0;
 
-/*
- * Key string to int map.
- */
 const QHash<QString, int> Shortcut::_map =
 {
     {"CANCEL"   , 0x0001},

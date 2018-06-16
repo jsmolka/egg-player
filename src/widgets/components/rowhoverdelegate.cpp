@@ -1,11 +1,5 @@
 #include "rowhoverdelegate.hpp"
 
-/*
- * Constructor.
- *
- * :param table: table
- * :param parent: parent, default nullptr
- */
 RowHoverDelegate::RowHoverDelegate(QTableWidget *table, QObject *parent) :
     QStyledItemDelegate(parent),
     pm_table(static_cast<TableWidget *>(table)),
@@ -14,11 +8,6 @@ RowHoverDelegate::RowHoverDelegate(QTableWidget *table, QObject *parent) :
     connect(pm_table, SIGNAL(hoverRowChanged(int)), this, SLOT(onRowChanged(int)));
 }
 
-/*
- * Sets the row and updates the widget if it is valid.
- *
- * :param row: row
- */
 void RowHoverDelegate::onRowChanged(int row)
 {
     m_row = row;
@@ -26,13 +15,6 @@ void RowHoverDelegate::onRowChanged(int row)
         pm_table->viewport()->update();
 }
 
-/*
- * Paint event.
- *
- * :param painter: painter
- * :param option: option
- * :param index: index
- */
 void RowHoverDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
     QStyleOptionViewItem opt = option;

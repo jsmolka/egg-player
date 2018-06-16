@@ -31,7 +31,6 @@ public:
     bool isLockable() const;
 
     void init(const QVector<QIcon> &icons, int size, bool lockable = false);
-    void init(const QStringList &icons, int size, bool lockable = false);
 
 signals:
     void locked(bool locked);

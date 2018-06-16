@@ -1,6 +1,6 @@
 #include "logger.hpp"
 
-void Logger::log(const QString &message, const StringList &args)
+void log(const QString &message, const StringList &args)
 {
     if (!cfgApp->log())
         return;
@@ -9,15 +9,15 @@ void Logger::log(const QString &message, const StringList &args)
     if (file.open(QIODevice::Append | QIODevice::Text))
     {
         QTextStream stream(&file);
-        stream << createLog(message, args) << "\n";
+        stream << LoggerPrivate::createLog(message, args) << "\n";
     }
 
 #ifdef QT_DEBUG
-    qDebug().noquote() << createLog(message, args);
+    qDebug().noquote() << LoggerPrivate::createLog(message, args);
 #endif
 }
 
-QString Logger::createLog(QString message, const StringList &args)
+QString LoggerPrivate::createLog(QString message, const StringList &args)
 {
     for (const QString &arg : args)
         message = message.arg(arg);

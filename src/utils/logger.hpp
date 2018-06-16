@@ -10,18 +10,10 @@
 #include "constants.hpp"
 #include "types.hpp"
 
-/*!
- * This namespace contains functions used for logging.
- */
-namespace Logger
+extern void log(const QString &message, const StringList &args = {});
+
+namespace LoggerPrivate
 {
-    /*!
-     * Logs a message.
-     */
-    extern void log(const QString &message, const StringList &args = {});
-    /*!
-     * Creates a log message.
-     */
     extern QString createLog(QString message, const StringList &args);
 }
 

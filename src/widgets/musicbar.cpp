@@ -1,35 +1,30 @@
 #include "musicbar.hpp"
 
-/*
- * Constructor.
- *
- * :param parent: parent, default nullptr
- */
-MusicBar::MusicBar(QWidget *parent) :
-    QWidget(parent),
-    m_coverLabel(this),
-    m_trackLabel(this),
-    m_currentTimeLabel(this),
-    m_totalTimeLabel(this),
-    m_playPauseButton(this),
-    m_nextButton(this),
-    m_previousButton(this),
-    m_shuffleButton(this),
-    m_loopButton(this),
-    m_volumeButton(this),
-    m_lengthSlider(this),
-    m_volumeSlider(this),
-    m_scPlayPause(cfgShortcut->playPause(), false, this),
-    m_scNext(cfgShortcut->next(), false, this),
-    m_scPrevious(cfgShortcut->previous(), false, this),
-    m_scVolumeUp(cfgShortcut->volumeUp(), true, this),
-    m_scVolumeDown(cfgShortcut->volumeDown(), true, this)
+MusicBar::MusicBar(QWidget *parent)
+    : QWidget(parent)
+    , m_coverLabel(this)
+    , m_trackLabel(this)
+    , m_currentTimeLabel(this)
+    , m_totalTimeLabel(this)
+    , m_playPauseButton(this)
+    , m_nextButton(this)
+    , m_previousButton(this)
+    , m_shuffleButton(this)
+    , m_loopButton(this)
+    , m_volumeButton(this)
+    , m_lengthSlider(this)
+    , m_volumeSlider(this)
+    , m_scPlayPause(cfgShortcut->playPause(), false, this)
+    , m_scNext(cfgShortcut->next(), false, this)
+    , m_scPrevious(cfgShortcut->previous(), false, this)
+    , m_scVolumeUp(cfgShortcut->volumeUp(), true, this)
+    , m_scVolumeDown(cfgShortcut->volumeDown(), true, this)
 {
     setup();
     setupUi();
 
     connect(eggPlayer, SIGNAL(audioChanged(Audio *)), this, SLOT(onPlayerAudioChanged(Audio *)));
-    connect(eggPlayer, SIGNAL(stateChanged(Player::PlayerState)), this, SLOT(onPlayerStateChanged(Player::PlayerState)));
+    connect(eggPlayer, SIGNAL(stateChanged(Player::State)), this, SLOT(onPlayerStateChanged(Player::State)));
     connect(eggPlayer, SIGNAL(positionChanged(int)), this, SLOT(onPlayerPositionChanged(int)));
     connect(eggPlayer, SIGNAL(volumeChanged(int)), this, SLOT(onPlayerVolumeChanged(int)));
 
@@ -43,7 +38,6 @@ MusicBar::MusicBar(QWidget *parent) :
     connect(&m_lengthSlider, SIGNAL(sliderMoved(int)), this, SLOT(onLengthSliderMoved(int)));
     connect(&m_lengthSlider, SIGNAL(sliderValueChanged(int)), this, SLOT(onLengthSliderValueChanged(int)));
     connect(&m_volumeSlider, SIGNAL(sliderMoved(int)), this, SLOT(onVolumeSliderMoved(int)));
-    connect(&m_volumeSlider, SIGNAL(sliderValueChanged(int)), SLOT(onVolumeSliderValueChanged(int)));
 
     connect(&m_scPlayPause, SIGNAL(pressed()), this, SLOT(onShortcutPlayPausePressed()));
     connect(&m_scNext, SIGNAL(pressed()), eggPlayer, SLOT(next()));
@@ -52,137 +46,71 @@ MusicBar::MusicBar(QWidget *parent) :
     connect(&m_scVolumeDown, SIGNAL(pressed()), this, SLOT(onShortcutVolumeDownPressed()));
 }
 
-/*
- * Destructor.
- */
 MusicBar::~MusicBar()
 {
 
 }
 
-/*
- * Getter for cover label.
- *
- * :return: cover label
- */
 QLabel * MusicBar::coverLabel()
 {
     return &m_coverLabel;
 }
 
-/*
- * Getter for track label property.
- *
- * :return: track label
- */
 QLabel * MusicBar::trackLabel()
 {
     return &m_trackLabel;
 }
 
-/*
- * Getter for time label property.
- *
- * :return: time label
- */
 QLabel * MusicBar::currentTimeLabel()
 {
     return &m_currentTimeLabel;
 }
 
-/*
- * Getter for time label property.
- *
- * :return: time label
- */
 QLabel * MusicBar::totalTimeLabel()
 {
     return &m_totalTimeLabel;
 }
 
-/*
- * Getter for play pause button property.
- *
- * :return: play pause button
- */
 IconButton * MusicBar::playPauseButton()
 {
     return &m_playPauseButton;
 }
 
-/*
- * Getter for next button property.
- *
- * :return: next button
- */
 IconButton * MusicBar::nextButton()
 {
     return &m_nextButton;
 }
 
-/*
- * Getter for back button property.
- *
- * :return: back button
- */
 IconButton * MusicBar::previousButton()
 {
     return &m_previousButton;
 }
 
-/*
- * Getter for shuffle button property.
- *
- * :return: shuffle button
- */
 IconButton * MusicBar::shuffleButton()
 {
     return &m_shuffleButton;
 }
 
-/*
- * Getter for loop button property.
- *
- * :return: loop button
- */
 IconButton * MusicBar::loopButton()
 {
     return &m_loopButton;
 }
 
-/*
- * Getter for volume button property.
- *
- * :return: volume button
- */
 IconButton * MusicBar::volumeButton()
 {
     return &m_volumeButton;
 }
 
-/*
- * Getter for length slider property.
- *
- * :return: length slider
- */
 ClickableSlider * MusicBar::lengthSlider()
 {
     return &m_lengthSlider;
 }
 
-/*
- * Getter for volume slider property.
- *
- * :return: volume slider
- */
 ClickableSlider * MusicBar::volumeSlider()
 {
     return &m_volumeSlider;
 }
 
-/*
- * Paint event for custom css.
- */
 void MusicBar::paintEvent(QPaintEvent *event)
 {
     Q_UNUSED(event);
@@ -193,11 +121,6 @@ void MusicBar::paintEvent(QPaintEvent *event)
     style()->drawPrimitive(QStyle::PE_Widget, &option, &painter, this);
 }
 
-/*
- * Sets up all relevant audio information.
- *
- * :param audio: audio
- */
 void MusicBar::onPlayerAudioChanged(Audio *audio)
 {
     QPixmap cover = Cache().cover(audio, cfgBar->coverSize());
@@ -214,21 +137,11 @@ void MusicBar::onPlayerAudioChanged(Audio *audio)
     setColor(ColorUtil::background(cover, audio->coverId()));
 }
 
-/*
- * Sets the corresponding icon of the play button.
- *
- * :param state: player state
- */
-void MusicBar::onPlayerStateChanged(Player::PlayerState state)
+void MusicBar::onPlayerStateChanged(Player::State state)
 {
-    m_playPauseButton.setSelectedIcon(state == Player::PlayerState::Playing ? 1 : 0);
+    m_playPauseButton.setSelectedIcon(state == Player::State::Playing ? 1 : 0);
 }
 
-/*
- * Sets the slider position if it is not pressed.
- *
- * :param position: position in seconds
- */
 void MusicBar::onPlayerPositionChanged(int position)
 {
     if (!m_lengthSlider.isPressed())
@@ -238,18 +151,13 @@ void MusicBar::onPlayerPositionChanged(int position)
     }
 }
 
-/*
- * Sets the volume button icon. All other things retarding volume are done
- * separately.
- */
 void MusicBar::onPlayerVolumeChanged(int volume)
 {
+    setVolumeConfig(volume);
     setVolumeIcon(volume);
+    setVolumeSlider(volume);
 }
 
-/*
- * Starts or pauses the player depeding on the button icon.
- */
 void MusicBar::onPlayPauseButtonPressed()
 {
     if (m_playPauseButton.selectedIcon() == 0)
@@ -258,32 +166,18 @@ void MusicBar::onPlayPauseButtonPressed()
         eggPlayer->pause();
 }
 
-/*
- *
- * Applies the shuffle state to the player and saves it in the config.
- *
- * :param locked: locked
- */
 void MusicBar::onShuffleButtonLocked(bool locked)
 {
     eggPlayer->setShuffle(locked);
     cfgPlayer->setShuffle(locked);
 }
 
-/*
- * Applies the loop state to the player and saves it in the config.
- *
- * :param locked: locked
- */
 void MusicBar::onLoopButtonLocked(bool locked)
 {
     eggPlayer->setLoop(locked);
     cfgPlayer->setLoop(locked);
 }
 
-/*
- * Shows or hides the volume slider.
- */
 void MusicBar::onVolumeButtonPressed()
 {
     if (m_volumeSlider.isVisible())
@@ -298,22 +192,11 @@ void MusicBar::onVolumeButtonPressed()
     }
 }
 
-/*
- * Sets the value of the current time label.
- *
- * :param value: position in seconds
- */
 void MusicBar::onLengthSliderMoved(int value)
 {
     m_currentTimeLabel.setText(Util::time(value));
 }
 
-/*
- * Sets the player position. The current times label does not need to be changed
- * because it is connection to the player position changed.
- *
- * :param value: position in seconds
- */
 void MusicBar::onLengthSliderValueChanged(int value)
 {
     if (value != eggPlayer->currentAudio()->duration())
@@ -322,31 +205,11 @@ void MusicBar::onLengthSliderValueChanged(int value)
         eggPlayer->next();
 }
 
-/*
- * Sets the player volume. Does not change the config because of performance
- * reason.
- *
- * :param value: value
- */
 void MusicBar::onVolumeSliderMoved(int value)
 {
     setVolumePlayer(value);
 }
 
-/*
- * Changes the player volume and config value accordingly.
- *
- * :param value: value
- */
-void MusicBar::onVolumeSliderValueChanged(int value)
-{
-    setVolumeConfig(value);
-    setVolumePlayer(value);
-}
-
-/*
- * Plays or pauses the player.
- */
 void MusicBar::onShortcutPlayPausePressed()
 {
     if (eggPlayer->isPlaying())
@@ -355,25 +218,16 @@ void MusicBar::onShortcutPlayPausePressed()
         eggPlayer->play();
 }
 
-/*
- * Increases the player volume.
- */
 void MusicBar::onShortcutVolumeUpPressed()
 {
-    changeVolume(eggPlayer->volume(), 1);
+    setVolumePlayer(eggPlayer->volume() + 1);
 }
 
-/*
- * Decreases the player volume.
- */
 void MusicBar::onShortcutVolumeDownPressed()
 {
-    changeVolume(eggPlayer->volume(), -1);
+    setVolumePlayer(eggPlayer->volume() - 1);
 }
 
-/*
- * Loads the style sheet and replaces placeholders.
- */
 void MusicBar::loadCss()
 {
     setStyleSheet(
@@ -385,9 +239,6 @@ void MusicBar::loadCss()
     );
 }
 
-/*
- * Sets up widget.
- */
 void MusicBar::setup()
 {
     loadCss();
@@ -397,9 +248,6 @@ void MusicBar::setup()
     setColor(ColorUtil::background(Util::defaultCover()));
 }
 
-/*
- * Sets up user interface.
- */
 void MusicBar::setupUi()
 {
     m_coverLabel.setPixmap(Util::defaultCover(cfgBar->coverSize()));
@@ -450,11 +298,6 @@ void MusicBar::setupUi()
     setLayout(layout);
 }
 
-/*
- * Sets music bar color.
- *
- * :param color: color
- */
 void MusicBar::setColor(const QColor &color)
 {
     QPalette palette;
@@ -462,11 +305,6 @@ void MusicBar::setColor(const QColor &color)
     setPalette(palette);
 }
 
-/*
- * Sets visibility for all buttons.
- *
- * :param visible: visible
- */
 void MusicBar::setButtonVisibility(bool visible)
 {
     m_previousButton.setVisible(visible);
@@ -476,37 +314,21 @@ void MusicBar::setButtonVisibility(bool visible)
     m_loopButton.setVisible(visible);
 }
 
-/*
- * Hides all buttons.
- */
 void MusicBar::hideButtons()
 {
     setButtonVisibility(false);
 }
 
-/*
- * Shows all buttons.
- */
 void MusicBar::showButtons()
 {
     setButtonVisibility(true);
 }
 
-/*
- * Sets player volume in config.
- *
- * :param volume: volume
- */
 void MusicBar::setVolumeConfig(int volume)
 {
     cfgPlayer->setVolume(volume);
 }
 
-/*
- * Sets volume icon according to volume.
- *
- * :param volume: volume
- */
 void MusicBar::setVolumeIcon(int volume)
 {
     if (volume > 66)
@@ -519,39 +341,12 @@ void MusicBar::setVolumeIcon(int volume)
         m_volumeButton.setSelectedIcon(3);
 }
 
-/*
- * Sets player volume.
- *
- * :param volume: volume
- */
 void MusicBar::setVolumePlayer(int volume)
 {
     eggPlayer->setVolume(volume);
 }
 
-/*
- * Sets volume slider position.
- *
- * :param volume: volume
- */
 void MusicBar::setVolumeSlider(int volume)
 {
     m_volumeSlider.setValue(volume);
-}
-
-/*
- * Changes volume by a step.
- *
- * :param volume: volume
- * :param step: step
- */
-void MusicBar::changeVolume(int volume, int step)
-{
-    volume = volume + step;
-    if (volume < 0 || volume > 100)
-        return;
-
-    setVolumeConfig(volume);
-    setVolumePlayer(volume);
-    setVolumeSlider(volume);
 }

@@ -18,57 +18,30 @@
 #define cfgPlayer (Config::instance()->player())
 #define cfgShortcut (Config::instance()->shortcut())
 
-/*!
- * Represents a config.
- */
 class Config : QObject
 {
 public:
-    /*!
-     * Constructor.
-     */
     Config(QObject *parent = nullptr);
-    /*!
-     * Destructor.
-     */
     ~Config();
-    /*!
-     * Returns the global instance.
-     */
+
     static Config * instance();
-    /*!
-     * Getter for app property.
-     */
+
     ConfigApp * app();
-    /*!
-     * Getter for bar property.
-     */
     ConfigBar * bar();
-    /*!
-     * Getter for library property.
-     */
     ConfigLibrary * library();
-    /*!
-     * Getter for player property.
-     */
     ConfigPlayer * player();
-    /*!
-     * Getter for shortcut property.
-     */
     ConfigShortcut * shortcut();
 
 private:
-    /*!
-     * Member variables.
-     */
+    void load();
+    void save();
+
     ConfigApp m_app;
     ConfigBar m_bar;
     ConfigLibrary m_library;
     ConfigPlayer m_player;
     ConfigShortcut m_shortcut;
-    /*!
-     * Static variables.
-     */
+
     static Config *_instance;
 };
 

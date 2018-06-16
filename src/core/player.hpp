@@ -21,7 +21,7 @@ public:
 
     static Player * instance();
 
-    enum PlayerState {None, Playing, Paused};
+    enum State {None, Playing, Paused};
 
     void setIndex(int index);
     int index() const;
@@ -56,7 +56,7 @@ public slots:
 
 signals:
     void audioChanged(Audio *audio);
-    void stateChanged(Player::PlayerState state);
+    void stateChanged(Player::State state);
     void positionChanged(int position);
     void volumeChanged(int volume);
 

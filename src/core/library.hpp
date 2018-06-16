@@ -2,7 +2,6 @@
 #define LIBRARY_HPP
 
 #include <QApplication>
-#include <QMutex>
 #include <QObject>
 #include <QSet>
 #include <QStringList>
@@ -28,6 +27,7 @@ public:
 
     void setSorted(bool sorted);
     bool isSorted() const;
+
     Audios audios() const;
 
     void load(const StringList &paths);
@@ -53,7 +53,6 @@ private:
     Audios m_audios;
     AudioLoader *pm_audioLoader;
     CacheBuilder *pm_cacheBuilder;
-    QMutex m_mutex;
     QSet<QString> m_paths;
 
     static Library *_instance;

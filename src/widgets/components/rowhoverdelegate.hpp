@@ -4,10 +4,6 @@
 #include <QStyledItemDelegate>
 #include <QTableWidget>
 
-/*
- * Create a class which we can cast MusicLibrary to because I am too stupid for
- * forward declaration. It only contains the necessary signal.
- */
 class TableWidget : public QTableWidget
 {
     Q_OBJECT

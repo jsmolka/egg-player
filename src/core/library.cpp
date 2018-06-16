@@ -1,47 +1,28 @@
 #include "library.hpp"
 
-/*
- * Constructor.
- *
- * :param parent: parent, default nullptr
- */
-Library::Library(QObject *parent) :
-    QObject(parent),
-    m_sorted(false),
-    pm_audioLoader(new AudioLoader(this)),
-    pm_cacheBuilder(new CacheBuilder(this))
+Library::Library(QObject *parent)
+    : QObject(parent)
+    , m_sorted(false)
+    , pm_audioLoader(new AudioLoader(this))
+    , pm_cacheBuilder(new CacheBuilder(this))
 {
     connect(pm_audioLoader, SIGNAL(loaded(Audio *)), this, SLOT(insert(Audio *)));
     connect(pm_audioLoader, SIGNAL(finished()), this, SLOT(onAudioLoaderFinished()));
     connect(pm_audioLoader, SIGNAL(finished()), this, SIGNAL(loaded()));
 }
 
-/*
- * Constructor.
- *
- * :param sorted: sorted
- * :param parent: parent, defaul nullptr
- */
-Library::Library(bool sorted, QObject *parent) :
-    Library(parent)
+Library::Library(bool sorted, QObject *parent)
+    : Library(parent)
 {
     m_sorted = sorted;
 }
 
-/*
- * Destructor.
- */
 Library::~Library()
 {
     while (!m_audios.isEmpty())
         delete m_audios.takeFirst();
 }
 
-/*
- * Returns the global instance.
- *
- * :return: instance
- */
 Library * Library::instance()
 {
     if (!_instance)
@@ -50,56 +31,27 @@ Library * Library::instance()
     return _instance;
 }
 
-/*
- * Setter for sorted property. Setting this value does not sort the library. It
- * is meant to be set before the load function gets called.
- *
- * :param sorted: sorted
- */
 void Library::setSorted(bool sorted)
 {
     m_sorted = sorted;
 }
 
-/*
- * Getter for sorted property.
- *
- * :return: sorted
- */
 bool Library::isSorted() const
 {
     return m_sorted;
 }
 
-/*
- * Getter for audios property.
- *
- * :return: audios
- */
 Audios Library::audios() const
 {
     return m_audios;
 }
 
-/*
- * Loads the library in the background by creating an audio loader thread. If
- * this function gets called mulitple times for the same paths it will have no
- * effect.
- *
- * :param paths: paths
- */
 void Library::load(const StringList &paths)
 {
     pm_audioLoader->setFiles(uniqueFiles(paths));
     pm_audioLoader->start();
 }
 
-/*
- * Inserts an audio into the library. If the sorted property is true, it will be
- * inserted binary.
- *
- * :param audio: audio
- */
 void Library::insert(Audio *audio)
 {
     if (m_sorted)
@@ -108,22 +60,12 @@ void Library::insert(Audio *audio)
         append(audio);
 }
 
-/*
- * Gets called when the library is loaded and creates the cache builder.
- */
 void Library::onAudioLoaderFinished()
 {
     pm_cacheBuilder->setAudios(m_audios);
     pm_cacheBuilder->start();
 }
 
-/*
- * Gets the lower bound for an audio using a binary search like approach. This
- * function is being used insead of std::lower_bound because it has a better
- * complexity and returns an index instead of an iterator.
- *
- * :param audio: audio
- */
 int Library::lowerBound(Audio *audio)
 {
     int low = 0;
@@ -139,12 +81,6 @@ int Library::lowerBound(Audio *audio)
     return low;
 }
 
-/*
- * Inserts audio into the library and keeps it sorted.
- *
- * :param audio: audio
- * :emit inserted: audio, index
- */
 void Library::insertBinary(Audio *audio)
 {
     int index = lowerBound(audio);
@@ -152,24 +88,12 @@ void Library::insertBinary(Audio *audio)
     emit inserted(audio, index);
 }
 
-/*
- * Appends audio to libray.
- *
- *
- * :param audio: audio
- * :emit inserted: audio, -1
- */
 void Library::append(Audio *audio)
 {
     m_audios << audio;
     emit inserted(audio, -1);
 }
 
-/*
- * Loads unique files from paths. Prevents double loading a path.
- *
- * :param paths: paths
- */
 StringList Library::uniqueFiles(const StringList &paths)
 {
     StringList files;
@@ -182,13 +106,10 @@ StringList Library::uniqueFiles(const StringList &paths)
         }
         else
         {
-            Logger::log("Library: Path has already been loaded %1", {path});
+            log("Library: Path has already been loaded %1", {path});
         }
     }
     return files;
 }
 
-/*
- * Global library instance.
- */
 Library * Library::_instance = nullptr;

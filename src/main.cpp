@@ -30,7 +30,7 @@ int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
 
-    Logger::log("Application: Start");
+    log("Application: Start");
 
     setup();
 

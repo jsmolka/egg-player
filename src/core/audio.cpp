@@ -12,20 +12,13 @@ Audio::Audio(const QString &path)
     if (!readTags())
     {
         m_valid = false;
-        Logger::log("Audio: Cannot read tags %1", {m_path});
+        log("Audio: Cannot read tags %1", {m_path});
     }
 }
 
-Audio::Audio(const QString &path,
-             const QString &title,
-             const QString &artist,
-             const QString &album,
-             const QString &genre,
-             int year,
-             int track,
-             int length,
-             int coverId,
-             int size)
+Audio::Audio(const QString &path, const QString &title, const QString &artist,
+             const QString &album, const QString &genre, int year, int track,
+             int length, int coverId, int size)
     : m_valid(true)
     , m_path(path)
     , m_title(title)
@@ -125,7 +118,7 @@ QPixmap Audio::cover(int size)
     if (cover.isNull())
     {
         cover = Util::defaultCover();
-        Logger::log("Audio: Cannot read cover %1", {m_path});
+        log("Audio: Cannot read cover %1", {m_path});
     }
     return Util::resize(cover, size);
 }

@@ -44,20 +44,16 @@ protected:
 
 private slots:
     void onPlayerAudioChanged(Audio *audio);
-    void onPlayerStateChanged(Player::PlayerState state);
+    void onPlayerStateChanged(Player::State state);
     void onPlayerPositionChanged(int position);
     void onPlayerVolumeChanged(int volume);
-
     void onPlayPauseButtonPressed();
     void onShuffleButtonLocked(bool locked);
     void onLoopButtonLocked(bool locked);
     void onVolumeButtonPressed();
-
     void onLengthSliderMoved(int value);
     void onLengthSliderValueChanged(int value);
     void onVolumeSliderMoved(int value);
-    void onVolumeSliderValueChanged(int value);
-
     void onShortcutPlayPausePressed();
     void onShortcutVolumeUpPressed();
     void onShortcutVolumeDownPressed();
@@ -77,7 +73,6 @@ private:
     void setVolumeIcon(int volume);
     void setVolumePlayer(int volume);
     void setVolumeSlider(int volume);
-    void changeVolume(int volume, int step);
 
     QLabel m_coverLabel;
     QLabel m_trackLabel;

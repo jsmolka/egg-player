@@ -21,7 +21,6 @@ public:
     void setGeometry(const QRect &rect) override;
     QSize sizeHint() const override;
     QLayoutItem * takeAt(int index) override;
-
     void add(QLayoutItem *item, Position position);
 
 private:
@@ -37,6 +36,7 @@ private:
     };
 
     enum SizeType {MinimumSize, SizeHint};
+
     QSize calculateSize(SizeType sizeType) const;
 
     QList<ItemWrapper *> m_items;

@@ -1,13 +1,5 @@
 #include "colorutil.hpp"
 
-/*
- * Calculates the dominant color of an image by creating heuristics for the HSV
- * color space. If no colorful color can be found, a grey scale will be
- * returned.
- *
- * :param image: image
- * :return: dominant color
- */
 QColor ColorUtil::dominant(const QImage &image)
 {
     const quint32 RANGE = 60;
@@ -97,21 +89,11 @@ QColor ColorUtil::dominant(const QImage &image)
     }
 }
 
-/*
- * Gets the dominant color of an image and edits some values to prevent too
- * bright values. To prevent the algorithm from running mulitple times for the
- * same image a id can be given. If the id has already been processed a saved
- * value will be returned.
- *
- * :param image: image
- * :param id: id, default -1
- * :return: background color
- */
 QColor ColorUtil::background(const QImage &image, int id)
 {
     if (id != -1)
-        if (_colors.contains(id))
-            return _colors.value(id);
+        if (ColorUtilPrivate::colors.contains(id))
+            return ColorUtilPrivate::colors.value(id);
 
     QColor color = dominant(Util::resize(image, 25, true));
     qreal hue = color.hsvHueF();
@@ -120,24 +102,14 @@ QColor ColorUtil::background(const QImage &image, int id)
     color = QColor::fromHsvF(hue, saturation, value);
 
     if (id != -1)
-        _colors.insert(id, color);
+        ColorUtilPrivate::colors.insert(id, color);
 
     return color;
 }
 
-/*
- * Overloaded function.
- *
- * :param pixmap: pixmap
- * :param id: id, default -1
- * :return: background color
- */
 QColor ColorUtil::background(const QPixmap &pixmap, int id)
 {
     return background(pixmap.toImage(), id);
 }
 
-/*
- * Background color cache.
- */
-QHash<int, QColor> ColorUtil::_colors;
+QHash<int, QColor> ColorUtilPrivate::colors;

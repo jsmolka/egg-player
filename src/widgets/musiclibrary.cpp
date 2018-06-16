@@ -1,33 +1,19 @@
 #include "musiclibrary.hpp"
 
-/*
- * Constructor.
- *
- * :param parent: parent, default nullptr
- */
-MusicLibrary::MusicLibrary(QWidget *parent) :
-    QTableWidget(parent)
+
+MusicLibrary::MusicLibrary(QWidget *parent)
+    : QTableWidget(parent)
 {
     setup();
 
     connect(this, SIGNAL(entered(QModelIndex)), this, SLOT(onEntered(QModelIndex)));
 }
 
-/*
- * Destructor.
- */
 MusicLibrary::~MusicLibrary()
 {
 
 }
 
-/*
- * Shows a column.
- *
- * :param info: info
- * :param horizontal: horizontal, default left
- * :param expand: expand, default true
- */
 void MusicLibrary::addColumn(SongInfo info, Qt::Alignment horizontal, bool expand)
 {
     m_columns << Column(info, Qt::AlignVCenter | horizontal);
@@ -37,12 +23,6 @@ void MusicLibrary::addColumn(SongInfo info, Qt::Alignment horizontal, bool expan
         horizontalHeader()->setSectionResizeMode(m_columns.size() - 1, QHeaderView::ResizeToContents);
 }
 
-/*
- * Inserts an audio into the library. Append a row if -1.
- *
- * :param audio: audio
- * :param row: row, default -1
- */
 void MusicLibrary::insert(Audio *audio, int row)
 {
     setUpdatesEnabled(false);
@@ -60,12 +40,6 @@ void MusicLibrary::insert(Audio *audio, int row)
     setUpdatesEnabled(true);
 }
 
-/*
- * Emits -1 to remove the row hover style.
- *
- * :param event: event
- * :emit hoverRowChanged: row
- */
 void MusicLibrary::leaveEvent(QEvent *event)
 {
     emit hoverRowChanged(-1);
@@ -73,13 +47,6 @@ void MusicLibrary::leaveEvent(QEvent *event)
     QTableWidget::leaveEvent(event);
 }
 
-/*
- * Emits the row where the cursor is hovering over. Calls the resize event first
- * to get the cursor position for the resized widget.
- *
- * :param event: event
- * :emit hoverRowChanged: row
- */
 void MusicLibrary::resizeEvent(QResizeEvent *event)
 {
     QTableWidget::resizeEvent(event);
@@ -87,20 +54,11 @@ void MusicLibrary::resizeEvent(QResizeEvent *event)
     emit hoverRowChanged(indexAt(mapFromGlobal(QCursor::pos())).row());
 }
 
-/*
- * Emits the row of the entered item.
- *
- * :param index: index
- * :emit hoverRowChanged: row
- */
 void MusicLibrary::onEntered(QModelIndex index)
 {
     emit hoverRowChanged(index.row());
 }
 
-/*
- * Loads the style sheet and replaces placeholders.
- */
 void MusicLibrary::loadCss()
 {
     setStyleSheet(
@@ -110,9 +68,6 @@ void MusicLibrary::loadCss()
     );
 }
 
-/*
- * Sets up widget.
- */
 void MusicLibrary::setup()
 {
     loadCss();
@@ -137,14 +92,6 @@ void MusicLibrary::setup()
     horizontalScrollBar()->hide();
     verticalScrollBar()->setStyle(new ClickableStyle(style()));
 }
-
-/*
- * Gets audio text for a given column.
- *
- * :param audio: audio
- * :param column: column
- * :return: audio text
- */
 
 QString MusicLibrary::audioText(Audio *audio, int column)
 {

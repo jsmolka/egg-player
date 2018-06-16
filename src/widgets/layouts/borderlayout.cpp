@@ -1,34 +1,18 @@
 #include "borderlayout.hpp"
 
-/*
- * Constructor.
- *
- * :param margin: margin
- * :param spacing: spacing
- * :param parent: parent, default nullptr
- */
-BorderLayout::BorderLayout(int margin, int spacing, QWidget *parent) :
-    QLayout(parent)
+BorderLayout::BorderLayout(int margin, int spacing, QWidget *parent)
+    : QLayout(parent)
 {
     setMargin(margin);
     setSpacing(spacing);
 }
 
-/*
- * Constructor.
- *
- * :param spacing: spacing
- * :param parent: parent, default nullptr
- */
-BorderLayout::BorderLayout(int spacing, QWidget *parent) :
-    BorderLayout(0, spacing, parent)
+BorderLayout::BorderLayout(int spacing, QWidget *parent)
+    : BorderLayout(0, spacing, parent)
 {
 
 }
 
-/*
- * Destructor.
- */
 BorderLayout::~BorderLayout()
 {
     QLayoutItem *item;
@@ -36,64 +20,32 @@ BorderLayout::~BorderLayout()
         delete item;
 }
 
-/*
- * Adds item to layout west position.
- *
- * :param item: item
- */
 void BorderLayout::addItem(QLayoutItem *item)
 {
     add(item, West);
 }
 
-/*
- * Adds widget at position.
- *
- * :param widget: widget
- * :param position: position
- */
 void BorderLayout::addWidget(QWidget *widget, Position position)
 {
     add(new QWidgetItem(widget), position);
 }
 
-/*
- * Returns item count.
- *
- * :return: item count
- */
 int BorderLayout::count() const
 {
     return m_items.size();
 }
 
-/*
- * Returns item pointer at index.
- *
- * :param index: index
- * :return: wrapper, nullptr in invalid index
- */
 QLayoutItem * BorderLayout::itemAt(int index) const
 {
     ItemWrapper *wrapper = m_items.value(index);
     return wrapper ? wrapper->item : nullptr;
 }
 
-/*
- * Returns minimum size.
- *
- * :return: minimum size
- */
 QSize BorderLayout::minimumSize() const
 {
     return calculateSize(MinimumSize);
 }
 
-/*
- * Sets geometry.
- *
- * :param rect: rectangle
- */
 void BorderLayout::setGeometry(const QRect &rect)
 {
     ItemWrapper *center = 0;
@@ -207,22 +159,11 @@ void BorderLayout::setGeometry(const QRect &rect)
         );
 }
 
-/*
- * Returns size hint.
- *
- * :return: size
- */
 QSize BorderLayout::sizeHint() const
 {
     return calculateSize(SizeHint);
 }
 
-/*
- * Takes item at index.
- *
- * :param index: index
- * :return: nullptr if invalid index
- */
 QLayoutItem * BorderLayout::takeAt(int index)
 {
     if (index >= 0 && index < m_items.size())
@@ -233,23 +174,11 @@ QLayoutItem * BorderLayout::takeAt(int index)
     return nullptr;
 }
 
-/*
- * Adds layout item at position.
- *
- * :param item: item
- * :param position: position
- */
 void BorderLayout::add(QLayoutItem *item, Position position)
 {
     m_items.append(new ItemWrapper(item, position));
 }
 
-/*
- * Calculates size.
- *
- * :param sizeType: size type
- * :return: calculated size
- */
 QSize BorderLayout::calculateSize(SizeType sizeType) const
 {
     QSize totalSize;

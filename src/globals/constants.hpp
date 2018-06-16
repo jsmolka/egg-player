@@ -4,8 +4,11 @@
 #include <QDir>
 #include <QStandardPaths>
 
-extern QString documents(const QString &file);
-extern QString resource(const QString &file);
+namespace ConstantsPrivate
+{
+    extern QString documents(const QString &file);
+    extern QString resource(const QString &file);
+}
 
 const extern QString CSS_MUSICBAR;
 const extern QString CSS_MUSICLIBRARY;

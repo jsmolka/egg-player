@@ -4,9 +4,7 @@
 #include "abstractthread.hpp"
 #include "audio.hpp"
 #include "cache.hpp"
-#include "logger.hpp"
 #include "types.hpp"
-#include "util.hpp"
 
 class AudioLoader : public AbstractThread
 {
@@ -28,4 +26,5 @@ protected:
 private:
     StringList m_files;
 };
+
 #endif // AUDIOLOADER_HPP

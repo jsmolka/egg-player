@@ -8,15 +8,16 @@
 
 #include "util.hpp"
 
-class ColorUtil
+namespace ColorUtil
 {
-public:
-    static QColor dominant(const QImage &image);
-    static QColor background(const QImage &image, int id = -1);
-    static QColor background(const QPixmap &pixmap, int id = -1);
+    extern QColor dominant(const QImage &image);
+    extern QColor background(const QImage &image, int id = -1);
+    extern QColor background(const QPixmap &pixmap, int id = -1);
+}
 
-private:
-    static QHash<int, QColor> _colors;
-};
+namespace ColorUtilPrivate
+{
+    extern QHash<int, QColor> colors;
+}
 
 #endif // COLORUTIL_HPP
