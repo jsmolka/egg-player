@@ -4,6 +4,8 @@
 #include <QTimer>
 #include <QObject>
 
+#include "logger.hpp"
+
 class Timer : public QObject
 {
     Q_OBJECT
@@ -15,6 +17,7 @@ public:
     qint64 elapsed() const;
     int interval() const;
     int remaining() const;
+    bool isActive() const;
 
     void start(qint64 max);
     void pause();
@@ -32,6 +35,9 @@ private slots:
     void onTimeout();
 
 private:
+    void finish();
+    bool isFinished();
+
     QTimer *pm_timer;
     qint64 m_elapsed;
     qint64 m_max;

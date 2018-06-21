@@ -33,10 +33,24 @@ int Timer::remaining() const
     return m_remaining;
 }
 
+bool Timer::isActive() const
+{
+    return pm_timer->isActive();
+}
+
 void Timer::start(qint64 max)
 {
     m_max = max;
-    pm_timer->start(m_remaining);
+
+    if (m_remaining > -1)
+    {
+        pm_timer->start(m_remaining);
+    }
+    else
+    {
+        log("Timer: Negative interval %1", {m_remaining});
+        finish();
+    }
 }
 
 void Timer::pause()
@@ -63,7 +77,10 @@ void Timer::setElapsed(qint64 elapsed)
 {
     qint64 temp = m_max - elapsed;
     if (temp < 0)
+    {
+        log("Timer: Invalid elapsed time %1 for max %2", {elapsed, m_max});
         return;
+    }
 
     m_elapsed = elapsed;
 
@@ -74,16 +91,16 @@ void Timer::setElapsed(qint64 elapsed)
 
     if (m_remaining == 0)
         m_remaining = m_interval;
+
     if (pm_timer->isActive())
-        pm_timer->start(m_remaining);
+        start(m_max);
 }
 
 void Timer::onTimeout()
 {
-    if (m_elapsed + m_remaining == m_max)
+    if (m_elapsed + (m_interval - m_remaining) >= m_max)
     {
-        stop();
-        emit finished();
+        finish();
         return;
     }
 
@@ -94,14 +111,20 @@ void Timer::onTimeout()
     if (temp < m_interval)
     {
         m_remaining = temp;
-        pm_timer->start(m_remaining);
+        start(m_max);
     }
     else
     {
         if (m_remaining != m_interval)
         {
             m_remaining = m_interval;
-            pm_timer->start(m_remaining);
+            start(m_max);
         }
     }
+}
+
+void Timer::finish()
+{
+    stop();
+    emit finished();
 }

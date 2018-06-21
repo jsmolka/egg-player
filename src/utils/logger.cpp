@@ -1,6 +1,6 @@
 #include "logger.hpp"
 
-void log(const QString &message, const StringList &args)
+void log(const QString &message, const QVector<QVariant> &args)
 {
     if (!cfgApp->log())
         return;
@@ -17,10 +17,10 @@ void log(const QString &message, const StringList &args)
 #endif
 }
 
-QString LoggerPrivate::createLog(QString message, const StringList &args)
+QString LoggerPrivate::createLog(QString message, const QVector<QVariant> &args)
 {
-    for (const QString &arg : args)
-        message = message.arg(arg);
+    for (const QVariant &arg : args)
+        message = message.arg(arg.toString());
 
     QString time = QDateTime::currentDateTime().toString("dd-MM-yyyy hh:mm:ss");
     return QString("[%1] %2").arg(time).arg(message);

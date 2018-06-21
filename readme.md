@@ -17,7 +17,6 @@ A Groove Music like music player.
 
 ### Internal
 - use the e-prefix for all global variables instead of egg
-- check for the max property in timer pause
 - move library into music library (at least an option)
 - reactive cache / library
   - use QFileSystemWatcher
@@ -39,6 +38,7 @@ A Groove Music like music player.
 - template util functions
 - change app background color to black to prevent white flashing when resizing
 - create a bass wrapper and use it in the player
+  - disable auto looping the current stream
   - try to reinitiate bass after the audio device changed
   - consider using a bass plugin for tag loading instead of taglib
 - rewrite row hover style based on one of the following answers
@@ -51,6 +51,8 @@ A Groove Music like music player.
 - move font loading into util
 - cache as member in music bar
 - reformat code properly
+- connect app about to quit to pausing bass
+- consider renaming globals to common
 
 ### Cosmetic
 - do not show certain info at low size
