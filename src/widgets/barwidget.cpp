@@ -221,14 +221,14 @@ void BarWidget::onShortcutVolumeDownPressed()
 void BarWidget::setup()
 {
     setAutoFillBackground(true);
-    setColor(ColorUtil::background(Util::defaultCover()));
+    setColor(ColorUtil::background(Util::cover()));
     setFixedHeight(cfgBar->height());
     setStyleSheet(FileUtil::Css::bar());
 }
 
 void BarWidget::setupUi()
 {
-    m_coverLabel.setPixmap(Util::defaultCover(cfgBar->coverSize()));
+    m_coverLabel.setPixmap(Util::cover(cfgBar->coverSize()));
     m_coverLabel.setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
     m_trackLabel.setFixedWidth(cfgBar->trackWidth());
     m_trackLabel.setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);

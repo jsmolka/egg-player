@@ -33,7 +33,6 @@ A Groove Music like music player.
   - just use changed audios
 - fuzzy library searching
   - store last result, show it if there is no current
-- template util functions
 - change app background color to black to prevent white flashing when resizing
   - need to use the [windows api](https://forum.qt.io/topic/69867/temporary-white-border-on-resizing-qt-quick-application-window-on-windows-desktop/2)
   - remove background color from css
@@ -41,12 +40,9 @@ A Groove Music like music player.
   - disable auto looping the current stream
   - try to reinitiate bass after the audio device changed
   - consider using a bass plugin for tag loading instead of taglib
-- play around with VA list for logger, just use log as a function, move other function into private namespace
-- move font loading into util
 - reformat code properly
 - connect app about to quit to pausing bass
 - consider renaming globals to common
-- prevent negative intervals in timer
 
 ### Cosmetic
 - do not show certain info at low size

@@ -117,7 +117,7 @@ QPixmap Audio::cover(int size)
     QPixmap cover = readCover();
     if (cover.isNull())
     {
-        cover = Util::defaultCover();
+        cover = Util::cover();
         log("Audio: Cannot read cover %1", {m_path});
     }
     return Util::resize(cover, size);

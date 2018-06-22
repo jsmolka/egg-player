@@ -188,7 +188,7 @@ QPixmap Cache::cover(Audio *audio, int size)
     }
     else
     {
-        cover = Util::defaultCover();
+        cover = Util::cover();
         log("Cache: Cannot load cover %1", {audio->path()});
     }
 

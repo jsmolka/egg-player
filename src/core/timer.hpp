@@ -36,7 +36,6 @@ private slots:
 
 private:
     void finish();
-    bool isFinished();
 
     QTimer *pm_timer;
     qint64 m_elapsed;

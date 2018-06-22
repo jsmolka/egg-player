@@ -48,7 +48,7 @@ void Timer::start(qint64 max)
     }
     else
     {
-        log("Timer: Negative interval %1", {m_remaining});
+        log("Timer: Negative remaining time %1", {m_remaining});
         finish();
     }
 }
@@ -75,8 +75,8 @@ void Timer::restart(qint64 max)
 
 void Timer::setElapsed(qint64 elapsed)
 {
-    qint64 temp = m_max - elapsed;
-    if (temp < 0)
+    qint64 remaining = m_max - elapsed;
+    if (remaining < 0)
     {
         log("Timer: Invalid elapsed time %1 for max %2", {elapsed, m_max});
         return;
@@ -84,8 +84,8 @@ void Timer::setElapsed(qint64 elapsed)
 
     m_elapsed = elapsed;
 
-    if (temp < m_interval)
-        m_remaining = temp;
+    if (remaining < m_interval)
+        m_remaining = remaining;
     else
         m_remaining = elapsed % m_interval;
 
@@ -98,7 +98,7 @@ void Timer::setElapsed(qint64 elapsed)
 
 void Timer::onTimeout()
 {
-    if (m_elapsed + (m_interval - m_remaining) >= m_max)
+    if (m_elapsed + m_interval >= m_max)
     {
         finish();
         return;
@@ -107,10 +107,10 @@ void Timer::onTimeout()
     m_elapsed += m_interval;
     emit timeout(m_elapsed);
 
-    qint64 temp = m_max - m_elapsed;
-    if (temp < m_interval)
+    qint64 remaining = m_max - m_elapsed;
+    if (remaining < m_interval)
     {
-        m_remaining = temp;
+        m_remaining = remaining;
         start(m_max);
     }
     else

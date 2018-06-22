@@ -1,61 +1,62 @@
 #include "util.hpp"
 
-QString Util::time(int length)
+QString Util::time(int seconds)
 {
-    int seconds = length % 60;
-    int minutes = length / 60 % 60;
-    int hours = length / 3600 % 60;
+    QTime time(0, 0);
+    time = time.addSecs(seconds);
 
-    QString format;
-    if (hours > 9)
-        format = "hh:mm:ss";
-    else if (hours > 0)
-        format = "h:mm:ss";
-    else if (minutes > 9)
-        format = "mm:ss";
+    QString pattern;
+    if (seconds < 600)
+        pattern = "m:ss";
+    else if (seconds < 3600)
+        pattern = "mm:ss";
+    else if (seconds < 36000)
+        pattern = "h:mm:ss";
     else
-        format = "m:ss";
+        pattern = "hh:mm:ss";
 
-    return QTime(hours, minutes, seconds).toString(format);
+    return time.toString(pattern);
 }
 
-QPixmap Util::defaultCover(int size)
+QPixmap Util::cover(int size)
 {
-    QPixmap pixmap(IMG_DEFAULT_COVER);
-    if (size != -1)
-        return Util::resize(pixmap, size);
-    else
-        return pixmap;
+    return size == -1 ? QPixmap(IMG_DEFAULT_COVER) : Util::resize(QPixmap(IMG_DEFAULT_COVER), size);
+}
+
+QFont Util::font(double size)
+{
+    int id = QFontDatabase::addApplicationFont(FONT_LATO);
+    QString family = QFontDatabase::applicationFontFamilies(id).at(0);
+
+    QFont font(family);
+    font.setPointSizeF(size);
+    font.setWeight(QFont::Weight::Medium);
+
+    return font;
 }
 
 QPixmap Util::resize(const QPixmap &pixmap, int size, bool fast)
 {
-    if (pixmap.height() == size && pixmap.width() == size)
-        return pixmap;
-    else
-        return pixmap.scaled(size, size, Qt::KeepAspectRatio, fast ? Qt::FastTransformation : Qt::SmoothTransformation);
+    return pixmap.scaled(size, size, Qt::KeepAspectRatio, fast ? Qt::FastTransformation : Qt::SmoothTransformation);
 }
 
 QImage Util::resize(const QImage &image, int size, bool fast)
 {
-    if (image.height() == size && image.width() == size)
-        return image;
-    else
-        return image.scaled(size, size, Qt::KeepAspectRatio, fast ? Qt::FastTransformation : Qt::SmoothTransformation);
+    return image.scaled(size, size, Qt::KeepAspectRatio, fast ? Qt::FastTransformation : Qt::SmoothTransformation);
 }
 
-QVector<StringList> Util::chunk(const StringList &list, int n)
+QVector<StringList> Util::chunk(const StringList &vector, int n)
 {
-    n = qMin(qMax(1, n), list.size());
-    int quo = list.size() / n;
-    int rem = list.size() % n;
+    n = qMin(qMax(1, n), vector.size());
+    int quo = vector.size() / n;
+    int rem = vector.size() % n;
 
     QVector<StringList> result;
     for (int i = 0; i < n; i++)
     {
         int l = i * quo + qMin(i, rem);
         int r = (i + 1) * quo + qMin(i + 1, rem);
-        result << list.mid(l, r - l);
+        result << vector.mid(l, r - l);
     }
     return result;
 }
