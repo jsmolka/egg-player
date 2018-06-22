@@ -12,7 +12,7 @@
 #include "threadpool.hpp"
 #include "types.hpp"
 
-#define eggLibrary (Library::instance())
+#define eLibrary (Library::instance())
 
 class Library : public QObject
 {

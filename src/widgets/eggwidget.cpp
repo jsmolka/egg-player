@@ -2,21 +2,17 @@
 
 EggWidget::EggWidget(QWidget *parent)
     : QWidget(parent)
-    , m_library(true, this)
     , m_libraryWidget(this)
     , m_barWidget(this)
 {
     setup();
     setupUi();
 
-    eggPlayer->setVolume(cfgPlayer->volume());
-    eggPlayer->setShuffle(cfgPlayer->shuffle());
-    eggPlayer->setLoop(cfgPlayer->loop());
+    connect(eLibrary, SIGNAL(inserted(Audio *, int)), &m_libraryWidget, SLOT(insert(Audio *, int)));
 
-    connect(&m_library, SIGNAL(inserted(Audio *, int)), &m_libraryWidget, SLOT(insert(Audio *, int)));
     connect(&m_libraryWidget, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(onMusicLibraryDoubleClicked(QModelIndex)));
 
-    m_library.load(cfgLibrary->paths());
+    eLibrary->load(cfgLibrary->paths());
 }
 
 EggWidget::~EggWidget()
@@ -45,8 +41,8 @@ void EggWidget::closeEvent(QCloseEvent *event)
 
 void EggWidget::onMusicLibraryDoubleClicked(const QModelIndex &index)
 {
-    eggPlayer->loadPlaylist(m_library.audios(), index.row());
-    eggPlayer->play();
+    ePlayer->loadPlaylist(eLibrary->audios(), index.row());
+    ePlayer->play();
 }
 
 void EggWidget::setup()

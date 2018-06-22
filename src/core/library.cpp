@@ -26,7 +26,7 @@ Library::~Library()
 Library * Library::instance()
 {
     if (!_instance)
-        _instance = new Library(true, qApp);
+        _instance = new Library(qApp);
 
     return _instance;
 }

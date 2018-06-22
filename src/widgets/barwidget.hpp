@@ -1,5 +1,5 @@
-#ifndef MUSICBAR_HPP
-#define MUSICBAR_HPP
+#ifndef BARWIDGET_HPP
+#define BARWIDGET_HPP
 
 #include <QGridLayout>
 #include <QLabel>
@@ -12,7 +12,7 @@
 #include "config.hpp"
 #include "constants.hpp"
 #include "iconbutton.hpp"
-#include "clickableslider.hpp"
+#include "slider.hpp"
 #include "player.hpp"
 #include "shortcut.hpp"
 
@@ -36,11 +36,8 @@ public:
     IconButton * loopButton();
     IconButton * volumeButton();
 
-    ClickableSlider * lengthSlider();
-    ClickableSlider * volumeSlider();
-
-protected:
-    void paintEvent(QPaintEvent *event);
+    Slider * lengthSlider();
+    Slider * volumeSlider();
 
 private slots:
     void onPlayerAudioChanged(Audio *audio);
@@ -73,6 +70,8 @@ private:
     void setVolumePlayer(int volume);
     void setVolumeSlider(int volume);
 
+    Cache m_cache;
+
     QLabel m_coverLabel;
     QLabel m_trackLabel;
     QLabel m_currentTimeLabel;
@@ -85,8 +84,8 @@ private:
     IconButton m_loopButton;
     IconButton m_volumeButton;
 
-    ClickableSlider m_lengthSlider;
-    ClickableSlider m_volumeSlider;
+    Slider m_lengthSlider;
+    Slider m_volumeSlider;
 
     Shortcut m_scPlayPause;
     Shortcut m_scNext;
@@ -95,4 +94,4 @@ private:
     Shortcut m_scVolumeDown;
 };
 
-#endif // MUSICBAR_HPP
+#endif // BARWIDGET_HPP

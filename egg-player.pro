@@ -68,15 +68,15 @@ HEADERS += \
     src/utils/config/configlibrary.hpp \
     src/utils/config/configplayer.hpp \
     src/utils/config/configshortcut.hpp \
-    src/widgets/components/clickableslider.hpp \
+    src/widgets/eggwidget.hpp \
+    src/widgets/barwidget.hpp \
+    src/widgets/librarywidget.hpp \
     src/widgets/components/clickablestyle.hpp \
     src/widgets/components/iconbutton.hpp \
     src/widgets/components/rowhoverdelegate.hpp \
     src/widgets/components/tablewidget.hpp \
     src/widgets/layouts/borderlayout.hpp \
-    src/widgets/eggwidget.hpp \
-    src/widgets/barwidget.hpp \
-    src/widgets/librarywidget.hpp
+    src/widgets/components/slider.hpp
 
 SOURCES += \
     src/main.cpp \
@@ -102,12 +102,12 @@ SOURCES += \
     src/utils/config/configlibrary.cpp \
     src/utils/config/configplayer.cpp \
     src/utils/config/configshortcut.cpp \
-    src/widgets/components/clickableslider.cpp \
+    src/widgets/barwidget.cpp \
+    src/widgets/eggwidget.cpp \
+    src/widgets/librarywidget.cpp \
     src/widgets/components/clickablestyle.cpp \
     src/widgets/components/iconbutton.cpp \
     src/widgets/components/rowhoverdelegate.cpp \
     src/widgets/components/tablewidget.cpp \
     src/widgets/layouts/borderlayout.cpp \
-    src/widgets/eggwidget.cpp \
-    src/widgets/barwidget.cpp \
-    src/widgets/librarywidget.cpp
+    src/widgets/components/slider.cpp

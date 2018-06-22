@@ -24,12 +24,12 @@ IconButton:pressed {
     background: rgba(0, 0, 0, 0.15);
 }
 
-ClickableSlider::groove:horizontal {
+Slider::groove:horizontal {
 	background: rgb(150, 150, 150);
 	height: groove-height;
 }
 
-ClickableSlider::handle:horizontal {
+Slider::handle:horizontal {
 	background: white;
 	width: handle-size;
 	height: handle-size;
@@ -38,10 +38,10 @@ ClickableSlider::handle:horizontal {
 	border-radius: handle-size-half;
 }
 
-ClickableSlider::sub-page {
+Slider::sub-page {
 	background: white;
 }
 
-ClickableSlider::add-page {
+Slider::add-page {
 	background: rgb(150, 150, 150);
 }

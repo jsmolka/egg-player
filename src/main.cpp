@@ -5,7 +5,9 @@
 #include "config.hpp"
 #include "constants.hpp"
 #include "eggwidget.hpp"
+#include "library.hpp"
 #include "logger.hpp"
+#include "player.hpp"
 
 QFont loadFont()
 {
@@ -26,6 +28,15 @@ void setup()
     qApp->setFont(loadFont());
 }
 
+void setupGlobals()
+{
+    eLibrary->setSorted(true);
+
+    ePlayer->setVolume(cfgPlayer->volume());
+    ePlayer->setShuffle(cfgPlayer->shuffle());
+    ePlayer->setLoop(cfgPlayer->loop());
+}
+
 int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
@@ -33,6 +44,7 @@ int main(int argc, char *argv[])
     log("Application: Start");
 
     setup();
+    setupGlobals();
 
     EggWidget egg;
     egg.showSavedPosition();

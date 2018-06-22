@@ -9,7 +9,7 @@
 #include "audio.hpp"
 #include "timer.hpp"
 
-#define eggPlayer (Player::instance())
+#define ePlayer (Player::instance())
 
 class Player : public QObject
 {

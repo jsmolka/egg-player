@@ -31,7 +31,6 @@ private:
     void setup();
 
     RowHoverDelegate *pm_delegate;
-    ClickableStyle *pm_style;
 };
 
 #endif // TABLEWIDGET_HPP

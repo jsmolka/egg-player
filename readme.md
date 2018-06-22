@@ -43,7 +43,6 @@ A Groove Music like music player.
   - consider using a bass plugin for tag loading instead of taglib
 - play around with VA list for logger, just use log as a function, move other function into private namespace
 - move font loading into util
-- cache as member in music bar
 - reformat code properly
 - connect app about to quit to pausing bass
 - consider renaming globals to common

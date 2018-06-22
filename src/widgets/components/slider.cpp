@@ -1,6 +1,6 @@
-#include "clickableslider.hpp"
+#include "slider.hpp"
 
-ClickableSlider::ClickableSlider(QWidget *parent)
+Slider::Slider(QWidget *parent)
     : QSlider(parent)
     , m_pressed(false)
 {
@@ -10,29 +10,29 @@ ClickableSlider::ClickableSlider(QWidget *parent)
     connect(this, SIGNAL(sliderReleased()), this, SLOT(onSliderReleased()));
 }
 
-ClickableSlider::~ClickableSlider()
+Slider::~Slider()
 {
 
 }
 
-bool ClickableSlider::isPressed() const
+bool Slider::isPressed() const
 {
     return m_pressed;
 }
 
-void ClickableSlider::onSliderPressed()
+void Slider::onSliderPressed()
 {
     m_pressed = true;
     emit sliderMoved(value());
 }
 
-void ClickableSlider::onSliderReleased()
+void Slider::onSliderReleased()
 {
     m_pressed = false;
     emit sliderValueChanged(value());
 }
 
-void ClickableSlider::setup()
+void Slider::setup()
 {
     setFocusPolicy(Qt::NoFocus);
     setOrientation(Qt::Horizontal);

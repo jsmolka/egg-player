@@ -1,5 +1,5 @@
-#ifndef MUSICLIBRARY_HPP
-#define MUSICLIBRARY_HPP
+#ifndef LIBRARYWIDGET_HPP
+#define LIBRARYWIDGET_HPP
 
 #include <QHeaderView>
 #include <QVector>
@@ -42,4 +42,4 @@ private:
     QVector<Column> m_columns;
 };
 
-#endif // MUSICLIBRARY_HPP
+#endif // LIBRARYWIDGET_HPP

@@ -3,7 +3,6 @@
 TableWidget::TableWidget(QWidget *parent)
     : QTableWidget(parent)
     , pm_delegate(new RowHoverDelegate(this))
-    , pm_style(new ClickableStyle(style()))
 {
     setup();
 
@@ -15,7 +14,7 @@ TableWidget::TableWidget(QWidget *parent)
 
 TableWidget::~TableWidget()
 {
-    delete pm_style;
+
 }
 
 void TableWidget::leaveEvent(QEvent *event)
@@ -61,5 +60,5 @@ void TableWidget::setup()
     horizontalHeader()->hide();
     verticalHeader()->hide();
 
-    verticalScrollBar()->setStyle(pm_style);
+    verticalScrollBar()->setStyle(new ClickableStyle(style()));
 }

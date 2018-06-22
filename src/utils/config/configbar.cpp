@@ -23,7 +23,7 @@ void ConfigBar::setDefaults()
     setDefault("height", 68);
     setDefault("iconSize", 32);
     setDefault("margin", 8);
-    setDefault("spacing", 8);
+    setDefault("spacing", 10);
     setDefault("timeWidth", 50);
     setDefault("trackWidth", 240);
 }

@@ -1,5 +1,5 @@
-#ifndef EGGPLAYER_HPP
-#define EGGPLAYER_HPP
+#ifndef EGGWIDGET_HPP
+#define EGGWIDGET_HPP
 
 #include <QSettings>
 #include <QWidget>
@@ -29,11 +29,11 @@ private slots:
 private:
     void setup();
     void setupUi();
+
     void savePosition();
 
-    Library m_library;
     LibraryWidget m_libraryWidget;
     BarWidget m_barWidget;
 };
 
-#endif // EGGPLAYER_HPP
+#endif // EGGWIDGET_HPP

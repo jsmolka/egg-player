@@ -1,17 +1,17 @@
-#ifndef CLICKABLESLIDER_HPP
-#define CLICKABLESLIDER_HPP
+#ifndef SLIDER_HPP
+#define SLIDER_HPP
 
 #include <QSlider>
 
 #include "clickablestyle.hpp"
 
-class ClickableSlider : public QSlider
+class Slider : public QSlider
 {
     Q_OBJECT
 
 public:
-    ClickableSlider(QWidget *parent = nullptr);
-    ~ClickableSlider();
+    Slider(QWidget *parent = nullptr);
+    ~Slider();
 
     bool isPressed() const;
 
@@ -28,4 +28,4 @@ private:
     bool m_pressed;
 };
 
-#endif // CLICKABLESLIDER_HPP
+#endif // SLIDER_HPP
