@@ -5,17 +5,18 @@
 #include <QWidget>
 
 #include "borderlayout.hpp"
+#include "constants.hpp"
 #include "library.hpp"
-#include "musiclibrary.hpp"
-#include "musicbar.hpp"
+#include "librarywidget.hpp"
+#include "barwidget.hpp"
 
-class EggPlayer : public QWidget
+class EggWidget : public QWidget
 {
     Q_OBJECT
 
 public:
-    EggPlayer(QWidget *parent = nullptr);
-    ~EggPlayer();
+    EggWidget(QWidget *parent = nullptr);
+    ~EggWidget();
 
     void showSavedPosition();
 
@@ -26,12 +27,13 @@ private slots:
     void onMusicLibraryDoubleClicked(const QModelIndex &index);
 
 private:
+    void setup();
     void setupUi();
     void savePosition();
 
     Library m_library;
-    MusicLibrary m_musicLibrary;
-    MusicBar m_musicBar;
+    LibraryWidget m_libraryWidget;
+    BarWidget m_barWidget;
 };
 
 #endif // EGGPLAYER_HPP

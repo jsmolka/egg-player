@@ -10,8 +10,9 @@ namespace ConstantsPrivate
     extern QString resource(const QString &file);
 }
 
-const extern QString CSS_MUSICBAR;
-const extern QString CSS_MUSICLIBRARY;
+const extern QString CSS_BAR;
+const extern QString CSS_EGG;
+const extern QString CSS_LIBRARY;
 
 const extern QString FONT_LATO;
 

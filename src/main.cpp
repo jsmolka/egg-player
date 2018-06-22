@@ -4,7 +4,7 @@
 
 #include "config.hpp"
 #include "constants.hpp"
-#include "eggplayer.hpp"
+#include "eggwidget.hpp"
 #include "logger.hpp"
 
 QFont loadFont()
@@ -34,7 +34,7 @@ int main(int argc, char *argv[])
 
     setup();
 
-    EggPlayer egg;
+    EggWidget egg;
     egg.showSavedPosition();
 
     return app.exec();

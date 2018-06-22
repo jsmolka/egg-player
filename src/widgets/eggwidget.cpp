@@ -1,29 +1,30 @@
-#include "eggplayer.hpp"
+#include "eggwidget.hpp"
 
-EggPlayer::EggPlayer(QWidget *parent)
+EggWidget::EggWidget(QWidget *parent)
     : QWidget(parent)
     , m_library(true, this)
-    , m_musicLibrary(this)
-    , m_musicBar(this)
+    , m_libraryWidget(this)
+    , m_barWidget(this)
 {
+    setup();
+    setupUi();
+
     eggPlayer->setVolume(cfgPlayer->volume());
     eggPlayer->setShuffle(cfgPlayer->shuffle());
     eggPlayer->setLoop(cfgPlayer->loop());
 
-    setupUi();
-
-    connect(&m_library, SIGNAL(inserted(Audio *, int)), &m_musicLibrary, SLOT(insert(Audio *, int)));
-    connect(&m_musicLibrary, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(onMusicLibraryDoubleClicked(QModelIndex)));
+    connect(&m_library, SIGNAL(inserted(Audio *, int)), &m_libraryWidget, SLOT(insert(Audio *, int)));
+    connect(&m_libraryWidget, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(onMusicLibraryDoubleClicked(QModelIndex)));
 
     m_library.load(cfgLibrary->paths());
 }
 
-EggPlayer::~EggPlayer()
+EggWidget::~EggWidget()
 {
 
 }
 
-void EggPlayer::showSavedPosition()
+void EggWidget::showSavedPosition()
 {
     QSettings settings;
     restoreGeometry(settings.value("geometry", saveGeometry()).toByteArray());
@@ -36,39 +37,44 @@ void EggPlayer::showSavedPosition()
         show();
 }
 
-void EggPlayer::closeEvent(QCloseEvent *event)
+void EggWidget::closeEvent(QCloseEvent *event)
 {
     savePosition();
     QWidget::closeEvent(event);
 }
 
-void EggPlayer::onMusicLibraryDoubleClicked(const QModelIndex &index)
+void EggWidget::onMusicLibraryDoubleClicked(const QModelIndex &index)
 {
     eggPlayer->loadPlaylist(m_library.audios(), index.row());
     eggPlayer->play();
 }
 
-void EggPlayer::setupUi()
+void EggWidget::setup()
+{
+    setStyleSheet(FileUtil::Css::egg());
+}
+
+void EggWidget::setupUi()
 {
     QLabel *west = new QLabel(this);
     west->setFixedWidth(315);
     west->setStyleSheet("QLabel {background-color: #666666;}");
 
-    m_musicLibrary.addColumn(MusicLibrary::Title);
-    m_musicLibrary.addColumn(MusicLibrary::Artist);
-    m_musicLibrary.addColumn(MusicLibrary::Album);
-    m_musicLibrary.addColumn(MusicLibrary::Year, Qt::AlignLeft, false);
-    m_musicLibrary.addColumn(MusicLibrary::Genre);
-    m_musicLibrary.addColumn(MusicLibrary::Length, Qt::AlignRight, false);
+    m_libraryWidget.addColumn(LibraryWidget::Title);
+    m_libraryWidget.addColumn(LibraryWidget::Artist);
+    m_libraryWidget.addColumn(LibraryWidget::Album);
+    m_libraryWidget.addColumn(LibraryWidget::Year, Qt::AlignLeft, false);
+    m_libraryWidget.addColumn(LibraryWidget::Genre);
+    m_libraryWidget.addColumn(LibraryWidget::Length, Qt::AlignRight, false);
 
     BorderLayout *layout = new BorderLayout(0, this);
-    layout->addWidget(&m_musicLibrary, BorderLayout::Center);
+    layout->addWidget(&m_libraryWidget, BorderLayout::Center);
     layout->addWidget(west, BorderLayout::West);
-    layout->addWidget(&m_musicBar, BorderLayout::South);
+    layout->addWidget(&m_barWidget, BorderLayout::South);
     setLayout(layout);
 }
 
-void EggPlayer::savePosition()
+void EggWidget::savePosition()
 {
     QSettings settings;
     settings.setValue("geometry", saveGeometry());

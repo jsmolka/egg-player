@@ -17,7 +17,6 @@ A Groove Music like music player.
 ## Things to do
 
 ### Internal
-- use the e-prefix for all global variables instead of egg
 - reactive cache / library
   - use QFileSystemWatcher
   - update library / cache accordingly
@@ -34,15 +33,15 @@ A Groove Music like music player.
   - just use changed audios
 - fuzzy library searching
   - store last result, show it if there is no current
-- rename the widgets
 - template util functions
 - change app background color to black to prevent white flashing when resizing
+  - need to use the [windows api](https://forum.qt.io/topic/69867/temporary-white-border-on-resizing-qt-quick-application-window-on-windows-desktop/2)
+  - remove background color from css
 - create a bass wrapper and use it in the player
   - disable auto looping the current stream
   - try to reinitiate bass after the audio device changed
   - consider using a bass plugin for tag loading instead of taglib
 - play around with VA list for logger, just use log as a function, move other function into private namespace
-- split css files, separate file for egg-player
 - move font loading into util
 - cache as member in music bar
 - reformat code properly

@@ -8,10 +8,6 @@
  * - icon-size-half
  */
 
-QLabel {
-    color: white;
-}
-
 IconButton {
 	border-radius: icon-size-half;
 }

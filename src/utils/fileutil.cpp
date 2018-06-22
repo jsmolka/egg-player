@@ -38,3 +38,24 @@ StringList FileUtil::glob(const QString &path, const QString &suffix)
     }
     return result;
 }
+
+QString FileUtil::Css::bar()
+{
+    return FileUtil::read(CSS_BAR)
+        .replace("groove-height", QString::number(cfgBar->grooveHeight()))
+        .replace("handle-size-half", QString::number(cfgBar->handleSize() / 2))
+        .replace("handle-size", QString::number(cfgBar->handleSize()))
+        .replace("icon-size-half", QString::number(cfgBar->iconSize() / 2));
+}
+
+QString FileUtil::Css::egg()
+{
+    return FileUtil::read(CSS_EGG);
+}
+
+QString FileUtil::Css::library()
+{
+    return FileUtil::read(CSS_LIBRARY)
+        .replace("cell-padding", QString::number(cfgLibrary->cellPadding()))
+        .replace("scrollbar-width", QString::number(cfgLibrary->scrollBarWidth()));
+}

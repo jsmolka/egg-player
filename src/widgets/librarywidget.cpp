@@ -1,18 +1,18 @@
-#include "musiclibrary.hpp"
+#include "librarywidget.hpp"
 
 
-MusicLibrary::MusicLibrary(QWidget *parent)
+LibraryWidget::LibraryWidget(QWidget *parent)
     : TableWidget(parent)
 {
     setup();
 }
 
-MusicLibrary::~MusicLibrary()
+LibraryWidget::~LibraryWidget()
 {
 
 }
 
-void MusicLibrary::addColumn(SongInfo info, Qt::Alignment horizontal, bool expand)
+void LibraryWidget::addColumn(SongInfo info, Qt::Alignment horizontal, bool expand)
 {
     m_columns << Column(info, Qt::AlignVCenter | horizontal);
     setColumnCount(m_columns.size());
@@ -21,7 +21,7 @@ void MusicLibrary::addColumn(SongInfo info, Qt::Alignment horizontal, bool expan
         horizontalHeader()->setSectionResizeMode(m_columns.size() - 1, QHeaderView::ResizeToContents);
 }
 
-void MusicLibrary::insert(Audio *audio, int row)
+void LibraryWidget::insert(Audio *audio, int row)
 {
     setUpdatesEnabled(false);
 
@@ -38,25 +38,16 @@ void MusicLibrary::insert(Audio *audio, int row)
     setUpdatesEnabled(true);
 }
 
-void MusicLibrary::loadCss()
+void LibraryWidget::setup()
 {
-    setStyleSheet(
-        FileUtil::read(CSS_MUSICLIBRARY)
-            .replace("cell-padding", QString::number(cfgLibrary->cellPadding()))
-            .replace("scrollbar-width", QString::number(cfgLibrary->scrollBarWidth()))
-    );
-}
-
-void MusicLibrary::setup()
-{
-    loadCss();
+    setStyleSheet(FileUtil::Css::library());
 
     horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
     verticalHeader()->setSectionResizeMode(QHeaderView::Fixed);
     verticalHeader()->setDefaultSectionSize(cfgLibrary->itemHeight());
 }
 
-QString MusicLibrary::audioText(Audio *audio, int column)
+QString LibraryWidget::audioText(Audio *audio, int column)
 {
     switch(m_columns[column].info)
     {

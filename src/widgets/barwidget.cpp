@@ -1,6 +1,6 @@
-#include "musicbar.hpp"
+#include "barwidget.hpp"
 
-MusicBar::MusicBar(QWidget *parent)
+BarWidget::BarWidget(QWidget *parent)
     : QWidget(parent)
     , m_coverLabel(this)
     , m_trackLabel(this)
@@ -46,72 +46,72 @@ MusicBar::MusicBar(QWidget *parent)
     connect(&m_scVolumeDown, SIGNAL(pressed()), this, SLOT(onShortcutVolumeDownPressed()));
 }
 
-MusicBar::~MusicBar()
+BarWidget::~BarWidget()
 {
 
 }
 
-QLabel * MusicBar::coverLabel()
+QLabel * BarWidget::coverLabel()
 {
     return &m_coverLabel;
 }
 
-QLabel * MusicBar::trackLabel()
+QLabel * BarWidget::trackLabel()
 {
     return &m_trackLabel;
 }
 
-QLabel * MusicBar::currentTimeLabel()
+QLabel * BarWidget::currentTimeLabel()
 {
     return &m_currentTimeLabel;
 }
 
-QLabel * MusicBar::totalTimeLabel()
+QLabel * BarWidget::totalTimeLabel()
 {
     return &m_totalTimeLabel;
 }
 
-IconButton * MusicBar::playPauseButton()
+IconButton * BarWidget::playPauseButton()
 {
     return &m_playPauseButton;
 }
 
-IconButton * MusicBar::nextButton()
+IconButton * BarWidget::nextButton()
 {
     return &m_nextButton;
 }
 
-IconButton * MusicBar::previousButton()
+IconButton * BarWidget::previousButton()
 {
     return &m_previousButton;
 }
 
-IconButton * MusicBar::shuffleButton()
+IconButton * BarWidget::shuffleButton()
 {
     return &m_shuffleButton;
 }
 
-IconButton * MusicBar::loopButton()
+IconButton * BarWidget::loopButton()
 {
     return &m_loopButton;
 }
 
-IconButton * MusicBar::volumeButton()
+IconButton * BarWidget::volumeButton()
 {
     return &m_volumeButton;
 }
 
-ClickableSlider * MusicBar::lengthSlider()
+ClickableSlider * BarWidget::lengthSlider()
 {
     return &m_lengthSlider;
 }
 
-ClickableSlider * MusicBar::volumeSlider()
+ClickableSlider * BarWidget::volumeSlider()
 {
     return &m_volumeSlider;
 }
 
-void MusicBar::paintEvent(QPaintEvent *event)
+void BarWidget::paintEvent(QPaintEvent *event)
 {
     Q_UNUSED(event);
 
@@ -121,7 +121,7 @@ void MusicBar::paintEvent(QPaintEvent *event)
     style()->drawPrimitive(QStyle::PE_Widget, &option, &painter, this);
 }
 
-void MusicBar::onPlayerAudioChanged(Audio *audio)
+void BarWidget::onPlayerAudioChanged(Audio *audio)
 {
     QPixmap cover = Cache().cover(audio, cfgBar->coverSize());
 
@@ -137,12 +137,12 @@ void MusicBar::onPlayerAudioChanged(Audio *audio)
     setColor(ColorUtil::background(cover, audio->coverId()));
 }
 
-void MusicBar::onPlayerStateChanged(Player::State state)
+void BarWidget::onPlayerStateChanged(Player::State state)
 {
     m_playPauseButton.setSelectedIcon(state == Player::State::Playing ? 1 : 0);
 }
 
-void MusicBar::onPlayerPositionChanged(int position)
+void BarWidget::onPlayerPositionChanged(int position)
 {
     if (!m_lengthSlider.isPressed())
     {
@@ -151,14 +151,14 @@ void MusicBar::onPlayerPositionChanged(int position)
     }
 }
 
-void MusicBar::onPlayerVolumeChanged(int volume)
+void BarWidget::onPlayerVolumeChanged(int volume)
 {
     setVolumeConfig(volume);
     setVolumeIcon(volume);
     setVolumeSlider(volume);
 }
 
-void MusicBar::onPlayPauseButtonPressed()
+void BarWidget::onPlayPauseButtonPressed()
 {
     if (m_playPauseButton.selectedIcon() == 0)
         eggPlayer->play();
@@ -166,19 +166,19 @@ void MusicBar::onPlayPauseButtonPressed()
         eggPlayer->pause();
 }
 
-void MusicBar::onShuffleButtonLocked(bool locked)
+void BarWidget::onShuffleButtonLocked(bool locked)
 {
     eggPlayer->setShuffle(locked);
     cfgPlayer->setShuffle(locked);
 }
 
-void MusicBar::onLoopButtonLocked(bool locked)
+void BarWidget::onLoopButtonLocked(bool locked)
 {
     eggPlayer->setLoop(locked);
     cfgPlayer->setLoop(locked);
 }
 
-void MusicBar::onVolumeButtonPressed()
+void BarWidget::onVolumeButtonPressed()
 {
     if (m_volumeSlider.isVisible())
     {
@@ -192,12 +192,12 @@ void MusicBar::onVolumeButtonPressed()
     }
 }
 
-void MusicBar::onLengthSliderMoved(int value)
+void BarWidget::onLengthSliderMoved(int value)
 {
     m_currentTimeLabel.setText(Util::time(value));
 }
 
-void MusicBar::onLengthSliderValueChanged(int value)
+void BarWidget::onLengthSliderValueChanged(int value)
 {
     if (value != eggPlayer->currentAudio()->duration())
         eggPlayer->setPosition(value);
@@ -205,12 +205,12 @@ void MusicBar::onLengthSliderValueChanged(int value)
         eggPlayer->next();
 }
 
-void MusicBar::onVolumeSliderMoved(int value)
+void BarWidget::onVolumeSliderMoved(int value)
 {
     setVolumePlayer(value);
 }
 
-void MusicBar::onShortcutPlayPausePressed()
+void BarWidget::onShortcutPlayPausePressed()
 {
     if (eggPlayer->isPlaying())
         eggPlayer->pause();
@@ -218,37 +218,25 @@ void MusicBar::onShortcutPlayPausePressed()
         eggPlayer->play();
 }
 
-void MusicBar::onShortcutVolumeUpPressed()
+void BarWidget::onShortcutVolumeUpPressed()
 {
     setVolumePlayer(eggPlayer->volume() + 1);
 }
 
-void MusicBar::onShortcutVolumeDownPressed()
+void BarWidget::onShortcutVolumeDownPressed()
 {
     setVolumePlayer(eggPlayer->volume() - 1);
 }
 
-void MusicBar::loadCss()
+void BarWidget::setup()
 {
-    setStyleSheet(
-        FileUtil::read(CSS_MUSICBAR)
-            .replace("groove-height", QString::number(cfgBar->grooveHeight()))
-            .replace("handle-size-half", QString::number(cfgBar->handleSize() / 2))
-            .replace("handle-size", QString::number(cfgBar->handleSize()))
-            .replace("icon-size-half", QString::number(cfgBar->iconSize() / 2))
-    );
-}
-
-void MusicBar::setup()
-{
-    loadCss();
-
     setAutoFillBackground(true);
-    setFixedHeight(cfgBar->height());
     setColor(ColorUtil::background(Util::defaultCover()));
+    setFixedHeight(cfgBar->height());
+    setStyleSheet(FileUtil::Css::bar());
 }
 
-void MusicBar::setupUi()
+void BarWidget::setupUi()
 {
     m_coverLabel.setPixmap(Util::defaultCover(cfgBar->coverSize()));
     m_coverLabel.setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
@@ -298,14 +286,14 @@ void MusicBar::setupUi()
     setLayout(layout);
 }
 
-void MusicBar::setColor(const QColor &color)
+void BarWidget::setColor(const QColor &color)
 {
     QPalette palette;
     palette.setColor(QPalette::Background, color);
     setPalette(palette);
 }
 
-void MusicBar::setButtonVisibility(bool visible)
+void BarWidget::setButtonVisibility(bool visible)
 {
     m_previousButton.setVisible(visible);
     m_playPauseButton.setVisible(visible);
@@ -314,22 +302,22 @@ void MusicBar::setButtonVisibility(bool visible)
     m_loopButton.setVisible(visible);
 }
 
-void MusicBar::hideButtons()
+void BarWidget::hideButtons()
 {
     setButtonVisibility(false);
 }
 
-void MusicBar::showButtons()
+void BarWidget::showButtons()
 {
     setButtonVisibility(true);
 }
 
-void MusicBar::setVolumeConfig(int volume)
+void BarWidget::setVolumeConfig(int volume)
 {
     cfgPlayer->setVolume(volume);
 }
 
-void MusicBar::setVolumeIcon(int volume)
+void BarWidget::setVolumeIcon(int volume)
 {
     if (volume > 66)
         m_volumeButton.setSelectedIcon(0);
@@ -341,12 +329,12 @@ void MusicBar::setVolumeIcon(int volume)
         m_volumeButton.setSelectedIcon(3);
 }
 
-void MusicBar::setVolumePlayer(int volume)
+void BarWidget::setVolumePlayer(int volume)
 {
     eggPlayer->setVolume(volume);
 }
 
-void MusicBar::setVolumeSlider(int volume)
+void BarWidget::setVolumeSlider(int volume)
 {
     m_volumeSlider.setValue(volume);
 }

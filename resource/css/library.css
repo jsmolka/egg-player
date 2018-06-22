@@ -6,18 +6,18 @@
  * - scrollbar-width
  */
 
-MusicLibrary {
+LibraryWidget {
 	color: white;
 	background: black;
 	alternate-background-color: rgb(38, 38, 38);
 }
 
-MusicLibrary:item {
+LibraryWidget:item {
 	border: 0;
 	padding: cell-padding;
 }
 
-MusicLibrary::item:hover {
+LibraryWidget::item:hover {
 	background: rgb(64, 64, 64);
 }
 

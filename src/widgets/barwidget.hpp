@@ -16,13 +16,13 @@
 #include "player.hpp"
 #include "shortcut.hpp"
 
-class MusicBar : public QWidget
+class BarWidget : public QWidget
 {
     Q_OBJECT
 
 public:
-    MusicBar(QWidget *parent = nullptr);
-    ~MusicBar();
+    BarWidget(QWidget *parent = nullptr);
+    ~BarWidget();
 
     QLabel * coverLabel();
     QLabel * trackLabel();
@@ -59,7 +59,6 @@ private slots:
     void onShortcutVolumeDownPressed();
 
 private:
-    void loadCss();
     void setup();
     void setupUi();
 

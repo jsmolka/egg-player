@@ -18,8 +18,9 @@ QString ConstantsPrivate::resource(const QString &file)
 #endif
 }
 
-const QString CSS_MUSICBAR      = ConstantsPrivate::resource("css/musicbar.css");
-const QString CSS_MUSICLIBRARY  = ConstantsPrivate::resource("css/musiclibrary.css");
+const QString CSS_BAR           = ConstantsPrivate::resource("css/bar.css");
+const QString CSS_EGG           = ConstantsPrivate::resource("css/egg.css");
+const QString CSS_LIBRARY       = ConstantsPrivate::resource("css/library.css");
 
 const QString FONT_LATO         = ConstantsPrivate::resource("fonts/Lato.ttf");
 

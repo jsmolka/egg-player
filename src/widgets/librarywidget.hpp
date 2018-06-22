@@ -10,13 +10,13 @@
 #include "tablewidget.hpp"
 #include "util.hpp"
 
-class MusicLibrary : public TableWidget
+class LibraryWidget : public TableWidget
 {
     Q_OBJECT
 
 public:
-    MusicLibrary(QWidget *parent = nullptr);
-    ~MusicLibrary();
+    LibraryWidget(QWidget *parent = nullptr);
+    ~LibraryWidget();
 
     enum SongInfo {None, Title, Artist, Album, Track, Year, Genre, Length};
 
@@ -35,7 +35,6 @@ private:
         Qt::Alignment alignment;
     };
 
-    void loadCss();
     void setup();
 
     QString audioText(Audio *audio, int column);
