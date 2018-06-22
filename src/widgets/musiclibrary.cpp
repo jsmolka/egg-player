@@ -2,11 +2,9 @@
 
 
 MusicLibrary::MusicLibrary(QWidget *parent)
-    : QTableWidget(parent)
+    : TableWidget(parent)
 {
     setup();
-
-    connect(this, SIGNAL(entered(QModelIndex)), this, SLOT(onEntered(QModelIndex)));
 }
 
 MusicLibrary::~MusicLibrary()
@@ -40,25 +38,6 @@ void MusicLibrary::insert(Audio *audio, int row)
     setUpdatesEnabled(true);
 }
 
-void MusicLibrary::leaveEvent(QEvent *event)
-{
-    emit hoverRowChanged(-1);
-
-    QTableWidget::leaveEvent(event);
-}
-
-void MusicLibrary::resizeEvent(QResizeEvent *event)
-{
-    QTableWidget::resizeEvent(event);
-
-    emit hoverRowChanged(indexAt(mapFromGlobal(QCursor::pos())).row());
-}
-
-void MusicLibrary::onEntered(QModelIndex index)
-{
-    emit hoverRowChanged(index.row());
-}
-
 void MusicLibrary::loadCss()
 {
     setStyleSheet(
@@ -72,25 +51,9 @@ void MusicLibrary::setup()
 {
     loadCss();
 
-    setAlternatingRowColors(true);
-    setEditTriggers(QAbstractItemView::NoEditTriggers);
-    setFocusPolicy(Qt::NoFocus);
-    setFrameStyle(QFrame::NoFrame);
-    setItemDelegate(new RowHoverDelegate(this, this));
-    setMouseTracking(true);
-    setSelectionMode(QAbstractItemView::NoSelection);
-    setShowGrid(false);
-    setVerticalScrollMode(QAbstractItemView::ScrollPerPixel);
-    setWordWrap(false);
-
-    horizontalHeader()->hide();
     horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
-    verticalHeader()->hide();
     verticalHeader()->setSectionResizeMode(QHeaderView::Fixed);
     verticalHeader()->setDefaultSectionSize(cfgLibrary->itemHeight());
-
-    horizontalScrollBar()->hide();
-    verticalScrollBar()->setStyle(new ClickableStyle(style()));
 }
 
 QString MusicLibrary::audioText(Audio *audio, int column)

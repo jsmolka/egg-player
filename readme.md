@@ -12,12 +12,12 @@ A Groove Music like music player.
 - [ ] reactive cache
 
 ## Changes since lastest release
+- fix timer pause bug
 
 ## Things to do
 
 ### Internal
 - use the e-prefix for all global variables instead of egg
-- move library into music library (at least an option)
 - reactive cache / library
   - use QFileSystemWatcher
   - update library / cache accordingly
@@ -41,11 +41,6 @@ A Groove Music like music player.
   - disable auto looping the current stream
   - try to reinitiate bass after the audio device changed
   - consider using a bass plugin for tag loading instead of taglib
-- rewrite row hover style based on one of the following answers
-  - [first](https://stackoverflow.com/a/35418703/7057528) answer
-  - [second](https://stackoverflow.com/a/48586435/7057528) answer
-  - [third](https://forum.qt.io/topic/33723/solved-mousehover-entire-row-selection-in-qtableview/8) answer
-  - then remove the unnecessary code in the music libarary
 - play around with VA list for logger, just use log as a function, move other function into private namespace
 - split css files, separate file for egg-player
 - move font loading into util
@@ -53,6 +48,7 @@ A Groove Music like music player.
 - reformat code properly
 - connect app about to quit to pausing bass
 - consider renaming globals to common
+- prevent negative intervals in timer
 
 ### Cosmetic
 - do not show certain info at low size

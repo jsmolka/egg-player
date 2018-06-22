@@ -75,6 +75,7 @@ HEADERS += \
     src/widgets/components/clickablestyle.hpp \
     src/widgets/components/iconbutton.hpp \
     src/widgets/components/rowhoverdelegate.hpp \
+    src/widgets/components/tablewidget.hpp \
     src/widgets/layouts/borderlayout.hpp
 
 SOURCES += \
@@ -108,4 +109,5 @@ SOURCES += \
     src/widgets/components/clickablestyle.cpp \
     src/widgets/components/iconbutton.cpp \
     src/widgets/components/rowhoverdelegate.cpp \
+    src/widgets/components/tablewidget.cpp \
     src/widgets/layouts/borderlayout.cpp

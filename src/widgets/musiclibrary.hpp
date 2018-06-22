@@ -2,19 +2,15 @@
 #define MUSICLIBRARY_HPP
 
 #include <QHeaderView>
-#include <QMouseEvent>
-#include <QScrollBar>
-#include <QTableWidget>
 #include <QVector>
 
-#include "clickablestyle.hpp"
 #include "config.hpp"
 #include "constants.hpp"
 #include "library.hpp"
-#include "rowhoverdelegate.hpp"
+#include "tablewidget.hpp"
 #include "util.hpp"
 
-class MusicLibrary : public QTableWidget
+class MusicLibrary : public TableWidget
 {
     Q_OBJECT
 
@@ -28,16 +24,6 @@ public:
 
 public slots:
     void insert(Audio *audio, int row = -1);
-
-signals:
-    void hoverRowChanged(int);
-
-protected:
-    void leaveEvent(QEvent *event);
-    void resizeEvent(QResizeEvent *event);
-
-private slots:
-    void onEntered(QModelIndex index);
 
 private:
     struct Column
