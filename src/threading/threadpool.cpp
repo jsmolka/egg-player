@@ -19,36 +19,46 @@ bool ThreadPool::isFinished() const
 
 bool ThreadPool::isRunning() const
 {
-    for (AbstractThread *thread : m_threads)
-        if (thread->isRunning())
-            return true;
-
-    return false;
+    return !isFinished();
 }
 
-int ThreadPool::current(bool global) const
+int ThreadPool::activeCount()
 {
-    return global ? _count : m_threads.size();
+    return _count;
 }
 
-int ThreadPool::ideal() const
+int ThreadPool::idealCount()
 {
     return QThread::idealThreadCount();
 }
 
-int ThreadPool::advised() const
+int ThreadPool::advisedCount()
 {
-    return ideal() - current(true);
+    return idealCount() - activeCount();
+}
+
+int ThreadPool::count() const
+{
+    return m_threads.size();
+}
+
+AbstractThread * ThreadPool::threadAt(int index)
+{
+    AbstractThread *thread = nullptr;
+
+    if (index > -1 && index < m_threads.size())
+        thread = m_threads[index];
+
+    return thread;
 }
 
 int ThreadPool::add(AbstractThread *thread)
 {
     thread->setParent(this);
-    m_threads << thread;
     connect(thread, SIGNAL(finished()), this, SLOT(onThreadFinished()));
 
-    if (++_count > ideal())
-        log("ThreadPool: Thread count exceeded ideal count");
+    m_threads << thread;
+    _count++;
 
     return m_threads.size() - 1;
 }
@@ -61,10 +71,19 @@ void ThreadPool::start(int index)
         startAt(index);
 }
 
+void ThreadPool::abort(int index)
+{
+    if (index == -1)
+        abortAll();
+    else
+        abortAt(index);
+}
+
 void ThreadPool::onThreadFinished()
 {
     _count--;
-    if (++m_finished == m_threads.size())
+    m_finished++;
+    if (m_finished == m_threads.size())
         emit finished();
 }
 
@@ -77,9 +96,22 @@ void ThreadPool::startAll()
 
 void ThreadPool::startAt(int index)
 {
-    AbstractThread *thread = m_threads[index];
-    if (!thread->isRunning())
+    AbstractThread *thread = threadAt(index);
+    if (thread && !thread->isRunning())
         thread->start();
+}
+
+void ThreadPool::abortAll()
+{
+    for (AbstractThread *thread : m_threads)
+        thread->abort();
+}
+
+void ThreadPool::abortAt(int index)
+{
+    AbstractThread *thread = threadAt(index);
+    if (thread && !thread->isRunning())
+        thread->abort();
 }
 
 int ThreadPool::_count = 0;

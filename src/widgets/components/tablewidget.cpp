@@ -7,7 +7,7 @@ TableWidget::TableWidget(QWidget *parent)
     setup();
 
     connect(this, SIGNAL(entered(QModelIndex)), this, SLOT(onEntered(QModelIndex)));
-    connect(this, SIGNAL(hoverRowChanged(int)), this, SLOT(onRowChanged(int)));
+    connect(this, SIGNAL(hoverRowChanged(int)), this, SLOT(onHoverRowChanged(int)));
 
     connect(this, SIGNAL(hoverRowChanged(int)), pm_delegate, SLOT(setHoverRow(int)));
 }
@@ -36,7 +36,7 @@ void TableWidget::onEntered(QModelIndex index)
     emit hoverRowChanged(index.row());
 }
 
-void TableWidget::onRowChanged(int row)
+void TableWidget::onHoverRowChanged(int row)
 {
     Q_UNUSED(row);
 

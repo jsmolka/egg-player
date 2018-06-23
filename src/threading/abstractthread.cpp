@@ -5,7 +5,10 @@ AbstractThread::AbstractThread(QObject *parent)
     , m_abort(false)
 {
     connect(qApp, SIGNAL(aboutToQuit()), this, SLOT(deleteLater()));
+
     connect(this, SIGNAL(started()), this, SLOT(onStarted()));
+    connect(this, SIGNAL(finished()), this, SLOT(deleteLater()));
+    connect(this, SIGNAL(terminated()), this, SLOT(deleteLater()));
 }
 
 AbstractThread::~AbstractThread()
@@ -32,5 +35,6 @@ void AbstractThread::abort()
     {
         log("AbstractThread: Could not abort within 5 seconds");
         terminate();
+        emit terminated();
     }
 }

@@ -20,9 +20,6 @@ A Groove Music like music player.
 - reactive cache / library
   - use QFileSystemWatcher
   - update library / cache accordingly
-- expand thread pool
-  - remove threads once finished
-  - add function to abort all
 - proper mulithreaded library loading
   - look into write-ahead-logging
   - a single LibraryLoaderThread which gets called from the library and emits audios
@@ -43,6 +40,7 @@ A Groove Music like music player.
 - reformat code properly
 - connect app about to quit to pausing bass
 - consider renaming globals to common
+- do not allow icon buttons to get focus
 
 ### Cosmetic
 - do not show certain info at low size

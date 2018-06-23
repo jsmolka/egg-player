@@ -15,6 +15,9 @@ public:
 
     bool isAbort() const;
 
+signals:
+    void terminated();
+
 public slots:
     void abort();
 

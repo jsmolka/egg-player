@@ -4,7 +4,7 @@ Timer::Timer(int interval, QObject *parent)
     : QObject(parent)
     , pm_timer(new QTimer(this))
     , m_elapsed(0)
-    , m_max(0)
+    , m_limit(0)
     , m_interval(interval)
     , m_remaining(interval)
 {
@@ -23,6 +23,11 @@ qint64 Timer::elapsed() const
     return m_elapsed;
 }
 
+qint64 Timer::limit() const
+{
+    return m_limit;
+}
+
 int Timer::interval() const
 {
     return m_interval;
@@ -38,9 +43,9 @@ bool Timer::isActive() const
     return pm_timer->isActive();
 }
 
-void Timer::start(qint64 max)
+void Timer::start(qint64 limit)
 {
-    m_max = max;
+    m_limit = limit;
 
     if (m_remaining > -1)
     {
@@ -63,22 +68,22 @@ void Timer::stop()
 {
     pm_timer->stop();
     m_elapsed = 0;
-    m_max = 0;
+    m_limit = 0;
     m_remaining = m_interval;
 }
 
-void Timer::restart(qint64 max)
+void Timer::restart(qint64 limit)
 {
     stop();
-    start(max);
+    start(limit);
 }
 
 void Timer::setElapsed(qint64 elapsed)
 {
-    qint64 remaining = m_max - elapsed;
+    qint64 remaining = m_limit - elapsed;
     if (remaining < 0)
     {
-        log("Timer: Invalid elapsed time %1 for max %2", {elapsed, m_max});
+        log("Timer: Invalid elapsed time %1 for limit %2", {elapsed, m_limit});
         return;
     }
 
@@ -93,12 +98,12 @@ void Timer::setElapsed(qint64 elapsed)
         m_remaining = m_interval;
 
     if (pm_timer->isActive())
-        start(m_max);
+        start(m_limit);
 }
 
 void Timer::onTimeout()
 {
-    if (m_elapsed + m_interval >= m_max)
+    if (m_elapsed + m_interval >= m_limit)
     {
         finish();
         return;
@@ -107,18 +112,18 @@ void Timer::onTimeout()
     m_elapsed += m_interval;
     emit timeout(m_elapsed);
 
-    qint64 remaining = m_max - m_elapsed;
+    qint64 remaining = m_limit - m_elapsed;
     if (remaining < m_interval)
     {
         m_remaining = remaining;
-        start(m_max);
+        start(m_limit);
     }
     else
     {
         if (m_remaining != m_interval)
         {
             m_remaining = m_interval;
-            start(m_max);
+            start(m_limit);
         }
     }
 }

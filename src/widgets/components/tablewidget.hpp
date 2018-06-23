@@ -17,7 +17,7 @@ public:
     ~TableWidget();
 
 signals:
-    void hoverRowChanged(int);
+    void hoverRowChanged(int row);
 
 protected:
     void leaveEvent(QEvent *event);
@@ -25,7 +25,7 @@ protected:
 
 private slots:
     void onEntered(QModelIndex index);
-    void onRowChanged(int row);
+    void onHoverRowChanged(int row);
 
 private:
     void setup();
