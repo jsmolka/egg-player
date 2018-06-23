@@ -16,33 +16,52 @@ A Groove Music like music player.
 
 ## Things to do
 
-### Internal
-- reactive cache / library
-  - use QFileSystemWatcher
-  - update library / cache accordingly
-- proper mulithreaded library loading
-  - look into write-ahead-logging
-  - a single LibraryLoaderThread which gets called from the library and emits audios
-  - if the audio does it exists it gets pushed into a vector (new vector vs remove)
-  - load the missing audios in multiple AudioLoaderThreads and emit them to the LibraryLoaderThread
-  - the LibraryLoaderThread inserts them into the cache (use mutex with mutex locker) and emits them
-- cache builder thread
-  - just use changed audios
-- fuzzy library searching
-  - store last result, show it if there is no current
+### General
+- reformat code properly
+- subclass widget to create a main window class which saves the position
+- rename globals to common
+- make changes to icon button
+  - remove the init function
+  - use multiple functions instead
+- maybe remove the constructor of [proxy style](http://doc.qt.io/qt-5/qproxystyle.html)
+
+### Threading
+- look into write-ahread-logging
+- create threads with worker threads inside of them
+- audio loader
+  - chunk the globbed files and pass them to worker threads
+  - the worker threads loads the audios from the cache or from file and emits them
+  - the audio loader inserts them into the cache and updates outdated ones
+  - add an option audio objects to show that is loaded from the cache
+- cache builder
+  - only load covers for new and outdated audios
+
+### Reactive cache
+- use a file system watcher
+- update library, cache and audios accordingly
+
+### Config
+  - rename ConfigItem to ConfigAbstractItem
+  - use inherit ConfigAbstractItem constructor
+  - define keys in static variables
+
+### Windows util
+- create a windows util
+- use defines to make it cross platform compatible
 - change app background color to black to prevent white flashing when resizing
   - need to use the [windows api](https://forum.qt.io/topic/69867/temporary-white-border-on-resizing-qt-quick-application-window-on-windows-desktop/2)
   - remove background color from css
+- move config scale functions into this util
+
+### Bass integration
 - create a bass wrapper and use it in the player
   - disable auto looping the current stream
   - try to reinitiate bass after the audio device changed
   - consider using a bass plugin for tag loading instead of taglib
-- reformat code properly
 - connect app about to quit to pausing bass
-- consider renaming globals to common
-- do not allow icon buttons to get focus
 
-### Cosmetic
+### User interface
 - do not show certain info at low size
 - [smooth scrolling](https://github.com/zhou13/qsmoothscrollarea)
 - color transition in bar
+- fuzzy library searching
