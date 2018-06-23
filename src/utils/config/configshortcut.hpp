@@ -1,14 +1,12 @@
 #ifndef CONFIGSHORTCUT_HPP
 #define CONFIGSHORTCUT_HPP
 
-#include "configitem.hpp"
+#include "configabstract.hpp"
 
-class ConfigShortcut : public ConfigItem
+class ConfigShortcut : public ConfigAbstract
 {
 public:
-    ConfigShortcut();
-    ConfigShortcut(const QJsonObject &object);
-    ~ConfigShortcut();
+    using ConfigAbstract::ConfigAbstract;
 
     void setDefaults() override;
 

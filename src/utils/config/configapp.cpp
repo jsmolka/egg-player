@@ -1,21 +1,5 @@
 #include "configapp.hpp"
 
-ConfigApp::ConfigApp()
-{
-
-}
-
-ConfigApp::ConfigApp(const QJsonObject &object)
-    : ConfigItem(object)
-{
-
-}
-
-ConfigApp::~ConfigApp()
-{
-
-}
-
 void ConfigApp::setDefaults()
 {
     setDefault("fontSize", 10.25);

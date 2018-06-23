@@ -10,7 +10,6 @@
 #include "audioloader.hpp"
 #include "cachebuilder.hpp"
 #include "threadpool.hpp"
-#include "types.hpp"
 
 #define eLibrary (Library::instance())
 
@@ -30,14 +29,14 @@ public:
 
     Audios audios() const;
 
-    void load(const StringList &paths);
+    void load(const QVector<QString> &paths);
 
 public slots:
     void insert(Audio *audio);
 
 signals:
     void loaded();
-    void inserted(Audio *, int);
+    void inserted(Audio *audio, int index);
 
 private slots:
     void onAudioLoaderFinished();
@@ -47,7 +46,7 @@ private:
     void insertBinary(Audio *audio);
     void append(Audio *audio);
 
-    StringList uniqueFiles(const StringList &paths);
+    QVector<QString> uniqueFiles(const QVector<QString> &paths);
 
     bool m_sorted;
     Audios m_audios;

@@ -2,9 +2,9 @@
 
 IconButton::IconButton(QWidget *parent)
     : QPushButton(parent)
-    , m_index(true)
     , m_lockable(false)
     , m_locked(false)
+    , m_index(0)
 {
     setup();
 
@@ -19,6 +19,7 @@ IconButton::~IconButton()
 void IconButton::setIcons(const QVector<QIcon> &icons)
 {
     m_icons = icons;
+    setIcon(m_icons.first());
 }
 
 QVector<QIcon> IconButton::icons() const
@@ -26,13 +27,13 @@ QVector<QIcon> IconButton::icons() const
     return m_icons;
 }
 
-void IconButton::setSelectedIcon(int index)
+void IconButton::setIndex(int index)
 {
     m_index = index;
-    setIcon(m_icons[index]);
+    setIcon(m_icons[m_index]);
 }
 
-int IconButton::selectedIcon() const
+int IconButton::index() const
 {
     return m_index;
 }
@@ -46,6 +47,7 @@ void IconButton::setLocked(bool locked)
 
     style()->unpolish(this);
     style()->polish(this);
+
     emit this->locked(m_locked);
 }
 
@@ -64,14 +66,10 @@ bool IconButton::isLockable() const
     return m_lockable;
 }
 
-void IconButton::init(const QVector<QIcon> &icons, int size, bool lockable)
+void IconButton::setSize(const QSize &size)
 {
-    m_lockable = lockable;
-    m_icons = icons;
-
-    setIcon(m_icons.first());
-    setIconSize(QSize(size, size));
-    setFixedSize(QSize(size, size));
+    setIconSize(size);
+    setFixedSize(size);
 }
 
 void IconButton::onClicked()

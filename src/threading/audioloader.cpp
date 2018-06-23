@@ -7,7 +7,7 @@ AudioLoader::AudioLoader(QObject *parent)
 
 }
 
-AudioLoader::AudioLoader(const StringList &files, QObject *parent)
+AudioLoader::AudioLoader(const QVector<QString> &files, QObject *parent)
     : AbstractThread(parent)
     , m_files(files)
 {
@@ -19,7 +19,7 @@ AudioLoader::~AudioLoader()
 
 }
 
-void AudioLoader::setFiles(const StringList &files)
+void AudioLoader::setFiles(const QVector<QString> &files)
 {
     m_files = files;
 }

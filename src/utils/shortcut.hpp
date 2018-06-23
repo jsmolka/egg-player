@@ -8,8 +8,6 @@
 #include <QAbstractNativeEventFilter>
 #include <QHash>
 #include <QObject>
-#include <QPair>
-#include <QStringList>
 
 #include "logger.hpp"
 
@@ -22,8 +20,9 @@ public:
     ~Shortcut();
 
     int id() const;
-    UINT vk() const;
-    UINT modifier() const;
+    int vk() const;
+    int modifier() const;
+
     bool isRepeat() const;
     bool isRegistered() const;
     QString shortcut() const;
@@ -40,14 +39,15 @@ private:
     bool unregisterShortcut();
 
     int m_id;
-    UINT m_vk;
-    UINT m_modifier;
+    int m_vk;
+    int m_modifier;
     bool m_repeat;
     bool m_registered;
     QString m_shortcut;
 
-    static int _count;
-    static const QHash<QString, int> _map;
+    static int _id;
+    static const QHash<QString, int> _keys;
+    static const QHash<QString, int> _modifiers;
 };
 
 #endif // SHORTCUT_HPP

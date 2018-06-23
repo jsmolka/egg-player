@@ -124,12 +124,12 @@ void BarWidget::onPlayerAudioChanged(Audio *audio)
     m_lengthSlider.setRange(0, audio->duration());
     m_lengthSlider.setEnabled(true);
 
-    setColor(ColorUtil::background(cover, audio->coverId()));
+    setColor(ColorUtil::background(cover));
 }
 
 void BarWidget::onPlayerStateChanged(Player::State state)
 {
-    m_playPauseButton.setSelectedIcon(state == Player::State::Playing ? 1 : 0);
+    m_playPauseButton.setIndex(state == Player::State::Playing ? 1 : 0);
 }
 
 void BarWidget::onPlayerPositionChanged(int position)
@@ -150,7 +150,7 @@ void BarWidget::onPlayerVolumeChanged(int volume)
 
 void BarWidget::onPlayPauseButtonPressed()
 {
-    if (m_playPauseButton.selectedIcon() == 0)
+    if (m_playPauseButton.index() == 0)
         ePlayer->play();
     else
         ePlayer->pause();
@@ -246,12 +246,22 @@ void BarWidget::setupUi()
     m_volumeSlider.setSizePolicy(QSizePolicy::Fixed, QSizePolicy::MinimumExpanding);
     m_volumeSlider.setFixedWidth(5 * cfgBar->iconSize() + 4 * cfgBar->spacing());
 
-    m_playPauseButton.init({QIcon(ICO_PLAY), QIcon(ICO_PAUSE)}, cfgBar->iconSize());
-    m_previousButton.init({QIcon(ICO_PREVIOUS)}, cfgBar->iconSize());
-    m_nextButton.init({QIcon(ICO_NEXT)}, cfgBar->iconSize());
-    m_shuffleButton.init({QIcon(ICO_SHUFFLE)}, cfgBar->iconSize(), true);
-    m_loopButton.init({QIcon(ICO_LOOP)}, cfgBar->iconSize(), true);
-    m_volumeButton.init({QIcon(ICO_VOLUME_FULL), QIcon(ICO_VOLUME_MEDIUM), QIcon(ICO_VOLUME_LOW), QIcon(ICO_VOLUME_MUTE)}, cfgBar->iconSize());
+    m_playPauseButton.setIcons({QIcon(ICO_PLAY), QIcon(ICO_PAUSE)});
+    m_previousButton.setIcons({QIcon(ICO_PREVIOUS)});
+    m_nextButton.setIcons({QIcon(ICO_NEXT)});
+    m_shuffleButton.setIcons({QIcon(ICO_SHUFFLE)});
+    m_loopButton.setIcons({QIcon(ICO_LOOP)});
+    m_volumeButton.setIcons({QIcon(ICO_VOLUME_FULL), QIcon(ICO_VOLUME_MEDIUM), QIcon(ICO_VOLUME_LOW), QIcon(ICO_VOLUME_MUTE)});
+
+    m_shuffleButton.setLockable(true);
+    m_loopButton.setLockable(true);
+
+    m_playPauseButton.setSize(QSize(cfgBar->iconSize(), cfgBar->iconSize()));
+    m_previousButton.setSize(QSize(cfgBar->iconSize(), cfgBar->iconSize()));
+    m_nextButton.setSize(QSize(cfgBar->iconSize(), cfgBar->iconSize()));
+    m_shuffleButton.setSize(QSize(cfgBar->iconSize(), cfgBar->iconSize()));
+    m_loopButton.setSize(QSize(cfgBar->iconSize(), cfgBar->iconSize()));
+    m_volumeButton.setSize(QSize(cfgBar->iconSize(), cfgBar->iconSize()));
 
     m_shuffleButton.setLocked(cfgPlayer->shuffle());
     m_loopButton.setLocked(cfgPlayer->loop());
@@ -309,13 +319,13 @@ void BarWidget::setVolumeConfig(int volume)
 void BarWidget::setVolumeIcon(int volume)
 {
     if (volume > 66)
-        m_volumeButton.setSelectedIcon(0);
+        m_volumeButton.setIndex(0);
     else if (volume > 33)
-        m_volumeButton.setSelectedIcon(1);
+        m_volumeButton.setIndex(1);
     else if (volume > 0)
-        m_volumeButton.setSelectedIcon(2);
+        m_volumeButton.setIndex(2);
     else
-        m_volumeButton.setSelectedIcon(3);
+        m_volumeButton.setIndex(3);
 }
 
 void BarWidget::setVolumePlayer(int volume)

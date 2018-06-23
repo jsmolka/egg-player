@@ -1,6 +1,5 @@
 #include "librarywidget.hpp"
 
-
 LibraryWidget::LibraryWidget(QWidget *parent)
     : TableWidget(parent)
 {

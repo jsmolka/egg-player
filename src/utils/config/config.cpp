@@ -4,6 +4,12 @@ Config::Config(QObject *parent)
     : QObject(parent)
 {
     load();
+
+    m_app.setDefaults();
+    m_bar.setDefaults();
+    m_library.setDefaults();
+    m_player.setDefaults();
+    m_shortcut.setDefaults();
 }
 
 Config::~Config()
@@ -60,12 +66,6 @@ void Config::load()
     m_library = ConfigLibrary(object.value("library").toObject());
     m_player = ConfigPlayer(object.value("player").toObject());
     m_shortcut = ConfigShortcut(object.value("shortcut").toObject());
-
-    m_app.setDefaults();
-    m_bar.setDefaults();
-    m_library.setDefaults();
-    m_player.setDefaults();
-    m_shortcut.setDefaults();
 }
 
 void Config::save()

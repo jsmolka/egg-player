@@ -36,5 +36,5 @@ void Slider::setup()
 {
     setFocusPolicy(Qt::NoFocus);
     setOrientation(Qt::Horizontal);
-    setStyle(new ClickableStyle(style()));
+    setStyle(new ClickableStyle);
 }

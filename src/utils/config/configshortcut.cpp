@@ -1,21 +1,5 @@
 #include "configshortcut.hpp"
 
-ConfigShortcut::ConfigShortcut()
-{
-
-}
-
-ConfigShortcut::ConfigShortcut(const QJsonObject &object)
-    : ConfigItem(object)
-{
-
-}
-
-ConfigShortcut::~ConfigShortcut()
-{
-
-}
-
 void ConfigShortcut::setDefaults()
 {
     setDefault("next", "Ctrl F12");

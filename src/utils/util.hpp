@@ -9,7 +9,6 @@
 
 #include "constants.hpp"
 #include "config.hpp"
-#include "types.hpp"
 
 namespace Util
 {
@@ -20,7 +19,7 @@ namespace Util
     extern QPixmap resize(const QPixmap &pixmap, int size, bool fast = false);
     extern QImage resize(const QImage &image, int size, bool fast = false);
 
-    extern QVector<StringList> chunk(const StringList &vector, int n);
+    extern QVector<QVector<QString>> chunk(const QVector<QString> &vector, int n);
 }
 
 #endif // UTIL_HPP

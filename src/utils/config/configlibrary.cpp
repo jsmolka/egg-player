@@ -1,21 +1,5 @@
 #include "configlibrary.hpp"
 
-ConfigLibrary::ConfigLibrary()
-{
-
-}
-
-ConfigLibrary::ConfigLibrary(const QJsonObject &object)
-    : ConfigItem(object)
-{
-
-}
-
-ConfigLibrary::~ConfigLibrary()
-{
-
-}
-
 void ConfigLibrary::setDefaults()
 {
     setDefault("cellPadding", 5);
@@ -44,7 +28,7 @@ int ConfigLibrary::itemHeight()
     return scale(get("itemHeight").toInt());
 }
 
-void ConfigLibrary::setPaths(const StringList &paths)
+void ConfigLibrary::setPaths(const QVector<QString> &paths)
 {
     QJsonArray array;
     for (const QString &path : paths)
@@ -53,9 +37,9 @@ void ConfigLibrary::setPaths(const StringList &paths)
     set("paths", QJsonValue(array));
 }
 
-StringList ConfigLibrary::paths()
+QVector<QString> ConfigLibrary::paths()
 {
-    StringList list;
+    QVector<QString> list;
     for (const QJsonValue &element : get("paths").toArray())
         list << element.toString();
 

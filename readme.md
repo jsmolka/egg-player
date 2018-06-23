@@ -17,13 +17,7 @@ A Groove Music like music player.
 ## Things to do
 
 ### General
-- reformat code properly
-- subclass widget to create a main window class which saves the position
-- rename globals to common
-- make changes to icon button
-  - remove the init function
-  - use multiple functions instead
-- maybe remove the constructor of [proxy style](http://doc.qt.io/qt-5/qproxystyle.html)
+- rewrite library widget
 
 ### Threading
 - look into write-ahread-logging
@@ -35,15 +29,11 @@ A Groove Music like music player.
   - add an option audio objects to show that is loaded from the cache
 - cache builder
   - only load covers for new and outdated audios
+- rewrite library 
 
 ### Reactive cache
 - use a file system watcher
 - update library, cache and audios accordingly
-
-### Config
-  - rename ConfigItem to ConfigAbstractItem
-  - use inherit ConfigAbstractItem constructor
-  - define keys in static variables
 
 ### Windows util
 - create a windows util
@@ -52,6 +42,7 @@ A Groove Music like music player.
   - need to use the [windows api](https://forum.qt.io/topic/69867/temporary-white-border-on-resizing-qt-quick-application-window-on-windows-desktop/2)
   - remove background color from css
 - move config scale functions into this util
+- move shortcut register functions into this util
 
 ### Bass integration
 - create a bass wrapper and use it in the player
@@ -59,6 +50,7 @@ A Groove Music like music player.
   - try to reinitiate bass after the audio device changed
   - consider using a bass plugin for tag loading instead of taglib
 - connect app about to quit to pausing bass
+- rewrite player
 
 ### User interface
 - do not show certain info at low size

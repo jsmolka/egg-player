@@ -4,16 +4,14 @@
 #include <QJsonArray>
 #include <QStandardPaths>
 #include <QVariant>
+#include <QVector>
 
-#include "configitem.hpp"
-#include "types.hpp"
+#include "configabstract.hpp"
 
-class ConfigLibrary : public ConfigItem
+class ConfigLibrary : public ConfigAbstract
 {
 public:
-    ConfigLibrary();
-    ConfigLibrary(const QJsonObject &object);
-    ~ConfigLibrary();
+    using ConfigAbstract::ConfigAbstract;
 
     void setDefaults() override;
 
@@ -23,8 +21,8 @@ public:
     void setItemHeight(int height);
     int itemHeight();
 
-    void setPaths(const StringList &paths);
-    StringList paths();
+    void setPaths(const QVector<QString> &paths);
+    QVector<QString> paths();
 
     void setScrollBarWidth(int width);
     int scrollBarWidth();

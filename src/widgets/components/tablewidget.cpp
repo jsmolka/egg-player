@@ -60,5 +60,5 @@ void TableWidget::setup()
     horizontalHeader()->hide();
     verticalHeader()->hide();
 
-    verticalScrollBar()->setStyle(new ClickableStyle(style()));
+    verticalScrollBar()->setStyle(new ClickableStyle);
 }

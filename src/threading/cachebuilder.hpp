@@ -4,7 +4,6 @@
 #include "abstractthread.hpp"
 #include "audio.hpp"
 #include "cache.hpp"
-#include "types.hpp"
 
 class CacheBuilder : public AbstractThread
 {

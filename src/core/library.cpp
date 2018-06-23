@@ -46,7 +46,7 @@ Audios Library::audios() const
     return m_audios;
 }
 
-void Library::load(const StringList &paths)
+void Library::load(const QVector<QString> &paths)
 {
     pm_audioLoader->setFiles(uniqueFiles(paths));
     pm_audioLoader->start();
@@ -94,9 +94,9 @@ void Library::append(Audio *audio)
     emit inserted(audio, -1);
 }
 
-StringList Library::uniqueFiles(const StringList &paths)
+QVector<QString> Library::uniqueFiles(const QVector<QString> &paths)
 {
-    StringList files;
+    QVector<QString> files;
     for (const QString &path : paths)
     {
         if (!m_paths.contains(path))

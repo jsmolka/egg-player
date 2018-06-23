@@ -89,27 +89,17 @@ QColor ColorUtil::dominant(const QImage &image)
     }
 }
 
-QColor ColorUtil::background(const QImage &image, int id)
+QColor ColorUtil::background(const QImage &image)
 {
-    if (id != -1)
-        if (ColorUtilPrivate::colors.contains(id))
-            return ColorUtilPrivate::colors.value(id);
-
     QColor color = dominant(Util::resize(image, 25, true));
     qreal hue = color.hsvHueF();
     qreal saturation = qMin(color.hsvSaturationF(), 0.8);
     qreal value = qMin(color.valueF(), 0.36);
-    color = QColor::fromHsvF(hue, saturation, value);
 
-    if (id != -1)
-        ColorUtilPrivate::colors.insert(id, color);
-
-    return color;
+    return QColor::fromHsvF(hue, saturation, value);
 }
 
-QColor ColorUtil::background(const QPixmap &pixmap, int id)
+QColor ColorUtil::background(const QPixmap &pixmap)
 {
-    return background(pixmap.toImage(), id);
+    return background(pixmap.toImage());
 }
-
-QHash<int, QColor> ColorUtilPrivate::colors;

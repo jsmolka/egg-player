@@ -45,13 +45,13 @@ QImage Util::resize(const QImage &image, int size, bool fast)
     return image.scaled(size, size, Qt::KeepAspectRatio, fast ? Qt::FastTransformation : Qt::SmoothTransformation);
 }
 
-QVector<StringList> Util::chunk(const StringList &vector, int n)
+QVector<QVector<QString>> Util::chunk(const QVector<QString> &vector, int n)
 {
     n = qMin(qMax(1, n), vector.size());
     int quo = vector.size() / n;
     int rem = vector.size() % n;
 
-    QVector<StringList> result;
+    QVector<QVector<QString>> result;
     for (int i = 0; i < n; i++)
     {
         int l = i * quo + qMin(i, rem);

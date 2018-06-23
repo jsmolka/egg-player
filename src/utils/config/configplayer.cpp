@@ -1,21 +1,5 @@
 #include "configplayer.hpp"
 
-ConfigPlayer::ConfigPlayer()
-{
-
-}
-
-ConfigPlayer::ConfigPlayer(const QJsonObject &object)
-    : ConfigItem(object)
-{
-
-}
-
-ConfigPlayer::~ConfigPlayer()
-{
-
-}
-
 void ConfigPlayer::setDefaults()
 {
     setDefault("loop", false);

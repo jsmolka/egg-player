@@ -11,8 +11,8 @@ QT += \
 INCLUDEPATH += \
     lib/bass-2.4/include \
     lib/taglib-1.11.1/include \
+    src/common \
     src/core \
-    src/globals \
     src/threading \
     src/utils \
     src/utils/config \
@@ -45,13 +45,12 @@ CONFIG(release, debug|release) {
 RESOURCES = egg-player.qrc
 
 HEADERS += \
+    src/common/constants.hpp \
     src/core/audio.hpp \
     src/core/cache.hpp \
     src/core/library.hpp \
     src/core/player.hpp \
     src/core/timer.hpp \
-    src/globals/constants.hpp \
-    src/globals/types.hpp \
     src/threading/abstractthread.hpp \
     src/threading/audioloader.hpp \
     src/threading/cachebuilder.hpp \
@@ -62,9 +61,9 @@ HEADERS += \
     src/utils/shortcut.hpp \
     src/utils/util.hpp \
     src/utils/config/config.hpp \
+    src/utils/config/configabstract.hpp \
     src/utils/config/configapp.hpp \
     src/utils/config/configbar.hpp \
-    src/utils/config/configitem.hpp \
     src/utils/config/configlibrary.hpp \
     src/utils/config/configplayer.hpp \
     src/utils/config/configshortcut.hpp \
@@ -73,19 +72,20 @@ HEADERS += \
     src/widgets/librarywidget.hpp \
     src/widgets/components/clickablestyle.hpp \
     src/widgets/components/iconbutton.hpp \
+    src/widgets/components/mainwindow.hpp \
     src/widgets/components/rowhoverdelegate.hpp \
+    src/widgets/components/slider.hpp \
     src/widgets/components/tablewidget.hpp \
-    src/widgets/layouts/borderlayout.hpp \
-    src/widgets/components/slider.hpp
+    src/widgets/layouts/borderlayout.hpp
 
 SOURCES += \
     src/main.cpp \
+    src/common/constants.cpp \
     src/core/audio.cpp \
     src/core/cache.cpp \
     src/core/library.cpp \
     src/core/player.cpp \
     src/core/timer.cpp \
-    src/globals/constants.cpp \
     src/threading/abstractthread.cpp \
     src/threading/audioloader.cpp \
     src/threading/cachebuilder.cpp \
@@ -96,9 +96,9 @@ SOURCES += \
     src/utils/shortcut.cpp \
     src/utils/util.cpp \
     src/utils/config/config.cpp \
+    src/utils/config/configabstract.cpp \
     src/utils/config/configapp.cpp \
     src/utils/config/configbar.cpp \
-    src/utils/config/configitem.cpp \
     src/utils/config/configlibrary.cpp \
     src/utils/config/configplayer.cpp \
     src/utils/config/configshortcut.cpp \
@@ -107,7 +107,8 @@ SOURCES += \
     src/widgets/librarywidget.cpp \
     src/widgets/components/clickablestyle.cpp \
     src/widgets/components/iconbutton.cpp \
+    src/widgets/components/mainwindow.cpp \
     src/widgets/components/rowhoverdelegate.cpp \
+    src/widgets/components/slider.cpp \
     src/widgets/components/tablewidget.cpp \
-    src/widgets/layouts/borderlayout.cpp \
-    src/widgets/components/slider.cpp
+    src/widgets/layouts/borderlayout.cpp

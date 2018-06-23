@@ -54,8 +54,6 @@ private:
 
     QSqlDatabase m_db;
     QSqlQuery m_query;
-
-    static QHash<int, QPixmap> _covers;
 };
 
 #endif // CACHE_HPP

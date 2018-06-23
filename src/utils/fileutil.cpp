@@ -21,15 +21,14 @@ QString FileUtil::read(const QString &file)
     if (!qFile.open(QFile::ReadOnly | QFile::Text))
         return QString();
 
-    QTextStream stream(&qFile);
-    return stream.readAll();
+    return QTextStream(&qFile).readAll();
 }
 
-StringList FileUtil::glob(const QString &path, const QString &suffix)
+QVector<QString> FileUtil::glob(const QString &path, const QString &suffix)
 {
-    StringList result;
-    QDirIterator iterator(path, QDirIterator::Subdirectories);
+    QVector<QString> result;
 
+    QDirIterator iterator(path, QDirIterator::Subdirectories);
     while (iterator.hasNext())
     {
         iterator.next();

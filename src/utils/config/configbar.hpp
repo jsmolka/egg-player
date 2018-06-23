@@ -1,14 +1,12 @@
 #ifndef CONFIGBAR_HPP
 #define CONFIGBAR_HPP
 
-#include "configitem.hpp"
+#include "configabstract.hpp"
 
-class ConfigBar : public ConfigItem
+class ConfigBar : public ConfigAbstract
 {
 public:
-    ConfigBar();
-    ConfigBar(const QJsonObject &object);
-    ~ConfigBar();
+    using ConfigAbstract::ConfigAbstract;
 
     void setDefaults() override;
 

@@ -1,14 +1,12 @@
 #ifndef CONFIGPLAYER_HPP
 #define CONFIGPLAYER_HPP
 
-#include "configitem.hpp"
+#include "configabstract.hpp"
 
-class ConfigPlayer : public ConfigItem
+class ConfigPlayer : public ConfigAbstract
 {
 public:
-    ConfigPlayer();
-    ConfigPlayer(const QJsonObject &object);
-    ~ConfigPlayer();
+    using ConfigAbstract::ConfigAbstract;
 
     void setDefaults() override;
 

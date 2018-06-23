@@ -1,21 +1,5 @@
 #include "configbar.hpp"
 
-ConfigBar::ConfigBar()
-{
-
-}
-
-ConfigBar::ConfigBar(const QJsonObject &object)
-    : ConfigItem(object)
-{
-
-}
-
-ConfigBar::~ConfigBar()
-{
-
-}
-
 void ConfigBar::setDefaults()
 {
     setDefault("grooveHeight", 2);

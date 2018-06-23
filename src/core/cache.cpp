@@ -167,9 +167,6 @@ int Cache::coverId(Audio *audio)
 
 QPixmap Cache::cover(Audio *audio, int size)
 {
-    if (_covers.contains(audio->coverId()))
-        return _covers.value(audio->coverId());
-
     m_query.prepare(
         "SELECT covers.cover FROM audios "
         "JOIN covers ON audios.coverid = covers.id "
@@ -192,10 +189,7 @@ QPixmap Cache::cover(Audio *audio, int size)
         log("Cache: Cannot load cover %1", {audio->path()});
     }
 
-    cover = Util::resize(cover, size);
-    _covers.insert(audio->coverId(), cover);
-
-    return cover;
+    return Util::resize(cover, size);
 }
 
 QString Cache::dbName()
@@ -369,5 +363,3 @@ QByteArray Cache::coverToBytes(const QPixmap &cover)
 
     return bytes;
 }
-
-QHash<int, QPixmap> Cache::_covers;

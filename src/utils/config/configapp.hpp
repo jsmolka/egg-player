@@ -1,14 +1,12 @@
 #ifndef CONFIGAPP_HPP
 #define CONFIGAPP_HPP
 
-#include "configitem.hpp"
+#include "configabstract.hpp"
 
-class ConfigApp : public ConfigItem
+class ConfigApp : public ConfigAbstract
 {
 public:
-    ConfigApp();
-    ConfigApp(const QJsonObject &object);
-    ~ConfigApp();
+    using ConfigAbstract::ConfigAbstract;
 
     void setDefaults() override;
 
