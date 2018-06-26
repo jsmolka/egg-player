@@ -47,6 +47,7 @@ RESOURCES = egg-player.qrc
 HEADERS += \
     src/common/constants.hpp \
     src/core/audio.hpp \
+    src/core/basswrapper.hpp \
     src/core/cache.hpp \
     src/core/library.hpp \
     src/core/player.hpp \
@@ -82,6 +83,7 @@ SOURCES += \
     src/main.cpp \
     src/common/constants.cpp \
     src/core/audio.cpp \
+    src/core/basswrapper.cpp \
     src/core/cache.cpp \
     src/core/library.cpp \
     src/core/player.cpp \

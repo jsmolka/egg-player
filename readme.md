@@ -30,6 +30,7 @@ A Groove Music like music player.
 - cache builder
   - only load covers for new and outdated audios
 - rewrite library 
+- use VK in shortcut
 
 ### Reactive cache
 - use a file system watcher
