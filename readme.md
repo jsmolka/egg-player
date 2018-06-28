@@ -50,7 +50,12 @@ A Groove Music like music player.
   - disable auto looping the current stream
   - try to reinitiate bass after the audio device changed
   - consider using a bass plugin for tag loading instead of taglib
+- split into multiple classes
+  - BassError
+  - Bass(BassError)
+  - BassStream(BassError)
 - connect app about to quit to pausing bass
+- inherit from QObject, add signals and slots
 - rewrite player
 
 ### User interface
@@ -58,3 +63,4 @@ A Groove Music like music player.
 - [smooth scrolling](https://github.com/zhou13/qsmoothscrollarea)
 - color transition in bar
 - fuzzy library searching
+- [expand scrollbar](https://stackoverflow.com/a/23677355/7057528)

@@ -47,7 +47,6 @@ RESOURCES = egg-player.qrc
 HEADERS += \
     src/common/constants.hpp \
     src/core/audio.hpp \
-    src/core/basswrapper.hpp \
     src/core/cache.hpp \
     src/core/library.hpp \
     src/core/player.hpp \
@@ -77,13 +76,15 @@ HEADERS += \
     src/widgets/components/rowhoverdelegate.hpp \
     src/widgets/components/slider.hpp \
     src/widgets/components/tablewidget.hpp \
-    src/widgets/layouts/borderlayout.hpp
+    src/widgets/layouts/borderlayout.hpp \
+    src/core/bass.hpp \
+    src/core/basserror.hpp \
+    src/core/bassstream.hpp
 
 SOURCES += \
     src/main.cpp \
     src/common/constants.cpp \
     src/core/audio.cpp \
-    src/core/basswrapper.cpp \
     src/core/cache.cpp \
     src/core/library.cpp \
     src/core/player.cpp \
@@ -113,4 +114,7 @@ SOURCES += \
     src/widgets/components/rowhoverdelegate.cpp \
     src/widgets/components/slider.cpp \
     src/widgets/components/tablewidget.cpp \
-    src/widgets/layouts/borderlayout.cpp
+    src/widgets/layouts/borderlayout.cpp \
+    src/core/bass.cpp \
+    src/core/basserror.cpp \
+    src/core/bassstream.cpp

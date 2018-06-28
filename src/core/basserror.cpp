@@ -1,75 +1,22 @@
-#include "basswrapper.hpp"
+#include "basserror.hpp"
 
-BassWrapper::BassWrapper()
+BassError::BassError()
 {
-    init();
+
 }
 
-BassWrapper::~BassWrapper()
+BassError::~BassError()
 {
-    free();
+
 }
 
-bool BassWrapper::start()
-{
-    if (!BASS_Start())
-    {
-        error();
-        return false;
-    }
-    return true;
-}
-
-bool BassWrapper::pause()
-{
-    if (!BASS_Pause())
-    {
-        error();
-        return false;
-    }
-    return true;
-}
-
-bool BassWrapper::stop()
-{
-    if (!BASS_Stop())
-    {
-        error();
-        return false;
-    }
-    return true;
-}
-
-bool BassWrapper::init()
-{
-    if (!BASS_Init(-1, 44100, 0, 0, NULL))
-    {
-        if (!(BASS_ErrorGetCode() == BASS_ERROR_ALREADY))
-        {
-            error();
-            return false;
-        }
-    }
-    return true;
-}
-
-bool BassWrapper::free()
-{
-    if (!BASS_Free())
-    {
-        error();
-        return false;
-    }
-    return true;
-}
-
-void BassWrapper::error()
+void BassError::error()
 {
     if (BASS_ErrorGetCode() != BASS_OK)
-        log("BassWrapper: Error: %1", {_errors.value(BASS_ErrorGetCode())});
+        log("BassError: %1", {errors.value(BASS_ErrorGetCode())});
 }
 
-const QHash<int, QString> BassWrapper::_errors =
+const QHash<int, QString> BassError::errors =
 {
     {BASS_OK            , "all is OK"},
     {BASS_ERROR_MEM     , "memory error"},
