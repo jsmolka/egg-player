@@ -4,8 +4,8 @@ Bass::Bass()
 {
     init();
 
-    if (BASS_GetVersion() != BASSVERSION)
-        log("Bass: Invalid versions %1 and %2", {static_cast<int>(BASS_GetVersion()), BASSVERSION});
+    if (HIWORD(BASS_GetVersion()) != BASSVERSION)
+        log("Bass: Different BASS versions %1 and %2", {static_cast<int>(BASS_GetVersion()), BASSVERSION});
 }
 
 Bass::~Bass()
@@ -13,9 +13,9 @@ Bass::~Bass()
     free();
 }
 
-BassStream Bass::stream()
+BassStream * Bass::stream()
 {
-    return m_stream;
+    return &m_stream;
 }
 
 bool Bass::start()
@@ -72,6 +72,15 @@ DWORD Bass::device()
         error();
 
     return BASS_GetDevice();
+}
+
+BASS_INFO Bass::info()
+{
+    BASS_INFO info;
+    if (!BASS_GetInfo(&info))
+        error();
+
+    return info;
 }
 
 BASS_DEVICEINFO Bass::deviceInfo()

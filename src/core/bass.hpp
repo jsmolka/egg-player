@@ -14,7 +14,7 @@ public:
     Bass();
     ~Bass();
 
-    BassStream stream();
+    BassStream * stream();
 
     bool start();
     bool pause();
@@ -26,13 +26,14 @@ public:
     bool setDevice(DWORD device);
     DWORD device();
 
+    BASS_INFO info();
     BASS_DEVICEINFO deviceInfo();
 
 private:
-    BassStream m_stream;
-
     bool init();
     bool free();
+
+    BassStream m_stream;
 };
 
 #endif // BASSWRAPPER_HPP

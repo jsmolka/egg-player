@@ -12,7 +12,11 @@ Audio::Audio(const QString &path)
     if (!readTags())
     {
         m_valid = false;
-        log("Audio: Cannot read tags %1", {m_path});
+
+        if (!FileUtil::exists(path))
+            log("Audio: File does not exist %1", {m_path});
+        else
+            log("Audio: Cannot read tags %1", {m_path});
     }
 }
 

@@ -16,8 +16,17 @@ public:
 
     bool isValid() const;
 
-    bool create(Audio *audio);
+    bool play();
+    bool pause();
+
+    bool create(Audio *audio, bool scan = false);
     bool free();
+
+    bool setPosition(qint64 position);
+    qint64 position();
+
+    bool setVolume(int volume);
+    int volume();
 
 private:
     HSTREAM m_handle;
