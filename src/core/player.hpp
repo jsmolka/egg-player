@@ -4,9 +4,8 @@
 #include <QApplication>
 #include <QObject>
 
-#include <bass/bass.h>
-
 #include "audio.hpp"
+#include "bass.hpp"
 #include "timer.hpp"
 
 #define ePlayer (Player::instance())
@@ -74,16 +73,6 @@ private:
         Audio *audio;
     };
 
-    bool bassCreate();
-    bool bassFree();
-    bool bassCreateStream(Audio *audio);
-    bool bassFreeStream();
-    bool bassValidStream();
-    bool bassSetVolume(int volume);
-    bool bassSetPosition(int position);
-    bool bassPlay();
-    bool bassPause();
-
     void logAudio(const QString &message);
 
     bool validIndex(int index);
@@ -99,12 +88,13 @@ private:
 
     QVector<AudioPosition> m_playlist;
     Timer *pm_timer;
-    HSTREAM m_stream;
+    Bass m_bass;
     int m_index;
     int m_volume;
     bool m_loop;
     bool m_shuffle;
     bool m_playing;
+
 
     static Player *_instance;
 };

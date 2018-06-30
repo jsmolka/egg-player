@@ -2,7 +2,6 @@
 
 Player::Player(QObject *parent)
     : QObject(parent)
-    , m_stream(0)
     , m_index(-1)
     , m_volume(0)
     , m_loop(false)
@@ -10,17 +9,13 @@ Player::Player(QObject *parent)
     , m_playing(false)
     , pm_timer(new Timer(1000, this))
 {
-    qsrand(time(0));
-
-    bassCreate();
-
     connect(pm_timer, SIGNAL(timeout(qint64)), this, SLOT(onTimerTimeout(qint64)));
     connect(pm_timer, SIGNAL(finished()), this, SLOT(onTimerFinished()));
 }
 
 Player::~Player()
 {
-    bassFree();
+
 }
 
 Player * Player::instance()
@@ -73,9 +68,6 @@ int Player::position() const
 
 void Player::loadPlaylist(const Audios &audios, int index)
 {
-    if (!bassFreeStream())
-        return;
-
     m_playing = false;
     m_playlist.clear();
     m_playlist.reserve(audios.size());
@@ -93,10 +85,12 @@ void Player::loadPlaylist(const Audios &audios, int index)
 
 Audio * Player::audioAt(int index)
 {
-    if (!validIndex(index))
-        return nullptr;
+    Audio *audio = nullptr;
 
-    return m_playlist[index].audio;
+    if (validIndex(index))
+        audio = m_playlist[index].audio;
+
+    return audio;
 }
 
 Audio * Player::currentAudio()
@@ -105,11 +99,13 @@ Audio * Player::currentAudio()
 }
 
 int Player::indexAt(int index)
-{
-    if (!validIndex(index))
-        return -1;
+{    
+    int idx = -1;
 
-    return m_playlist[index].index;
+    if (validIndex(index))
+        idx = m_playlist[index].index;
+
+    return idx;
 }
 
 int Player::currentIndex()
@@ -121,17 +117,19 @@ void Player::setVolume(int volume)
 {
     m_volume = qMax(0, qMin(volume, 100));
 
-    bassSetVolume(m_volume);
+    if (m_bass.stream()->isValid())
+        m_bass.stream()->setVolume(static_cast<float>(m_volume) / 1000.0);
 
     emit volumeChanged(m_volume);
 }
 
 void Player::setPosition(int position)
 {
-    if (!bassSetPosition(position))
+    qint64 ms = position * 1000;
+    if (!m_bass.stream()->setPosition(ms))
         return;
 
-    pm_timer->setElapsed(position * 1000);
+    pm_timer->setElapsed(ms);
 
     emit positionChanged(position);
 }
@@ -158,7 +156,7 @@ void Player::setShuffle(bool shuffle)
 
 void Player::play()
 {
-    if (!bassPlay())
+    if (!m_bass.stream()->play())
         return;
 
     m_playing = true;
@@ -169,7 +167,7 @@ void Player::play()
 
 void Player::pause()
 {
-    if (!bassPause())
+    if (!m_bass.stream()->pause())
         return;
 
     m_playing = false;
@@ -202,129 +200,9 @@ void Player::onTimerFinished()
     next();
 }
 
-bool Player::bassCreate()
-{
-
-    if (!BASS_Init(-1, 44100, 0, 0, NULL))
-    {
-        logAudio("Player: Cannot initialize BASS");
-        return false;
-    }
-    return true;
-}
-
-bool Player::bassFree()
-{
-    if (!BASS_Free())
-    {
-        logAudio("Player: Cannot free BASS");
-        return false;
-    }
-    return true;
-}
-
-bool Player::bassCreateStream(Audio *audio)
-{
-    if (bassValidStream())
-        if (!bassFreeStream())
-            return false;
-
-    m_stream = BASS_StreamCreateFile(false, audio->pathWChar(), 0, 0, 0);
-    return bassValidStream();
-}
-
-bool Player::bassFreeStream()
-{
-    if (!bassValidStream())
-        return true;
-
-    if (!BASS_StreamFree(m_stream))
-    {
-        logAudio("Player: Cannot free stream");
-        return false;
-    }
-
-    m_stream = 0;
-    return true;
-}
-
-bool Player::bassValidStream()
-{
-    return m_stream == 0 ? false : true;
-}
-
-bool Player::bassSetVolume(int volume)
-{
-    if (!bassValidStream())
-            return false;
-
-    if (!BASS_ChannelSetAttribute(m_stream, BASS_ATTRIB_VOL, (float) volume / 1000))
-    {
-        logAudio("Player: Cannot set volume");
-        return false;
-    }
-    return true;
-}
-
-bool Player::bassSetPosition(int position)
-{
-    if (!bassValidStream())
-        return false;
-
-    QWORD bytes = BASS_ChannelSeconds2Bytes(m_stream, double (position));
-    if (!BASS_ChannelSetPosition(m_stream, bytes, 0))
-    {
-        logAudio("Player: Cannot set position");
-        return false;
-    }
-    return true;
-}
-
-bool Player::bassPlay()
-{
-    if (!bassValidStream())
-        return false;
-
-    if (BASS_ChannelIsActive(m_stream) == BASS_ACTIVE_PLAYING)
-        return true;
-
-    if (!BASS_ChannelPlay(m_stream, false))
-    {
-        logAudio("Player: Cannot play stream");
-        return false;
-    }
-    return true;
-}
-
-bool Player::bassPause()
-{
-    if (!bassValidStream())
-        return false;
-
-    if (BASS_ChannelIsActive(m_stream) == BASS_ACTIVE_PAUSED
-            || BASS_ChannelIsActive(m_stream) == BASS_ACTIVE_STOPPED)
-        return true;
-
-    if (!BASS_ChannelPause(m_stream))
-    {
-        logAudio("Player: Cannot pause stream");
-        return false;
-    }
-    return true;
-}
-
-void Player::logAudio(const QString &message)
-{
-    Audio *audio = currentAudio();
-    if (audio)
-        log(message + QString(" %1").arg(audio->path()));
-    else
-        log(message);
-}
-
 bool Player::validIndex(int index)
 {
-    return !(index < 0 || index >= m_playlist.size());
+    return index > -1 && index < m_playlist.size();
 }
 
 void Player::switchOrPause(int index)
@@ -405,14 +283,14 @@ void Player::unshuffle()
 
 void Player::setAudio(int index)
 {
-    if (!bassFreeStream())
+    if (!m_bass.stream()->free())
         return;
 
     Audio *audio = audioAt(index);
     if (!audio)
         return;
 
-    if (!bassCreateStream(audio))
+    if (!m_bass.stream()->create(audio))
         return;
 
     setVolume(m_volume);

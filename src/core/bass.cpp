@@ -2,15 +2,13 @@
 
 Bass::Bass()
 {
-    if (_instances == 0)
-        if (!init())
-            return;
-
     _instances++;
-    if (HIWORD(BASS_GetVersion()) != BASSVERSION)
+    if (_instances == 1)
     {
-        log("Bass: Different BASS versions %1 and %2", {static_cast<int>(BASS_GetVersion()), BASSVERSION});
-        free();
+        init();
+
+        if (HIWORD(BASS_GetVersion()) != BASSVERSION)
+            log("Bass: Different BASS versions %1 and %2", {static_cast<int>(BASS_GetVersion()), BASSVERSION});
     }
 }
 

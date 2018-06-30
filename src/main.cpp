@@ -8,6 +8,8 @@
 
 void setup()
 {
+    qsrand(time(0));
+
     qApp->setApplicationName(APP_NAME);
     qApp->setOrganizationName(APP_ORG_NAME);
     qApp->setFont(Util::font(cfgApp->fontSize()));

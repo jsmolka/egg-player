@@ -48,12 +48,13 @@ bool BassStream::pause()
     return true;
 }
 
-bool BassStream::create(Audio *audio, bool scan)
+bool BassStream::create(Audio *audio, bool prescan)
 {
     if (!free())
         return false;
 
-    m_handle = BASS_StreamCreateFile(false, audio->pathWChar(), 0, 0, scan ? BASS_STREAM_PRESCAN : 0);
+    DWORD flags = prescan ? BASS_STREAM_PRESCAN : 0 | BASS_ASYNCFILE;
+    m_handle = BASS_StreamCreateFile(false, audio->pathWChar(), 0, 0, flags);
     return isValid();
 }
 
@@ -86,12 +87,6 @@ bool BassStream::setPosition(qint64 position)
 qint64 BassStream::position()
 {
     QWORD bytes = BASS_ChannelGetPosition(m_handle, BASS_POS_BYTE);
-    if (bytes == -1)
-    {
-        error();
-        return -1;
-    }
-
     qint64 position = BASS_ChannelBytes2Seconds(m_handle, bytes) * 1000;
     if (position < 0)
     {

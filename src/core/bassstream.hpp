@@ -19,7 +19,7 @@ public:
     bool play();
     bool pause();
 
-    bool create(Audio *audio, bool scan = false);
+    bool create(Audio *audio, bool prescan = false);
     bool free();
 
     bool setPosition(qint64 position);
