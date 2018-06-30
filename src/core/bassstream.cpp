@@ -23,9 +23,6 @@ bool BassStream::isValid() const
 
 bool BassStream::play()
 {
-    if (!isValid())
-        return false;
-
     if (BASS_ChannelIsActive(m_handle) == BASS_ACTIVE_PLAYING)
         return true;
 
@@ -39,9 +36,6 @@ bool BassStream::play()
 
 bool BassStream::pause()
 {
-    if (!isValid())
-        return false;
-
     if (BASS_ChannelIsActive(m_handle) == BASS_ACTIVE_PAUSED
             || BASS_ChannelIsActive(m_handle) == BASS_ACTIVE_STOPPED)
         return true;
@@ -80,12 +74,8 @@ bool BassStream::free()
 
 bool BassStream::setPosition(qint64 position)
 {
-    if (!isValid())
-        return false;
-
-    double seconds = static_cast<double>(position) / 1000.0;
-    QWORD bytes = BASS_ChannelSeconds2Bytes(m_handle, seconds);
-    if (!BASS_ChannelSetPosition(m_handle, bytes, 0))
+    QWORD bytes = BASS_ChannelSeconds2Bytes(m_handle, static_cast<double>(position) / 1000.0);
+    if (bytes == -1 || !BASS_ChannelSetPosition(m_handle, bytes, BASS_POS_BYTE))
     {
         error();
         return false;
@@ -95,19 +85,25 @@ bool BassStream::setPosition(qint64 position)
 
 qint64 BassStream::position()
 {
-    if (!isValid())
+    QWORD bytes = BASS_ChannelGetPosition(m_handle, BASS_POS_BYTE);
+    if (bytes == -1)
+    {
+        error();
         return -1;
+    }
 
-    QWORD bytes = BASS_ChannelGetPosition(m_handle, 0);
-    return BASS_ChannelBytes2Seconds(m_handle, bytes) * 1000;
+    qint64 position = BASS_ChannelBytes2Seconds(m_handle, bytes) * 1000;
+    if (position < 0)
+    {
+        error();
+        return -1;
+    }
+    return position;
 }
 
-bool BassStream::setVolume(int volume)
+bool BassStream::setVolume(float volume)
 {
-    if (!isValid())
-        return false;
-
-    if (!BASS_ChannelSetAttribute(m_handle, BASS_ATTRIB_VOL, static_cast<float>(volume) / 1000.0))
+    if (!BASS_ChannelSetAttribute(m_handle, BASS_ATTRIB_VOL, volume))
     {
         error();
         return false;
@@ -115,7 +111,28 @@ bool BassStream::setVolume(int volume)
     return true;
 }
 
-int BassStream::volume()
+float BassStream::volume()
 {
-    return 0;
+    float volume;
+    if (!BASS_ChannelGetAttribute(m_handle, BASS_ATTRIB_VOL, &volume))
+    {
+        error();
+        return -1;
+    }
+    return volume;
+}
+
+bool BassStream::setDevice(DWORD device)
+{
+    if (!BASS_ChannelSetDevice(m_handle, device))
+    {
+        error();
+        return false;
+    }
+    return true;
+}
+
+DWORD BassStream::device()
+{
+    return BASS_ChannelGetDevice(m_handle);
 }

@@ -2,15 +2,23 @@
 
 Bass::Bass()
 {
-    init();
+    if (_instances == 0)
+        if (!init())
+            return;
 
+    _instances++;
     if (HIWORD(BASS_GetVersion()) != BASSVERSION)
+    {
         log("Bass: Different BASS versions %1 and %2", {static_cast<int>(BASS_GetVersion()), BASSVERSION});
+        free();
+    }
 }
 
 Bass::~Bass()
 {
-    free();
+    _instances--;
+    if (_instances == 0)
+        free();
 }
 
 BassStream * Bass::stream()
@@ -20,32 +28,17 @@ BassStream * Bass::stream()
 
 bool Bass::start()
 {
-    if (!BASS_Start())
-    {
-        error();
-        return false;
-    }
-    return true;
+    return call(&BASS_Start);
 }
 
 bool Bass::pause()
 {
-    if (!BASS_Pause())
-    {
-        error();
-        return false;
-    }
-    return true;
+    return call(&BASS_Pause);
 }
 
 bool Bass::stop()
 {
-    if (!BASS_Stop())
-    {
-        error();
-        return false;
-    }
-    return true;
+    return call(&BASS_Stop);
 }
 
 bool Bass::setVolume(float volume)
@@ -74,15 +67,6 @@ DWORD Bass::device()
     return BASS_GetDevice();
 }
 
-BASS_INFO Bass::info()
-{
-    BASS_INFO info;
-    if (!BASS_GetInfo(&info))
-        error();
-
-    return info;
-}
-
 BASS_DEVICEINFO Bass::deviceInfo()
 {
     BASS_DEVICEINFO info;
@@ -96,21 +80,25 @@ bool Bass::init()
 {
     if (!BASS_Init(-1, 44100, 0, 0, NULL))
     {
-        if (BASS_ErrorGetCode() != BASS_ERROR_ALREADY)
-        {
-            error();
-            return false;
-        }
+        error();
+        return false;
     }
     return true;
 }
 
 bool Bass::free()
 {
-    if (!BASS_Free())
+    return call(&BASS_Free);
+}
+
+bool Bass::call(BOOL(*func)())
+{
+    if (!func())
     {
         error();
         return false;
     }
     return true;
 }
+
+int Bass::_instances = 0;

@@ -13,10 +13,10 @@ BassError::~BassError()
 void BassError::error()
 {
     if (BASS_ErrorGetCode() != BASS_OK)
-        log("BassError: %1", {errors.value(BASS_ErrorGetCode())});
+        log("BassError: %1", {_errors.value(BASS_ErrorGetCode())});
 }
 
-const QHash<int, QString> BassError::errors =
+const QHash<int, QString> BassError::_errors =
 {
     {BASS_OK            , "all is OK"},
     {BASS_ERROR_MEM     , "memory error"},

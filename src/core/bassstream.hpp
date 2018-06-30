@@ -25,8 +25,11 @@ public:
     bool setPosition(qint64 position);
     qint64 position();
 
-    bool setVolume(int volume);
-    int volume();
+    bool setVolume(float volume);
+    float volume();
+
+    bool setDevice(DWORD device);
+    DWORD device();
 
 private:
     HSTREAM m_handle;
