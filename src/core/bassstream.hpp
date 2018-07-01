@@ -22,8 +22,8 @@ public:
     bool create(Audio *audio, bool prescan = false);
     bool free();
 
-    bool setPosition(qint64 position);
-    qint64 position();
+    bool setPosition(int position);
+    int position();
 
     bool setVolume(float volume);
     float volume();

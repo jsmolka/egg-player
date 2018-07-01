@@ -53,7 +53,6 @@ HEADERS += \
     src/core/cache.hpp \
     src/core/library.hpp \
     src/core/player.hpp \
-    src/core/timer.hpp \
     src/threading/abstractthread.hpp \
     src/threading/audioloader.hpp \
     src/threading/cachebuilder.hpp \
@@ -91,7 +90,6 @@ SOURCES += \
     src/core/cache.cpp \
     src/core/library.cpp \
     src/core/player.cpp \
-    src/core/timer.cpp \
     src/threading/abstractthread.cpp \
     src/threading/audioloader.cpp \
     src/threading/cachebuilder.cpp \

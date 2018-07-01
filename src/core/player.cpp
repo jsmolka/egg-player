@@ -7,10 +7,11 @@ Player::Player(QObject *parent)
     , m_loop(false)
     , m_shuffle(false)
     , m_playing(false)
-    , pm_timer(new Timer(1000, this))
+    , pm_timer(new QTimer(this))
 {
-    connect(pm_timer, SIGNAL(timeout(qint64)), this, SLOT(onTimerTimeout(qint64)));
-    connect(pm_timer, SIGNAL(finished()), this, SLOT(onTimerFinished()));
+    connect(pm_timer, SIGNAL(timeout()), this, SLOT(onTimerTimeout()));
+
+    pm_timer->start(50);
 }
 
 Player::~Player()
@@ -61,9 +62,13 @@ int Player::volume() const
     return m_volume;
 }
 
-int Player::position() const
+int Player::position()
 {
-    return pm_timer->elapsed() / 1000;
+    int position = -1;
+    if (m_bass.stream()->isValid())
+        position = m_bass.stream()->position();
+
+    return position;
 }
 
 void Player::loadPlaylist(const Audios &audios, int index)
@@ -115,21 +120,20 @@ int Player::currentIndex()
 
 void Player::setVolume(int volume)
 {
-    m_volume = qMax(0, qMin(volume, 100));
-
+    volume = qMax(0, qMin(volume, 100));
     if (m_bass.stream()->isValid())
-        m_bass.stream()->setVolume(static_cast<float>(m_volume) / 1000.0);
+        if (!m_bass.stream()->setVolume(static_cast<float>(volume) / 1000.0))
+            return;
 
-    emit volumeChanged(m_volume);
+    m_volume = volume;
+    emit volumeChanged(volume);
 }
 
 void Player::setPosition(int position)
 {
-    qint64 ms = position * 1000;
-    if (!m_bass.stream()->setPosition(ms))
-        return;
-
-    pm_timer->setElapsed(ms);
+    if (m_bass.stream()->isValid())
+        if (!m_bass.stream()->setPosition(position))
+            return;
 
     emit positionChanged(position);
 }
@@ -160,7 +164,6 @@ void Player::play()
         return;
 
     m_playing = true;
-    pm_timer->start(currentAudio()->duration(false));
 
     emit stateChanged(State::Playing);
 }
@@ -171,7 +174,6 @@ void Player::pause()
         return;
 
     m_playing = false;
-    pm_timer->pause();
 
     emit stateChanged(State::Paused);
 }
@@ -186,18 +188,10 @@ void Player::previous()
     switchOrPause(previousIndex());
 }
 
-void Player::onTimerTimeout(qint64 elapsed)
+void Player::onTimerTimeout()
 {
-    Audio *audio = currentAudio();
-    if (!audio)
-        return;
-
-    emit positionChanged(elapsed / 1000);
-}
-
-void Player::onTimerFinished()
-{
-    next();
+    if (m_bass.stream()->isValid())
+        emit positionChanged(position());
 }
 
 bool Player::validIndex(int index)
@@ -294,7 +288,7 @@ void Player::setAudio(int index)
         return;
 
     setVolume(m_volume);
-    pm_timer->restart(audio->duration(false));
+    //pm_timer->restart(audio->duration(false));
 
     if (m_playing)
         play();

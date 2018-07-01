@@ -3,10 +3,10 @@
 
 #include <QApplication>
 #include <QObject>
+#include <QTimer>
 
 #include "audio.hpp"
 #include "bass.hpp"
-#include "timer.hpp"
 
 #define ePlayer (Player::instance())
 
@@ -30,7 +30,7 @@ public:
     bool isPlaying() const;
 
     int volume() const;
-    int position() const;
+    int position();
 
     void loadPlaylist(const Audios &audios, int index = 0);
 
@@ -60,8 +60,7 @@ signals:
     void volumeChanged(int volume);
 
 private slots:
-    void onTimerTimeout(qint64 elapsed);
-    void onTimerFinished();
+    void onTimerTimeout();
 
 private:
     struct AudioPosition
@@ -87,14 +86,14 @@ private:
     void setAudio(int index);
 
     QVector<AudioPosition> m_playlist;
-    Timer *pm_timer;
+    QTimer *pm_timer;
     Bass m_bass;
+    int m_position;
     int m_index;
     int m_volume;
     bool m_loop;
     bool m_shuffle;
     bool m_playing;
-
 
     static Player *_instance;
 };

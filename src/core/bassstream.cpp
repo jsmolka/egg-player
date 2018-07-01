@@ -73,9 +73,9 @@ bool BassStream::free()
     return true;
 }
 
-bool BassStream::setPosition(qint64 position)
+bool BassStream::setPosition(int position)
 {
-    QWORD bytes = BASS_ChannelSeconds2Bytes(m_handle, static_cast<double>(position) / 1000.0);
+    QWORD bytes = BASS_ChannelSeconds2Bytes(m_handle, static_cast<double>(position));
     if (bytes == -1 || !BASS_ChannelSetPosition(m_handle, bytes, BASS_POS_BYTE))
     {
         error();
@@ -84,10 +84,10 @@ bool BassStream::setPosition(qint64 position)
     return true;
 }
 
-qint64 BassStream::position()
+int BassStream::position()
 {
     QWORD bytes = BASS_ChannelGetPosition(m_handle, BASS_POS_BYTE);
-    qint64 position = BASS_ChannelBytes2Seconds(m_handle, bytes) * 1000;
+    int position = static_cast<int>(BASS_ChannelBytes2Seconds(m_handle, bytes));
     if (position < 0)
     {
         error();
