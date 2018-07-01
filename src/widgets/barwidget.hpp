@@ -41,7 +41,7 @@ public:
 
 private slots:
     void onPlayerAudioChanged(Audio *audio);
-    void onPlayerStateChanged(Player::State state);
+    void onPlayerStateChanged();
     void onPlayerPositionChanged(int position);
     void onPlayerVolumeChanged(int volume);
     void onPlayPauseButtonPressed();
@@ -62,8 +62,6 @@ private:
     void setColor(const QColor &color);
 
     void setButtonVisibility(bool visible);
-    void hideButtons();
-    void showButtons();
 
     void setVolumeConfig(int volume);
     void setVolumeIcon(int volume);

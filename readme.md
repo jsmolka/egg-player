@@ -47,11 +47,11 @@ A Groove Music like music player.
 
 ### Bass integration
 - create a bass wrapper and use it in the player
-  - disable auto looping the current stream
   - try to reinitiate bass after the audio device changed
   - consider using a bass plugin for tag loading instead of taglib
-- rewrite player
-  - connect app about to quit to pausing bass
+- rework how to play next song
+  - use duration in barwidget (onLengthSliderValueChanged)
+  - callback function in player
 
 ### User interface
 - do not show certain info at low size

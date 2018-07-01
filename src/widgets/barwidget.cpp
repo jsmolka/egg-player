@@ -24,7 +24,7 @@ BarWidget::BarWidget(QWidget *parent)
     setupUi();
 
     connect(ePlayer, SIGNAL(audioChanged(Audio *)), this, SLOT(onPlayerAudioChanged(Audio *)));
-    connect(ePlayer, SIGNAL(stateChanged(Player::State)), this, SLOT(onPlayerStateChanged(Player::State)));
+    connect(ePlayer, SIGNAL(stateChanged()), this, SLOT(onPlayerStateChanged()));
     connect(ePlayer, SIGNAL(positionChanged(int)), this, SLOT(onPlayerPositionChanged(int)));
     connect(ePlayer, SIGNAL(volumeChanged(int)), this, SLOT(onPlayerVolumeChanged(int)));
 
@@ -127,18 +127,18 @@ void BarWidget::onPlayerAudioChanged(Audio *audio)
     setColor(ColorUtil::background(cover));
 }
 
-void BarWidget::onPlayerStateChanged(Player::State state)
+void BarWidget::onPlayerStateChanged()
 {
-    m_playPauseButton.setIndex(state == Player::State::Playing ? 1 : 0);
+    m_playPauseButton.setIndex(ePlayer->isPlaying() ? 1 : 0);
 }
 
 void BarWidget::onPlayerPositionChanged(int position)
 {
-    if (!m_lengthSlider.isPressed())
-    {
-        m_currentTimeLabel.setText(Util::time(position));
-        m_lengthSlider.setValue(position);
-    }
+    if (m_lengthSlider.isPressed())
+        return;
+
+    m_currentTimeLabel.setText(Util::time(position));
+    m_lengthSlider.setValue(position);
 }
 
 void BarWidget::onPlayerVolumeChanged(int volume)
@@ -173,11 +173,11 @@ void BarWidget::onVolumeButtonPressed()
     if (m_volumeSlider.isVisible())
     {
         m_volumeSlider.setVisible(false);
-        showButtons();
+        setButtonVisibility(true);
     }
     else
     {
-        hideButtons();
+        setButtonVisibility(false);
         m_volumeSlider.setVisible(true);
     }
 }
@@ -299,16 +299,6 @@ void BarWidget::setButtonVisibility(bool visible)
     m_nextButton.setVisible(visible);
     m_shuffleButton.setVisible(visible);
     m_loopButton.setVisible(visible);
-}
-
-void BarWidget::hideButtons()
-{
-    setButtonVisibility(false);
-}
-
-void BarWidget::showButtons()
-{
-    setButtonVisibility(true);
 }
 
 void BarWidget::setVolumeConfig(int volume)

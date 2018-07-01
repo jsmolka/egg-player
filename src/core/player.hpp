@@ -7,6 +7,7 @@
 
 #include "audio.hpp"
 #include "bass.hpp"
+#include "config.hpp"
 
 #define ePlayer (Player::instance())
 
@@ -19,8 +20,6 @@ public:
     ~Player();
 
     static Player * instance();
-
-    enum State {None, Playing, Paused};
 
     void setIndex(int index);
     int index() const;
@@ -37,9 +36,6 @@ public:
     Audio * audioAt(int index);
     Audio * currentAudio();
 
-    int indexAt(int index);
-    int currentIndex();
-
 public slots:
     void setVolume(int volume);
     void setPosition(int position);
@@ -55,24 +51,22 @@ public slots:
 
 signals:
     void audioChanged(Audio *audio);
-    void stateChanged(Player::State state);
+    void stateChanged();
     void positionChanged(int position);
     void volumeChanged(int volume);
 
 private slots:
-    void onTimerTimeout();
+    void update();
 
 private:
-    struct AudioPosition
+    struct PlaylistItem
     {
-        AudioPosition(int index = 0, Audio *audio = nullptr) :
+        PlaylistItem(int index = 0, Audio *audio = nullptr) :
             index(index), audio(audio) {}
 
         int index;
         Audio *audio;
     };
-
-    void logAudio(const QString &message);
 
     bool validIndex(int index);
 
@@ -85,12 +79,12 @@ private:
 
     void setAudio(int index);
 
-    QVector<AudioPosition> m_playlist;
+    QVector<PlaylistItem> m_playlist;
     QTimer m_timer;
     Bass m_bass;
-    int m_position;
     int m_index;
     int m_volume;
+    int m_position;
     bool m_loop;
     bool m_shuffle;
     bool m_playing;

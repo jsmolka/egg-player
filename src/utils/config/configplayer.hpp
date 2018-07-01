@@ -16,6 +16,9 @@ public:
     void setShuffle(bool shuffle);
     bool shuffle();
 
+    void setUpdateInterval(int interval);
+    int updateInterval();
+
     void setVolume(int volume);
     int volume();
 };

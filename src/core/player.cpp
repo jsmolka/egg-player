@@ -2,16 +2,16 @@
 
 Player::Player(QObject *parent)
     : QObject(parent)
+    , m_timer(this)
     , m_index(-1)
     , m_volume(0)
+    , m_position(-1)
     , m_loop(false)
     , m_shuffle(false)
     , m_playing(false)
-    , m_timer(this)
 {
-    connect(&m_timer, SIGNAL(timeout()), this, SLOT(onTimerTimeout()));
-
-    m_timer.start(50);
+    connect(&m_timer, SIGNAL(timeout()), this, SLOT(update()));
+    m_timer.start(cfgPlayer->updateInterval());
 }
 
 Player::~Player()
@@ -30,8 +30,7 @@ Player * Player::instance()
 void Player::setIndex(int index)
 {
     m_index = index;
-    if (validIndex(index))
-        setAudio(index);
+    setAudio(index);
 }
 
 int Player::index() const
@@ -71,14 +70,10 @@ void Player::loadPlaylist(const Audios &audios, int index)
     m_playlist.reserve(audios.size());
 
     for (int i = 0; i < audios.size(); i++)
-        m_playlist << AudioPosition(i, audios[i]);
+        m_playlist << PlaylistItem(i, audios[i]);
 
     setIndex(index);
-
-    if (m_shuffle && validIndex(m_index))
-        shuffle();
-    else
-        m_shuffle = false;
+    setShuffle(m_shuffle);
 }
 
 Audio * Player::audioAt(int index)
@@ -89,16 +84,6 @@ Audio * Player::audioAt(int index)
 Audio * Player::currentAudio()
 {
     return audioAt(m_index);
-}
-
-int Player::indexAt(int index)
-{    
-    return validIndex(index) ? m_playlist[index].index : -1;
-}
-
-int Player::currentIndex()
-{
-    return indexAt(m_index);
 }
 
 void Player::setVolume(int volume)
@@ -128,37 +113,32 @@ void Player::setLoop(bool loop)
 
 void Player::setShuffle(bool shuffle)
 {
-    if (m_shuffle == shuffle)
-        return;
+    if (shuffle)
+        this->shuffle();
+    else
+        unshuffle();
 
-    if (validIndex(m_index))
-    {
-        if (shuffle)
-            this->shuffle();
-        else
-            unshuffle();
-    }
     m_shuffle = shuffle;
 }
 
 void Player::play()
 {
-    if (!m_bass.stream()->play())
-        return;
+    if (m_bass.stream()->isValid())
+        if (!m_bass.stream()->play())
+            return;
 
     m_playing = true;
-
-    emit stateChanged(State::Playing);
+    emit stateChanged();
 }
 
 void Player::pause()
 {
-    if (!m_bass.stream()->pause())
-        return;
+    if (m_bass.stream()->isValid())
+        if (!m_bass.stream()->pause())
+            return;
 
     m_playing = false;
-
-    emit stateChanged(State::Paused);
+    emit stateChanged();
 }
 
 void Player::next()
@@ -171,10 +151,17 @@ void Player::previous()
     switchOrPause(previousIndex());
 }
 
-void Player::onTimerTimeout()
+void Player::update()
 {
-    if (m_bass.stream()->isValid())
-        emit positionChanged(position());
+    if (!m_bass.stream()->isValid())
+        return;
+
+    int position = this->position();
+    if (position != m_position)
+    {
+        m_position = position;
+        emit positionChanged(position);
+    }
 
     if (m_bass.stream()->isStopped())
         next();
@@ -222,15 +209,11 @@ int Player::previousIndex()
 
 void Player::shuffle()
 {
-    Audio *audio = currentAudio();
-    if (!audio)
-        return;
-
     std::random_shuffle(m_playlist.begin(), m_playlist.end());
 
     for (int i = 0; i < m_playlist.size(); i++)
     {
-        if (audio == audioAt(i))
+        if (currentAudio() == audioAt(i))
         {
             std::swap(m_playlist[0], m_playlist[i]);
             break;
@@ -241,19 +224,15 @@ void Player::shuffle()
 
 void Player::unshuffle()
 {
-    Audio *audio = currentAudio();
-    if (!audio)
-        return;
-
     std::sort(m_playlist.begin(), m_playlist.end(),
-        [](const AudioPosition &ap1, const AudioPosition &ap2) {
-            return ap1.index < ap2.index;
+        [](const PlaylistItem &i1, const PlaylistItem &i2) {
+            return i1.index < i2.index;
         }
     );
 
     for (int i = 0; i < m_playlist.size(); i++)
     {
-        if (audio == audioAt(i))
+        if (currentAudio() == audioAt(i))
         {
             m_index = i;
             break;
@@ -263,18 +242,11 @@ void Player::unshuffle()
 
 void Player::setAudio(int index)
 {
-    if (!m_bass.stream()->free())
-        return;
-
     Audio *audio = audioAt(index);
-    if (!audio)
-        return;
-
-    if (!m_bass.stream()->create(audio))
+    if (!audio || !m_bass.stream()->create(audio))
         return;
 
     setVolume(m_volume);
-    //pm_timer->restart(audio->duration(false));
 
     if (m_playing)
         play();
