@@ -7,11 +7,11 @@ Player::Player(QObject *parent)
     , m_loop(false)
     , m_shuffle(false)
     , m_playing(false)
-    , pm_timer(new QTimer(this))
+    , m_timer(this)
 {
-    connect(pm_timer, SIGNAL(timeout()), this, SLOT(onTimerTimeout()));
+    connect(&m_timer, SIGNAL(timeout()), this, SLOT(onTimerTimeout()));
 
-    pm_timer->start(50);
+    m_timer.start(50);
 }
 
 Player::~Player()
@@ -30,11 +30,8 @@ Player * Player::instance()
 void Player::setIndex(int index)
 {
     m_index = index;
-
-    if (!validIndex(m_index))
-        return;
-
-    setAudio(m_index);
+    if (validIndex(index))
+        setAudio(index);
 }
 
 int Player::index() const
@@ -64,11 +61,7 @@ int Player::volume() const
 
 int Player::position()
 {
-    int position = -1;
-    if (m_bass.stream()->isValid())
-        position = m_bass.stream()->position();
-
-    return position;
+    return m_bass.stream()->isValid() ? m_bass.stream()->position() : -1;
 }
 
 void Player::loadPlaylist(const Audios &audios, int index)
@@ -90,12 +83,7 @@ void Player::loadPlaylist(const Audios &audios, int index)
 
 Audio * Player::audioAt(int index)
 {
-    Audio *audio = nullptr;
-
-    if (validIndex(index))
-        audio = m_playlist[index].audio;
-
-    return audio;
+    return validIndex(index) ? m_playlist[index].audio : nullptr;
 }
 
 Audio * Player::currentAudio()
@@ -105,12 +93,7 @@ Audio * Player::currentAudio()
 
 int Player::indexAt(int index)
 {    
-    int idx = -1;
-
-    if (validIndex(index))
-        idx = m_playlist[index].index;
-
-    return idx;
+    return validIndex(index) ? m_playlist[index].index : -1;
 }
 
 int Player::currentIndex()
@@ -192,6 +175,9 @@ void Player::onTimerTimeout()
 {
     if (m_bass.stream()->isValid())
         emit positionChanged(position());
+
+    if (m_bass.stream()->isStopped())
+        next();
 }
 
 bool Player::validIndex(int index)

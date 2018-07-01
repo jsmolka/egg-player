@@ -21,9 +21,29 @@ bool BassStream::isValid() const
     return m_handle != 0;
 }
 
+bool BassStream::isPlaying() const
+{
+    return BASS_ChannelIsActive(m_handle) == BASS_ACTIVE_PLAYING;
+}
+
+bool BassStream::isPaused() const
+{
+    return BASS_ChannelIsActive(m_handle) == BASS_ACTIVE_PAUSED;
+}
+
+bool BassStream::isStopped() const
+{
+    return BASS_ChannelIsActive(m_handle) == BASS_ACTIVE_STOPPED;
+}
+
+bool BassStream::isStalled() const
+{
+    return BASS_ChannelIsActive(m_handle) == BASS_ACTIVE_STALLED;
+}
+
 bool BassStream::play()
 {
-    if (BASS_ChannelIsActive(m_handle) == BASS_ACTIVE_PLAYING)
+    if (isPlaying())
         return true;
 
     if (!BASS_ChannelPlay(m_handle, false))
@@ -36,8 +56,7 @@ bool BassStream::play()
 
 bool BassStream::pause()
 {
-    if (BASS_ChannelIsActive(m_handle) == BASS_ACTIVE_PAUSED
-            || BASS_ChannelIsActive(m_handle) == BASS_ACTIVE_STOPPED)
+    if (isPaused() || isStopped())
         return true;
 
     if (!BASS_ChannelPause(m_handle))

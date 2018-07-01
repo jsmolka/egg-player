@@ -16,6 +16,11 @@ public:
 
     bool isValid() const;
 
+    bool isPlaying() const;
+    bool isPaused() const;
+    bool isStopped() const;
+    bool isStalled() const;
+
     bool play();
     bool pause();
 
