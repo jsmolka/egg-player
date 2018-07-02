@@ -12,6 +12,8 @@ Player::Player(QObject *parent)
 {
     connect(&m_timer, SIGNAL(timeout()), this, SLOT(update()));
     m_timer.start(cfgPlayer->updateInterval());
+
+    //m_bass.stream()->setEndCallback(SyncProc, this);
 }
 
 Player::~Player()
@@ -162,9 +164,6 @@ void Player::update()
         m_position = position;
         emit positionChanged(position);
     }
-
-    if (m_bass.stream()->isStopped())
-        next();
 }
 
 bool Player::validIndex(int index)
@@ -207,6 +206,16 @@ int Player::previousIndex()
     return --m_index;
 }
 
+void Player::endCallback(HSYNC handle, DWORD channel, DWORD data, void *user)
+{
+    Q_UNUSED(handle);
+    Q_UNUSED(channel);
+    Q_UNUSED(data);
+
+    Player *player = static_cast<Player *>(user);
+    player->next();
+}
+
 void Player::shuffle()
 {
     std::random_shuffle(m_playlist.begin(), m_playlist.end());
@@ -246,6 +255,7 @@ void Player::setAudio(int index)
     if (!audio || !m_bass.stream()->create(audio))
         return;
 
+    m_bass.stream()->setEndCallback(endCallback, this);
     setVolume(m_volume);
 
     if (m_playing)

@@ -36,6 +36,8 @@ public:
     bool setDevice(DWORD device);
     DWORD device();
 
+    void setEndCallback(SYNCPROC *proc, void *user);
+
 private:
     HSTREAM m_handle;
 };

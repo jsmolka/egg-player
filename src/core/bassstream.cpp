@@ -150,3 +150,10 @@ DWORD BassStream::device()
 {
     return BASS_ChannelGetDevice(m_handle);
 }
+
+void BassStream::setEndCallback(SYNCPROC *proc, void *user)
+{
+    BASS_ChannelSetSync(m_handle, BASS_SYNC_END, 0, proc, user);
+}
+
+

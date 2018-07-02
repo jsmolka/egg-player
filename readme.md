@@ -12,7 +12,9 @@ A Groove Music like music player.
 - [ ] reactive cache
 
 ## Changes since lastest release
-- fix timer pause bug
+- improve [bass.dll](http://www.un4seen.com/) integration
+- improve song transition
+- improve timer
 
 ## Things to do
 
@@ -49,9 +51,9 @@ A Groove Music like music player.
 - create a bass wrapper and use it in the player
   - try to reinitiate bass after the audio device changed
   - consider using a bass plugin for tag loading instead of taglib
-- rework how to play next song
-  - use duration in barwidget (onLengthSliderValueChanged)
-  - callback function in player
+- use unicode flags in streamcreate
+- rework wrapper function
+- better sync handle
 
 ### User interface
 - do not show certain info at low size
