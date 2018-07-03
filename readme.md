@@ -51,9 +51,6 @@ A Groove Music like music player.
 - create a bass wrapper and use it in the player
   - try to reinitiate bass after the audio device changed
   - consider using a bass plugin for tag loading instead of taglib
-- use unicode flags in streamcreate
-- rework wrapper function
-- better sync handle
 
 ### User interface
 - do not show certain info at low size

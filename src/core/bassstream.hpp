@@ -36,10 +36,12 @@ public:
     bool setDevice(DWORD device);
     DWORD device();
 
-    void setEndCallback(SYNCPROC *proc, void *user);
+    bool setCallback(SYNCPROC *proc, void *user);
+    bool removeCallback();
 
 private:
     HSTREAM m_handle;
+    HSYNC m_sync;
 };
 
 #endif // BASSSTREAM_HPP

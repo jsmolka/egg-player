@@ -12,8 +12,6 @@ Player::Player(QObject *parent)
 {
     connect(&m_timer, SIGNAL(timeout()), this, SLOT(update()));
     m_timer.start(cfgPlayer->updateInterval());
-
-    //m_bass.stream()->setEndCallback(SyncProc, this);
 }
 
 Player::~Player()
@@ -206,7 +204,7 @@ int Player::previousIndex()
     return --m_index;
 }
 
-void Player::endCallback(HSYNC handle, DWORD channel, DWORD data, void *user)
+void Player::callback(HSYNC handle, DWORD channel, DWORD data, void *user)
 {
     Q_UNUSED(handle);
     Q_UNUSED(channel);
@@ -255,7 +253,7 @@ void Player::setAudio(int index)
     if (!audio || !m_bass.stream()->create(audio))
         return;
 
-    m_bass.stream()->setEndCallback(endCallback, this);
+    m_bass.stream()->setCallback(callback, this);
     setVolume(m_volume);
 
     if (m_playing)

@@ -2,6 +2,7 @@
 
 BassStream::BassStream()
     : m_handle(0)
+    , m_sync(0)
 {
 
 }
@@ -46,12 +47,11 @@ bool BassStream::play()
     if (isPlaying())
         return true;
 
-    if (!BASS_ChannelPlay(m_handle, false))
-    {
+    bool success = BASS_ChannelPlay(m_handle, false);
+    if (!success)
         error();
-        return false;
-    }
-    return true;
+
+    return success;
 }
 
 bool BassStream::pause()
@@ -59,12 +59,11 @@ bool BassStream::pause()
     if (isPaused() || isStopped())
         return true;
 
-    if (!BASS_ChannelPause(m_handle))
-    {
+    bool success = BASS_ChannelPause(m_handle);
+    if (!success)
         error();
-        return false;
-    }
-    return true;
+
+    return success;
 }
 
 bool BassStream::create(Audio *audio, bool prescan)
@@ -74,6 +73,7 @@ bool BassStream::create(Audio *audio, bool prescan)
 
     DWORD flags = prescan ? BASS_STREAM_PRESCAN : 0 | BASS_ASYNCFILE;
     m_handle = BASS_StreamCreateFile(false, audio->pathWChar(), 0, 0, flags);
+
     return isValid();
 }
 
@@ -82,78 +82,99 @@ bool BassStream::free()
     if (!isValid())
         return true;
 
-    if (!BASS_StreamFree(m_handle))
-    {
+    bool success = BASS_StreamFree(m_handle);
+    if (success)
+        m_handle = 0;
+    else
         error();
-        return false;
-    }
 
-    m_handle = 0;
-    return true;
+    return success;
 }
 
 bool BassStream::setPosition(int position)
 {
     QWORD bytes = BASS_ChannelSeconds2Bytes(m_handle, static_cast<double>(position));
-    if (bytes == -1 || !BASS_ChannelSetPosition(m_handle, bytes, BASS_POS_BYTE))
-    {
+    bool success = bytes != -1 && BASS_ChannelSetPosition(m_handle, bytes, BASS_POS_BYTE);
+    if (!success)
         error();
-        return false;
-    }
-    return true;
+
+    return success;
 }
 
 int BassStream::position()
 {
     QWORD bytes = BASS_ChannelGetPosition(m_handle, BASS_POS_BYTE);
+    if (bytes == -1)
+    {
+        error();
+        return -1;
+    }
+
     int position = static_cast<int>(BASS_ChannelBytes2Seconds(m_handle, bytes));
     if (position < 0)
     {
         error();
         return -1;
     }
+
     return position;
 }
 
 bool BassStream::setVolume(float volume)
 {
-    if (!BASS_ChannelSetAttribute(m_handle, BASS_ATTRIB_VOL, volume))
-    {
+    bool success = BASS_ChannelSetAttribute(m_handle, BASS_ATTRIB_VOL, volume);
+    if (!success)
         error();
-        return false;
-    }
-    return true;
+
+    return success;
 }
 
 float BassStream::volume()
 {
-    float volume;
+    float volume = -1;
     if (!BASS_ChannelGetAttribute(m_handle, BASS_ATTRIB_VOL, &volume))
-    {
         error();
-        return -1;
-    }
+
     return volume;
 }
 
 bool BassStream::setDevice(DWORD device)
 {
-    if (!BASS_ChannelSetDevice(m_handle, device))
-    {
+    bool success = BASS_ChannelSetDevice(m_handle, device);
+    if (!success)
         error();
-        return false;
-    }
-    return true;
+
+    return success;
 }
 
 DWORD BassStream::device()
 {
+    if (BASS_ChannelGetDevice(m_handle) == -1)
+        error();
+
     return BASS_ChannelGetDevice(m_handle);
 }
 
-void BassStream::setEndCallback(SYNCPROC *proc, void *user)
+bool BassStream::setCallback(SYNCPROC *proc, void *user)
 {
-    BASS_ChannelSetSync(m_handle, BASS_SYNC_END, 0, proc, user);
+    m_sync = BASS_ChannelSetSync(m_handle, BASS_SYNC_END, 0, proc, user);
+    bool success = m_sync != 0;
+    if (!success)
+        error();
+
+    return success;
 }
 
+bool BassStream::removeCallback()
+{
+    if (m_sync == 0)
+        return true;
 
+    bool success = BASS_ChannelRemoveSync(m_handle, m_sync);
+    if (success)
+        m_sync = 0;
+    else
+        error();
+
+    return success;
+}

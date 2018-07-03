@@ -74,7 +74,7 @@ private:
     int nextIndex();
     int previousIndex();
 
-    static void CALLBACK endCallback(HSYNC handle, DWORD channel, DWORD data, void *user);
+    static void CALLBACK callback(HSYNC handle, DWORD channel, DWORD data, void *user);
 
     void shuffle();
     void unshuffle();

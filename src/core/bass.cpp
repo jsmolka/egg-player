@@ -3,13 +3,12 @@
 Bass::Bass()
 {
     _instances++;
-    if (_instances == 1)
-    {
-        init();
+    if (_instances > 1)
+        return;
 
+    if (init())
         if (HIWORD(BASS_GetVersion()) != BASSVERSION)
             log("Bass: Different BASS versions %1 and %2", {static_cast<int>(BASS_GetVersion()), BASSVERSION});
-    }
 }
 
 Bass::~Bass()
@@ -41,7 +40,11 @@ bool Bass::stop()
 
 bool Bass::setVolume(float volume)
 {
-    return BASS_SetVolume(volume);
+    bool success = BASS_SetVolume(volume);
+    if (!success)
+        error();
+
+    return success;
 }
 
 float Bass::volume()
@@ -54,7 +57,11 @@ float Bass::volume()
 
 bool Bass::setDevice(DWORD device)
 {
-    return BASS_SetDevice(device);
+    bool success = BASS_SetDevice(device);
+    if (!success)
+        error();
+
+    return success;
 }
 
 DWORD Bass::device()
@@ -76,12 +83,11 @@ BASS_DEVICEINFO Bass::deviceInfo()
 
 bool Bass::init()
 {
-    if (!BASS_Init(-1, 44100, 0, 0, NULL))
-    {
+    bool success = BASS_Init(-1, 44100, 0, 0, NULL);
+    if (!success)
         error();
-        return false;
-    }
-    return true;
+
+    return success;
 }
 
 bool Bass::free()
@@ -91,12 +97,11 @@ bool Bass::free()
 
 bool Bass::call(BOOL(*func)())
 {
-    if (!func())
-    {
+    bool success = func();
+    if (!success)
         error();
-        return false;
-    }
-    return true;
+
+    return success;
 }
 
 int Bass::_instances = 0;
