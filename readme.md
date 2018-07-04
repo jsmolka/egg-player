@@ -12,6 +12,7 @@ A Groove Music like music player.
 - [ ] reactive cache
 
 ## Changes since lastest release
+- add seamless device transition
 - improve [bass.dll](http://www.un4seen.com/) integration
 - improve song transition
 - improve timer
@@ -20,6 +21,7 @@ A Groove Music like music player.
 
 ### General
 - rewrite library widget
+- consider using a bass plugin for tag loading instead of taglib
 
 ### Threading
 - look into write-ahread-logging
@@ -46,11 +48,7 @@ A Groove Music like music player.
   - remove background color from css
 - move config scale functions into this util
 - move shortcut register functions into this util
-
-### Bass integration
-- create a bass wrapper and use it in the player
-  - try to reinitiate bass after the audio device changed
-  - consider using a bass plugin for tag loading instead of taglib
+  
 
 ### User interface
 - do not show certain info at low size

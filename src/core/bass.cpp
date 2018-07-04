@@ -6,6 +6,8 @@ Bass::Bass()
     if (_instances > 1)
         return;
 
+    setConfig();
+
     if (init())
         if (HIWORD(BASS_GetVersion()) != BASSVERSION)
             log("Bass: Different BASS versions %1 and %2", {static_cast<int>(BASS_GetVersion()), BASSVERSION});
@@ -79,6 +81,15 @@ BASS_DEVICEINFO Bass::deviceInfo()
         error();
 
     return info;
+}
+
+bool Bass::setConfig()
+{
+    bool success = BASS_SetConfig(BASS_CONFIG_DEV_DEFAULT, 1);
+    if (!success)
+        error();
+
+    return success;
 }
 
 bool Bass::init()

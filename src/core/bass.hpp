@@ -28,6 +28,7 @@ public:
     BASS_DEVICEINFO deviceInfo();
 
 private:
+    bool setConfig();
     bool init();
     bool free();
 
