@@ -2,7 +2,7 @@
 
 Player::Player(QObject *parent)
     : QObject(parent)
-    , m_timer(this)
+    , m_updateTimer(this)
     , m_index(-1)
     , m_volume(0)
     , m_position(-1)
@@ -10,8 +10,7 @@ Player::Player(QObject *parent)
     , m_shuffle(false)
     , m_playing(false)
 {
-    connect(&m_timer, SIGNAL(timeout()), this, SLOT(update()));
-    m_timer.start(cfgPlayer->updateInterval());
+    connect(&m_updateTimer, SIGNAL(timeout()), this, SLOT(update()));
 }
 
 Player::~Player()
@@ -51,6 +50,11 @@ bool Player::isShuffle() const
 bool Player::isPlaying() const
 {
     return m_playing;
+}
+
+bool Player::isPaused() const
+{
+    return !m_playing;
 }
 
 int Player::volume() const
@@ -128,6 +132,7 @@ void Player::play()
             return;
 
     m_playing = true;
+    m_updateTimer.start(cfgPlayer->updateInterval());
     emit stateChanged();
 }
 
@@ -138,6 +143,7 @@ void Player::pause()
             return;
 
     m_playing = false;
+    m_updateTimer.stop();
     emit stateChanged();
 }
 

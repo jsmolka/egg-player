@@ -27,6 +27,7 @@ public:
     bool isLoop() const;
     bool isShuffle() const;
     bool isPlaying() const;
+    bool isPaused() const;
 
     int volume() const;
     int position();
@@ -82,7 +83,7 @@ private:
     void setAudio(int index);
 
     QVector<PlaylistItem> m_playlist;
-    QTimer m_timer;
+    QTimer m_updateTimer;
     Bass m_bass;
     int m_index;
     int m_volume;

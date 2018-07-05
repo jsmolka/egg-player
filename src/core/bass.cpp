@@ -6,11 +6,8 @@ Bass::Bass()
     if (_instances > 1)
         return;
 
-    setConfig();
-
-    if (init())
-        if (HIWORD(BASS_GetVersion()) != BASSVERSION)
-            log("Bass: Different BASS versions %1 and %2", {static_cast<int>(BASS_GetVersion()), BASSVERSION});
+    if (isValidVersion() && setConfig())
+        _init = init();
 }
 
 Bass::~Bass()
@@ -23,6 +20,11 @@ Bass::~Bass()
 BassStream * Bass::stream()
 {
     return &m_stream;
+}
+
+bool Bass::isInit() const
+{
+    return _init;
 }
 
 bool Bass::start()
@@ -92,6 +94,15 @@ bool Bass::setConfig()
     return success;
 }
 
+bool Bass::isValidVersion()
+{
+    bool valid = HIWORD(BASS_GetVersion()) == BASSVERSION;
+    if (!valid)
+        log("Bass: Different BASS versions %1 and %2", {static_cast<int>(BASS_GetVersion()), BASSVERSION});
+
+    return valid;
+}
+
 bool Bass::init()
 {
     bool success = BASS_Init(-1, 44100, 0, 0, NULL);
@@ -114,5 +125,7 @@ bool Bass::call(BOOL(*func)())
 
     return success;
 }
+
+bool Bass::_init = false;
 
 int Bass::_instances = 0;

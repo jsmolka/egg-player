@@ -15,6 +15,8 @@ public:
 
     BassStream * stream();
 
+    bool isInit() const;
+
     bool start();
     bool pause();
     bool stop();
@@ -29,6 +31,7 @@ public:
 
 private:
     bool setConfig();
+    bool isValidVersion();
     bool init();
     bool free();
 
@@ -36,6 +39,7 @@ private:
 
     BassStream m_stream;
 
+    static bool _init;
     static int _instances;
 };
 
