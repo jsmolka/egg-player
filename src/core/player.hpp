@@ -83,7 +83,7 @@ private:
     void setAudio(int index);
 
     QVector<PlaylistItem> m_playlist;
-    QTimer m_updateTimer;
+    QTimer m_timer;
     Bass m_bass;
     int m_index;
     int m_volume;
