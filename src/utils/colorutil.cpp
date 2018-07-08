@@ -14,7 +14,7 @@ QColor ColorUtil::dominant(const QImage &image)
     quint32 gSaturations[RANGE] = {};
     quint32 gValues[RANGE] = {};
 
-    QRgb *pixels = (QRgb *) image.bits();
+    QRgb *pixels = (QRgb *)image.bits();
     quint32 pixelCount = image.height() * image.width();
     for (quint32 i = 0; i < pixelCount; i++)
     {

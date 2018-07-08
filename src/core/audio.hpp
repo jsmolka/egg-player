@@ -1,21 +1,13 @@
 #ifndef AUDIO_HPP
 #define AUDIO_HPP
 
-#include <QPainter>
 #include <QPixmap>
-#include <QPixmapCache>
+#include <QString>
 #include <QVector>
 
-#include <taglib/attachedpictureframe.h>
-#include <taglib/fileref.h>
-#include <taglib/id3v2tag.h>
-#include <taglib/id3v2frame.h>
-#include <taglib/mpegfile.h>
-#include <taglib/tag.h>
-
-#include "constants.hpp"
+#include "fileutil.hpp"
 #include "logger.hpp"
-#include "util.hpp"
+#include "tag.hpp"
 
 class Audio
 {
@@ -26,6 +18,7 @@ public:
     ~Audio();
 
     bool isValid() const;
+
     QString path() const;
     QString title() const;
     QString artist() const;
@@ -33,7 +26,8 @@ public:
     QString genre() const;
     int year() const;
     int track() const;
-    int duration(bool seconds = true) const;
+    int duration() const;
+
     void setCoverId(int coverId);
     int coverId() const;
     quint64 size() const;
@@ -44,8 +38,6 @@ public:
 
 private:
     bool readTags();
-    QPixmap coverify(const QPixmap &cover);
-    QPixmap readCover();
 
     bool m_valid;
     QString m_path;

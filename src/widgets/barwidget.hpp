@@ -68,8 +68,6 @@ private:
     void setVolumePlayer(int volume);
     void setVolumeSlider(int volume);
 
-    Cache m_cache;
-
     QLabel m_coverLabel;
     QLabel m_trackLabel;
     QLabel m_currentTimeLabel;

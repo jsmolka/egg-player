@@ -11,11 +11,11 @@ QString documents(const QString &file)
 
 QString resource(const QString &file)
 {
-#ifdef QT_DEBUG
+#   ifdef QT_DEBUG
     return "resource/" + file;
-#else
+#   else
     return ":/resource/" + file;
-#endif
+#   endif
 }
 
 const QString CSS_BAR           = resource("css/bar.css");

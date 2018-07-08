@@ -38,6 +38,8 @@ private:
 
     void createCovers();
     void createAudios();
+    void createTables();
+
     int getOrInsertCover(const QPixmap &cover);
     int insertByteCover(const QByteArray &bytes);
 
@@ -54,6 +56,8 @@ private:
 
     QSqlDatabase m_db;
     QSqlQuery m_query;
+
+    static bool _created;
 };
 
 #endif // CACHE_HPP

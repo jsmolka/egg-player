@@ -1,7 +1,5 @@
 #include "audio.hpp"
 
-using namespace TagLib;
-
 Audio::Audio(const QString &path)
     : m_valid(true)
     , m_path(path)
@@ -9,10 +7,8 @@ Audio::Audio(const QString &path)
     , m_outdated(false)
     , m_size(FileUtil::size(path))
 {
-    if (!readTags())
+    if (!(m_valid = readTags()))
     {
-        m_valid = false;
-
         if (!FileUtil::exists(path))
             log("Audio: File does not exist %1", {m_path});
         else
@@ -83,12 +79,9 @@ int Audio::track() const
     return m_track;
 }
 
-int Audio::duration(bool seconds) const
+int Audio::duration() const
 {
-    if (seconds)
-        return static_cast<int>(round(static_cast<float>(m_duration) / 1000.0));
-    else
-        return m_duration;
+    return m_duration;
 }
 
 void Audio::setCoverId(int id)
@@ -118,84 +111,30 @@ const wchar_t * Audio::pathWChar() const
 
 QPixmap Audio::cover(int size)
 {
-    QPixmap cover = readCover();
-    if (cover.isNull())
-    {
-        cover = Util::cover();
-        log("Audio: Cannot read cover %1", {m_path});
-    }
-    return Util::resize(cover, size);
+    return Tag(pathWChar()).cover(size);
 }
 
 bool Audio::readTags()
 {
-    FileRef fileRef(pathWChar());
+    Tag tag(pathWChar());
 
-    if (fileRef.isNull() || !fileRef.audioProperties())
+    if (!tag.isAudioValid())
         return false;
 
-    m_duration = fileRef.audioProperties()->lengthInMilliseconds();
+    m_duration = tag.duration();
 
-    if (fileRef.tag())
+    if (tag.isTagValid())
     {
-        Tag *tag = fileRef.tag();
-        String title = tag->title();
-        String artist = tag->artist();
-        String album = tag->album();
-        String genre = tag->genre();
-
-        m_title = QString::fromWCharArray(title.toCWString(), title.size());
-        m_artist = QString::fromWCharArray(artist.toCWString(), artist.size());
-        m_album = QString::fromWCharArray(album.toCWString(), album.size());
-        m_genre = QString::fromWCharArray(genre.toCWString(), genre.size());
-        m_year = tag->year();
-        m_track = tag->track();
-
-        if (m_title.isEmpty())
-            m_title = FileUtil::fileName(m_path);
+        m_title = tag.title();
+        m_artist = tag.artist();
+        m_album = tag.album();
+        m_genre = tag.genre();
+        m_year = tag.year();
+        m_track = tag.track();
     }
+
+    if (m_title.isEmpty())
+        m_title = FileUtil::fileName(m_path);
+
     return true;
-}
-
-QPixmap Audio::coverify(const QPixmap &cover)
-{
-    int height = cover.height();
-    int width = cover.width();
-
-    if (height != width)
-    {
-        int size = std::max(height, width);
-        QPixmap square(size, size);
-        square.fill(Qt::transparent);
-
-        QPainter painter(&square);
-        int x = (size - width) / 2;
-        int y = (size - height) / 2;
-        painter.drawPixmap(x, y, cover);
-        return square;
-    }
-    return cover;
-}
-
-QPixmap Audio::readCover()
-{
-    MPEG::File file(pathWChar());
-    QPixmap cover;
-
-    if (file.hasID3v2Tag())
-    {
-        ID3v2::Tag *tag = file.ID3v2Tag();
-        ID3v2::FrameListMap frameMap = tag->frameListMap();
-        if (frameMap.contains("APIC"))
-        {
-            ID3v2::FrameList frameList = frameMap["APIC"];
-            if (!frameList.isEmpty())
-            {
-                ID3v2::AttachedPictureFrame *frame = static_cast<ID3v2::AttachedPictureFrame *>(frameList.front());
-                cover.loadFromData((const uchar *) frame->picture().data(), frame->picture().size());
-                cover = coverify(cover);
-            }
-        }
-    }
-    return cover;
 }

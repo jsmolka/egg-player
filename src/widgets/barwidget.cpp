@@ -113,7 +113,7 @@ Slider * BarWidget::volumeSlider()
 
 void BarWidget::onPlayerAudioChanged(Audio *audio)
 {
-    QPixmap cover = m_cache.cover(audio, cfgBar->coverSize());
+    QPixmap cover = Cache().cover(audio, cfgBar->coverSize());
 
     m_coverLabel.setPixmap(cover);
     m_trackLabel.setText(QString("%1\n%2").arg(audio->title(), audio->artist()));
@@ -134,7 +134,7 @@ void BarWidget::onPlayerStateChanged()
 
 void BarWidget::onPlayerPositionChanged(int position)
 {
-    if (m_lengthSlider.isPressed())
+    if (m_lengthSlider.isPressed() || m_lengthSlider.maximum() < position)
         return;
 
     m_currentTimeLabel.setText(Util::time(position));

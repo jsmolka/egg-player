@@ -9,8 +9,7 @@ Cache::Cache()
     m_query = QSqlQuery(m_db);
     m_query.setForwardOnly(true);
 
-    createCovers();
-    createAudios();
+    createTables();
 }
 
 Cache::~Cache()
@@ -87,7 +86,7 @@ void Cache::insertTags(Audio *audio)
     m_query.bindValue(":genre", audio->genre());
     m_query.bindValue(":year", audio->year());
     m_query.bindValue(":track", audio->track());
-    m_query.bindValue(":duration", audio->duration(false));
+    m_query.bindValue(":duration", audio->duration());
     m_query.bindValue(":coverid", audio->coverId());
     m_query.bindValue(":size", audio->size());
 
@@ -140,7 +139,7 @@ void Cache::updateTags(Audio *audio)
     m_query.bindValue(":genre", audio->genre());
     m_query.bindValue(":year", audio->year());
     m_query.bindValue(":track", audio->track());
-    m_query.bindValue(":duration", audio->duration(false));
+    m_query.bindValue(":duration", audio->duration());
     m_query.bindValue(":coverid", audio->coverId());
     m_query.bindValue(":size", audio->size());
 
@@ -237,6 +236,16 @@ void Cache::createAudios()
 
     if (!m_query.exec(create))
         handleError();
+}
+
+void Cache::createTables()
+{
+    if (_created)
+        return;
+
+    createCovers();
+    createAudios();
+    _created = true;
 }
 
 int Cache::getOrInsertCover(const QPixmap &cover)
@@ -363,3 +372,5 @@ QByteArray Cache::coverToBytes(const QPixmap &cover)
 
     return bytes;
 }
+
+bool Cache::_created = false;

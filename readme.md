@@ -21,7 +21,6 @@ A Groove Music like music player.
 
 ### General
 - rewrite library widget
-- consider using a bass plugin for tag loading instead of taglib
 
 ### Threading
 - look into write-ahread-logging
@@ -49,7 +48,6 @@ A Groove Music like music player.
 - move config scale functions into this util
 - move shortcut register functions into this util
   
-
 ### User interface
 - do not show certain info at low size
 - [smooth scrolling](https://github.com/zhou13/qsmoothscrollarea)
