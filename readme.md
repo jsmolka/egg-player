@@ -12,6 +12,7 @@ A Groove Music like music player.
 - [ ] reactive cache
 
 ## Changes since lastest release
+- add smooth scrolling
 - add seamless device transition
 - improve [bass.dll](http://www.un4seen.com/) integration
 - improve song transition
@@ -21,6 +22,7 @@ A Groove Music like music player.
 
 ### General
 - rewrite library widget
+- tweak smooth scrolling values
 
 ### Threading
 - look into write-ahread-logging
@@ -32,8 +34,6 @@ A Groove Music like music player.
   - add an option audio objects to show that is loaded from the cache
 - cache builder
   - only load covers for new and outdated audios
-- rewrite library 
-- use VK in shortcut
 
 ### Reactive cache
 - use a file system watcher
@@ -50,7 +50,7 @@ A Groove Music like music player.
   
 ### User interface
 - do not show certain info at low size
-- [smooth scrolling](https://github.com/zhou13/qsmoothscrollarea)
 - color transition in bar
 - fuzzy library searching
 - [expand scrollbar](https://stackoverflow.com/a/23677355/7057528)
+- [scrollable text](https://stackoverflow.com/a/10655396/7057528)

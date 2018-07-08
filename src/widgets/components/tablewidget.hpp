@@ -5,10 +5,11 @@
 #include <QScrollBar>
 #include <QTableWidget>
 
-#include "rowhoverdelegate.hpp"
 #include "clickablestyle.hpp"
+#include "rowhoverdelegate.hpp"
+#include "smoothtablewidget.hpp"
 
-class TableWidget : public QTableWidget
+class TableWidget : public SmoothTableWidget
 {
     Q_OBJECT
 

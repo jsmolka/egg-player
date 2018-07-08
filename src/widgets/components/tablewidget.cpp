@@ -1,7 +1,7 @@
 #include "tablewidget.hpp"
 
 TableWidget::TableWidget(QWidget *parent)
-    : QTableWidget(parent)
+    : SmoothTableWidget(parent)
     , pm_delegate(new RowHoverDelegate(this))
 {
     setup();

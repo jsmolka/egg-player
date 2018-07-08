@@ -78,6 +78,7 @@ HEADERS += \
     src/widgets/components/mainwindow.hpp \
     src/widgets/components/rowhoverdelegate.hpp \
     src/widgets/components/slider.hpp \
+    src/widgets/components/smoothtablewidget.hpp \
     src/widgets/components/tablewidget.hpp \
     src/widgets/layouts/borderlayout.hpp
 
@@ -116,5 +117,6 @@ SOURCES += \
     src/widgets/components/mainwindow.cpp \
     src/widgets/components/rowhoverdelegate.cpp \
     src/widgets/components/slider.cpp \
+    src/widgets/components/smoothtablewidget.cpp \
     src/widgets/components/tablewidget.cpp \
     src/widgets/layouts/borderlayout.cpp
