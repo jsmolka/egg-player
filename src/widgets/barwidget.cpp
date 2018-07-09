@@ -1,7 +1,7 @@
 #include "barwidget.hpp"
 
 BarWidget::BarWidget(QWidget *parent)
-    : QWidget(parent)
+    : ColorTransitionWidget(parent)
     , m_coverLabel(this)
     , m_trackLabel(this)
     , m_currentTimeLabel(this)
@@ -124,7 +124,7 @@ void BarWidget::onPlayerAudioChanged(Audio *audio)
     m_lengthSlider.setRange(0, audio->duration());
     m_lengthSlider.setEnabled(true);
 
-    setColor(ColorUtil::background(cover));
+    startTransition(ColorUtil::background(cover));
 }
 
 void BarWidget::onPlayerStateChanged()
@@ -220,7 +220,6 @@ void BarWidget::onShortcutVolumeDownPressed()
 
 void BarWidget::setup()
 {
-    setAutoFillBackground(true);
     setColor(ColorUtil::background(Util::cover()));
     setFixedHeight(cfgBar->height());
     setStyleSheet(FileUtil::Css::bar());
@@ -283,13 +282,6 @@ void BarWidget::setupUi()
     layout->addWidget(&m_loopButton, 0, 9);
     layout->addWidget(&m_volumeButton, 0, 10);
     setLayout(layout);
-}
-
-void BarWidget::setColor(const QColor &color)
-{
-    QPalette palette;
-    palette.setColor(QPalette::Background, color);
-    setPalette(palette);
 }
 
 void BarWidget::setButtonVisibility(bool visible)

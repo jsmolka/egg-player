@@ -13,6 +13,7 @@ A Groove Music like music player.
 
 ## Changes since lastest release
 - add smooth scrolling
+- add bar color transition
 - add seamless device transition
 - improve [bass.dll](http://www.un4seen.com/) integration
 - improve song transition
@@ -34,6 +35,7 @@ A Groove Music like music player.
   - add an option audio objects to show that is loaded from the cache
 - cache builder
   - only load covers for new and outdated audios
+- rewrite library
 
 ### Reactive cache
 - use a file system watcher
@@ -50,7 +52,6 @@ A Groove Music like music player.
   
 ### User interface
 - do not show certain info at low size
-- color transition in bar
 - fuzzy library searching
 - [expand scrollbar](https://stackoverflow.com/a/23677355/7057528)
 - [scrollable text](https://stackoverflow.com/a/10655396/7057528)

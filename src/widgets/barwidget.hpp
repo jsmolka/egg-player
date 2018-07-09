@@ -8,6 +8,7 @@
 #include <QWidget>
 
 #include "cache.hpp"
+#include "colortransitionwidget.hpp"
 #include "colorutil.hpp"
 #include "config.hpp"
 #include "constants.hpp"
@@ -16,7 +17,7 @@
 #include "player.hpp"
 #include "shortcut.hpp"
 
-class BarWidget : public QWidget
+class BarWidget : public ColorTransitionWidget
 {
     Q_OBJECT
 
@@ -58,8 +59,6 @@ private slots:
 private:
     void setup();
     void setupUi();
-
-    void setColor(const QColor &color);
 
     void setButtonVisibility(bool visible);
 

@@ -80,7 +80,8 @@ HEADERS += \
     src/widgets/components/slider.hpp \
     src/widgets/components/smoothtablewidget.hpp \
     src/widgets/components/tablewidget.hpp \
-    src/widgets/layouts/borderlayout.hpp
+    src/widgets/layouts/borderlayout.hpp \
+    src/widgets/components/colortransitionwidget.hpp
 
 SOURCES += \
     src/main.cpp \
@@ -119,4 +120,5 @@ SOURCES += \
     src/widgets/components/slider.cpp \
     src/widgets/components/smoothtablewidget.cpp \
     src/widgets/components/tablewidget.cpp \
-    src/widgets/layouts/borderlayout.cpp
+    src/widgets/layouts/borderlayout.cpp \
+    src/widgets/components/colortransitionwidget.cpp
