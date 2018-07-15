@@ -54,7 +54,6 @@ void TableWidget::setup()
     setMouseTracking(true);
     setSelectionMode(QAbstractItemView::NoSelection);
     setShowGrid(false);
-    setVerticalScrollMode(QAbstractItemView::ScrollPerPixel);
     setWordWrap(false);
 
     horizontalHeader()->hide();

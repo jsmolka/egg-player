@@ -24,6 +24,14 @@ A Groove Music like music player.
 ### General
 - rewrite library widget
 - tweak smooth scrolling values
+- fix bug with shuffle and first song
+- tweak smooth tablewidget values
+  - see line 67
+- create different sizes for icon button (make them less blurry)
+- change directory structure
+- split tag isaudiovalid
+- disable scrollwheel on slider
+- remove const from arguments passed by value
 
 ### Threading
 - look into write-ahread-logging

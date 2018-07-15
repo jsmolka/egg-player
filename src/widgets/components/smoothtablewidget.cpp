@@ -2,20 +2,51 @@
 
 SmoothTableWidget::SmoothTableWidget(QWidget *parent)
     : QTableWidget(parent)
-    , m_fps(145)
-    , m_duration(130)
-    , m_acceleration(1.2)
-    , m_totapSteps(m_fps * m_duration / 1000)
+    , m_fps(144)
+    , m_duration(145)
+    , m_acceleration(0.1)
     , m_stepsLeft(0)
     , m_smoothTimer(this)
     , pm_lastEvent(nullptr)
 {
+    setup();
+
     connect(&m_smoothTimer, SIGNAL(timeout()), this, SLOT(onTimeout()));
 }
 
 SmoothTableWidget::~SmoothTableWidget()
 {
 
+}
+
+void SmoothTableWidget::setFps(int fps)
+{
+    m_fps = fps;
+}
+
+int SmoothTableWidget::fps()
+{
+    return m_fps;
+}
+
+void SmoothTableWidget::setDuration(int duration)
+{
+    m_duration = duration;
+}
+
+int SmoothTableWidget::duration()
+{
+    return m_duration;
+}
+
+void SmoothTableWidget::setAcceleration(double acceleration)
+{
+    m_acceleration = acceleration;
+}
+
+double SmoothTableWidget::acceleration()
+{
+    return m_acceleration;
 }
 
 void SmoothTableWidget::wheelEvent(QWheelEvent *event)
@@ -32,11 +63,12 @@ void SmoothTableWidget::wheelEvent(QWheelEvent *event)
     else
         *pm_lastEvent = *event;
 
-    double delta = event->delta();
+    m_totalSteps = m_fps * m_duration / 1000;
+    double delta = (double)event->delta() * 0.8 ;
     if (m_acceleration > 0)
         delta += delta * m_acceleration * accerationRatio;
 
-    m_stepsLeft.push_back(qMakePair(delta, m_totapSteps));
+    m_stepsLeft.push_back(qMakePair(delta, m_totalSteps));
     m_smoothTimer.start(1000 / m_fps);
 }
 
@@ -70,10 +102,15 @@ void SmoothTableWidget::onTimeout()
     }
 }
 
+void SmoothTableWidget::setup()
+{
+    setVerticalScrollMode(QAbstractItemView::ScrollPerPixel);
+}
+
 double SmoothTableWidget::subDelta(double delta, int stepsLeft)
 {
-    double m = m_totapSteps / 2.0;
-    double x = abs(m_totapSteps - stepsLeft - m);
+    double m = m_totalSteps / 2.0;
+    double x = abs(m_totalSteps - stepsLeft - m);
 
     return (cos(x * M_PI / m) + 1.0) / (2.0 * m) * delta;
 }
