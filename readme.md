@@ -11,27 +11,16 @@ A Groove Music like music player.
 - [x] global shortcuts
 - [ ] reactive cache
 
-## Changes since lastest release
-- add smooth scrolling
-- add bar color transition
-- add seamless device transition
-- improve [bass.dll](http://www.un4seen.com/) integration
-- improve song transition
-- improve timer
-
 ## Things to do
 
 ### General
 - rewrite library widget
-- tweak smooth scrolling values
 - fix bug with shuffle and first song
 - tweak smooth tablewidget values
   - see line 67
 - create different sizes for icon button (make them less blurry)
 - change directory structure
-- split tag isaudiovalid
 - disable scrollwheel on slider
-- remove const from arguments passed by value
 
 ### Threading
 - look into write-ahread-logging

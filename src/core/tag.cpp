@@ -11,9 +11,14 @@ Tag::~Tag()
 
 }
 
+bool Tag::isValid() const
+{
+    return m_file.isValid();
+}
+
 bool Tag::isAudioValid() const
 {
-    return m_file.isValid() && m_file.audioProperties();
+    return static_cast<bool>(m_file.audioProperties());
 }
 
 bool Tag::isTagValid() const

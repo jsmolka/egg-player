@@ -20,6 +20,11 @@ bool Slider::isPressed() const
     return m_pressed;
 }
 
+void Slider::wheelEvent(QWheelEvent *event)
+{
+    Q_UNUSED(event);
+}
+
 void Slider::onSliderPressed()
 {
     m_pressed = true;

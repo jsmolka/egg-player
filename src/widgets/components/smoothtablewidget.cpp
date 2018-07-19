@@ -5,6 +5,10 @@ SmoothTableWidget::SmoothTableWidget(QWidget *parent)
     , m_fps(144)
     , m_duration(145)
     , m_acceleration(0.1)
+    , m_smallStepRatio(0.33)
+    , m_bigStepRatio(3.0)
+    , m_smallStepModifier(Qt::ControlModifier)
+    , m_bigStepModifier(Qt::ShiftModifier)
     , m_stepsLeft(0)
     , m_smoothTimer(this)
     , pm_lastEvent(nullptr)
@@ -24,7 +28,7 @@ void SmoothTableWidget::setFps(int fps)
     m_fps = fps;
 }
 
-int SmoothTableWidget::fps()
+int SmoothTableWidget::fps() const
 {
     return m_fps;
 }
@@ -34,7 +38,7 @@ void SmoothTableWidget::setDuration(int duration)
     m_duration = duration;
 }
 
-int SmoothTableWidget::duration()
+int SmoothTableWidget::duration() const
 {
     return m_duration;
 }
@@ -44,9 +48,49 @@ void SmoothTableWidget::setAcceleration(double acceleration)
     m_acceleration = acceleration;
 }
 
-double SmoothTableWidget::acceleration()
+double SmoothTableWidget::acceleration() const
 {
     return m_acceleration;
+}
+
+void SmoothTableWidget::setSmallStepRatio(double ratio)
+{
+    m_smallStepRatio = ratio;
+}
+
+double SmoothTableWidget::smallStepRatio() const
+{
+    return m_smallStepRatio;
+}
+
+void SmoothTableWidget::setBigStepRatio(double ratio)
+{
+    m_bigStepRatio = ratio;
+}
+
+double SmoothTableWidget::bigStepRatio() const
+{
+    return m_bigStepRatio;
+}
+
+void SmoothTableWidget::setSmallStepModifier(Qt::KeyboardModifier modifier)
+{
+    m_smallStepModifier = modifier;
+}
+
+Qt::KeyboardModifier SmoothTableWidget::smallStepModifier() const
+{
+    return m_smallStepModifier;
+}
+
+void SmoothTableWidget::setBigStepModifier(Qt::KeyboardModifier modifier)
+{
+    m_bigStepModifier = modifier;
+}
+
+Qt::KeyboardModifier SmoothTableWidget::bigStepModifier() const
+{
+    return m_bigStepModifier;
 }
 
 void SmoothTableWidget::wheelEvent(QWheelEvent *event)
@@ -63,11 +107,16 @@ void SmoothTableWidget::wheelEvent(QWheelEvent *event)
     else
         *pm_lastEvent = *event;
 
-    m_totalSteps = m_fps * m_duration / 1000;
-    double delta = (double)event->delta() * 0.8 ;
+    double multiplier = 0.8;
+    if (QApplication::keyboardModifiers() & m_smallStepModifier)
+        multiplier *= m_smallStepRatio;
+    if (QApplication::keyboardModifiers() & m_bigStepModifier)
+        multiplier *= m_bigStepRatio;
+    double delta = (double)event->delta() *  multiplier;
     if (m_acceleration > 0)
         delta += delta * m_acceleration * accerationRatio;
 
+    m_totalSteps = m_fps * m_duration / 1000;
     m_stepsLeft.push_back(qMakePair(delta, m_totalSteps));
     m_smoothTimer.start(1000 / m_fps);
 }
@@ -76,15 +125,18 @@ void SmoothTableWidget::onTimeout()
 {
     double totalDelta = 0;
 
-    for (QVector< QPair<double, int> >::Iterator it = m_stepsLeft.begin(); it != m_stepsLeft.end(); ++it)
+    QVector<QPair<double, int>>::Iterator iter;
+    for (iter = m_stepsLeft.begin(); iter != m_stepsLeft.end(); ++iter)
     {
-        totalDelta += subDelta(it->first, it->second);
-        --(it->second);
+        totalDelta += subDelta(iter->first, iter->second);
+        --(iter->second);
     }
+
     while (!m_stepsLeft.empty() && m_stepsLeft.begin()->second == 0)
         m_stepsLeft.pop_front();
 
-    Qt::Orientation orientation = pm_lastEvent->orientation();
+    if (m_stepsLeft.empty())
+        m_smoothTimer.stop();
 
     QWheelEvent event(
         pm_lastEvent->pos(),
@@ -92,14 +144,10 @@ void SmoothTableWidget::onTimeout()
         qRound(totalDelta),
         pm_lastEvent->buttons(),
         0,
-        orientation
+        pm_lastEvent->orientation()
     );
 
     QApplication::sendEvent(verticalScrollBar(), &event);
-
-    if (m_stepsLeft.empty()) {
-        m_smoothTimer.stop();
-    }
 }
 
 void SmoothTableWidget::setup()

@@ -18,6 +18,9 @@ public:
 signals:
     void sliderValueChanged(int value);
 
+protected:
+    void wheelEvent(QWheelEvent *event);
+
 private slots:
     void onSliderPressed();
     void onSliderReleased();

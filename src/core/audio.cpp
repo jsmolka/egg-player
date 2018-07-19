@@ -1,13 +1,14 @@
 #include "audio.hpp"
 
 Audio::Audio(const QString &path)
-    : m_valid(true)
-    , m_path(path)
+    : m_path(path)
     , m_coverId(-1)
     , m_outdated(false)
-    , m_size(FileUtil::size(path))
 {
-    if (!(m_valid = readTags()))
+    m_size = FileUtil::size(path);
+    m_valid = readTags();
+
+    if (!m_valid)
     {
         if (!FileUtil::exists(path))
             log("Audio: File does not exist %1", {m_path});
@@ -118,7 +119,7 @@ bool Audio::readTags()
 {
     Tag tag(pathWChar());
 
-    if (!tag.isAudioValid())
+    if (!tag.isValid() || !tag.isAudioValid())
         return false;
 
     m_duration = tag.duration();
