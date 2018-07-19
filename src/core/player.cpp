@@ -74,7 +74,7 @@ void Player::loadPlaylist(const Audios &audios, int index)
     m_playlist.clear();
     m_playlist.reserve(audios.size());
 
-    for (int i = 0; i < audios.size(); i++)
+    for (int i = 0; i < audios.size(); ++i)
         m_playlist << PlaylistItem(i, audios[i]);
 
     setIndex(index);
@@ -221,11 +221,13 @@ void Player::callback(HSYNC handle, DWORD channel, DWORD data, void *user)
 
 void Player::shuffle()
 {
+    Audio *audio = currentAudio();
+
     std::random_shuffle(m_playlist.begin(), m_playlist.end());
 
-    for (int i = 0; i < m_playlist.size(); i++)
+    for (int i = 0; i < m_playlist.size(); ++i)
     {
-        if (currentAudio() == audioAt(i))
+        if (audio == audioAt(i))
         {
             std::swap(m_playlist[0], m_playlist[i]);
             break;
@@ -236,15 +238,17 @@ void Player::shuffle()
 
 void Player::unshuffle()
 {
+    Audio *audio = currentAudio();
+
     std::sort(m_playlist.begin(), m_playlist.end(),
         [](const PlaylistItem &i1, const PlaylistItem &i2) {
             return i1.index < i2.index;
         }
     );
 
-    for (int i = 0; i < m_playlist.size(); i++)
+    for (int i = 0; i < m_playlist.size(); ++i)
     {
-        if (currentAudio() == audioAt(i))
+        if (audio == audioAt(i))
         {
             m_index = i;
             break;

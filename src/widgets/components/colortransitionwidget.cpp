@@ -26,7 +26,7 @@ void ColorTransitionWidget::setTransitionDuration(int duration)
     m_duration = duration;
 }
 
-int ColorTransitionWidget::transitionDuration()
+int ColorTransitionWidget::transitionDuration() const
 {
     return m_duration;
 }
@@ -36,7 +36,7 @@ void ColorTransitionWidget::setTransitionFps(int fps)
     m_fps = fps;
 }
 
-int ColorTransitionWidget::transitionFps()
+int ColorTransitionWidget::transitionFps() const
 {
     return m_fps;
 }

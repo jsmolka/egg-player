@@ -15,12 +15,8 @@ A Groove Music like music player.
 
 ### General
 - rewrite library widget
-- fix bug with shuffle and first song
-- tweak smooth tablewidget values
-  - see line 67
 - create different sizes for icon button (make them less blurry)
 - change directory structure
-- disable scrollwheel on slider
 
 ### Threading
 - look into write-ahread-logging

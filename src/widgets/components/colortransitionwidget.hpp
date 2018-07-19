@@ -15,10 +15,10 @@ public:
     ~ColorTransitionWidget();
 
     void setTransitionDuration(int duration);
-    int transitionDuration();
+    int transitionDuration() const;
 
     void setTransitionFps(int fps);
-    int transitionFps();
+    int transitionFps() const;
 
     void setColor(const QColor &color);
     QColor color() const;
