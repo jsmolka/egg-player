@@ -11,11 +11,13 @@ A Groove Music like music player.
 - [x] global shortcuts
 - [ ] reactive cache
 
+## Changes since lastest release
+- change icon hover style
+
 ## Things to do
 
 ### General
 - rewrite library widget
-- create different sizes for icon button (make them less blurry)
 - change directory structure
 
 ### Threading

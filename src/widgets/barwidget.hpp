@@ -13,6 +13,7 @@
 #include "config.hpp"
 #include "constants.hpp"
 #include "iconbutton.hpp"
+#include "iconfactory.hpp"
 #include "slider.hpp"
 #include "player.hpp"
 #include "shortcut.hpp"

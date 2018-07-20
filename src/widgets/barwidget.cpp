@@ -150,6 +150,9 @@ void BarWidget::onPlayerVolumeChanged(int volume)
 
 void BarWidget::onPlayPauseButtonPressed()
 {
+    if (!ePlayer->currentAudio())
+        return;
+
     if (m_playPauseButton.index() == 0)
         ePlayer->play();
     else
@@ -245,12 +248,28 @@ void BarWidget::setupUi()
     m_volumeSlider.setSizePolicy(QSizePolicy::Fixed, QSizePolicy::MinimumExpanding);
     m_volumeSlider.setFixedWidth(5 * cfgBar->iconSize() + 4 * cfgBar->spacing());
 
-    m_playPauseButton.setIcons({QIcon(ICO_PLAY), QIcon(ICO_PAUSE)});
-    m_previousButton.setIcons({QIcon(ICO_PREVIOUS)});
-    m_nextButton.setIcons({QIcon(ICO_NEXT)});
-    m_shuffleButton.setIcons({QIcon(ICO_SHUFFLE)});
-    m_loopButton.setIcons({QIcon(ICO_LOOP)});
-    m_volumeButton.setIcons({QIcon(ICO_VOLUME_FULL), QIcon(ICO_VOLUME_MEDIUM), QIcon(ICO_VOLUME_LOW), QIcon(ICO_VOLUME_MUTE)});
+    m_playPauseButton.setIcons({
+        IconFactory::make(ICO_PLAY),
+        IconFactory::make(ICO_PAUSE)
+    });
+    m_previousButton.setIcons({
+        IconFactory::make(ICO_PREVIOUS)
+    });
+    m_nextButton.setIcons({
+        IconFactory::make(ICO_NEXT)
+    });
+    m_shuffleButton.setIcons({
+        IconFactory::make(ICO_SHUFFLE)
+    });
+    m_loopButton.setIcons({
+        IconFactory::make(ICO_LOOP)
+    });
+    m_volumeButton.setIcons({
+        IconFactory::make(ICO_VOLUME_FULL),
+        IconFactory::make(ICO_VOLUME_MEDIUM),
+        IconFactory::make(ICO_VOLUME_LOW),
+        IconFactory::make(ICO_VOLUME_MUTE)
+    });
 
     m_shuffleButton.setLockable(true);
     m_loopButton.setLockable(true);

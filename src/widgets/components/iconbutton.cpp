@@ -30,12 +30,22 @@ QVector<QIcon> IconButton::icons() const
 void IconButton::setIndex(int index)
 {
     m_index = index;
-    setIcon(m_icons[m_index]);
+    setIcon(m_icons.at(m_index));
 }
 
 int IconButton::index() const
 {
     return m_index;
+}
+
+void IconButton::setLockable(bool lockable)
+{
+    m_lockable = lockable;
+}
+
+bool IconButton::isLockable() const
+{
+    return m_lockable;
 }
 
 void IconButton::setLocked(bool locked)
@@ -56,20 +66,27 @@ bool IconButton::isLocked() const
     return m_locked;
 }
 
-void IconButton::setLockable(bool lockable)
-{
-    m_lockable = lockable;
-}
-
-bool IconButton::isLockable() const
-{
-    return m_lockable;
-}
-
 void IconButton::setSize(const QSize &size)
 {
     setIconSize(size);
     setFixedSize(size);
+}
+
+bool IconButton::event(QEvent *event)
+{
+    if (event->type() == QEvent::HoverEnter)
+    {
+        setIcon(m_icons.at(m_index).pixmap(size(), QIcon::Active));
+        return true;
+    }
+
+    if (event->type() == QEvent::HoverLeave)
+    {
+        setIcon(m_icons.at(m_index).pixmap(size(), QIcon::Normal));
+        return true;
+    }
+
+    return QWidget::event(event);
 }
 
 void IconButton::onClicked()

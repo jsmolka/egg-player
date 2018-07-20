@@ -1,6 +1,7 @@
 #ifndef ICONBUTTON_HPP
 #define ICONBUTTON_HPP
 
+#include <QEvent>
 #include <QIcon>
 #include <QPushButton>
 #include <QStyle>
@@ -22,16 +23,19 @@ public:
     void setIndex(int index);
     int index() const;
 
-    void setLocked(bool locked);
-    bool isLocked() const;
-
     void setLockable(bool lockable);
     bool isLockable() const;
+
+    void setLocked(bool locked);
+    bool isLocked() const;
 
     void setSize(const QSize &size);
 
 signals:
     void locked(bool locked);
+
+protected:
+    bool event(QEvent *event);
 
 private slots:
     void onClicked();
@@ -40,6 +44,7 @@ private:
     void setup();
 
     QVector<QIcon> m_icons;
+
     int m_index;
     bool m_lockable;
     bool m_locked;
