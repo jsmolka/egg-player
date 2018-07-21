@@ -98,7 +98,7 @@ bool Bass::isValidVersion()
 {
     bool valid = HIWORD(BASS_GetVersion()) == BASSVERSION;
     if (!valid)
-        log("Bass: Different BASS versions %1 and %2", {static_cast<int>(BASS_GetVersion()), BASSVERSION});
+        log("Bass: Different BASS versions");
 
     return valid;
 }

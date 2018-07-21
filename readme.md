@@ -18,7 +18,8 @@ A Groove Music like music player.
 
 ### General
 - rewrite library widget
-- change directory structure
+- qt key sequence for shortcut
+- put all more of less static values into constants
 
 ### Threading
 - look into write-ahread-logging

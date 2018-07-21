@@ -16,7 +16,7 @@ QColor ColorUtil::dominant(const QImage &image)
 
     QRgb *pixels = (QRgb *)image.bits();
     quint32 pixelCount = image.height() * image.width();
-    for (quint32 i = 0; i < pixelCount; i++)
+    for (quint32 i = 0; i < pixelCount; ++i)
     {
         QColor rgb = QColor(pixels[i]);
         qint32 red = rgb.red();
@@ -33,14 +33,14 @@ QColor ColorUtil::dominant(const QImage &image)
         const qint32 limit = 25;
         if (qAbs(red - green) < limit && qAbs(green - blue) < limit && qAbs(red - blue) < limit)
         {
-            gCounts[index]++;
+            ++gCounts[index];
             gHues[index] += hue;
             gSaturations[index] += saturation;
             gValues[index] += value;
         }
         else
         {
-            cCounts[index]++;
+            ++cCounts[index];
             cHues[index] += hue;
             cSaturations[index] += saturation;
             cValues[index] += value;
@@ -49,7 +49,7 @@ QColor ColorUtil::dominant(const QImage &image)
 
     quint32 index = 0;
     quint32 max = 0;
-    for (quint32 i = 0; i < RANGE; i++)
+    for (quint32 i = 0; i < RANGE; ++i)
     {
         quint32 temp = cHues[i] + 2 * cSaturations[i] + 3 * cValues[i];
         if (temp > max)
@@ -71,7 +71,7 @@ QColor ColorUtil::dominant(const QImage &image)
     {
         index = 0;
         max = 0;
-        for (quint32 i = 0; i < RANGE; i++)
+        for (quint32 i = 0; i < RANGE; ++i)
         {
             quint32 temp = gHues[i] + 2 * gSaturations[i] + 3 * gValues[i];
             if (temp > max)

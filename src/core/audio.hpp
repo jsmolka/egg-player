@@ -5,8 +5,8 @@
 #include <QString>
 #include <QVector>
 
-#include "fileutil.hpp"
 #include "logger.hpp"
+#include "fileutil.hpp"
 #include "tag.hpp"
 
 class Audio

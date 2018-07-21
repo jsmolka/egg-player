@@ -6,6 +6,8 @@
 #include <QTimer>
 #include <QWidget>
 
+#include "constants.hpp"
+
 class ColorTransitionWidget : public QWidget
 {
     Q_OBJECT
