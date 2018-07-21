@@ -7,8 +7,8 @@
 #include <QStringList>
 
 #include "audio.hpp"
-#include "audioloader.hpp"
-#include "cachebuilder.hpp"
+#include "audioloaderthread.hpp"
+#include "coverloaderthread.hpp"
 #include "threadpool.hpp"
 
 #define eLibrary (Library::instance())
@@ -50,8 +50,8 @@ private:
 
     bool m_sorted;
     Audios m_audios;
-    AudioLoader *pm_audioLoader;
-    CacheBuilder *pm_cacheBuilder;
+    AudioLoaderThread *pm_audioLoader;
+    CoverLoaderThread *pm_coverLoader;
     QSet<QString> m_paths;
 
     static Library *_instance;

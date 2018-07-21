@@ -20,6 +20,9 @@ A Groove Music like music player.
 - rewrite library widget
 - qt key sequence for shortcut
 - put all more of less static values into constants
+- prevent UI freezing by threads
+- proper template function
+- look into cache cover id getter
 
 ### Threading
 - look into write-ahread-logging

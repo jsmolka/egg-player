@@ -3,8 +3,8 @@
 Library::Library(QObject *parent)
     : QObject(parent)
     , m_sorted(false)
-    , pm_audioLoader(new AudioLoader(this))
-    , pm_cacheBuilder(new CacheBuilder(this))
+    , pm_audioLoader(new AudioLoaderThread(this))
+    , pm_coverLoader(new CoverLoaderThread(this))
 {
     connect(pm_audioLoader, SIGNAL(loaded(Audio *)), this, SLOT(insert(Audio *)));
     connect(pm_audioLoader, SIGNAL(finished()), this, SLOT(onAudioLoaderFinished()));
@@ -62,8 +62,8 @@ void Library::insert(Audio *audio)
 
 void Library::onAudioLoaderFinished()
 {
-    pm_cacheBuilder->setAudios(m_audios);
-    pm_cacheBuilder->start();
+    pm_coverLoader->setAudios(m_audios);
+    pm_coverLoader->start();
 }
 
 int Library::lowerBound(Audio *audio)

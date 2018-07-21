@@ -63,7 +63,7 @@ Audio * Cache::load(const QString &path)
     return audio;
 }
 
-void Cache::insertTags(Audio *audio)
+void Cache::insertAudio(Audio *audio)
 {
     m_query.prepare(
         "INSERT INTO audios VALUES ("
@@ -94,27 +94,32 @@ void Cache::insertTags(Audio *audio)
         handleError();
 }
 
-int Cache::insertCover(Audio *audio, int size)
+int Cache::insertCover(const QPixmap &cover)
 {
-    int id = getOrInsertCover(audio->cover(size));
+    QByteArray bytes = coverToBytes(cover);
 
-    if (id != -1)
-    {
-        m_query.prepare(
-            "UPDATE audios SET"
-            "  coverid = :coverid "
-            "WHERE path = :path"
-        );
-        m_query.bindValue(":path", audio->path());
-        m_query.bindValue(":coverid", id);
+    int id = coverId(bytes);
+    if (id == -1)
+        id = insertByteCover(bytes);
 
-        if (!m_query.exec())
-            handleError();
-    }
     return id;
 }
 
-void Cache::updateTags(Audio *audio)
+void Cache::setAudioCoverId(Audio *audio, int id)
+{
+    m_query.prepare(
+        "UPDATE audios SET"
+        "  coverid = :coverid "
+        "WHERE path = :path"
+    );
+    m_query.bindValue(":path", audio->path());
+    m_query.bindValue(":coverid", id);
+
+    if (!m_query.exec())
+        handleError();
+}
+
+void Cache::updateAudio(Audio *audio)
 {
     audio->setCoverId(-1);
 
@@ -246,17 +251,6 @@ void Cache::createTables()
     createCovers();
     createAudios();
     _created = true;
-}
-
-int Cache::getOrInsertCover(const QPixmap &cover)
-{
-    QByteArray bytes = coverToBytes(cover);
-
-    int id = coverId(bytes);
-    if (id == -1)
-        id = insertByteCover(bytes);
-
-    return id;
 }
 
 int Cache::insertByteCover(const QByteArray &bytes)

@@ -45,14 +45,15 @@ QImage Util::resize(const QImage &image, int size, bool fast)
     return image.scaled(size, size, Qt::KeepAspectRatio, fast ? Qt::FastTransformation : Qt::SmoothTransformation);
 }
 
-QVector<QVector<QString>> Util::chunk(const QVector<QString> &vector, int n)
+template <typename T>
+QVector<QVector<T>> Util::chunk(const QVector<T> &vector, int n)
 {
     n = qMin(qMax(1, n), vector.size());
     int quo = vector.size() / n;
     int rem = vector.size() % n;
 
-    QVector<QVector<QString>> result;
-    for (int i = 0; i < n; i++)
+    QVector<QVector<T>> result;
+    for (int i = 0; i < n; ++i)
     {
         int l = i * quo + qMin(i, rem);
         int r = (i + 1) * quo + qMin(i + 1, rem);
@@ -60,3 +61,8 @@ QVector<QVector<QString>> Util::chunk(const QVector<QString> &vector, int n)
     }
     return result;
 }
+
+template QVector<QVector<QString>> Util::chunk<QString>(const QVector<QString> &, int);
+template QVector<QVector<Audio *>> Util::chunk<Audio *>(const QVector<Audio *> &, int);
+
+

@@ -7,6 +7,7 @@
 #include <QPixmap>
 #include <QTime>
 
+#include "audio.hpp"
 #include "constants.hpp"
 #include "config.hpp"
 
@@ -19,7 +20,8 @@ namespace Util
     extern QPixmap resize(const QPixmap &pixmap, int size, bool fast = false);
     extern QImage resize(const QImage &image, int size, bool fast = false);
 
-    extern QVector<QVector<QString>> chunk(const QVector<QString> &vector, int n);
+    template <typename T>
+    extern QVector<QVector<T>> chunk(const QVector<T> &vector, int n);
 }
 
 #endif // UTIL_HPP

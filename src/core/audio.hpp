@@ -53,6 +53,6 @@ private:
     bool m_outdated;
 };
 
-typedef QVector<Audio *> Audios;
+using Audios = QVector<Audio *>;
 
 #endif // AUDIO_HPP

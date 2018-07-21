@@ -34,7 +34,7 @@ int ThreadPool::idealCount()
 
 int ThreadPool::advisedCount()
 {
-    return idealCount() - activeCount();
+    return qMax(1, idealCount() - activeCount());
 }
 
 int ThreadPool::count() const
@@ -54,11 +54,10 @@ AbstractThread * ThreadPool::threadAt(int index)
 
 int ThreadPool::add(AbstractThread *thread)
 {
-    thread->setParent(this);
     connect(thread, SIGNAL(finished()), this, SLOT(onThreadFinished()));
 
     m_threads << thread;
-    _count++;
+    ++_count;
 
     return m_threads.size() - 1;
 }
@@ -81,9 +80,8 @@ void ThreadPool::abort(int index)
 
 void ThreadPool::onThreadFinished()
 {
-    _count--;
-    m_finished++;
-    if (m_finished == m_threads.size())
+    --_count;
+    if (++m_finished == m_threads.size())
         emit finished();
 }
 

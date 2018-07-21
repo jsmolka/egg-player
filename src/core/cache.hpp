@@ -25,9 +25,10 @@ public:
 
     Audio * load(const QString &path);
 
-    void insertTags(Audio *audio);
-    int insertCover(Audio *audio, int size = 200);
-    void updateTags(Audio *audio);
+    void insertAudio(Audio *audio);
+    int insertCover(const QPixmap &cover);
+    void setAudioCoverId(Audio *audio, int id);
+    void updateAudio(Audio *audio);
 
     int coverId(Audio *audio);
     QPixmap cover(Audio *audio, int size = 200);
@@ -40,7 +41,6 @@ private:
     void createAudios();
     void createTables();
 
-    int getOrInsertCover(const QPixmap &cover);
     int insertByteCover(const QByteArray &bytes);
 
     int coverId(const QByteArray &bytes);
