@@ -6,7 +6,7 @@ Library::Library(QObject *parent)
     , pm_audioLoader(new AudioLoaderThread(this))
     , pm_coverLoader(new CoverLoaderThread(this))
 {
-    connect(pm_audioLoader, SIGNAL(loaded(Audios)), this, SLOT(insert(Audios)));
+    connect(pm_audioLoader, SIGNAL(loaded(Audio *)), this, SLOT(insert(Audio *)));
     connect(pm_audioLoader, SIGNAL(finished()), this, SLOT(onAudioLoaderFinished()));
     connect(pm_audioLoader, SIGNAL(finished()), this, SIGNAL(loaded()));
 }
@@ -52,27 +52,16 @@ void Library::load(const Files &paths)
     pm_audioLoader->start();
 }
 
-void Library::insert(Audios audios)
-{
-    for (Audio *audio : audios)
-        insert(audio, false);
-
-    emitBuffer();
-}
-
-void Library::insert(Audio *audio, bool doEmit)
+void Library::insert(Audio *audio)
 {
     int index = m_sorted ? insertBinary(audio) : append(audio);
-    if (doEmit)
-        emit inserted(audio, index);
-    else
-        fillBuffer(audio, index);
+    emit inserted(audio, index);
 }
 
 void Library::onAudioLoaderFinished()
 {
-    //pm_coverLoader->setAudios(m_audios);
-    //pm_coverLoader->start();
+    pm_coverLoader->setAudios(m_audios);
+    pm_coverLoader->start();
 }
 
 int Library::lowerBound(Audio *audio)
@@ -101,25 +90,6 @@ int Library::append(Audio *audio)
 {
     m_audios << audio;
     return -1;
-}
-
-void Library::fillBuffer(Audio *audio, int index)
-{
-    m_bufferAudios << audio;
-    m_bufferIndices << index;
-
-    if (m_bufferAudios.size() >= 100)
-        emitBuffer();
-}
-
-void Library::emitBuffer()
-{
-    emit inserted(m_bufferAudios, m_bufferIndices);
-
-    m_bufferAudios.clear();
-    m_bufferIndices.clear();
-
-    // Reserve
 }
 
 Files Library::uniqueFiles(const Files &paths)

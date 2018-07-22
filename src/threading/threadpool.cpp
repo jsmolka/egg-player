@@ -9,7 +9,7 @@ ThreadPool::ThreadPool(QObject *parent)
 
 ThreadPool::~ThreadPool()
 {
-
+    abortAll();
 }
 
 bool ThreadPool::isFinished() const
@@ -87,28 +87,27 @@ void ThreadPool::onThreadFinished()
 
 void ThreadPool::startAll()
 {
-    for (AbstractThread *thread : m_threads)
-        if (!thread->isFinished())
-            thread->start();
+    for (int index = 0; index < m_threads.size(); ++index)
+        startAt(index);
 }
 
 void ThreadPool::startAt(int index)
 {
     AbstractThread *thread = threadAt(index);
-    if (thread && !thread->isRunning())
+    if (thread && !(thread->isRunning() || thread->isFinished()))
         thread->start();
 }
 
 void ThreadPool::abortAll()
 {
-    for (AbstractThread *thread : m_threads)
-        thread->abort();
+    for (int index = 0; index < m_threads.size(); ++index)
+        abortAt(index);
 }
 
 void ThreadPool::abortAt(int index)
 {
     AbstractThread *thread = threadAt(index);
-    if (thread && !thread->isRunning())
+    if (thread && !thread->isFinished())
         thread->abort();
 }
 

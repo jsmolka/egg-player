@@ -14,6 +14,7 @@ class CoverLoaderThread : public AbstractThread
 
 public:
     CoverLoaderThread(QObject *parent = nullptr);
+    CoverLoaderThread(const Audios &audios, QObject *parent = nullptr);
     ~CoverLoaderThread();
 
     void setAudios(const Audios &audios);
@@ -26,9 +27,13 @@ private slots:
     void onWorkerLoaded(Audio *audio, QPixmap cover);
 
 private:
+    void startWorkerThreads();
+
     Audios m_audios;
-    Cache m_cache;
     ThreadPool m_pool;
+
+    Audios m_uncachedAudios;
+    QVector<QPixmap> m_uncachedCover;
 };
 
 #endif // COVERLOADERTHREAD_HPP

@@ -12,6 +12,9 @@ A Groove Music like music player.
 - [ ] reactive cache
 
 ## Changes since lastest release
+- improve first startup times significantly
+- improve audio caching significantly
+- improve cover caching significantly
 - change icon hover style
 
 ## Things to do
@@ -20,21 +23,9 @@ A Groove Music like music player.
 - rewrite library widget
 - qt key sequence for shortcut
 - put all more of less static values into constants
-- prevent UI freezing by threads
-- proper template function
+- proper template function implementation for chunk
 - look into cache cover id getter
-
-### Threading
-- look into write-ahread-logging
-- create threads with worker threads inside of them
-- audio loader
-  - chunk the globbed files and pass them to worker threads
-  - the worker threads loads the audios from the cache or from file and emits them
-  - the audio loader inserts them into the cache and updates outdated ones
-  - add an option audio objects to show that is loaded from the cache
-- cache builder
-  - only load covers for new and outdated audios
-- rewrite library
+- look into compile error for types
 
 ### Reactive cache
 - use a file system watcher

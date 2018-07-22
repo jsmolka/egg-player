@@ -19,16 +19,13 @@ public:
     Files files() const;
 
 signals:
-    void loaded(Audios audios);
+    void loaded(Audio *audio);
 
 protected:
     void run() override;
 
 private:
-    void fillBuffer(Audio *audio);
-
     Files m_files;
-    Audios m_buffer;
 };
 
 #endif // AUDIOLOADERWORKER_HPP

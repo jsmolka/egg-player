@@ -29,16 +29,14 @@ public:
 
     Audios audios() const;
 
-    void load(const QVector<QString> &paths);
+    void load(const Files &paths);
 
 public slots:
-    void insert(Audio *audio, bool doEmit = true);
-    void insert(Audios audios);
+    void insert(Audio *audio);
 
 signals:
     void loaded();
     void inserted(Audio *audio, int index);
-    void inserted(Audios audios, Indices indices);
 
 private slots:
     void onAudioLoaderFinished();
@@ -48,9 +46,6 @@ private:
     int insertBinary(Audio *audio);
     int append(Audio *audio);
 
-    void fillBuffer(Audio *audio, int index);
-    void emitBuffer();
-
     Files uniqueFiles(const Files &paths);
 
     bool m_sorted;
@@ -58,9 +53,6 @@ private:
     AudioLoaderThread *pm_audioLoader;
     CoverLoaderThread *pm_coverLoader;
     Files m_paths;
-
-    Audios m_bufferAudios;
-    Indices m_bufferIndices;
 
     static Library *_instance;
 };

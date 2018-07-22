@@ -1,8 +1,6 @@
 #ifndef AUDIOLOADERTHREAD_HPP
 #define AUDIOLOADERTHREAD_HPP
 
-#include <QApplication>
-
 #include "abstractthread.hpp"
 #include "audio.hpp"
 #include "audioloaderworker.hpp"
@@ -24,21 +22,20 @@ public:
     Files files() const;
 
 signals:
-    void loaded(Audios audios);
+    void loaded(Audio *audio);
 
 protected:
     void run() override;
 
 private slots:
-    void onWorkerLoaded(Audios audios);
+    void onWorkerLoaded(Audio *audio);
 
 private:
-    void fillBuffer(Audios audios);
+    void startWorkerThreads();
 
-    Cache m_cache;
-    ThreadPool m_pool;
     Files m_files;
-    Audios m_buffer;
+    ThreadPool m_pool;
+    Audios m_uncached;
 };
 
 #endif // AUDIOLOADERTHREAD_HPP

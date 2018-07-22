@@ -10,6 +10,7 @@
 #include "audio.hpp"
 #include "constants.hpp"
 #include "config.hpp"
+#include "types.hpp"
 
 namespace Util
 {

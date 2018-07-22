@@ -12,6 +12,7 @@ class CoverLoaderWorker : public AbstractThread
 
 public:
     CoverLoaderWorker(QObject *parent = nullptr);
+    CoverLoaderWorker(const Audios &audios, QObject *parent = nullptr);
     ~CoverLoaderWorker();
 
     void setAudios(const Audios &audios);

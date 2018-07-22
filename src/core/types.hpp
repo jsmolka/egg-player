@@ -7,6 +7,5 @@
 
 //using Audios = QVector<Audio *>;
 using Files = QVector<QString>;
-using Indices = QVector<int>;
 
 #endif // TYPES_HPP

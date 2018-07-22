@@ -1,7 +1,14 @@
 #include "coverloaderworker.hpp"
 
 CoverLoaderWorker::CoverLoaderWorker(QObject *parent)
+    : CoverLoaderWorker(Audios(), parent)
+{
+
+}
+
+CoverLoaderWorker::CoverLoaderWorker(const Audios &audios, QObject *parent)
     : AbstractThread(parent)
+    , m_audios(audios)
 {
 
 }
@@ -28,9 +35,7 @@ void CoverLoaderWorker::run()
         if (isAbort())
             return;
 
-        if (audio->coverId() != -1)
-            continue;
-
-        emit loaded(audio, audio->cover());
+        if (audio->coverId() == -1)
+            emit loaded(audio, audio->cover());
     }
 }

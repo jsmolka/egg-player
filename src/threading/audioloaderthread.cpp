@@ -1,10 +1,9 @@
 #include "audioloaderthread.hpp"
 
 AudioLoaderThread::AudioLoaderThread(QObject *parent)
-    : AbstractThread(parent)
-    , m_pool(this)
+    : AudioLoaderThread(Files(), parent)
 {
-    m_buffer.reserve(100);
+
 }
 
 AudioLoaderThread::AudioLoaderThread(const Files &files, QObject *parent)
@@ -12,7 +11,7 @@ AudioLoaderThread::AudioLoaderThread(const Files &files, QObject *parent)
     , m_files(files)
     , m_pool(this)
 {
-    m_buffer.reserve(100);
+
 }
 
 AudioLoaderThread::~AudioLoaderThread()
@@ -32,40 +31,42 @@ Files AudioLoaderThread::files() const
 
 void AudioLoaderThread::run()
 {
-    for (Files chunk : Util::chunk<QString>(m_files, 4))
+    startWorkerThreads();
+
+    while (m_pool.isRunning())
+    {
+        if (isAbort())
+            return;
+
+        msleep(100);
+    }
+
+    Cache cache;
+    for (Audio *audio : m_uncached)
+    {
+        if (isAbort())
+            return;
+
+        cache.insertAudio(audio);
+    }
+}
+
+void AudioLoaderThread::onWorkerLoaded(Audio *audio)
+{
+    if (!audio->isCached())
+        m_uncached << audio;
+
+    emit loaded(audio);
+}
+
+void AudioLoaderThread::startWorkerThreads()
+{
+    for (Files chunk : Util::chunk<QString>(m_files, ThreadPool::idealCount()))
     {
         AudioLoaderWorker *worker = new AudioLoaderWorker(chunk);
-        connect(worker, SIGNAL(loaded(Audios)), this, SLOT(onWorkerLoaded(Audios)));
+        connect(worker, SIGNAL(loaded(Audio *)), this, SLOT(onWorkerLoaded(Audio *)));
         m_pool.add(worker);
     }
+
     m_pool.start();
-
-    while (m_pool.isRunning() && !isAbort())
-        msleep(200);
-
-    emit loaded(m_buffer);
-}
-
-void AudioLoaderThread::onWorkerLoaded(Audios audios)
-{
-    for (Audio *audio : audios)
-    {
-        if (!audio->isCached())
-            m_cache.insertAudio(audio);
-    }
-
-    fillBuffer(audios);
-}
-
-void AudioLoaderThread::fillBuffer(Audios audios)
-{
-    m_buffer << audios;
-
-    if (m_buffer.size() >= 100)
-    {
-        emit loaded(m_buffer);
-
-        m_buffer.clear();
-        m_buffer.reserve(100);
-    }
 }

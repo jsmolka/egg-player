@@ -1,16 +1,16 @@
 #include "audioloaderworker.hpp"
 
 AudioLoaderWorker::AudioLoaderWorker(QObject *parent)
-    : AbstractThread(parent)
+    : AudioLoaderWorker(Files(), parent)
 {
-    m_buffer.reserve(25);
+
 }
 
 AudioLoaderWorker::AudioLoaderWorker(const Files &files, QObject *parent)
     : AbstractThread(parent)
     , m_files(files)
 {
-    m_buffer.reserve(25);
+
 }
 
 AudioLoaderWorker::~AudioLoaderWorker()
@@ -42,23 +42,8 @@ void AudioLoaderWorker::run()
             audio = new Audio(file);
 
         if (audio->isValid())
-            fillBuffer(audio);
+            emit loaded(audio);
         else
             delete audio;
-    }
-
-    emit loaded(m_buffer);
-}
-
-void AudioLoaderWorker::fillBuffer(Audio *audio)
-{
-    m_buffer << audio;
-
-    if (m_buffer.size() == 25)
-    {
-        emit loaded(m_buffer);
-
-        m_buffer.clear();
-        m_buffer.reserve(25);
     }
 }

@@ -6,9 +6,6 @@
 #include "library.hpp"
 #include "player.hpp"
 
-// types
-#include "audio.hpp"
-
 void setup()
 {
     qsrand(time(0));
@@ -16,8 +13,6 @@ void setup()
     qApp->setApplicationName(APP_NAME);
     qApp->setOrganizationName(APP_ORG_NAME);
     qApp->setFont(Util::font(cfgApp->fontSize()));
-
-    qRegisterMetaType<Audios>("Audios");
 
     eLibrary->setSorted(true);
 

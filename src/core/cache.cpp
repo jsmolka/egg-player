@@ -93,31 +93,6 @@ void Cache::insertAudio(Audio *audio)
     audio->setCached(true);
 }
 
-int Cache::insertCover(const QPixmap &cover)
-{
-    QByteArray bytes = coverToBytes(cover);
-
-    int id = coverId(bytes);
-    if (id == -1)
-        id = insertByteCover(bytes);
-
-    return id;
-}
-
-void Cache::setAudioCoverId(Audio *audio, int id)
-{
-    m_query.prepare(
-        "UPDATE audios SET"
-        "  coverid = :coverid "
-        "WHERE path = :path"
-    );
-    m_query.bindValue(":path", audio->path());
-    m_query.bindValue(":coverid", id);
-
-    if (!m_query.exec())
-        handleError();
-}
-
 void Cache::updateAudio(Audio *audio)
 {
     audio->setCoverId(-1);
@@ -144,6 +119,31 @@ void Cache::updateAudio(Audio *audio)
     m_query.bindValue(":track", audio->track());
     m_query.bindValue(":duration", audio->duration());
     m_query.bindValue(":coverid", audio->coverId());
+
+    if (!m_query.exec())
+        handleError();
+}
+
+int Cache::insertCover(const QPixmap &cover)
+{
+    QByteArray bytes = coverToBytes(cover);
+
+    int id = coverId(bytes);
+    if (id == -1)
+        id = insertByteCover(bytes);
+
+    return id;
+}
+
+void Cache::setAudioCoverId(Audio *audio, int id)
+{
+    m_query.prepare(
+        "UPDATE audios SET"
+        "  coverid = :coverid "
+        "WHERE path = :path"
+    );
+    m_query.bindValue(":path", audio->path());
+    m_query.bindValue(":coverid", id);
 
     if (!m_query.exec())
         handleError();

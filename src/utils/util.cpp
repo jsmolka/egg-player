@@ -62,7 +62,7 @@ QVector<QVector<T>> Util::chunk(const QVector<T> &vector, int n)
     return result;
 }
 
-template QVector<QVector<QString>> Util::chunk<QString>(const QVector<QString> &, int);
-template QVector<QVector<Audio *>> Util::chunk<Audio *>(const QVector<Audio *> &, int);
+template QVector<Files> Util::chunk<QString>(const Files &, int);
+template QVector<Audios> Util::chunk<Audio *>(const Audios &, int);
 
 
