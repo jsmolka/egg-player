@@ -26,6 +26,7 @@ public:
     Audio * load(const QString &path);
 
     void insertAudio(Audio *audio);
+    void insertAudios(Audios audios);
     void updateAudio(Audio *audio);
 
     int insertCover(const QPixmap &cover);

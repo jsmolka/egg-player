@@ -32,7 +32,7 @@ void CoverLoaderWorker::run()
 {
     for (Audio *audio : m_audios)
     {
-        if (isAbort())
+        if (isInterrupt())
             return;
 
         if (audio->coverId() == -1)

@@ -33,7 +33,7 @@ void AudioLoaderWorker::run()
     Cache cache;
     for (const QString &file : m_files)
     {
-        if (isAbort())
+        if (isInterrupt())
             return;
 
         Audio *audio = cache.load(file);

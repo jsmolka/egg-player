@@ -13,19 +13,19 @@ public:
     AbstractThread(QObject *parent = nullptr);
     ~AbstractThread();
 
-    bool isAbort() const;
+    bool isInterrupt() const;
 
 signals:
     void terminated();
 
 public slots:
-    void abort();
+    void interrupt();
 
 private slots:
     void onStarted();
 
 private:
-    bool m_abort;
+    bool m_interrupt;
 };
 
 #endif // ABSTRACTTHREAD_HPP

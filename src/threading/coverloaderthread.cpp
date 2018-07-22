@@ -34,7 +34,7 @@ void CoverLoaderThread::run()
 
     while (m_pool.isRunning())
     {
-        if (isAbort())
+        if (isInterrupt())
             return;
 
         msleep(100);
@@ -43,10 +43,14 @@ void CoverLoaderThread::run()
     Cache cache;
     for (int i = 0; i < m_uncachedAudios.size(); ++i)
     {
-        if (isAbort())
+        if (isInterrupt())
             return;
 
         int id = cache.insertCover(m_uncachedCover[i]);
+
+        if (isInterrupt())
+            return;
+
         if (id != -1)
             cache.setAudioCoverId(m_uncachedAudios[i], id);
     }

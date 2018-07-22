@@ -35,7 +35,7 @@ void AudioLoaderThread::run()
 
     while (m_pool.isRunning())
     {
-        if (isAbort())
+        if (isInterrupt())
             return;
 
         msleep(100);
@@ -44,7 +44,7 @@ void AudioLoaderThread::run()
     Cache cache;
     for (Audio *audio : m_uncached)
     {
-        if (isAbort())
+        if (isInterrupt())
             return;
 
         cache.insertAudio(audio);

@@ -108,7 +108,7 @@ void ThreadPool::abortAt(int index)
 {
     AbstractThread *thread = threadAt(index);
     if (thread && !thread->isFinished())
-        thread->abort();
+        thread->interrupt();
 }
 
 int ThreadPool::_count = 0;

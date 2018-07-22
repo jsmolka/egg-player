@@ -12,9 +12,8 @@ A Groove Music like music player.
 - [ ] reactive cache
 
 ## Changes since lastest release
-- improve first startup times significantly
-- improve audio caching significantly
-- improve cover caching significantly
+- significantly improve audio caching 
+- significantly improve cover caching 
 - change icon hover style
 
 ## Things to do

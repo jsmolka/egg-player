@@ -2,39 +2,38 @@
 
 AbstractThread::AbstractThread(QObject *parent)
     : QThread(parent)
-    , m_abort(false)
+    , m_interrupt(false)
 {
     connect(qApp, SIGNAL(aboutToQuit()), this, SLOT(deleteLater()));
 
     connect(this, SIGNAL(started()), this, SLOT(onStarted()));
     connect(this, SIGNAL(finished()), this, SLOT(deleteLater()));
-    connect(this, SIGNAL(terminated()), this, SLOT(deleteLater()));
 }
 
 AbstractThread::~AbstractThread()
 {
     if (isRunning())
-        abort();
+        interrupt();
 }
 
-bool AbstractThread::isAbort() const
+bool AbstractThread::isInterrupt() const
 {
-    return m_abort;
+    return m_interrupt;
 }
 
 void AbstractThread::onStarted()
 {
-    m_abort = false;
+    m_interrupt = false;
 }
 
-void AbstractThread::abort()
+void AbstractThread::interrupt()
 {
-    m_abort = true;
+    m_interrupt = true;
 
     if (!wait(5000))
     {
-        log("AbstractThread: Could not abort within 5 seconds");
+        log("AbstractThread: Could not interrupt within 5 seconds");
         terminate();
-        emit terminated();
+        deleteLater();
     }
 }
