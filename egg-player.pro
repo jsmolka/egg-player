@@ -84,7 +84,8 @@ HEADERS += \
     src/threading/audioloaderthread.hpp \
     src/threading/audioloaderworker.hpp \
     src/threading/coverloaderthread.hpp \
-    src/threading/coverloaderworker.hpp
+    src/threading/coverloaderworker.hpp \
+    src/core/types.hpp
 
 SOURCES += \
     src/main.cpp \

@@ -8,7 +8,7 @@ EggWidget::EggWidget(QWidget *parent)
     setup();
     setupUi();
 
-    connect(eLibrary, SIGNAL(inserted(Audio *, int)), &m_library, SLOT(insert(Audio *, int)));
+    connect(eLibrary, SIGNAL(inserted(Audios, Indices)), &m_library, SLOT(insert(Audios, Indices)));
     connect(&m_library, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(onLibraryDoubleClicked(QModelIndex)));
 
     eLibrary->load(cfgLibrary->paths());

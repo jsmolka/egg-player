@@ -3,9 +3,8 @@
 Audio::Audio(const QString &path)
     : m_path(path)
     , m_coverId(-1)
-    , m_outdated(false)
+    , m_cached(false)
 {
-    m_size = FileUtil::size(path);
     m_valid = readTags();
 
     if (!m_valid)
@@ -17,9 +16,8 @@ Audio::Audio(const QString &path)
     }
 }
 
-Audio::Audio(const QString &path, const QString &title, const QString &artist,
-             const QString &album, const QString &genre, int year, int track,
-             int length, int coverId, int size)
+Audio::Audio(const QString &path, const QString &title, const QString &artist, const QString &album,
+             const QString &genre, int year, int track, int length, int coverId)
     : m_valid(true)
     , m_path(path)
     , m_title(title)
@@ -30,9 +28,9 @@ Audio::Audio(const QString &path, const QString &title, const QString &artist,
     , m_track(track)
     , m_duration(length)
     , m_coverId(coverId)
-    , m_size(size)
+    , m_cached(true)
 {
-    m_outdated = size != FileUtil::size(path);
+
 }
 
 Audio::~Audio()
@@ -95,14 +93,14 @@ int Audio::coverId() const
     return m_coverId;
 }
 
-quint64 Audio::size() const
+void Audio::setCached(bool cached)
 {
-    return m_size;
+    m_cached = cached;
 }
 
-bool Audio::isOutdated() const
+bool Audio::isCached() const
 {
-    return m_outdated;
+    return m_cached;
 }
 
 const wchar_t * Audio::pathWChar() const

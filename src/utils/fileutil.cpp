@@ -24,9 +24,9 @@ QString FileUtil::read(const QString &file)
     return QTextStream(&qFile).readAll();
 }
 
-QVector<QString> FileUtil::glob(const QString &path, const QString &suffix)
+Files FileUtil::glob(const QString &path, const QString &suffix)
 {
-    QVector<QString> result;
+    Files result;
 
     QDirIterator iterator(path, QDirIterator::Subdirectories);
     while (iterator.hasNext())

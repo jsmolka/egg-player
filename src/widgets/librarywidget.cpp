@@ -20,10 +20,18 @@ void LibraryWidget::addColumn(SongInfo info, Qt::Alignment horizontal, bool expa
         horizontalHeader()->setSectionResizeMode(m_columns.size() - 1, QHeaderView::ResizeToContents);
 }
 
-void LibraryWidget::insert(Audio *audio, int row)
+void LibraryWidget::insert(Audios audios, Indices indices)
 {
     setUpdatesEnabled(false);
 
+    for (int i = 0; i < audios.size(); ++i)
+        insert(audios[i], indices[i]);
+
+    setUpdatesEnabled(true);
+}
+
+void LibraryWidget::insert(Audio *audio, int row)
+{
     if (row == -1)
         row = rowCount();
     insertRow(row);
@@ -34,7 +42,6 @@ void LibraryWidget::insert(Audio *audio, int row)
         item->setTextAlignment(m_columns[i].alignment);
         setItem(row, i, item);
     }
-    setUpdatesEnabled(true);
 }
 
 void LibraryWidget::setup()

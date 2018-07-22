@@ -6,6 +6,7 @@
 
 #include "constants.hpp"
 #include "config.hpp"
+#include "types.hpp"
 
 namespace FileUtil
 {
@@ -13,7 +14,7 @@ namespace FileUtil
     extern QString fileName(const QString &file);
     extern quint64 size(const QString &file);
     extern QString read(const QString &file);
-    extern QVector<QString> glob(const QString &path, const QString &suffix);
+    extern Files glob(const QString &path, const QString &suffix);
 
     namespace Css
     {

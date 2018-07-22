@@ -2,11 +2,9 @@
 #define AUDIO_HPP
 
 #include <QPixmap>
-#include <QString>
 #include <QVector>
 
 #include "logger.hpp"
-#include "fileutil.hpp"
 #include "tag.hpp"
 
 class Audio
@@ -14,7 +12,7 @@ class Audio
 public:
     Audio(const QString &path);
     Audio(const QString &path, const QString &title, const QString &artist, const QString &album,
-          const QString &genre, int year, int track, int duration, int coverId, int size);
+          const QString &genre, int year, int track, int duration, int coverId);
     ~Audio();
 
     bool isValid() const;
@@ -30,8 +28,9 @@ public:
 
     void setCoverId(int coverId);
     int coverId() const;
-    quint64 size() const;
-    bool isOutdated() const;
+
+    void setCached(bool cached);
+    bool isCached() const;
 
     const wchar_t * pathWChar() const;
     QPixmap cover(int size = 200);
@@ -49,10 +48,9 @@ private:
     int m_track;
     int m_duration;
     int m_coverId;
-    quint64 m_size;
-    bool m_outdated;
+    bool m_cached;
 };
 
-using Audios = QVector<Audio *>;
+typedef QVector<Audio *> Audios;
 
 #endif // AUDIO_HPP

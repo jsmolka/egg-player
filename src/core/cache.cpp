@@ -56,8 +56,7 @@ Audio * Cache::load(const QString &path)
             m_query.value(5).toInt(),
             m_query.value(6).toInt(),
             m_query.value(7).toInt(),
-            m_query.value(8).toInt(),
-            m_query.value(9).toUInt()
+            m_query.value(8).toInt()
         );
     }
     return audio;
@@ -75,8 +74,7 @@ void Cache::insertAudio(Audio *audio)
         "  :year,"
         "  :track,"
         "  :duration,"
-        "  :coverid,"
-        "  :size"
+        "  :coverid"
         ")"
     );
     m_query.bindValue(":path", audio->path());
@@ -88,10 +86,11 @@ void Cache::insertAudio(Audio *audio)
     m_query.bindValue(":track", audio->track());
     m_query.bindValue(":duration", audio->duration());
     m_query.bindValue(":coverid", audio->coverId());
-    m_query.bindValue(":size", audio->size());
 
     if (!m_query.exec())
         handleError();
+
+    audio->setCached(true);
 }
 
 int Cache::insertCover(const QPixmap &cover)
@@ -133,8 +132,7 @@ void Cache::updateAudio(Audio *audio)
         "  year = :year,"
         "  track = :track,"
         "  duration = :duration,"
-        "  coverid = :coverid,"
-        "  size = :size "
+        "  coverid = :coverid"
         "WHERE path = :path"
     );
     m_query.bindValue(":path", audio->path());
@@ -146,7 +144,6 @@ void Cache::updateAudio(Audio *audio)
     m_query.bindValue(":track", audio->track());
     m_query.bindValue(":duration", audio->duration());
     m_query.bindValue(":coverid", audio->coverId());
-    m_query.bindValue(":size", audio->size());
 
     if (!m_query.exec())
         handleError();
@@ -235,8 +232,7 @@ void Cache::createAudios()
         "  year INTEGER,"
         "  track INTEGER,"
         "  length INTEGER,"
-        "  coverid INTEGER,"
-        "  size INTEGER"
+        "  coverid INTEGER"
         ")";
 
     if (!m_query.exec(create))

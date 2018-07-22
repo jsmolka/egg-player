@@ -8,6 +8,7 @@
 #include "audio.hpp"
 #include "bass.hpp"
 #include "config.hpp"
+#include "types.hpp"
 
 #define ePlayer (Player::instance())
 

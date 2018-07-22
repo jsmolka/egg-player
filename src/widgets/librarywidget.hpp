@@ -4,10 +4,12 @@
 #include <QHeaderView>
 #include <QVector>
 
+#include "audio.hpp"
 #include "config.hpp"
 #include "constants.hpp"
 #include "library.hpp"
 #include "tablewidget.hpp"
+#include "types.hpp"
 #include "util.hpp"
 
 class LibraryWidget : public TableWidget
@@ -23,7 +25,9 @@ public:
     void addColumn(SongInfo info, Qt::Alignment horizontal = Qt::AlignLeft, bool expand = true);
 
 public slots:
+    void insert(Audios audios, Indices indices);
     void insert(Audio *audio, int row = -1);
+
 
 private:
     struct Column
