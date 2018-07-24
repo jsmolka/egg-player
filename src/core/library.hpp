@@ -7,7 +7,7 @@
 
 #include "audio.hpp"
 #include "audioloaderthread.hpp"
-#include "coverloaderthread.hpp"
+#include "coverloadercontroller.hpp"
 #include "threadpool.hpp"
 #include "types.hpp"
 
@@ -51,7 +51,7 @@ private:
     bool m_sorted;
     Audios m_audios;
     AudioLoaderThread *pm_audioLoader;
-    CoverLoaderThread *pm_coverLoader;
+    CoverLoaderController *pm_coverLoader;
     Files m_paths;
 
     static Library *_instance;

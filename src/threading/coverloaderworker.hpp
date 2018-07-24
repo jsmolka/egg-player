@@ -1,12 +1,12 @@
 #ifndef COVERLOADERWORKER_HPP
 #define COVERLOADERWORKER_HPP
 
-#include "abstractthread.hpp"
+#include "abstractworker.hpp"
 #include "audio.hpp"
 #include "cache.hpp"
 #include "types.hpp"
 
-class CoverLoaderWorker : public AbstractThread
+class CoverLoaderWorker : public AbstractWorker
 {
     Q_OBJECT
 
@@ -18,11 +18,7 @@ public:
     void setAudios(const Audios &audios);
     Audios audios() const;
 
-signals:
-    void loaded(Audio *audio, QPixmap cover);
-
-protected:
-    void run() override;
+    void work() override;
 
 private:
     Audios m_audios;

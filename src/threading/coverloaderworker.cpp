@@ -7,7 +7,7 @@ CoverLoaderWorker::CoverLoaderWorker(QObject *parent)
 }
 
 CoverLoaderWorker::CoverLoaderWorker(const Audios &audios, QObject *parent)
-    : AbstractThread(parent)
+    : AbstractWorker(parent)
     , m_audios(audios)
 {
 
@@ -28,14 +28,28 @@ Audios CoverLoaderWorker::audios() const
     return m_audios;
 }
 
-void CoverLoaderWorker::run()
+void CoverLoaderWorker::work()
 {
+    Cache cache;
     for (Audio *audio : m_audios)
     {
         if (isInterrupt())
             return;
 
         if (audio->coverId() == -1)
-            emit loaded(audio, audio->cover());
+        {
+            QPixmap cover = audio->cover();
+
+            if (isInterrupt())
+                return;
+
+            int id = cache.insertCover(cover);
+
+            if (isInterrupt())
+                return;
+
+            if (id != -1)
+                cache.setAudioCoverId(audio, id);
+        }
     }
 }

@@ -64,12 +64,5 @@ void CoverLoaderThread::onWorkerLoaded(Audio *audio, QPixmap cover)
 
 void CoverLoaderThread::startWorkerThreads()
 {
-    for (Audios chunk : Util::chunk<Audio *>(m_audios, ThreadPool::advisedCount()))
-    {
-        CoverLoaderWorker *worker = new CoverLoaderWorker(chunk);
-        connect(worker, SIGNAL(loaded(Audio *, QPixmap)), this, SLOT(onWorkerLoaded(Audio *, QPixmap)));
-        m_pool.add(worker);
-    }
 
-    m_pool.start();
 }

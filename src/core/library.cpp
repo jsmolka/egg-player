@@ -4,7 +4,7 @@ Library::Library(QObject *parent)
     : QObject(parent)
     , m_sorted(false)
     , pm_audioLoader(new AudioLoaderThread(this))
-    , pm_coverLoader(new CoverLoaderThread(this))
+    , pm_coverLoader(new CoverLoaderController(this))
 {
     connect(pm_audioLoader, SIGNAL(loaded(Audio *)), this, SLOT(insert(Audio *)));
     connect(pm_audioLoader, SIGNAL(finished()), this, SLOT(onAudioLoaderFinished()));
