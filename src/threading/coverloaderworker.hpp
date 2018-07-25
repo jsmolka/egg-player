@@ -1,6 +1,9 @@
 #ifndef COVERLOADERWORKER_HPP
 #define COVERLOADERWORKER_HPP
 
+#include <QMutex>
+#include <QMutexLocker>
+
 #include "abstractworker.hpp"
 #include "audio.hpp"
 #include "cache.hpp"
@@ -18,10 +21,13 @@ public:
     void setAudios(const Audios &audios);
     Audios audios() const;
 
+public slots:
     void work() override;
 
 private:
     Audios m_audios;
+
+    QMutex _mutex;
 };
 
 #endif // COVERLOADERWORKER_HPP

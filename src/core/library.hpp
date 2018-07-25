@@ -28,6 +28,7 @@ public:
     bool isSorted() const;
 
     Audios audios() const;
+    CoverLoaderController * coverLoader();
 
     void load(const Files &paths);
 
@@ -50,8 +51,8 @@ private:
 
     bool m_sorted;
     Audios m_audios;
-    AudioLoaderThread *pm_audioLoader;
-    CoverLoaderController *pm_coverLoader;
+    AudioLoaderThread *m_audioLoader;
+    CoverLoaderController m_coverLoader;
     Files m_paths;
 
     static Library *_instance;

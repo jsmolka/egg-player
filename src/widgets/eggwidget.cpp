@@ -19,6 +19,16 @@ EggWidget::~EggWidget()
 
 }
 
+void EggWidget::closeEvent(QCloseEvent *event)
+{
+    CoverLoaderController *coverLoader = eLibrary->coverLoader();
+    coverLoader->interrupt();
+    coverLoader->quit();
+    coverLoader->wait();
+
+    QWidget::closeEvent(event);
+}
+
 void EggWidget::onLibraryDoubleClicked(const QModelIndex &index)
 {
     ePlayer->loadPlaylist(eLibrary->audios(), index.row());

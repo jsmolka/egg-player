@@ -4,6 +4,7 @@
 #include "barwidget.hpp"
 #include "borderlayout.hpp"
 #include "constants.hpp"
+#include "coverloadercontroller.hpp"
 #include "library.hpp"
 #include "librarywidget.hpp"
 #include "mainwindow.hpp"
@@ -16,6 +17,9 @@ class EggWidget : public MainWindow
 public:
     EggWidget(QWidget *parent = nullptr);
     ~EggWidget();
+
+protected:
+    void closeEvent(QCloseEvent *event);
 
 private slots:
     void onLibraryDoubleClicked(const QModelIndex &index);

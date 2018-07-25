@@ -2,7 +2,7 @@
 
 AbstractWorker::AbstractWorker(QObject *parent)
     : QObject(parent)
-    , m_interrupt(false)
+    , m_interrupted(false)
 {
 
 }
@@ -12,12 +12,12 @@ AbstractWorker::~AbstractWorker()
 
 }
 
-bool AbstractWorker::isInterrupt() const
+bool AbstractWorker::isInterrupted() const
 {
-    return m_interrupt;
+    return m_interrupted;
 }
 
 void AbstractWorker::interrupt()
 {
-    m_interrupt = true;
+    m_interrupted = true;
 }

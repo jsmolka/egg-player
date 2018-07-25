@@ -12,7 +12,7 @@ public:
     AbstractWorker(QObject *parent = nullptr);
     ~AbstractWorker();
 
-    bool isInterrupt() const;
+    bool isInterrupted() const;
 
 public slots:
     void interrupt();
@@ -23,7 +23,7 @@ signals:
     void finished();
 
 private:
-    bool m_interrupt;
+    bool m_interrupted;
 };
 
 #endif // ABSTRACTWORKER_HPP

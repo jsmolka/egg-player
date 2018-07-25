@@ -33,23 +33,24 @@ void CoverLoaderWorker::work()
     Cache cache;
     for (Audio *audio : m_audios)
     {
-        if (isInterrupt())
-            return;
+        if (isInterrupted())
+            break;
 
         if (audio->coverId() == -1)
         {
             QPixmap cover = audio->cover();
 
-            if (isInterrupt())
-                return;
+            if (isInterrupted())
+                break;
 
             int id = cache.insertCover(cover);
 
-            if (isInterrupt())
-                return;
+            if (isInterrupted())
+                break;
 
             if (id != -1)
                 cache.setAudioCoverId(audio, id);
         }
     }
+    emit finished();
 }

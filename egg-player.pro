@@ -83,7 +83,6 @@ HEADERS += \
     src/widgets/components/tablewidget.hpp \
     src/threading/audioloaderthread.hpp \
     src/threading/audioloaderworker.hpp \
-    src/threading/coverloaderthread.hpp \
     src/threading/coverloaderworker.hpp \
     src/core/types.hpp \
     src/threading/abstractworker.hpp \
@@ -130,7 +129,6 @@ SOURCES += \
     src/widgets/components/tablewidget.cpp \
     src/threading/audioloaderthread.cpp \
     src/threading/audioloaderworker.cpp \
-    src/threading/coverloaderthread.cpp \
     src/threading/coverloaderworker.cpp \
     src/threading/abstractworker.cpp \
     src/threading/abstractcontroller.cpp \

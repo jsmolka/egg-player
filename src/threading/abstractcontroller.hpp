@@ -6,6 +6,7 @@
 #include <QVector>
 
 #include "abstractworker.hpp"
+#include "logger.hpp"
 
 class AbstractController : public QObject
 {
@@ -17,11 +18,22 @@ public:
 
     QThread * createWorkerThread(AbstractWorker *worker);
 
-public slots:
+    bool isRunning() const;
+    bool isFinished() const;
+
+    void interrupt();
+    void quit();
+    void wait();
+
     virtual void start() = 0;
 
-private:
-    QVector<AbstractWorker *> m_worker;
+private slots:
+    void removeWorker(QObject *object);
+    void removeThread(QObject *object);
+
+private:    
+    QVector<AbstractWorker *> m_workers;
+    QVector<QThread *> m_threads;
 };
 
 #endif // ABSTRACTCONTROLLER_HPP
