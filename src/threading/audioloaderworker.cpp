@@ -51,13 +51,13 @@ void AudioLoaderWorker::work()
             delete audio;
     }
 
-    static QMutex mutex;
-    QMutexLocker locker(&mutex);
-
     for (Audio *audio : m_audios)
     {
         if (isInterrupted())
             return;
+
+        static QMutex mutex;
+        QMutexLocker locker(&mutex);
 
         cache.insertAudio(audio);
     }
