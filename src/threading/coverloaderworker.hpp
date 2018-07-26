@@ -26,8 +26,6 @@ public slots:
 
 private:
     Audios m_audios;
-
-    QMutex _mutex;
 };
 
 #endif // COVERLOADERWORKER_HPP

@@ -2,6 +2,8 @@
 
 AbstractController::AbstractController(QObject *parent)
     : QObject(parent)
+    , m_finished(0)
+    , m_total(0)
 {
 
 }
@@ -9,25 +11,6 @@ AbstractController::AbstractController(QObject *parent)
 AbstractController::~AbstractController()
 {
 
-}
-
-QThread * AbstractController::createWorkerThread(AbstractWorker *worker)
-{
-    QThread *thread = new QThread;
-
-    worker->moveToThread(thread);
-    connect(thread, SIGNAL(started()), worker, SLOT(work()));
-    connect(worker, SIGNAL(finished()), thread, SLOT (quit()));
-    connect(worker, SIGNAL(finished()), worker, SLOT (deleteLater()));
-    connect(thread, SIGNAL(finished()), thread, SLOT (deleteLater()));
-    connect(thread, SIGNAL(destroyed(QObject *)), this, SLOT(removeThread(QObject *)));
-    connect(worker, SIGNAL(destroyed(QObject *)), this, SLOT(removeWorker(QObject *)));
-    thread->start();
-
-    m_workers << worker;
-    m_threads << thread;
-
-    return thread;
 }
 
 bool AbstractController::isRunning() const
@@ -40,33 +23,47 @@ bool AbstractController::isRunning() const
     return false;
 }
 
-bool AbstractController::isFinished() const
+QThread * AbstractController::createWorkerThread(AbstractWorker *worker)
 {
-    return !isRunning();
+    QThread *thread = new QThread;
+
+    worker->moveToThread(thread);
+    connect(thread, &QThread::started, worker, &AbstractWorker::work);
+    connect(thread, &QThread::finished, thread, &QThread::deleteLater);
+    connect(worker, &AbstractWorker::finished, thread, &QThread::quit);
+    connect(worker, &AbstractWorker::finished, worker, &AbstractWorker::deleteLater);
+    connect(worker, &AbstractWorker::finished, this, &AbstractController::threadFinished);
+    connect(thread, &QThread::destroyed, this, &AbstractController::removeThread);
+    connect(worker, &AbstractWorker::destroyed, this, &AbstractController::removeWorker);
+    thread->start();
+
+    m_workers << worker;
+    m_threads << thread;
+    ++m_total;
+
+    return thread;
 }
 
-void AbstractController::interrupt()
+void AbstractController::stopWorkerThreads()
 {
     for (AbstractWorker *worker : m_workers)
         worker->interrupt();
-}
 
-void AbstractController::quit()
-{
-    for (QThread *thread : m_threads)
-        thread->quit();
-}
-
-void AbstractController::wait()
-{
     for (QThread *thread : m_threads)
     {
+        thread->quit();
         if (!thread->wait(2500))
         {
             log("AbstractController: Could not exit thread within 2.5 seconds");
             thread->terminate();
         }
     }
+}
+
+void AbstractController::threadFinished()
+{
+    if (++m_finished == m_total)
+        emit finished();
 }
 
 void AbstractController::removeWorker(QObject *object)

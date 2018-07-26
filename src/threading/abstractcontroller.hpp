@@ -16,24 +16,26 @@ public:
     AbstractController(QObject *parent = nullptr);
     ~AbstractController();
 
-    QThread * createWorkerThread(AbstractWorker *worker);
-
     bool isRunning() const;
-    bool isFinished() const;
 
-    void interrupt();
-    void quit();
-    void wait();
+    QThread * createWorkerThread(AbstractWorker *worker);
+    void stopWorkerThreads();
 
     virtual void start() = 0;
 
+signals:
+    void finished();
+
 private slots:
+    void threadFinished();
     void removeWorker(QObject *object);
     void removeThread(QObject *object);
 
 private:    
     QVector<AbstractWorker *> m_workers;
     QVector<QThread *> m_threads;
+    int m_finished;
+    int m_total;
 };
 
 #endif // ABSTRACTCONTROLLER_HPP

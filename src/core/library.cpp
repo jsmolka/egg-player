@@ -9,12 +9,12 @@ Library::Library(QObject *parent)
 Library::Library(bool sorted, QObject *parent)
     : QObject(parent)
     , m_sorted(sorted)
-    , m_audioLoader(new AudioLoaderThread(this))
+    , m_audioLoader(this)
     , m_coverLoader(this)
 {
-    connect(m_audioLoader, SIGNAL(loaded(Audio *)), this, SLOT(insert(Audio *)));
-    connect(m_audioLoader, SIGNAL(finished()), this, SLOT(onAudioLoaderFinished()));
-    connect(m_audioLoader, SIGNAL(finished()), this, SIGNAL(loaded()));
+    connect(&m_audioLoader, &AudioLoaderController::loaded, this, &Library::insert);
+    connect(&m_audioLoader, &AudioLoaderController::finished,this, &Library::onAudioLoaderFinished);
+
 }
 
 Library::~Library()
@@ -51,10 +51,15 @@ CoverLoaderController * Library::coverLoader()
     return &m_coverLoader;
 }
 
+AudioLoaderController * Library::audioLoader()
+{
+    return &m_audioLoader;
+}
+
 void Library::load(const Files &paths)
 {
-    m_audioLoader->setFiles(uniqueFiles(paths));
-    m_audioLoader->start();
+    m_audioLoader.setFiles(uniqueFiles(paths));
+    m_audioLoader.start();
 }
 
 void Library::insert(Audio *audio)

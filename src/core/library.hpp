@@ -6,9 +6,8 @@
 #include <QSet>
 
 #include "audio.hpp"
-#include "audioloaderthread.hpp"
+#include "audioloadercontroller.hpp"
 #include "coverloadercontroller.hpp"
-#include "threadpool.hpp"
 #include "types.hpp"
 
 #define eLibrary (Library::instance())
@@ -29,6 +28,7 @@ public:
 
     Audios audios() const;
     CoverLoaderController * coverLoader();
+    AudioLoaderController * audioLoader();
 
     void load(const Files &paths);
 
@@ -36,7 +36,6 @@ public slots:
     void insert(Audio *audio);
 
 signals:
-    void loaded();
     void inserted(Audio *audio, int index);
 
 private slots:
@@ -51,7 +50,7 @@ private:
 
     bool m_sorted;
     Audios m_audios;
-    AudioLoaderThread *m_audioLoader;
+    AudioLoaderController m_audioLoader;
     CoverLoaderController m_coverLoader;
     Files m_paths;
 

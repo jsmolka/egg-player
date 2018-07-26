@@ -63,8 +63,6 @@ HEADERS += \
     src/core/player.hpp \
     src/core/shortcut.hpp \
     src/core/tag.hpp \
-    src/threading/abstractthread.hpp \
-    src/threading/threadpool.hpp \
     src/utils/colorutil.hpp \
     src/utils/fileutil.hpp \
     src/utils/util.hpp \
@@ -81,13 +79,13 @@ HEADERS += \
     src/widgets/components/slider.hpp \
     src/widgets/components/smoothtablewidget.hpp \
     src/widgets/components/tablewidget.hpp \
-    src/threading/audioloaderthread.hpp \
     src/threading/audioloaderworker.hpp \
     src/threading/coverloaderworker.hpp \
     src/core/types.hpp \
     src/threading/abstractworker.hpp \
     src/threading/abstractcontroller.hpp \
-    src/threading/coverloadercontroller.hpp
+    src/threading/coverloadercontroller.hpp \
+    src/threading/audioloadercontroller.hpp
 
 SOURCES += \
     src/main.cpp \
@@ -109,8 +107,6 @@ SOURCES += \
     src/core/player.cpp \
     src/core/shortcut.cpp \
     src/core/tag.cpp \
-    src/threading/abstractthread.cpp \
-    src/threading/threadpool.cpp \
     src/utils/colorutil.cpp \
     src/utils/fileutil.cpp \
     src/utils/util.cpp \
@@ -127,10 +123,10 @@ SOURCES += \
     src/widgets/components/slider.cpp \
     src/widgets/components/smoothtablewidget.cpp \
     src/widgets/components/tablewidget.cpp \
-    src/threading/audioloaderthread.cpp \
     src/threading/audioloaderworker.cpp \
     src/threading/coverloaderworker.cpp \
     src/threading/abstractworker.cpp \
     src/threading/abstractcontroller.cpp \
-    src/threading/coverloadercontroller.cpp
+    src/threading/coverloadercontroller.cpp \
+    src/threading/audioloadercontroller.cpp
 

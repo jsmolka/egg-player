@@ -1,12 +1,15 @@
 #ifndef AUDIOLOADERWORKER_HPP
 #define AUDIOLOADERWORKER_HPP
 
-#include "abstractthread.hpp"
+#include <QMutex>
+#include <QMutexLocker>
+
+#include "abstractworker.hpp"
 #include "audio.hpp"
 #include "cache.hpp"
 #include "types.hpp"
 
-class AudioLoaderWorker : public AbstractThread
+class AudioLoaderWorker : public AbstractWorker
 {
     Q_OBJECT
 
@@ -21,11 +24,12 @@ public:
 signals:
     void loaded(Audio *audio);
 
-protected:
-    void run() override;
+public slots:
+    void work() override;
 
 private:
     Files m_files;
+    Audios m_audios;
 };
 
 #endif // AUDIOLOADERWORKER_HPP
