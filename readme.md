@@ -21,10 +21,30 @@ A Groove Music like music player.
 ### General
 - rewrite library widget
 - qt key sequence for shortcut
-- put all more of less static values into constants
 - proper template function implementation for chunk
 - look into cache cover id getter
 - look into compile error for types
+- do not update the player if it is not playing
+
+### Utils
+- update fileutil
+  - add readline, use in config
+  - optional default value for read function
+  - diriterator with filter and files only
+- use inline functions for utils
+- move css loading to its widget
+- move font loading from util to main
+- save mainwindow pre fullscreen size
+- abstractcontroller dry
+- use static inside instance function
+
+### Icons
+- use svg format / different sizes
+- test icons in the icon preview example
+
+### Cache
+- query cover by id in music bar
+- add move functions for more use cases
 
 ### Reactive cache
 - use a file system watcher
