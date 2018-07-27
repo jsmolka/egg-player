@@ -84,68 +84,13 @@ void Cache::insertAudio(Audio *audio)
     m_query.bindValue(":genre", audio->genre());
     m_query.bindValue(":year", audio->year());
     m_query.bindValue(":track", audio->track());
-    m_query.bindValue(":duration", audio->duration());
+    m_query.bindValue(":duration", audio->duration().secs());
     m_query.bindValue(":coverid", audio->coverId());
 
     if (!m_query.exec())
         handleError();
 
     audio->setCached(true);
-}
-
-void Cache::insertAudios(Audios audios)
-{
-    m_query.prepare(
-        "INSERT INTO audios VALUES ("
-        "  :path,"
-        "  :title,"
-        "  :artist,"
-        "  :album,"
-        "  :genre,"
-        "  :year,"
-        "  :track,"
-        "  :duration,"
-        "  :coverid"
-        ")"
-    );
-
-    QVariantList paths;
-    QVariantList titles;
-    QVariantList artists;
-    QVariantList albums;
-    QVariantList genres;
-    QVariantList years;
-    QVariantList tracks;
-    QVariantList durations;
-    QVariantList coverIds;
-
-    for (Audio *audio : audios)
-    {
-        paths << audio->path();
-        titles << audio->title();
-        artists << audio->artist();
-        albums << audio->album();
-        genres << audio->genre();
-        years << audio->year();
-        tracks << audio->track();
-        durations << audio->duration();
-        coverIds << audio->coverId();
-
-        audio->setCached(true);
-    }
-
-    m_query.bindValue(":path", paths);
-    m_query.bindValue(":title", titles);
-    m_query.bindValue(":artist", artists);
-    m_query.bindValue(":album", albums);
-    m_query.bindValue(":genre", genres);
-    m_query.bindValue(":year", years);
-    m_query.bindValue(":track", tracks);
-    m_query.bindValue(":duration", durations);
-    m_query.bindValue(":coverid", coverIds);
-
-    if (!m_query.execBatch())
-        handleError();
 }
 
 void Cache::updateAudio(Audio *audio)
@@ -170,7 +115,7 @@ void Cache::updateAudio(Audio *audio)
     m_query.bindValue(":genre", audio->genre());
     m_query.bindValue(":year", audio->year());
     m_query.bindValue(":track", audio->track());
-    m_query.bindValue(":duration", audio->duration());
+    m_query.bindValue(":duration", audio->duration().secs());
     m_query.bindValue(":coverid", audio->coverId());
 
     if (!m_query.exec())

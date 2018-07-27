@@ -1,23 +1,5 @@
 #include "util.hpp"
 
-QString Util::time(int seconds)
-{
-    QTime time(0, 0);
-    time = time.addSecs(seconds);
-
-    QString pattern;
-    if (seconds < 600)
-        pattern = "m:ss";
-    else if (seconds < 3600)
-        pattern = "mm:ss";
-    else if (seconds < 36000)
-        pattern = "h:mm:ss";
-    else
-        pattern = "hh:mm:ss";
-
-    return time.toString(pattern);
-}
-
 QPixmap Util::cover(int size)
 {
     return size == -1 ? QPixmap(IMG_DEFAULT_COVER) : Util::resize(QPixmap(IMG_DEFAULT_COVER), size);

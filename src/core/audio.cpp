@@ -78,7 +78,7 @@ int Audio::track() const
     return m_track;
 }
 
-int Audio::duration() const
+Duration Audio::duration() const
 {
     return m_duration;
 }

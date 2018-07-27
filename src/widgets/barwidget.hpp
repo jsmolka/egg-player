@@ -12,6 +12,7 @@
 #include "colortransitionwidget.hpp"
 #include "config.hpp"
 #include "constants.hpp"
+#include "duration.hpp"
 #include "iconbutton.hpp"
 #include "iconfactory.hpp"
 #include "slider.hpp"

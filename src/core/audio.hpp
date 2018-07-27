@@ -4,6 +4,7 @@
 #include <QPixmap>
 #include <QVector>
 
+#include "duration.hpp"
 #include "logger.hpp"
 #include "tag.hpp"
 
@@ -24,7 +25,7 @@ public:
     QString genre() const;
     int year() const;
     int track() const;
-    int duration() const;
+    Duration duration() const;
 
     void setCoverId(int coverId);
     int coverId() const;
@@ -46,7 +47,7 @@ private:
     QString m_genre;
     int m_year;
     int m_track;
-    int m_duration;
+    Duration m_duration;
     int m_coverId;
     bool m_cached;
 };

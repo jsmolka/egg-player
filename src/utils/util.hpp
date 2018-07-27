@@ -14,7 +14,6 @@
 
 namespace Util
 {
-    extern QString time(int seconds);
     extern QPixmap cover(int size = -1);
     extern QFont font(double size);
 

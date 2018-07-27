@@ -118,10 +118,10 @@ void BarWidget::onPlayerAudioChanged(Audio *audio)
     m_coverLabel.setPixmap(cover);
     m_trackLabel.setText(QString("%1\n%2").arg(audio->title(), audio->artist()));
 
-    m_currentTimeLabel.setText(Util::time(0));
-    m_totalTimeLabel.setText(Util::time(audio->duration()));
+    m_currentTimeLabel.setText(Duration(0).toString());
+    m_totalTimeLabel.setText(audio->duration().toString());
 
-    m_lengthSlider.setRange(0, audio->duration());
+    m_lengthSlider.setRange(0, audio->duration().secs());
     m_lengthSlider.setEnabled(true);
 
     startTransition(ColorUtil::background(cover));
@@ -137,7 +137,7 @@ void BarWidget::onPlayerPositionChanged(int position)
     if (m_lengthSlider.isPressed() || m_lengthSlider.maximum() < position)
         return;
 
-    m_currentTimeLabel.setText(Util::time(position));
+    m_currentTimeLabel.setText(Duration(position).toString());
     m_lengthSlider.setValue(position);
 }
 
@@ -187,12 +187,12 @@ void BarWidget::onVolumeButtonPressed()
 
 void BarWidget::onLengthSliderMoved(int value)
 {
-    m_currentTimeLabel.setText(Util::time(value));
+    m_currentTimeLabel.setText(Duration(value).toString());
 }
 
 void BarWidget::onLengthSliderValueChanged(int value)
 {
-    if (value != ePlayer->currentAudio()->duration())
+    if (value != ePlayer->currentAudio()->duration().secs())
         ePlayer->setPosition(value);
     else
         ePlayer->next();

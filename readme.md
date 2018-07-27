@@ -25,6 +25,11 @@ A Groove Music like music player.
 - look into cache cover id getter
 - look into compile error for types
 - do not update the player if it is not playing
+- rename audio to track
+- implement isocpp guidelines
+- varadic template for logger
+- use audio checksum to detect changes
+
 
 ### Utils
 - update fileutil
@@ -64,3 +69,4 @@ A Groove Music like music player.
 - fuzzy library searching
 - [expand scrollbar](https://stackoverflow.com/a/23677355/7057528)
 - [scrollable text](https://stackoverflow.com/a/10655396/7057528)
+- [color transition](https://stackoverflow.com/a/34445886/7057528)

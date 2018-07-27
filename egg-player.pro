@@ -85,7 +85,8 @@ HEADERS += \
     src/threading/abstractworker.hpp \
     src/threading/abstractcontroller.hpp \
     src/threading/coverloadercontroller.hpp \
-    src/threading/audioloadercontroller.hpp
+    src/threading/audioloadercontroller.hpp \
+    src/core/duration.hpp
 
 SOURCES += \
     src/main.cpp \
@@ -128,5 +129,6 @@ SOURCES += \
     src/threading/abstractworker.cpp \
     src/threading/abstractcontroller.cpp \
     src/threading/coverloadercontroller.cpp \
-    src/threading/audioloadercontroller.cpp
+    src/threading/audioloadercontroller.cpp \
+    src/core/duration.cpp
 
