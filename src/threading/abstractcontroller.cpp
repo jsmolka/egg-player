@@ -13,28 +13,18 @@ AbstractController::~AbstractController()
 
 }
 
-bool AbstractController::isRunning() const
-{
-    for (QThread *thread : m_threads)
-    {
-        if (thread->isRunning())
-            return true;
-    }
-    return false;
-}
-
 QThread * AbstractController::createWorkerThread(AbstractWorker *worker)
 {
     QThread *thread = new QThread;
 
     worker->moveToThread(thread);
     connect(thread, &QThread::started, worker, &AbstractWorker::work);
-    connect(thread, &QThread::finished, thread, &QThread::deleteLater);
     connect(worker, &AbstractWorker::finished, thread, &QThread::quit);
     connect(worker, &AbstractWorker::finished, worker, &AbstractWorker::deleteLater);
-    connect(worker, &AbstractWorker::finished, this, &AbstractController::threadFinished);
+    connect(thread, &QThread::finished, thread, &QThread::deleteLater);
     connect(thread, &QThread::destroyed, this, &AbstractController::removeThread);
     connect(worker, &AbstractWorker::destroyed, this, &AbstractController::removeWorker);
+    connect(worker, &AbstractWorker::finished, this, &AbstractController::workerFinished);
     thread->start();
 
     m_workers << worker;
@@ -56,11 +46,12 @@ void AbstractController::stopWorkerThreads()
         {
             log("AbstractController: Could not exit thread within 2.5 seconds");
             thread->terminate();
+            thread->wait();
         }
     }
 }
 
-void AbstractController::threadFinished()
+void AbstractController::workerFinished()
 {
     if (++m_finished == m_total)
         emit finished();

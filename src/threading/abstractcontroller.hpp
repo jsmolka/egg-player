@@ -16,8 +16,6 @@ public:
     AbstractController(QObject *parent = nullptr);
     ~AbstractController();
 
-    bool isRunning() const;
-
     QThread * createWorkerThread(AbstractWorker *worker);
     void stopWorkerThreads();
 
@@ -27,7 +25,7 @@ signals:
     void finished();
 
 private slots:
-    void threadFinished();
+    void workerFinished();
     void removeWorker(QObject *object);
     void removeThread(QObject *object);
 

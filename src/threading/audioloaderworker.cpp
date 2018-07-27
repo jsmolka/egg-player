@@ -37,21 +37,22 @@ void AudioLoaderWorker::work()
             return;
 
         Audio *audio = cache.load(file);
-
         if (!audio)
-        {
             audio = new Audio(file);
-            if (audio->isValid())
-                m_audios << audio;
-        }
 
         if (audio->isValid())
+        {
             emit loaded(audio);
+            if (!audio->isCached())
+                m_uncached << audio;
+        }
         else
+        {
             delete audio;
+        }
     }
 
-    for (Audio *audio : m_audios)
+    for (Audio *audio : m_uncached)
     {
         if (isInterrupted())
             return;
