@@ -41,8 +41,6 @@ private:
     ConfigLibrary m_library;
     ConfigPlayer m_player;
     ConfigShortcut m_shortcut;
-
-    static Config *_instance;
 };
 
 #endif // CONFIG_HPP

@@ -5,9 +5,7 @@ Audio::Audio(const QString &path)
     , m_coverId(-1)
     , m_cached(false)
 {
-    m_valid = readTags();
-
-    if (!m_valid)
+    if (!(m_valid = readTags()))
     {
         if (!FileUtil::exists(path))
             log("Audio: File does not exist %1", {m_path});
@@ -16,8 +14,15 @@ Audio::Audio(const QString &path)
     }
 }
 
-Audio::Audio(const QString &path, const QString &title, const QString &artist, const QString &album,
-             const QString &genre, int year, int track, int length, int coverId)
+Audio::Audio(const QString &path,
+             const QString &title,
+             const QString &artist,
+             const QString &album,
+             const QString &genre,
+             int year,
+             int track,
+             int length,
+             int coverId)
     : m_valid(true)
     , m_path(path)
     , m_title(title)
@@ -41,6 +46,26 @@ Audio::~Audio()
 bool Audio::isValid() const
 {
     return m_valid;
+}
+
+void Audio::setCoverId(int id)
+{
+    m_coverId = id;
+}
+
+int Audio::coverId() const
+{
+    return m_coverId;
+}
+
+void Audio::setCached(bool cached)
+{
+    m_cached = cached;
+}
+
+bool Audio::isCached() const
+{
+    return m_cached;
 }
 
 QString Audio::path() const
@@ -83,26 +108,6 @@ Duration Audio::duration() const
     return m_duration;
 }
 
-void Audio::setCoverId(int id)
-{
-    m_coverId = id;
-}
-
-int Audio::coverId() const
-{
-    return m_coverId;
-}
-
-void Audio::setCached(bool cached)
-{
-    m_cached = cached;
-}
-
-bool Audio::isCached() const
-{
-    return m_cached;
-}
-
 const wchar_t * Audio::pathWChar() const
 {
     return reinterpret_cast<const wchar_t *>(m_path.constData());
@@ -120,7 +125,7 @@ bool Audio::readTags()
     if (!tag.isValid() || !tag.isAudioValid())
         return false;
 
-    m_duration = tag.duration();
+    m_duration = Duration(tag.duration());
 
     if (tag.isTagValid())
     {

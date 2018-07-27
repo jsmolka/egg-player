@@ -66,13 +66,12 @@ bool BassStream::pause()
     return success;
 }
 
-bool BassStream::create(Audio *audio, bool prescan)
+bool BassStream::create(Audio *audio)
 {
     if (!free())
         return false;
 
-    DWORD flags = prescan ? BASS_STREAM_PRESCAN : 0 | BASS_ASYNCFILE;
-    m_handle = BASS_StreamCreateFile(false, audio->pathWChar(), 0, 0, flags);
+    m_handle = BASS_StreamCreateFile(false, audio->pathWChar(), 0, 0, BASS_ASYNCFILE);
 
     return isValid();
 }

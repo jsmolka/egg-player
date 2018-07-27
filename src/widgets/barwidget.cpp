@@ -23,27 +23,27 @@ BarWidget::BarWidget(QWidget *parent)
     setup();
     setupUi();
 
-    connect(ePlayer, SIGNAL(audioChanged(Audio *)), this, SLOT(onPlayerAudioChanged(Audio *)));
-    connect(ePlayer, SIGNAL(stateChanged()), this, SLOT(onPlayerStateChanged()));
-    connect(ePlayer, SIGNAL(positionChanged(int)), this, SLOT(onPlayerPositionChanged(int)));
-    connect(ePlayer, SIGNAL(volumeChanged(int)), this, SLOT(onPlayerVolumeChanged(int)));
+    connect(ePlayer, &Player::audioChanged, this, &BarWidget::onPlayerAudioChanged);
+    connect(ePlayer, &Player::stateChanged, this, &BarWidget::onPlayerStateChanged);
+    connect(ePlayer, &Player::positionChanged, this, &BarWidget::onPlayerPositionChanged);
+    connect(ePlayer, &Player::volumeChanged, this, &BarWidget::onPlayerVolumeChanged);
 
-    connect(&m_nextButton, SIGNAL(pressed()), ePlayer, SLOT(next()));
-    connect(&m_playPauseButton, SIGNAL(pressed()), this, SLOT(onPlayPauseButtonPressed()));
-    connect(&m_previousButton, SIGNAL(pressed()), ePlayer, SLOT(previous()));
-    connect(&m_shuffleButton, SIGNAL(locked(bool)), this, SLOT(onShuffleButtonLocked(bool)));
-    connect(&m_loopButton, SIGNAL(locked(bool)), this, SLOT(onLoopButtonLocked(bool)));
-    connect(&m_volumeButton, SIGNAL(pressed()), this, SLOT(onVolumeButtonPressed()));
+    connect(&m_nextButton, &IconButton::pressed, ePlayer, &Player::next);
+    connect(&m_playPauseButton, &IconButton::pressed, this, &BarWidget::onPlayPauseButtonPressed);
+    connect(&m_previousButton, &IconButton::pressed, ePlayer, &Player::previous);
+    connect(&m_shuffleButton, &IconButton::locked, this, &BarWidget::onShuffleButtonLocked);
+    connect(&m_loopButton, &IconButton::locked, this, &BarWidget::onLoopButtonLocked);
+    connect(&m_volumeButton, &IconButton::pressed, this, &BarWidget::onVolumeButtonPressed);
 
-    connect(&m_lengthSlider, SIGNAL(sliderMoved(int)), this, SLOT(onLengthSliderMoved(int)));
-    connect(&m_lengthSlider, SIGNAL(sliderValueChanged(int)), this, SLOT(onLengthSliderValueChanged(int)));
-    connect(&m_volumeSlider, SIGNAL(sliderMoved(int)), this, SLOT(onVolumeSliderMoved(int)));
+    connect(&m_lengthSlider, &Slider::sliderMoved, this, &BarWidget::onLengthSliderMoved);
+    connect(&m_lengthSlider, &Slider::sliderValueChanged, this, &BarWidget::onLengthSliderValueChanged);
+    connect(&m_volumeSlider, &Slider::sliderMoved, this, &BarWidget::onVolumeSliderMoved);
 
-    connect(&m_scPlayPause, SIGNAL(pressed()), this, SLOT(onShortcutPlayPausePressed()));
-    connect(&m_scNext, SIGNAL(pressed()), ePlayer, SLOT(next()));
-    connect(&m_scPrevious, SIGNAL(pressed()), ePlayer, SLOT(previous()));
-    connect(&m_scVolumeUp, SIGNAL(pressed()), this, SLOT(onShortcutVolumeUpPressed()));
-    connect(&m_scVolumeDown, SIGNAL(pressed()), this, SLOT(onShortcutVolumeDownPressed()));
+    connect(&m_scPlayPause, &Shortcut::pressed, this, &BarWidget::onShortcutPlayPausePressed);
+    connect(&m_scNext, &Shortcut::pressed, ePlayer, &Player::next);
+    connect(&m_scPrevious, &Shortcut::pressed, ePlayer, &Player::previous);
+    connect(&m_scVolumeUp, &Shortcut::pressed, this, &BarWidget::onShortcutVolumeUpPressed);
+    connect(&m_scVolumeDown, &Shortcut::pressed, this, &BarWidget::onShortcutVolumeDownPressed);
 }
 
 BarWidget::~BarWidget()
@@ -274,12 +274,13 @@ void BarWidget::setupUi()
     m_shuffleButton.setLockable(true);
     m_loopButton.setLockable(true);
 
-    m_playPauseButton.setSize(QSize(cfgBar->iconSize(), cfgBar->iconSize()));
-    m_previousButton.setSize(QSize(cfgBar->iconSize(), cfgBar->iconSize()));
-    m_nextButton.setSize(QSize(cfgBar->iconSize(), cfgBar->iconSize()));
-    m_shuffleButton.setSize(QSize(cfgBar->iconSize(), cfgBar->iconSize()));
-    m_loopButton.setSize(QSize(cfgBar->iconSize(), cfgBar->iconSize()));
-    m_volumeButton.setSize(QSize(cfgBar->iconSize(), cfgBar->iconSize()));
+    QSize buttonSize = QSize(cfgBar->iconSize(), cfgBar->iconSize());
+    m_playPauseButton.setSize(buttonSize);
+    m_previousButton.setSize(buttonSize);
+    m_nextButton.setSize(buttonSize);
+    m_shuffleButton.setSize(buttonSize);
+    m_loopButton.setSize(buttonSize);
+    m_volumeButton.setSize(buttonSize);
 
     m_shuffleButton.setLocked(cfgPlayer->shuffle());
     m_loopButton.setLocked(cfgPlayer->loop());

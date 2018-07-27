@@ -2,8 +2,7 @@
 
 Bass::Bass()
 {
-    _instances++;
-    if (_instances > 1)
+    if (++_instances > 1)
         return;
 
     if (isValidVersion() && setConfig())
@@ -12,8 +11,7 @@ Bass::Bass()
 
 Bass::~Bass()
 {
-    _instances--;
-    if (_instances == 0)
+    if (--_instances == 0)
         free();
 }
 

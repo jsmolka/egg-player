@@ -24,7 +24,7 @@ public:
     bool play();
     bool pause();
 
-    bool create(Audio *audio, bool prescan = false);
+    bool create(Audio *audio);
     bool free();
 
     bool setPosition(int position);

@@ -32,7 +32,7 @@ bool Cache::rollback()
     return m_db.rollback();
 }
 
-Audio * Cache::load(const QString &path)
+Audio * Cache::loadAudio(const QString &path)
 {
     Audio *audio = nullptr;
 
@@ -145,23 +145,6 @@ void Cache::setAudioCoverId(Audio *audio, int id)
 
     if (!m_query.exec())
         handleError();
-}
-
-int Cache::coverId(Audio *audio)
-{
-    m_query.prepare(
-        "SELECT coverid FROM audios "
-        "WHERE path = :path"
-    );
-    m_query.bindValue(":path", audio->path());
-
-    if (!m_query.exec())
-        handleError();
-
-    if (!m_query.first())
-        return m_query.value(0).toInt();
-
-    return -1;
 }
 
 QPixmap Cache::cover(Audio *audio, int size)

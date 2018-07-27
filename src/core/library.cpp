@@ -25,10 +25,8 @@ Library::~Library()
 
 Library * Library::instance()
 {
-    if (!_instance)
-        _instance = new Library(qApp);
-
-    return _instance;
+    static Library *library = new Library(qApp);
+    return library;
 }
 
 void Library::setSorted(bool sorted)
@@ -119,5 +117,3 @@ Files Library::uniqueFiles(const Files &paths)
     }
     return files;
 }
-
-Library * Library::_instance = nullptr;

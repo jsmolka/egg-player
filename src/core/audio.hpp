@@ -12,11 +12,24 @@ class Audio
 {
 public:
     Audio(const QString &path);
-    Audio(const QString &path, const QString &title, const QString &artist, const QString &album,
-          const QString &genre, int year, int track, int duration, int coverId);
+    Audio(const QString &path,
+          const QString &title,
+          const QString &artist,
+          const QString &album,
+          const QString &genre,
+          int year,
+          int track,
+          int duration,
+          int coverId);
     ~Audio();
 
     bool isValid() const;
+
+    void setCoverId(int coverId);
+    int coverId() const;
+
+    void setCached(bool cached);
+    bool isCached() const;
 
     QString path() const;
     QString title() const;
@@ -27,12 +40,6 @@ public:
     int track() const;
     Duration duration() const;
 
-    void setCoverId(int coverId);
-    int coverId() const;
-
-    void setCached(bool cached);
-    bool isCached() const;
-
     const wchar_t * pathWChar() const;
     QPixmap cover(int size = 200);
 
@@ -40,6 +47,9 @@ private:
     bool readTags();
 
     bool m_valid;
+    bool m_cached;
+    int m_coverId;
+
     QString m_path;
     QString m_title;
     QString m_artist;
@@ -48,8 +58,6 @@ private:
     int m_year;
     int m_track;
     Duration m_duration;
-    int m_coverId;
-    bool m_cached;
 };
 
 typedef QVector<Audio *> Audios;

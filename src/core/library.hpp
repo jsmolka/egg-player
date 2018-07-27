@@ -53,8 +53,6 @@ private:
     AudioLoaderController m_audioLoader;
     CoverLoaderController m_coverLoader;
     Files m_paths;
-
-    static Library *_instance;
 };
 
 #endif // LIBRARY_HPP

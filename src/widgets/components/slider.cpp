@@ -6,8 +6,8 @@ Slider::Slider(QWidget *parent)
 {
     setup();
 
-    connect(this, SIGNAL(sliderPressed()), this, SLOT(onSliderPressed()));
-    connect(this, SIGNAL(sliderReleased()), this, SLOT(onSliderReleased()));
+    connect(this, &Slider::sliderPressed, this, &Slider::onSliderPressed);
+    connect(this, &Slider::sliderReleased, this, &Slider::onSliderReleased);
 }
 
 Slider::~Slider()

@@ -23,7 +23,7 @@ public:
     bool commit();
     bool rollback();
 
-    Audio * load(const QString &path);
+    Audio * loadAudio(const QString &path);
 
     void insertAudio(Audio *audio);
     void updateAudio(Audio *audio);
@@ -31,7 +31,6 @@ public:
     int insertCover(const QPixmap &cover);
     void setAudioCoverId(Audio *audio, int id);
 
-    int coverId(Audio *audio);
     QPixmap cover(Audio *audio, int size = 200);
 
 private:

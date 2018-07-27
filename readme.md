@@ -24,12 +24,12 @@ A Groove Music like music player.
 - proper template function implementation for chunk
 - look into cache cover id getter
 - look into compile error for types
-- do not update the player if it is not playing
 - rename audio to track
 - implement isocpp guidelines
 - varadic template for logger
 - use audio checksum to detect changes
-
+- clean up barwidget
+- use explicit constructors
 
 ### Utils
 - update fileutil

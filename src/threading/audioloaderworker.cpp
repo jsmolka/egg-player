@@ -36,7 +36,7 @@ void AudioLoaderWorker::work()
         if (isInterrupted())
             return;
 
-        Audio *audio = cache.load(file);
+        Audio *audio = cache.loadAudio(file);
         if (!audio)
             audio = new Audio(file);
 

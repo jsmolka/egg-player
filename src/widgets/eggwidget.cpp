@@ -8,8 +8,8 @@ EggWidget::EggWidget(QWidget *parent)
     setup();
     setupUi();
 
-    connect(eLibrary, SIGNAL(inserted(Audio *, int)), &m_library, SLOT(insert(Audio *, int)));
-    connect(&m_library, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(onLibraryDoubleClicked(QModelIndex)));
+    connect(eLibrary, &Library::inserted, &m_library, &LibraryWidget::insert);
+    connect(&m_library, &LibraryWidget::doubleClicked, this, &EggWidget::onLibraryDoubleClicked);
 
     eLibrary->load(cfgLibrary->paths());
 }

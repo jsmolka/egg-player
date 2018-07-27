@@ -15,7 +15,7 @@ SmoothTableWidget::SmoothTableWidget(QWidget *parent)
 {
     setup();
 
-    connect(&m_smoothTimer, SIGNAL(timeout()), this, SLOT(onTimeout()));
+    connect(&m_smoothTimer, &QTimer::timeout, this, &SmoothTableWidget::onTimeout);
 }
 
 SmoothTableWidget::~SmoothTableWidget()

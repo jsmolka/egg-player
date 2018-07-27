@@ -10,7 +10,8 @@ Player::Player(QObject *parent)
     , m_shuffle(false)
     , m_playing(false)
 {
-    connect(&m_updateTimer, SIGNAL(timeout()), this, SLOT(update()));
+    connect(&m_updateTimer, &QTimer::timeout, this, &Player::update);
+
     m_updateTimer.start(cfgPlayer->updateInterval());
 }
 
@@ -21,10 +22,8 @@ Player::~Player()
 
 Player * Player::instance()
 {
-    if (!_instance)
-        _instance = new Player(qApp);
-
-    return _instance;
+    static Player *player = new Player(qApp);
+    return player;
 }
 
 void Player::setIndex(int index)
@@ -158,7 +157,7 @@ void Player::previous()
 
 void Player::update()
 {
-    if (!m_bass.stream()->isValid())
+    if (!m_bass.stream()->isValid() || !m_playing)
         return;
 
     int position = this->position();
@@ -273,5 +272,3 @@ void Player::setAudio(int index)
     emit audioChanged(audio);
     emit positionChanged(0);
 }
-
-Player * Player::_instance = nullptr;

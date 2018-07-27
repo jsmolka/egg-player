@@ -19,10 +19,8 @@ Config::~Config()
 
 Config * Config::instance()
 {
-    if (!_instance)
-        _instance = new Config(qApp);
-
-    return _instance;
+    static Config *config = new Config(qApp);
+    return config;
 }
 
 ConfigApp * Config::app()
@@ -84,5 +82,3 @@ void Config::save()
     if (file.open(QFile::WriteOnly))
         file.write(json.toJson());
 }
-
-Config * Config::_instance = nullptr;

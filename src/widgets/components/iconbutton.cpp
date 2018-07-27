@@ -8,7 +8,7 @@ IconButton::IconButton(QWidget *parent)
 {
     setup();
 
-    connect(this, SIGNAL(clicked(bool)), this, SLOT(onClicked()));
+    connect(this, &IconButton::clicked, this, &IconButton::onClicked);
 }
 
 IconButton::~IconButton()

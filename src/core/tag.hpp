@@ -12,7 +12,6 @@
 #include <taglib/mpegfile.h>
 #include <taglib/tag.h>
 
-#include "duration.hpp"
 #include "logger.hpp"
 #include "util.hpp"
 
@@ -30,9 +29,10 @@ public:
     QString artist() const;
     QString album() const;
     QString genre() const;
+
     int year() const;
     int track() const;
-    Duration duration() const;
+    int duration() const;
 
     QPixmap cover(int size);
 

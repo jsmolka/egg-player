@@ -19,6 +19,7 @@ public:
     void setFiles(const Files &files);
     Files files() const;
 
+public slots:
     void start() override;
 
 signals:

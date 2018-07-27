@@ -92,8 +92,6 @@ private:
     bool m_loop;
     bool m_shuffle;
     bool m_playing;
-
-    static Player *_instance;
 };
 
 #endif // PLAYER_HPP

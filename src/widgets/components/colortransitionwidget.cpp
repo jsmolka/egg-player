@@ -8,7 +8,7 @@ ColorTransitionWidget::ColorTransitionWidget(QWidget *parent)
 {
     setup();
 
-    connect(&m_transitionTimer, SIGNAL(timeout()), this, SLOT(onTimeout()));
+    connect(&m_transitionTimer, &QTimer::timeout, this, &ColorTransitionWidget::onTimeout);
 }
 
 ColorTransitionWidget::~ColorTransitionWidget()

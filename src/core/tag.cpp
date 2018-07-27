@@ -56,9 +56,9 @@ int Tag::track() const
     return m_file.tag()->track();
 }
 
-Duration Tag::duration() const
+int Tag::duration() const
 {
-    return Duration(m_file.audioProperties()->lengthInMilliseconds());
+    return m_file.audioProperties()->lengthInSeconds();
 }
 
 QPixmap Tag::cover(int size)

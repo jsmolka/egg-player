@@ -19,6 +19,7 @@ public:
     void setAudios(const Audios &audios);
     Audios audios() const;
 
+public slots:
     void start() override;
 
 private:
