@@ -22,7 +22,6 @@ A Groove Music like music player.
 - rewrite library widget
 - qt key sequence for shortcut
 - proper template function implementation for chunk
-- look into cache cover id getter
 - look into compile error for types
 - rename audio to track
 - implement isocpp guidelines
@@ -47,10 +46,6 @@ A Groove Music like music player.
 ### Icons
 - use svg format / different sizes
 - test icons in the icon preview example
-
-### Cache
-- query cover by id in music bar
-- add move functions for more use cases
 
 ### Reactive cache
 - use a file system watcher

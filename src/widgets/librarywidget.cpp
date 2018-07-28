@@ -64,7 +64,7 @@ QString LibraryWidget::audioText(Audio *audio, int column)
         case SongInfo::Genre:
             return audio->genre();
         case SongInfo::Length:
-            return audio->duration().toString();
+            return audio->duration()->toString();
     }
     return QString();
 }

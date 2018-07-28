@@ -93,14 +93,14 @@ int Audio::track() const
     return m_track;
 }
 
-Duration Audio::duration() const
+Duration * Audio::duration()
 {
-    return m_duration;
+    return &m_duration;
 }
 
-Cover Audio::cover() const
+Cover * Audio::cover()
 {
-    return m_cover;
+    return &m_cover;
 }
 
 const wchar_t * Audio::pathWChar() const

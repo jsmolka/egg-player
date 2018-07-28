@@ -1,5 +1,6 @@
 #include <QApplication>
 
+#include "cache.hpp"
 #include "config.hpp"
 #include "constants.hpp"
 #include "eggwidget.hpp"
@@ -19,6 +20,8 @@ void setup()
     ePlayer->setVolume(cfgPlayer->volume());
     ePlayer->setShuffle(cfgPlayer->shuffle());
     ePlayer->setLoop(cfgPlayer->loop());
+
+    Cache().createTables();
 }
 
 int main(int argc, char *argv[])

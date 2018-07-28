@@ -35,8 +35,8 @@ public:
     QString genre() const;
     int year() const;
     int track() const;
-    Duration duration() const;
-    Cover cover() const;
+    Duration * duration();
+    Cover * cover();
 
     const wchar_t * pathWChar() const;
 

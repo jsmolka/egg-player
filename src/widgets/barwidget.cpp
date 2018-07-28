@@ -113,18 +113,18 @@ Slider * BarWidget::volumeSlider()
 
 void BarWidget::onPlayerAudioChanged(Audio *audio)
 {
-    QPixmap cover = audio->cover().pixmap(cfgBar->coverSize());
+    QPixmap cover = audio->cover()->pixmap(cfgBar->coverSize());
 
     m_coverLabel.setPixmap(cover);
     m_trackLabel.setText(QString("%1\n%2").arg(audio->title(), audio->artist()));
 
     m_currentTimeLabel.setText(Duration(0).toString());
-    m_totalTimeLabel.setText(audio->duration().toString());
+    m_totalTimeLabel.setText(audio->duration()->toString());
 
-    m_lengthSlider.setRange(0, audio->duration().secs());
+    m_lengthSlider.setRange(0, audio->duration()->secs());
     m_lengthSlider.setEnabled(true);
 
-    startTransition(audio->cover().dominantColor());
+    startTransition(audio->cover()->dominantColor());
 }
 
 void BarWidget::onPlayerStateChanged()
@@ -192,7 +192,7 @@ void BarWidget::onLengthSliderMoved(int value)
 
 void BarWidget::onLengthSliderValueChanged(int value)
 {
-    if (value != ePlayer->currentAudio()->duration().secs())
+    if (value != ePlayer->currentAudio()->duration()->secs())
         ePlayer->setPosition(value);
     else
         ePlayer->next();
@@ -223,14 +223,14 @@ void BarWidget::onShortcutVolumeDownPressed()
 
 void BarWidget::setup()
 {
-    //setColor(Cover::defaultCover().dominantColor());
+    setColor(Cover::defaultCover().dominantColor());
     setFixedHeight(cfgBar->height());
     setStyleSheet(FileUtil::Css::bar());
 }
 
 void BarWidget::setupUi()
 {
-    //m_coverLabel.setPixmap(Cover::defaultCover().pixmap(cfgBar->coverSize()));
+    m_coverLabel.setPixmap(Cover::defaultCover().pixmap(cfgBar->coverSize()));
     m_coverLabel.setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
     m_trackLabel.setFixedWidth(cfgBar->trackWidth());
     m_trackLabel.setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);

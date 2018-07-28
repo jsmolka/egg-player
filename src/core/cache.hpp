@@ -23,42 +23,43 @@ public:
     bool commit();
     bool rollback();
 
-    Audio * loadAudio(const QString &path);
+    void createTables();
 
+    Audio * loadAudio(const QString &path);
     void insertAudio(Audio *audio);
     void updateAudio(Audio *audio);
 
     int insertCover(const QPixmap &cover);
+    void updateCover(const QPixmap &cover);
     void setAudioCoverId(Audio *audio, int id);
 
     QPixmap coverById(int id);
-    QPixmap coverByAudio(Audio *audio);
+    QPixmap coverByAudioPath(Audio *audio);
 
 private:
-    QString dbName();
-    QSqlDatabase db();
+    static QString dbName();
+    static QSqlDatabase db();
+    static QByteArray coverToBytes(const QPixmap &cover);
 
     void createCovers();
     void createAudios();
-    void createTables();
+    bool defaultCoverExists();
+    void insertDefaultCover();
 
     int insertByteCover(const QByteArray &bytes);
+    void updateByteCover(int id, const QByteArray &bytes);
 
     int coverId(const QByteArray &bytes);
     int lastCoverId();
-    int queryCoverIdBySize(int size);
-    int queryCoverIdByBlob(const QByteArray &bytes);
+    int coverIdBySize(int size);
+    int coverIdByBlob(const QByteArray &bytes);
 
-    void handleError();
+    void error();
 
     QString lastQuery();
 
-    QByteArray coverToBytes(const QPixmap &cover);
-
     QSqlDatabase m_db;
     QSqlQuery m_query;
-
-    static bool _created;
 };
 
 #endif // CACHE_HPP

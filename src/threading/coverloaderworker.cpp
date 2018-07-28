@@ -36,7 +36,7 @@ void CoverLoaderWorker::work()
         if (isInterrupted())
             return;
 
-        if (audio->cover().id() == -1)
+        if (audio->cover()->id() == -1)
         {
             QPixmap cover = Cover::loadFromFile(audio->pathWChar());
 
@@ -45,10 +45,7 @@ void CoverLoaderWorker::work()
 
             int id = cache.insertCover(cover);
             if (id != -1)
-            {
                 cache.setAudioCoverId(audio, id);
-                audio->cover().setId(id);
-            }
         }
     }
     emit finished();

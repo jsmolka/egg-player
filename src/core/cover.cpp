@@ -23,13 +23,18 @@ Cover Cover::defaultCover()
     return Cover(0);
 }
 
+int Cover::defaultSize()
+{
+    return _size;
+}
+
 QPixmap Cover::loadFromFile(const wchar_t *file)
 {
     QPixmap cover = Tag(file).cover();
     if (cover.isNull())
     {
         log("Cover: Cannot read cover %1", {QString::fromWCharArray(file)});
-        cover = _covers.value(0);
+        cover = Cache().coverById(0);
     }
     return resize(coverify(cover), _size, false);
 }
@@ -47,14 +52,15 @@ int Cover::id() const
 QPixmap Cover::pixmap(int size)
 {
     QPixmap pixmap;
-    if (_covers.contains(m_id))
+    int id = qMax(0, m_id);
+    if (_covers.contains(id))
     {
-        pixmap = _covers.value(m_id);
+        pixmap = _covers.value(id);
     }
     else
     {
-        pixmap = loadFromCache(m_id);
-        _covers.insert(m_id, pixmap);
+        pixmap = loadFromCache(id);
+        _covers.insert(id, pixmap);
     }
     return size == -1 ? pixmap : resize(pixmap, size, false);
 }
@@ -62,15 +68,16 @@ QPixmap Cover::pixmap(int size)
 QColor Cover::dominantColor()
 {
     QColor dominant;
-    if (_colors.contains(m_id))
+    int id = qMax(0, m_id);
+    if (_colors.contains(id))
     {
-        dominant = _colors.value(m_id);
+        dominant = _colors.value(id);
     }
     else
     {
         dominant = rawDominantColor(resize(pixmap(), 25, true).toImage());
         dominant = adjustDominantColor(dominant);
-        _colors.insert(m_id, dominant);
+        _colors.insert(id, dominant);
     }
     return dominant;
 }
