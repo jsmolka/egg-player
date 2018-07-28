@@ -36,16 +36,19 @@ void CoverLoaderWorker::work()
         if (isInterrupted())
             return;
 
-        if (audio->coverId() == -1)
+        if (audio->cover().id() == -1)
         {
-            QPixmap cover = audio->cover();
+            QPixmap cover = Cover::loadFromFile(audio->pathWChar());
 
             static QMutex mutex;
             QMutexLocker locker(&mutex);
 
             int id = cache.insertCover(cover);
             if (id != -1)
+            {
                 cache.setAudioCoverId(audio, id);
+                audio->cover().setId(id);
+            }
         }
     }
     emit finished();

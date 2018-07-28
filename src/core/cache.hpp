@@ -31,7 +31,8 @@ public:
     int insertCover(const QPixmap &cover);
     void setAudioCoverId(Audio *audio, int id);
 
-    QPixmap cover(Audio *audio, int size = 200);
+    QPixmap coverById(int id);
+    QPixmap coverByAudio(Audio *audio);
 
 private:
     QString dbName();

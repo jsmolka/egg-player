@@ -9,7 +9,8 @@ Cache::Cache()
     m_query = QSqlQuery(m_db);
     m_query.setForwardOnly(true);
 
-    createTables();
+    if (!_created)
+        createTables();
 }
 
 Cache::~Cache()
@@ -85,7 +86,7 @@ void Cache::insertAudio(Audio *audio)
     m_query.bindValue(":year", audio->year());
     m_query.bindValue(":track", audio->track());
     m_query.bindValue(":duration", audio->duration().secs());
-    m_query.bindValue(":coverid", audio->coverId());
+    m_query.bindValue(":coverid", audio->cover().id());
 
     if (!m_query.exec())
         handleError();
@@ -116,7 +117,7 @@ void Cache::updateAudio(Audio *audio)
     m_query.bindValue(":year", audio->year());
     m_query.bindValue(":track", audio->track());
     m_query.bindValue(":duration", audio->duration().secs());
-    m_query.bindValue(":coverid", audio->coverId());
+    m_query.bindValue(":coverid", audio->cover().id());
 
     if (!m_query.exec())
         handleError();
@@ -147,7 +148,27 @@ void Cache::setAudioCoverId(Audio *audio, int id)
         handleError();
 }
 
-QPixmap Cache::cover(Audio *audio, int size)
+QPixmap Cache::coverById(int id)
+{
+    m_query.prepare(
+        "SELECT cover FROM covers "
+        "WHERE id = :id"
+    );
+    m_query.bindValue(":id", id);
+
+    if (!m_query.exec())
+        handleError();
+
+    QPixmap cover;
+    if (m_query.first())
+    {
+        QByteArray bytes = m_query.value(0).toByteArray();
+        cover.loadFromData(bytes);
+    }
+    return cover;
+}
+
+QPixmap Cache::coverByAudio(Audio *audio)
 {
     m_query.prepare(
         "SELECT covers.cover FROM audios "
@@ -165,13 +186,7 @@ QPixmap Cache::cover(Audio *audio, int size)
         QByteArray bytes = m_query.value(0).toByteArray();
         cover.loadFromData(bytes);
     }
-    else
-    {
-        cover = Util::cover();
-        log("Cache: Cannot load cover %1", {audio->path()});
-    }
-
-    return Util::resize(cover, size);
+    return cover;
 }
 
 QString Cache::dbName()

@@ -1,6 +1,111 @@
-#include "colorutil.hpp"
+#include "cache.hpp"
+#include "cover.hpp"
 
-QColor ColorUtil::dominant(const QImage &image)
+Cover::Cover()
+    : Cover(-1)
+{
+
+}
+
+Cover::Cover(int id)
+    : m_id(id)
+{
+
+}
+
+Cover::~Cover()
+{
+
+}
+
+Cover Cover::defaultCover()
+{
+    return Cover(0);
+}
+
+QPixmap Cover::loadFromFile(const wchar_t *file)
+{
+    QPixmap cover = Tag(file).cover();
+    if (cover.isNull())
+    {
+        log("Cover: Cannot read cover %1", {QString::fromWCharArray(file)});
+        cover = _covers.value(0);
+    }
+    return resize(coverify(cover), _size, false);
+}
+
+void Cover::setId(int id)
+{
+    m_id = id;
+}
+
+int Cover::id() const
+{
+    return m_id;
+}
+
+QPixmap Cover::pixmap(int size)
+{
+    QPixmap pixmap;
+    if (_covers.contains(m_id))
+    {
+        pixmap = _covers.value(m_id);
+    }
+    else
+    {
+        pixmap = loadFromCache(m_id);
+        _covers.insert(m_id, pixmap);
+    }
+    return size == -1 ? pixmap : resize(pixmap, size, false);
+}
+
+QColor Cover::dominantColor()
+{
+    QColor dominant;
+    if (_colors.contains(m_id))
+    {
+        dominant = _colors.value(m_id);
+    }
+    else
+    {
+        dominant = rawDominantColor(resize(pixmap(), 25, true).toImage());
+        dominant = adjustDominantColor(dominant);
+        _colors.insert(m_id, dominant);
+    }
+    return dominant;
+}
+
+QPixmap Cover::coverify(const QPixmap &cover)
+{
+    int height = cover.height();
+    int width = cover.width();
+
+    if (height != width)
+    {
+        int size = qMax(height, width);
+        QPixmap square(size, size);
+        square.fill(Qt::transparent);
+
+        QPainter painter(&square);
+        int x = (size - width) / 2;
+        int y = (size - height) / 2;
+        painter.drawPixmap(x, y, cover);
+        return square;
+    }
+    return cover;
+}
+
+QPixmap Cover::resize(const QPixmap &pixmap, int size, bool fast)
+{
+    return pixmap.scaled(size, size, Qt::KeepAspectRatio, fast ? Qt::FastTransformation : Qt::SmoothTransformation);
+}
+
+QPixmap Cover::loadFromCache(int id)
+{
+    return Cache().coverById(id);
+}
+
+QColor Cover::rawDominantColor(const QImage &image)
 {
     const quint32 RANGE = 60;
 
@@ -89,9 +194,8 @@ QColor ColorUtil::dominant(const QImage &image)
     }
 }
 
-QColor ColorUtil::background(const QImage &image)
+QColor Cover::adjustDominantColor(const QColor &color)
 {
-    QColor color = dominant(Util::resize(image, 25, true));
     qreal hue = color.hsvHueF();
     qreal saturation = qMin(color.hsvSaturationF(), 0.8);
     qreal value = qMin(color.valueF(), 0.36);
@@ -99,7 +203,6 @@ QColor ColorUtil::background(const QImage &image)
     return QColor::fromHsvF(hue, saturation, value);
 }
 
-QColor ColorUtil::background(const QPixmap &pixmap)
-{
-    return background(pixmap.toImage());
-}
+QHash<int, QPixmap> Cover::_covers = {};
+
+QHash<int, QColor> Cover::_colors = {};

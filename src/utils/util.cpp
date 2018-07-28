@@ -1,10 +1,5 @@
 #include "util.hpp"
 
-QPixmap Util::cover(int size)
-{
-    return size == -1 ? QPixmap(IMG_DEFAULT_COVER) : Util::resize(QPixmap(IMG_DEFAULT_COVER), size);
-}
-
 QFont Util::font(double size)
 {
     int id = QFontDatabase::addApplicationFont(FONT_LATO);
@@ -15,16 +10,6 @@ QFont Util::font(double size)
     font.setWeight(QFont::Weight::Medium);
 
     return font;
-}
-
-QPixmap Util::resize(const QPixmap &pixmap, int size, bool fast)
-{
-    return pixmap.scaled(size, size, Qt::KeepAspectRatio, fast ? Qt::FastTransformation : Qt::SmoothTransformation);
-}
-
-QImage Util::resize(const QImage &image, int size, bool fast)
-{
-    return image.scaled(size, size, Qt::KeepAspectRatio, fast ? Qt::FastTransformation : Qt::SmoothTransformation);
 }
 
 template <typename T>

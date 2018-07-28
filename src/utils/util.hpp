@@ -14,11 +14,7 @@
 
 namespace Util
 {
-    extern QPixmap cover(int size = -1);
     extern QFont font(double size);
-
-    extern QPixmap resize(const QPixmap &pixmap, int size, bool fast = false);
-    extern QImage resize(const QImage &image, int size, bool fast = false);
 
     template <typename T>
     extern QVector<QVector<T>> chunk(const QVector<T> &vector, int n);

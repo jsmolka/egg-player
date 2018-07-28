@@ -2,7 +2,7 @@
 
 Audio::Audio(const QString &path)
     : m_path(path)
-    , m_coverId(-1)
+    , m_cover(-1)
     , m_cached(false)
 {
     if (!(m_valid = readTags()))
@@ -32,7 +32,7 @@ Audio::Audio(const QString &path,
     , m_year(year)
     , m_track(track)
     , m_duration(length)
-    , m_coverId(coverId)
+    , m_cover(coverId)
     , m_cached(true)
 {
 
@@ -46,16 +46,6 @@ Audio::~Audio()
 bool Audio::isValid() const
 {
     return m_valid;
-}
-
-void Audio::setCoverId(int id)
-{
-    m_coverId = id;
-}
-
-int Audio::coverId() const
-{
-    return m_coverId;
 }
 
 void Audio::setCached(bool cached)
@@ -108,14 +98,14 @@ Duration Audio::duration() const
     return m_duration;
 }
 
+Cover Audio::cover() const
+{
+    return m_cover;
+}
+
 const wchar_t * Audio::pathWChar() const
 {
     return reinterpret_cast<const wchar_t *>(m_path.constData());
-}
-
-QPixmap Audio::cover(int size)
-{
-    return Tag(pathWChar()).cover(size);
 }
 
 bool Audio::readTags()

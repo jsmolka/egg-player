@@ -113,7 +113,7 @@ Slider * BarWidget::volumeSlider()
 
 void BarWidget::onPlayerAudioChanged(Audio *audio)
 {
-    QPixmap cover = Cache().cover(audio, cfgBar->coverSize());
+    QPixmap cover = audio->cover().pixmap(cfgBar->coverSize());
 
     m_coverLabel.setPixmap(cover);
     m_trackLabel.setText(QString("%1\n%2").arg(audio->title(), audio->artist()));
@@ -124,7 +124,7 @@ void BarWidget::onPlayerAudioChanged(Audio *audio)
     m_lengthSlider.setRange(0, audio->duration().secs());
     m_lengthSlider.setEnabled(true);
 
-    startTransition(ColorUtil::background(cover));
+    startTransition(audio->cover().dominantColor());
 }
 
 void BarWidget::onPlayerStateChanged()
@@ -223,14 +223,14 @@ void BarWidget::onShortcutVolumeDownPressed()
 
 void BarWidget::setup()
 {
-    setColor(ColorUtil::background(Util::cover()));
+    //setColor(Cover::defaultCover().dominantColor());
     setFixedHeight(cfgBar->height());
     setStyleSheet(FileUtil::Css::bar());
 }
 
 void BarWidget::setupUi()
 {
-    m_coverLabel.setPixmap(Util::cover(cfgBar->coverSize()));
+    //m_coverLabel.setPixmap(Cover::defaultCover().pixmap(cfgBar->coverSize()));
     m_coverLabel.setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
     m_trackLabel.setFixedWidth(cfgBar->trackWidth());
     m_trackLabel.setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);

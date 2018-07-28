@@ -63,7 +63,6 @@ HEADERS += \
     src/core/player.hpp \
     src/core/shortcut.hpp \
     src/core/tag.hpp \
-    src/utils/colorutil.hpp \
     src/utils/fileutil.hpp \
     src/utils/util.hpp \
     src/widgets/eggwidget.hpp \
@@ -86,7 +85,8 @@ HEADERS += \
     src/threading/abstractcontroller.hpp \
     src/threading/coverloadercontroller.hpp \
     src/threading/audioloadercontroller.hpp \
-    src/core/duration.hpp
+    src/core/duration.hpp \
+    src/core/cover.hpp
 
 SOURCES += \
     src/main.cpp \
@@ -108,7 +108,6 @@ SOURCES += \
     src/core/player.cpp \
     src/core/shortcut.cpp \
     src/core/tag.cpp \
-    src/utils/colorutil.cpp \
     src/utils/fileutil.cpp \
     src/utils/util.cpp \
     src/widgets/eggwidget.cpp \
@@ -130,5 +129,6 @@ SOURCES += \
     src/threading/abstractcontroller.cpp \
     src/threading/coverloadercontroller.cpp \
     src/threading/audioloadercontroller.cpp \
-    src/core/duration.cpp
+    src/core/duration.cpp \
+    src/core/cover.cpp
 

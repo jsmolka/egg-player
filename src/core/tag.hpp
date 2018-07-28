@@ -2,7 +2,6 @@
 #define TAG_HPP
 
 #include <QString>
-#include <QPainter>
 #include <QPixmap>
 
 #include <taglib/attachedpictureframe.h>
@@ -34,12 +33,9 @@ public:
     int track() const;
     int duration() const;
 
-    QPixmap cover(int size);
+    QPixmap cover();
 
 private:
-    QPixmap coverify(const QPixmap &cover);
-    QPixmap readCover();
-
     QString toQString(const TagLib::String &string) const;
 
     TagLib::MPEG::File m_file;

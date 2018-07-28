@@ -30,6 +30,7 @@ A Groove Music like music player.
 - use audio checksum to detect changes
 - clean up barwidget
 - use explicit constructors
+- tag tostring static
 
 ### Utils
 - update fileutil

@@ -61,38 +61,7 @@ int Tag::duration() const
     return m_file.audioProperties()->lengthInSeconds();
 }
 
-QPixmap Tag::cover(int size)
-{
-    QPixmap cover = readCover();
-    if (cover.isNull())
-    {
-        cover = Util::cover();
-        log("Tag: Cannot read cover %1", {toQString(m_file.name().toString())});
-    }
-    return Util::resize(cover, size);
-}
-
-QPixmap Tag::coverify(const QPixmap &cover)
-{
-    int height = cover.height();
-    int width = cover.width();
-
-    if (height != width)
-    {
-        int size = std::max(height, width);
-        QPixmap square(size, size);
-        square.fill(Qt::transparent);
-
-        QPainter painter(&square);
-        int x = (size - width) / 2;
-        int y = (size - height) / 2;
-        painter.drawPixmap(x, y, cover);
-        return square;
-    }
-    return cover;
-}
-
-QPixmap Tag::readCover()
+QPixmap Tag::cover()
 {
     QPixmap cover;
     if (m_file.hasID3v2Tag())
@@ -103,7 +72,6 @@ QPixmap Tag::readCover()
         {
             TagLib::ID3v2::AttachedPictureFrame *frame = static_cast<TagLib::ID3v2::AttachedPictureFrame *>(frameList.front());
             cover.loadFromData((const uchar *)frame->picture().data(), frame->picture().size());
-            cover = coverify(cover);
         }
     }
     return cover;

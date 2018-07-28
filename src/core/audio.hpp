@@ -1,9 +1,9 @@
 #ifndef AUDIO_HPP
 #define AUDIO_HPP
 
-#include <QPixmap>
 #include <QVector>
 
+#include "cover.hpp"
 #include "duration.hpp"
 #include "logger.hpp"
 #include "tag.hpp"
@@ -25,9 +25,6 @@ public:
 
     bool isValid() const;
 
-    void setCoverId(int coverId);
-    int coverId() const;
-
     void setCached(bool cached);
     bool isCached() const;
 
@@ -39,16 +36,15 @@ public:
     int year() const;
     int track() const;
     Duration duration() const;
+    Cover cover() const;
 
     const wchar_t * pathWChar() const;
-    QPixmap cover(int size = 200);
 
 private:
     bool readTags();
 
     bool m_valid;
     bool m_cached;
-    int m_coverId;
 
     QString m_path;
     QString m_title;
@@ -58,6 +54,7 @@ private:
     int m_year;
     int m_track;
     Duration m_duration;
+    Cover m_cover;
 };
 
 typedef QVector<Audio *> Audios;

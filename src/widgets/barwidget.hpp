@@ -8,7 +8,6 @@
 #include <QWidget>
 
 #include "cache.hpp"
-#include "colorutil.hpp"
 #include "colortransitionwidget.hpp"
 #include "config.hpp"
 #include "constants.hpp"
