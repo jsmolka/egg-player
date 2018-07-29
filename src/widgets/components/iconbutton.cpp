@@ -2,9 +2,9 @@
 
 IconButton::IconButton(QWidget *parent)
     : QPushButton(parent)
+    , m_iconIndex(0)
     , m_lockable(false)
     , m_locked(false)
-    , m_index(0)
 {
     setup();
 
@@ -27,15 +27,15 @@ QVector<QIcon> IconButton::icons() const
     return m_icons;
 }
 
-void IconButton::setIndex(int index)
+void IconButton::setIconIndex(int index)
 {
-    m_index = index;
-    setIcon(m_icons.at(m_index));
+    m_iconIndex = index;
+    setIcon(m_icons.at(index));
 }
 
-int IconButton::index() const
+int IconButton::iconIndex() const
 {
-    return m_index;
+    return m_iconIndex;
 }
 
 void IconButton::setLockable(bool lockable)
@@ -76,13 +76,13 @@ bool IconButton::event(QEvent *event)
 {
     if (event->type() == QEvent::HoverEnter)
     {
-        setIcon(m_icons.at(m_index).pixmap(size(), QIcon::Active));
+        setIcon(m_icons.at(m_iconIndex).pixmap(size(), QIcon::Active));
         return true;
     }
 
     if (event->type() == QEvent::HoverLeave)
     {
-        setIcon(m_icons.at(m_index).pixmap(size(), QIcon::Normal));
+        setIcon(m_icons.at(m_iconIndex).pixmap(size(), QIcon::Normal));
         return true;
     }
 

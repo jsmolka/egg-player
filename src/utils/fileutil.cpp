@@ -10,30 +10,51 @@ QString FileUtil::fileName(const QString &file)
     return QFileInfo(file).baseName();
 }
 
-quint64 FileUtil::size(const QString &file)
-{
-    return QFileInfo(file).size();
-}
-
-QString FileUtil::read(const QString &file)
+QString FileUtil::read(const QString &file, const QString &defaultValue)
 {
     QFile qFile(file);
     if (!qFile.open(QFile::ReadOnly | QFile::Text))
-        return QString();
+        return defaultValue;
 
     return QTextStream(&qFile).readAll();
 }
 
-Files FileUtil::glob(const QString &path, const QString &suffix)
+QByteArray FileUtil::readBytes(const QString &file, const QByteArray &defaultValue)
+{
+    QFile qFile(file);
+    if (!qFile.open(QFile::ReadOnly | QFile::Text))
+        return defaultValue;
+
+    return qFile.readAll();
+}
+
+void FileUtil::write(const QString &file, const QString &content)
+{
+    QFile qFile(file);
+    if (!qFile.open(QFile::WriteOnly))
+        return;
+
+    QTextStream(&qFile) << content;
+}
+
+void FileUtil::write(const QString &file, const QByteArray &content)
+{
+    QFile qFile(file);
+    if (!qFile.open(QFile::WriteOnly))
+        return;
+
+    qFile.write(content);
+}
+
+Files FileUtil::glob(const QString &path, const QString &filter)
 {
     Files result;
 
-    QDirIterator iterator(path, QDirIterator::Subdirectories);
+    QDirIterator iterator(path, QStringList() << filter, QDir::Files, QDirIterator::Subdirectories);
     while (iterator.hasNext())
     {
         iterator.next();
-        if (iterator.fileInfo().isFile() && iterator.fileInfo().suffix().compare(suffix, Qt::CaseInsensitive) == 0)
-            result << iterator.filePath();
+        result << iterator.filePath();
     }
     return result;
 }

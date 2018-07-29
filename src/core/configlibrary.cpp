@@ -28,7 +28,7 @@ int ConfigLibrary::itemHeight()
     return scale(get("itemHeight").toInt());
 }
 
-void ConfigLibrary::setPaths(const QVector<QString> &paths)
+void ConfigLibrary::setPaths(const Paths &paths)
 {
     QJsonArray array;
     for (const QString &path : paths)
@@ -37,13 +37,13 @@ void ConfigLibrary::setPaths(const QVector<QString> &paths)
     set("paths", QJsonValue(array));
 }
 
-QVector<QString> ConfigLibrary::paths()
+Paths ConfigLibrary::paths()
 {
-    QVector<QString> list;
+    Paths paths;
     for (const QJsonValue &element : get("paths").toArray())
-        list << element.toString();
+        paths << element.toString();
 
-    return list;
+    return paths;
 }
 
 void ConfigLibrary::setScrollBarWidth(int width)

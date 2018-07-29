@@ -14,10 +14,7 @@ public:
     ~BassError();
 
 protected:
-    void error();
-
-private:
-    const static QHash<int, QString> _errors;
+    static void error();
 };
 
 #endif // BASSERROR_HPP

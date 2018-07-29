@@ -50,13 +50,7 @@ ConfigShortcut * Config::shortcut()
 
 void Config::load()
 {
-    QJsonDocument json = QJsonDocument::fromJson("{}");
-    if (FileUtil::exists(CFG_PATH))
-    {
-        QFile file(CFG_PATH);
-        if (file.open(QIODevice::ReadOnly | QIODevice::Text))
-            json = QJsonDocument::fromJson(file.readAll());
-    }
+    QJsonDocument json = QJsonDocument::fromJson(FileUtil::readBytes(CFG_PATH, "{}"));
 
     QJsonObject object = json.object();
     m_app = ConfigApp(object.value("app").toObject());
@@ -78,7 +72,5 @@ void Config::save()
     object.insert("shortcut", m_shortcut.object());
     json.setObject(object);
 
-    QFile file(CFG_PATH);
-    if (file.open(QFile::WriteOnly))
-        file.write(json.toJson());
+    FileUtil::write(CFG_PATH, json.toJson());
 }

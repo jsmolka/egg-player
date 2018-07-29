@@ -36,7 +36,7 @@ public:
     QPixmap cover();
 
 private:
-    QString toQString(const TagLib::String &string) const;
+    static QString toQString(const TagLib::String &string);
 
     TagLib::MPEG::File m_file;
 };

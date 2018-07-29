@@ -2,8 +2,8 @@
 
 Audio::Audio(const QString &path)
     : m_path(path)
-    , m_cover(-1)
     , m_cached(false)
+    , m_cover(-1)
 {
     if (!(m_valid = readTags()))
     {
@@ -24,6 +24,7 @@ Audio::Audio(const QString &path,
              int length,
              int coverId)
     : m_valid(true)
+    , m_cached(true)
     , m_path(path)
     , m_title(title)
     , m_artist(artist)
@@ -33,7 +34,6 @@ Audio::Audio(const QString &path,
     , m_track(track)
     , m_duration(length)
     , m_cover(coverId)
-    , m_cached(true)
 {
 
 }
@@ -103,14 +103,14 @@ Cover * Audio::cover()
     return &m_cover;
 }
 
-const wchar_t * Audio::pathWChar() const
+const wchar_t * Audio::widePath() const
 {
     return reinterpret_cast<const wchar_t *>(m_path.constData());
 }
 
 bool Audio::readTags()
 {
-    Tag tag(pathWChar());
+    Tag tag(widePath());
 
     if (!tag.isValid() || !tag.isAudioValid())
         return false;

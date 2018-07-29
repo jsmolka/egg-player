@@ -3,9 +3,8 @@
 
 #include <QVector>
 
-#include "audio.hpp"
-
 //using Audios = QVector<Audio *>;
 using Files = QVector<QString>;
+using Paths = QVector<QString>;
 
 #endif // TYPES_HPP

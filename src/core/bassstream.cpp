@@ -71,7 +71,7 @@ bool BassStream::create(Audio *audio)
     if (!free())
         return false;
 
-    m_handle = BASS_StreamCreateFile(false, audio->pathWChar(), 0, 0, BASS_ASYNCFILE);
+    m_handle = BASS_StreamCreateFile(false, audio->widePath(), 0, 0, BASS_ASYNCFILE);
 
     return isValid();
 }

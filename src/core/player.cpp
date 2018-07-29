@@ -99,6 +99,7 @@ void Player::setVolume(int volume)
 
     m_volume = volume;
     emit volumeChanged(volume);
+    cfgPlayer->setVolume(volume);
 }
 
 void Player::setPosition(int position)
@@ -113,6 +114,7 @@ void Player::setPosition(int position)
 void Player::setLoop(bool loop)
 {
     m_loop = loop;
+    cfgPlayer->setLoop(loop);
 }
 
 void Player::setShuffle(bool shuffle)
@@ -123,6 +125,7 @@ void Player::setShuffle(bool shuffle)
         unshuffle();
 
     m_shuffle = shuffle;
+    cfgPlayer->setShuffle(shuffle);
 }
 
 void Player::play()

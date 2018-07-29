@@ -77,7 +77,7 @@ QPixmap Tag::cover()
     return cover;
 }
 
-QString Tag::toQString(const TagLib::String &string) const
+QString Tag::toQString(const TagLib::String &string)
 {
     return QString::fromWCharArray(string.toCWString(), string.size());
 }

@@ -7,6 +7,7 @@
 #include <QVector>
 
 #include "configabstract.hpp"
+#include "types.hpp"
 
 class ConfigLibrary : public ConfigAbstract
 {
@@ -21,8 +22,8 @@ public:
     void setItemHeight(int height);
     int itemHeight();
 
-    void setPaths(const QVector<QString> &paths);
-    QVector<QString> paths();
+    void setPaths(const Paths &paths);
+    Paths paths();
 
     void setScrollBarWidth(int width);
     int scrollBarWidth();

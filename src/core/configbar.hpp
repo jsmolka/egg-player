@@ -28,13 +28,13 @@ public:
     void setSpacing(int spacing);
     int spacing();
 
-    int coverSize();
-
     void setTimeWidth(int width);
     int timeWidth();
 
     void setTrackWidth(int width);
     int trackWidth();
+
+    int coverSize();
 };
 
 #endif // CONFIGBAR_HPP

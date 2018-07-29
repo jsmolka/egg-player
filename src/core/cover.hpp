@@ -16,21 +16,21 @@ public:
     Cover(int id);
     ~Cover();
 
-    static Cover defaultCover();
     static int defaultSize();
+    static Cover defaultCover();
     static QPixmap loadFromFile(const wchar_t *file);
 
     void setId(int id);
     int id() const;
 
-    QPixmap pixmap(int size = -1);
+    QPixmap picture(int size = -1);
     QColor dominantColor();
 
 private:
     static QPixmap coverify(const QPixmap &cover);
     static QPixmap resize(const QPixmap &pixmap, int size, bool fast);
+    static QPixmap loadFromCache(int id);
 
-    QPixmap loadFromCache(int id);
     QColor rawDominantColor(const QImage &image);
     QColor adjustDominantColor(const QColor &color);
 

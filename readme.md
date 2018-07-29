@@ -27,21 +27,13 @@ A Groove Music like music player.
 - implement isocpp guidelines
 - varadic template for logger
 - use audio checksum to detect changes
-- clean up barwidget
 - use explicit constructors
-- tag tostring static
 
 ### Utils
-- update fileutil
-  - add readline, use in config
-  - optional default value for read function
-  - diriterator with filter and files only
 - use inline functions for utils
 - move css loading to its widget
 - move font loading from util to main
 - save mainwindow pre fullscreen size
-- abstractcontroller dry
-- use static inside instance function
 
 ### Icons
 - use svg format / different sizes

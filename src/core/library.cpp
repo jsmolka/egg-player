@@ -107,7 +107,7 @@ Files Library::uniqueFiles(const Files &paths)
     {
         if (!m_paths.contains(path))
         {
-            files << FileUtil::glob(path, "mp3");
+            files << FileUtil::glob(path, "*.mp3");
             m_paths << path;
         }
         else

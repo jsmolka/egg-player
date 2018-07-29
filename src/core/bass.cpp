@@ -2,27 +2,18 @@
 
 Bass::Bass()
 {
-    if (++_instances > 1)
-        return;
-
     if (isValidVersion() && setConfig())
-        _init = init();
+        init();
 }
 
 Bass::~Bass()
 {
-    if (--_instances == 0)
-        free();
+    free();
 }
 
 BassStream * Bass::stream()
 {
     return &m_stream;
-}
-
-bool Bass::isInit() const
-{
-    return _init;
 }
 
 bool Bass::start()
@@ -123,7 +114,3 @@ bool Bass::call(BOOL(*func)())
 
     return success;
 }
-
-bool Bass::_init = false;
-
-int Bass::_instances = 0;

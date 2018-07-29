@@ -72,11 +72,6 @@ int ConfigBar::spacing()
     return scale(get("spacing").toInt());
 }
 
-int ConfigBar::coverSize()
-{
-    return height() - 2 * margin();
-}
-
 void ConfigBar::setTimeWidth(int width)
 {
     set("timeWidth", width);
@@ -95,4 +90,9 @@ void ConfigBar::setTrackWidth(int width)
 int ConfigBar::trackWidth()
 {
     return scale(get("trackWidth").toInt());
+}
+
+int ConfigBar::coverSize()
+{
+    return height() - 2 * margin();
 }

@@ -113,9 +113,7 @@ Slider * BarWidget::volumeSlider()
 
 void BarWidget::onPlayerAudioChanged(Audio *audio)
 {
-    QPixmap cover = audio->cover()->pixmap(cfgBar->coverSize());
-
-    m_coverLabel.setPixmap(cover);
+    m_coverLabel.setPixmap(audio->cover()->picture(cfgBar->coverSize()));
     m_trackLabel.setText(QString("%1\n%2").arg(audio->title(), audio->artist()));
 
     m_currentTimeLabel.setText(Duration(0).toString());
@@ -129,7 +127,7 @@ void BarWidget::onPlayerAudioChanged(Audio *audio)
 
 void BarWidget::onPlayerStateChanged()
 {
-    m_playPauseButton.setIndex(ePlayer->isPlaying() ? 1 : 0);
+    m_playPauseButton.setIconIndex(ePlayer->isPlaying() ? 1 : 0);
 }
 
 void BarWidget::onPlayerPositionChanged(int position)
@@ -143,7 +141,6 @@ void BarWidget::onPlayerPositionChanged(int position)
 
 void BarWidget::onPlayerVolumeChanged(int volume)
 {
-    setVolumeConfig(volume);
     setVolumeIcon(volume);
     setVolumeSlider(volume);
 }
@@ -153,7 +150,7 @@ void BarWidget::onPlayPauseButtonPressed()
     if (!ePlayer->currentAudio())
         return;
 
-    if (m_playPauseButton.index() == 0)
+    if (m_playPauseButton.iconIndex() == 0)
         ePlayer->play();
     else
         ePlayer->pause();
@@ -162,27 +159,23 @@ void BarWidget::onPlayPauseButtonPressed()
 void BarWidget::onShuffleButtonLocked(bool locked)
 {
     ePlayer->setShuffle(locked);
-    cfgPlayer->setShuffle(locked);
 }
 
 void BarWidget::onLoopButtonLocked(bool locked)
 {
     ePlayer->setLoop(locked);
-    cfgPlayer->setLoop(locked);
 }
 
 void BarWidget::onVolumeButtonPressed()
 {
-    if (m_volumeSlider.isVisible())
-    {
-        m_volumeSlider.setVisible(false);
-        setButtonVisibility(true);
-    }
-    else
-    {
-        setButtonVisibility(false);
-        m_volumeSlider.setVisible(true);
-    }
+    bool visible = m_volumeSlider.isVisible();
+
+    m_volumeSlider.setVisible(!visible);
+    m_previousButton.setVisible(visible);
+    m_playPauseButton.setVisible(visible);
+    m_nextButton.setVisible(visible);
+    m_shuffleButton.setVisible(visible);
+    m_loopButton.setVisible(visible);
 }
 
 void BarWidget::onLengthSliderMoved(int value)
@@ -192,10 +185,7 @@ void BarWidget::onLengthSliderMoved(int value)
 
 void BarWidget::onLengthSliderValueChanged(int value)
 {
-    if (value != ePlayer->currentAudio()->duration()->secs())
-        ePlayer->setPosition(value);
-    else
-        ePlayer->next();
+    ePlayer->setPosition(value);
 }
 
 void BarWidget::onVolumeSliderMoved(int value)
@@ -230,7 +220,7 @@ void BarWidget::setup()
 
 void BarWidget::setupUi()
 {
-    m_coverLabel.setPixmap(Cover::defaultCover().pixmap(cfgBar->coverSize()));
+    m_coverLabel.setPixmap(Cover::defaultCover().picture(cfgBar->coverSize()));
     m_coverLabel.setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
     m_trackLabel.setFixedWidth(cfgBar->trackWidth());
     m_trackLabel.setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
@@ -304,30 +294,12 @@ void BarWidget::setupUi()
     setLayout(layout);
 }
 
-void BarWidget::setButtonVisibility(bool visible)
-{
-    m_previousButton.setVisible(visible);
-    m_playPauseButton.setVisible(visible);
-    m_nextButton.setVisible(visible);
-    m_shuffleButton.setVisible(visible);
-    m_loopButton.setVisible(visible);
-}
-
-void BarWidget::setVolumeConfig(int volume)
-{
-    cfgPlayer->setVolume(volume);
-}
-
 void BarWidget::setVolumeIcon(int volume)
 {
-    if (volume > 66)
-        m_volumeButton.setIndex(0);
-    else if (volume > 33)
-        m_volumeButton.setIndex(1);
-    else if (volume > 0)
-        m_volumeButton.setIndex(2);
+    if (volume == 0)
+        m_volumeButton.setIconIndex(3);
     else
-        m_volumeButton.setIndex(3);
+        m_volumeButton.setIconIndex(2 - volume / 34);
 }
 
 void BarWidget::setVolumePlayer(int volume)

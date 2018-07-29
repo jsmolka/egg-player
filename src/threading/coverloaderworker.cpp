@@ -38,7 +38,7 @@ void CoverLoaderWorker::work()
 
         if (audio->cover()->id() == -1)
         {
-            QPixmap cover = Cover::loadFromFile(audio->pathWChar());
+            QPixmap cover = Cover::loadFromFile(audio->widePath());
 
             static QMutex mutex;
             QMutexLocker locker(&mutex);

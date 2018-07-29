@@ -61,9 +61,6 @@ private:
     void setup();
     void setupUi();
 
-    void setButtonVisibility(bool visible);
-
-    void setVolumeConfig(int volume);
     void setVolumeIcon(int volume);
     void setVolumePlayer(int volume);
     void setVolumeSlider(int volume);

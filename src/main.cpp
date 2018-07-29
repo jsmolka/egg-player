@@ -1,5 +1,6 @@
 #include <QApplication>
 
+#include "bass.hpp"
 #include "cache.hpp"
 #include "config.hpp"
 #include "constants.hpp"

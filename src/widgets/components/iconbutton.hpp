@@ -20,8 +20,8 @@ public:
     void setIcons(const QVector<QIcon> &icons);
     QVector<QIcon> icons() const;
 
-    void setIndex(int index);
-    int index() const;
+    void setIconIndex(int iconIndex);
+    int iconIndex() const;
 
     void setLockable(bool lockable);
     bool isLockable() const;
@@ -45,7 +45,7 @@ private:
 
     QVector<QIcon> m_icons;
 
-    int m_index;
+    int m_iconIndex;
     bool m_lockable;
     bool m_locked;
 };

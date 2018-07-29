@@ -33,12 +33,14 @@ public:
     QString artist() const;
     QString album() const;
     QString genre() const;
+
     int year() const;
     int track() const;
+
     Duration * duration();
     Cover * cover();
 
-    const wchar_t * pathWChar() const;
+    const wchar_t * widePath() const;
 
 private:
     bool readTags();
@@ -51,8 +53,10 @@ private:
     QString m_artist;
     QString m_album;
     QString m_genre;
+
     int m_year;
     int m_track;
+
     Duration m_duration;
     Cover m_cover;
 };

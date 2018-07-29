@@ -37,7 +37,7 @@ private slots:
     void removeThread(QObject *object);
 
 private:    
-    template<typename T>
+    template <typename T>
     void removeObject(QVector<T> &vector, QObject *object);
 
     QVector<AbstractWorker *> m_workers;
