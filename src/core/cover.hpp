@@ -19,7 +19,7 @@ public:
     static int defaultSize();
     static Cover defaultCover();
     static QPixmap loadFromFile(const wchar_t *file);
-    static QPixmap resize(const QPixmap &pixmap, int size, bool fast = false);
+    static QPixmap scale(const QPixmap &pixmap, int size, bool fast = false);
 
     void setId(int id);
     int id() const;
@@ -30,9 +30,8 @@ public:
 private:
     static QPixmap coverify(const QPixmap &cover);
     static QPixmap loadFromCache(int id);
-
-    QColor rawDominantColor(const QImage &image);
-    QColor adjustDominantColor(const QColor &color);
+    static QColor rawDominantColor(const QImage &image);
+    static QColor adjustDominantColor(const QColor &color);
 
     static constexpr int s_size = 200;
 

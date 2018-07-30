@@ -281,7 +281,7 @@ void Cache::insertDefaultCover()
     if (defaultCoverExists())
         return;
 
-    QPixmap cover = Cover::resize(QPixmap(IMG_DEFAULT_COVER), Cover::defaultSize());
+    QPixmap cover = Cover::scale(QPixmap(IMG_DEFAULT_COVER), Cover::defaultSize());
     QByteArray bytes = coverToBytes(cover);
 
     m_query.prepare(

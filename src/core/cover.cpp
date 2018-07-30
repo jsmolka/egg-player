@@ -34,10 +34,10 @@ QPixmap Cover::loadFromFile(const wchar_t *file)
     if (cover.isNull())
         cover = loadFromCache(0);
 
-    return resize(coverify(cover), s_size);
+    return scale(coverify(cover), s_size);
 }
 
-QPixmap Cover::resize(const QPixmap &pixmap, int size, bool fast)
+QPixmap Cover::scale(const QPixmap &pixmap, int size, bool fast)
 {
     return pixmap.scaled(size, size, Qt::KeepAspectRatio, fast ? Qt::FastTransformation : Qt::SmoothTransformation);
 }
@@ -60,7 +60,7 @@ QPixmap Cover::picture(int size)
         cache.insert(id, loadFromCache(id));
 
     QPixmap pixmap = cache.value(id);
-    return size == -1 ? pixmap : resize(pixmap, size);
+    return size == -1 ? pixmap : scale(pixmap, size);
 }
 
 QColor Cover::dominantColor()
@@ -69,7 +69,7 @@ QColor Cover::dominantColor()
     static QHash<int, QColor> cache;
     if (!cache.contains(id))
     {
-        QColor raw = rawDominantColor(resize(picture(), 25, true).toImage());
+        QColor raw = rawDominantColor(scale(picture(), 25, true).toImage());
         cache.insert(id, adjustDominantColor(raw).toRgb());
     }
     return cache.value(id);

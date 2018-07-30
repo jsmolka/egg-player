@@ -12,7 +12,7 @@ A Groove Music like music player.
 - [ ] reactive cache
 
 ## Changes since lastest release
-- significantly improve audio caching 
+- significantly improve audio caching
 - significantly improve cover caching 
 - change icon hover style
 
@@ -26,10 +26,12 @@ A Groove Music like music player.
 - rename `Audio` to `Track`
 - use `explicit` constructors
 - prefix static variables with `_s` instead of `_`
+- add logger functions with more args
 
 ### C++ Core Guidelines
 - [guidelines](https://github.com/isocpp/CppCoreGuidelines)
 - use `const` for all not changing variables
+- declare functions without member variables as `static`
 
 ### Utils
 - use `inline` functions for `Utils`
