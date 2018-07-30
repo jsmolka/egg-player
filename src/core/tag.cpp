@@ -74,10 +74,19 @@ QPixmap Tag::cover()
             cover.loadFromData((const uchar *)frame->picture().data(), frame->picture().size());
         }
     }
+
+    if (cover.isNull())
+        log("Tag: Cannot read cover %1", {toQString(m_file.name())});
+
     return cover;
 }
 
 QString Tag::toQString(const TagLib::String &string)
 {
     return QString::fromWCharArray(string.toCWString(), string.size());
+}
+
+QString Tag::toQString(const TagLib::FileName &string)
+{
+    return QString::fromWCharArray(static_cast<const wchar_t *>(string));
 }

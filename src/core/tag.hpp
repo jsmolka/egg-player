@@ -37,6 +37,7 @@ public:
 
 private:
     static QString toQString(const TagLib::String &string);
+    static QString toQString(const TagLib::FileName &string);
 
     TagLib::MPEG::File m_file;
 };

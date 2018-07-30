@@ -19,29 +19,32 @@ A Groove Music like music player.
 ## Things to do
 
 ### General
-- rewrite library widget
-- qt key sequence for shortcut
-- proper template function implementation for chunk
+- rewrite `LibraryWidget`
+- `QKeySequence` for `Shortcut`
+- proper template function implementation for `chunk`
 - look into compile error for types
-- rename audio to track
-- implement isocpp guidelines
-- varadic template for logger
-- use audio checksum to detect changes
-- use explicit constructors
+- rename `Audio` to `Track`
+- use `explicit` constructors
+- prefix static variables with `_s` instead of `_`
+
+### C++ Core Guidelines
+- [guidelines](https://github.com/isocpp/CppCoreGuidelines)
+- use `const` for all not changing variables
 
 ### Utils
-- use inline functions for utils
+- use `inline` functions for `Utils`
 - move css loading to its widget
-- move font loading from util to main
-- save mainwindow pre fullscreen size
+- move font loading from `Utils` to `main`
 
 ### Icons
 - use svg format / different sizes
-- test icons in the icon preview example
 
 ### Reactive cache
-- use a file system watcher
-- update library, cache and audios accordingly
+- use `QFileSystemWatcher`
+- update `Library`, `Audio` accordingly
+- store `lastModified.toSecsSinceEpoch()` in database
+- compare cached result with current result during loading
+- reload and update if unequal
 
 ### Windows util
 - create a windows util
@@ -49,8 +52,8 @@ A Groove Music like music player.
 - change app background color to black to prevent white flashing when resizing
   - need to use the [windows api](https://forum.qt.io/topic/69867/temporary-white-border-on-resizing-qt-quick-application-window-on-windows-desktop/2)
   - remove background color from css
-- move config scale functions into this util
-- move shortcut register functions into this util
+- move scale functions into this util
+- move register hotkey functions into this util
   
 ### User interface
 - do not show certain info at low size

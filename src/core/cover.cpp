@@ -20,7 +20,7 @@ Cover::~Cover()
 
 int Cover::defaultSize()
 {
-    return _size;
+    return s_size;
 }
 
 Cover Cover::defaultCover()
@@ -32,11 +32,14 @@ QPixmap Cover::loadFromFile(const wchar_t *file)
 {
     QPixmap cover = Tag(file).cover();
     if (cover.isNull())
-    {
-        log("Cover: Cannot read cover %1", {QString::fromWCharArray(file)});
         cover = loadFromCache(0);
-    }
-    return resize(coverify(cover), _size, false);
+
+    return resize(coverify(cover), s_size);
+}
+
+QPixmap Cover::resize(const QPixmap &pixmap, int size, bool fast)
+{
+    return pixmap.scaled(size, size, Qt::KeepAspectRatio, fast ? Qt::FastTransformation : Qt::SmoothTransformation);
 }
 
 void Cover::setId(int id)
@@ -51,35 +54,25 @@ int Cover::id() const
 
 QPixmap Cover::picture(int size)
 {
-    QPixmap pixmap;
     int id = qMax(0, m_id);
-    if (_covers.contains(id))
-    {
-        pixmap = _covers.value(id);
-    }
-    else
-    {
-        pixmap = loadFromCache(id);
-        _covers.insert(id, pixmap);
-    }
-    return size == -1 ? pixmap : resize(pixmap, size, false);
+    static QHash<int, QPixmap> cache;
+    if (!cache.contains(id))
+        cache.insert(id, loadFromCache(id));
+
+    QPixmap pixmap = cache.value(id);
+    return size == -1 ? pixmap : resize(pixmap, size);
 }
 
 QColor Cover::dominantColor()
 {
-    QColor dominant;
     int id = qMax(0, m_id);
-    if (_colors.contains(id))
+    static QHash<int, QColor> cache;
+    if (!cache.contains(id))
     {
-        dominant = _colors.value(id);
+        QColor raw = rawDominantColor(resize(picture(), 25, true).toImage());
+        cache.insert(id, adjustDominantColor(raw).toRgb());
     }
-    else
-    {
-        dominant = rawDominantColor(resize(picture(), 25, true).toImage());
-        dominant = adjustDominantColor(dominant);
-        _colors.insert(id, dominant);
-    }
-    return dominant;
+    return cache.value(id);
 }
 
 QPixmap Cover::coverify(const QPixmap &cover)
@@ -102,11 +95,6 @@ QPixmap Cover::coverify(const QPixmap &cover)
     return cover;
 }
 
-QPixmap Cover::resize(const QPixmap &pixmap, int size, bool fast)
-{
-    return pixmap.scaled(size, size, Qt::KeepAspectRatio, fast ? Qt::FastTransformation : Qt::SmoothTransformation);
-}
-
 QPixmap Cover::loadFromCache(int id)
 {
     return Cache().coverById(id);
@@ -114,91 +102,81 @@ QPixmap Cover::loadFromCache(int id)
 
 QColor Cover::rawDominantColor(const QImage &image)
 {
-    const quint32 RANGE = 60;
+    constexpr int RANGE = 60;
+    constexpr int LIMIT = 25;
 
-    quint32 cCounts[RANGE] = {};
-    quint32 cHues[RANGE] = {};
-    quint32 cSaturations[RANGE] = {};
-    quint32 cValues[RANGE] = {};
-
-    quint32 gCounts[RANGE] = {};
-    quint32 gHues[RANGE] = {};
-    quint32 gSaturations[RANGE] = {};
-    quint32 gValues[RANGE] = {};
-
-    QRgb *pixels = (QRgb *)image.bits();
-    quint32 pixelCount = image.height() * image.width();
-    for (quint32 i = 0; i < pixelCount; ++i)
+    struct HsvRange
     {
-        QColor rgb = QColor(pixels[i]);
-        qint32 red = rgb.red();
-        qint32 green = rgb.green();
-        qint32 blue = rgb.blue();
+        int mix()
+        {
+            return h + 2 * s + 3 * v;
+        }
+
+        int h;
+        int s;
+        int v;
+        int c;
+    };
+
+    HsvRange colorful[RANGE] = {};
+    HsvRange grey[RANGE] = {};
+
+    bool isColorful = false;
+    QRgb *pixels = (QRgb *)image.bits();
+    for (int i = 0; i < image.height() * image.width(); ++i)
+    {
+        QColor rgb(pixels[i]);
+        int r = rgb.red();
+        int g = rgb.green();
+        int b = rgb.blue();
 
         QColor hsv = rgb.toHsv();
-        qint32 hue = qMax(0, hsv.hsvHue());
-        qint32 saturation = hsv.hsvSaturation();
-        qint32 value = hsv.value();
+        int h = qMax(0, hsv.hue());
+        int s = hsv.saturation();
+        int v = hsv.value();
 
-        quint32 index = hue / (360 / RANGE);
+        int index = h / (360 / RANGE);
 
-        const qint32 limit = 25;
-        if (qAbs(red - green) < limit && qAbs(green - blue) < limit && qAbs(red - blue) < limit)
+        if (qAbs(r - g) > LIMIT || qAbs(g - b) > LIMIT || qAbs(b - r) > LIMIT)
         {
-            ++gCounts[index];
-            gHues[index] += hue;
-            gSaturations[index] += saturation;
-            gValues[index] += value;
+            isColorful = true;
+            colorful[index].h += h;
+            colorful[index].s += s;
+            colorful[index].v += v;
+            ++colorful[index].c;
         }
-        else
+        else if (!isColorful)
         {
-            ++cCounts[index];
-            cHues[index] += hue;
-            cSaturations[index] += saturation;
-            cValues[index] += value;
-        }
-    }
-
-    quint32 index = 0;
-    quint32 max = 0;
-    for (quint32 i = 0; i < RANGE; ++i)
-    {
-        quint32 temp = cHues[i] + 2 * cSaturations[i] + 3 * cValues[i];
-        if (temp > max)
-        {
-            index = i;
-            max = temp;
+            grey[index].h += h;
+            grey[index].s += s;
+            grey[index].v += v;
+            ++grey[index].c;
         }
     }
 
-    if (cCounts[index] != 0)
+    auto dominantColor = [](HsvRange ranges[RANGE], int size) -> QColor
     {
-        quint32 hue = cHues[index] / cCounts[index];
-        quint32 saturation = cSaturations[index] / cCounts[index];
-        quint32 value = cValues[index] / cCounts[index];
-
-        return QColor::fromHsv(hue, saturation, value);
-    }
-    else
-    {
-        index = 0;
-        max = 0;
-        for (quint32 i = 0; i < RANGE; ++i)
+        int idx = 0;
+        int m = 0;
+        for (int i = 0; i < size; ++i)
         {
-            quint32 temp = gHues[i] + 2 * gSaturations[i] + 3 * gValues[i];
-            if (temp > max)
+            int t = ranges[i].mix();
+            if (t > m)
             {
-                index = i;
-                max = temp;
+                idx = i;
+                m = t;
             }
         }
 
-        quint32 hue = gHues[index] / gCounts[index];
-        quint32 saturation = gSaturations[index] / gCounts[index];
-        quint32 value = gValues[index] / gCounts[index];
+        float c = static_cast<float>(ranges[idx].c);
+        int h = static_cast<float>(ranges[idx].h) / c;
+        int s = static_cast<float>(ranges[idx].s) / c;
+        int v = static_cast<float>(ranges[idx].v) / c;
 
-        return QColor::fromHsv(hue, saturation, value);
-    }
+        return QColor::fromHsv(h, s, v);
+    };
+
+    return dominantColor(isColorful ? colorful : grey, RANGE);
 }
 
 QColor Cover::adjustDominantColor(const QColor &color)
@@ -209,7 +187,3 @@ QColor Cover::adjustDominantColor(const QColor &color)
 
     return QColor::fromHsvF(hue, saturation, value);
 }
-
-QHash<int, QPixmap> Cover::_covers = {};
-
-QHash<int, QColor> Cover::_colors = {};
