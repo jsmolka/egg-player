@@ -24,16 +24,22 @@ A Groove Music like music player.
 - proper template function implementation for `chunk`
 - look into compile error for types
 - rename `Audio` to `Track`
-- prefix static variables with `_s` instead of `_`
-- add logger functions with more args
+- prefix static variables with `s_` instead of `_`
 - singleton based on this [answer](https://stackoverflow.com/a/1008289/7057528)
-- only created object on stack end return pointer
 - count instances in bass again (Schwarz Counter)
-- logger with different log levels
 - implement operators for `Audio`, used `std::greater<>()` for sorting
 - compare current implementation of `lowerBound` with `std::lower_bound` in performance perspective
 - caputre `RANGE` in `rawDominantColor` of `Cover` class
 - variadic template for `log` based on [introduction](http://kevinushey.github.io/blog/2016/01/27/introduction-to-c++-variadic-templates/)
+- compare current `lowerBound` to `std::lower_bound`
+- reserve vector space
+- consider moving `chunk` into `AbstractController` since it is only used for threading
+- use `div_t` in `chunk` function
+- move remaining `FileUtil` into core and delete utils folder
+- rewrite `BorderLayout` (loop increments, initialize pointer with `nullptr`)
+- use `std::array` for `getDominantColor` instead of C-Style array
+- do not allocate `Audio` on heap, consider passing references instead of pointers
+- remove `coverByAudioPath` from `Cache`
 
 ### C++ Core Guidelines
 - [guidelines](https://github.com/isocpp/CppCoreGuidelines)
@@ -54,12 +60,21 @@ A Groove Music like music player.
 - properly use initializer / initialization lists `{}`, refer to [SO question](https://stackoverflow.com/questions/18222926/why-is-list-initialization-using-curly-braces-better-than-the-alternatives)
 - consider initializing member variables at declaration level
 - use parent constructor with `using Parent::Parent` if no own constructor is needed
-<!-- Continue here: http://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#c140-do-not-provide-different-default-arguments-for-a-virtual-function-and-an-overrider -->
+- properly handle and throw exceptions, refer to [Qt exception safety](http://doc.qt.io/qt-5/exceptionsafety.html)
+- use `union` to save memory
+- prefer enumerations over macros
+- do not make constants all caps
+- use `auto` to prevent writing long type names
+- always initialize a variable, if they are not default initialized
+- initialize variable at first use, not earlier
+- wrap complex initialization into lambdas and declare variable `const` if possible
+- do not use 'magic constants', e.g. `12` instead of `december`
+- move simple computation from run time to compile time, see `constexpr`
+- consider using `thread_local` for static variables inside threads
+<!-- Continue here: http://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#e-error-handling -->
 
 ### Player
 - move playlist and everything related into own class
-- move the following functions into new playlist class
-- create getter and setter for it
 - future possibility for `loadFromFile`
 - check for better ways to get the current audio after `shuffle` and `unshuffle`
 
