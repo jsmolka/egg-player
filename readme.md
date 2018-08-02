@@ -21,7 +21,6 @@ A Groove Music like music player.
 ### General
 - rewrite `LibraryWidget`
 - `QKeySequence` for `Shortcut`
-- proper template function implementation for `chunk`
 - look into compile error for types
 - rename `Audio` to `Track`
 - prefix static variables with `s_` instead of `_`
@@ -30,16 +29,17 @@ A Groove Music like music player.
 - implement operators for `Audio`, used `std::greater<>()` for sorting
 - compare current implementation of `lowerBound` with `std::lower_bound` in performance perspective
 - caputre `RANGE` in `rawDominantColor` of `Cover` class
-- variadic template for `log` based on [introduction](http://kevinushey.github.io/blog/2016/01/27/introduction-to-c++-variadic-templates/)
-- compare current `lowerBound` to `std::lower_bound`
+- variadic template for `log` based on [introduction](http://kevinushey.github.io/blog/2016/01/27/introduction-to-c++-variadic-templates/) or multiple arguments
 - reserve vector space
-- consider moving `chunk` into `AbstractController` since it is only used for threading
-- use `div_t` in `chunk` function
-- move remaining `FileUtil` into core and delete utils folder
 - rewrite `BorderLayout` (loop increments, initialize pointer with `nullptr`)
 - use `std::array` for `getDominantColor` instead of C-Style array
 - do not allocate `Audio` on heap, consider passing references instead of pointers
+- disable push down animation of button, refer to this [SO answer](https://stackoverflow.com/a/12637682/7057528)
+- fix cover not loading on other computers
+
+### Cache
 - remove `coverByAudioPath` from `Cache`
+- make default cover id 1 and invalid cover id 0
 
 ### C++ Core Guidelines
 - [guidelines](https://github.com/isocpp/CppCoreGuidelines)
@@ -82,6 +82,10 @@ A Groove Music like music player.
 - use `inline` functions for `Utils`
 - move css loading to its widget
 - move font loading from `Utils` to `main`
+- proper template function implementation for `chunk`
+- consider moving `chunk` into `AbstractController` since it is only used for threading
+- use `div_t` in `chunk` function
+- move remaining `FileUtil` into core and delete utils folder
 
 ### Icons
 - use svg format / different sizes
