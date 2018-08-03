@@ -119,5 +119,6 @@ SOURCES += \
     src/threading/coverloadercontroller.cpp \
     src/threading/audioloadercontroller.cpp \
     src/core/duration.cpp \
-    src/core/cover.cpp
+    src/core/cover.cpp \
+    src/core/fileutil.cpp
 

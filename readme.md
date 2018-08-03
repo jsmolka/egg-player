@@ -28,14 +28,9 @@ A Groove Music like music player.
 - compare current implementation of `lowerBound` with `std::lower_bound` in performance perspective
 - variadic template for `log` based on [introduction](http://kevinushey.github.io/blog/2016/01/27/introduction-to-c++-variadic-templates/) or multiple arguments
 - reserve vector space
-- rewrite `BorderLayout` (loop increments, initialize pointer with `nullptr`)
 - do not allocate `Audio` on heap, consider passing references instead of pointers
 - write proper project file
 - look into profiling for code optimization, see [profile-guided optimizations](https://docs.microsoft.com/de-de/cpp/build/reference/profile-guided-optimizations)
-
-### Cache
-- remove `coverByAudioPath` from `Cache`
-- make default cover id 1 and invalid cover id 0
 
 ### C++ Core Guidelines
 - [guidelines](https://github.com/isocpp/CppCoreGuidelines)

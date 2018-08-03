@@ -23,6 +23,8 @@ public:
     static QPixmap loadFromFile(const wchar_t *file);
     static QPixmap scale(const QPixmap &pixmap, int size, bool fast = false);
 
+    bool isValid() const;
+
     void setId(int id);
     int id() const;
 

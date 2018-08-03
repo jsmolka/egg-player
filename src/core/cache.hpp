@@ -33,7 +33,6 @@ public:
     void setAudioCoverId(Audio *audio, int id);
 
     QPixmap coverById(int id);
-    QPixmap coverByAudioPath(Audio *audio);
 
 private:
     static QString dbName();

@@ -132,7 +132,7 @@ int Cache::insertCover(const QPixmap &cover)
     QByteArray bytes = coverToBytes(cover);
 
     int id = coverId(bytes);
-    if (id == -1)
+    if (id == 0)
         id = insertByteCover(bytes);
 
     return id;
@@ -143,7 +143,7 @@ void Cache::updateCover(const QPixmap &cover)
     QByteArray bytes = coverToBytes(cover);
 
     int id = coverId(bytes);
-    if (id != -1)
+    if (id > 0)
         updateByteCover(id, bytes);
 }
 
@@ -170,27 +170,6 @@ QPixmap Cache::coverById(int id)
         "WHERE id = :id"
     );
     m_query.bindValue(":id", id);
-
-    if (!m_query.exec())
-        error();
-
-    QPixmap cover;
-    if (m_query.first())
-    {
-        QByteArray bytes = m_query.value(0).toByteArray();
-        cover.loadFromData(bytes);
-    }
-    return cover;
-}
-
-QPixmap Cache::coverByAudioPath(Audio *audio)
-{
-    m_query.prepare(
-        "SELECT covers.cover FROM audios "
-        "JOIN covers ON audios.coverid = covers.id "
-        "WHERE path = :path"
-    );
-    m_query.bindValue(":path", audio->path());
 
     if (!m_query.exec())
         error();
@@ -267,7 +246,7 @@ bool Cache::defaultCoverExists()
 {
     m_query.prepare(
         "SELECT 1 FROM covers"
-        "  WHERE id = 0"
+        "  WHERE id = 1"
     );
 
     if (!m_query.exec())
@@ -291,7 +270,7 @@ void Cache::insertDefaultCover()
         "  :cover"
         ")"
     );
-    m_query.bindValue(":id", 0);
+    m_query.bindValue(":id", 1);
     m_query.bindValue(":size", bytes.size());
     m_query.bindValue(":cover", bytes);
 
@@ -317,7 +296,7 @@ int Cache::insertByteCover(const QByteArray &bytes)
     if (!m_query.exec())
     {
         error();
-        id = -1;
+        id = 0;
     }
     return id;
 }
@@ -340,7 +319,7 @@ int Cache::coverId(const QByteArray &bytes)
 {
     int id = coverIdBySize(bytes.size());
 
-    if (id == -1)
+    if (id == 0)
         id = coverIdByBlob(bytes);
 
     return id;
@@ -348,7 +327,7 @@ int Cache::coverId(const QByteArray &bytes)
 
 int Cache::lastCoverId()
 {
-    int id = -1;
+    int id = 1;
 
     m_query.prepare("SELECT max(id) FROM covers");
 
@@ -363,7 +342,7 @@ int Cache::lastCoverId()
 
 int Cache::coverIdBySize(int size)
 {
-    int id = -1;
+    int id = 0;
 
     m_query.prepare(
         "SELECT id FROM covers "
@@ -378,13 +357,15 @@ int Cache::coverIdBySize(int size)
         id = m_query.value(0).toInt();
 
     if (m_query.next())
-        id = -1;
+        id = 0;
 
     return id;
 }
 
 int Cache::coverIdByBlob(const QByteArray &bytes)
 {
+    int id = 0;
+
     m_query.prepare(
         "SELECT id FROM covers "
         "WHERE cover = :cover"
@@ -395,9 +376,9 @@ int Cache::coverIdByBlob(const QByteArray &bytes)
         error();
 
     if (m_query.first())
-        return m_query.value(0).toInt();
+        id = m_query.value(0).toInt();
 
-    return -1;
+    return id;
 }
 
 void Cache::error()

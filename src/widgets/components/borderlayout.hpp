@@ -3,6 +3,7 @@
 
 #include <QLayout>
 #include <QRect>
+#include <QVector>
 
 class BorderLayout : public QLayout
 {
@@ -37,7 +38,7 @@ private:
 
     QSize calculateSize(SizeType sizeType) const;
 
-    QList<ItemWrapper *> m_items;
+    QVector<ItemWrapper *> m_items;
 };
 
 #endif // BORDERLAYOUT_HPP

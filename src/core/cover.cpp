@@ -2,7 +2,7 @@
 #include "cover.hpp"
 
 Cover::Cover()
-    : Cover(-1)
+    : Cover(0)
 {
 
 }
@@ -25,14 +25,14 @@ int Cover::defaultSize()
 
 Cover Cover::defaultCover()
 {
-    return Cover(0);
+    return Cover(1);
 }
 
 QPixmap Cover::loadFromFile(const wchar_t *file)
 {
     QPixmap cover = Tag(file).cover();
     if (cover.isNull())
-        cover = loadFromCache(0);
+        cover = loadFromCache(1);
 
     return scale(coverify(cover), s_size);
 }
@@ -40,6 +40,11 @@ QPixmap Cover::loadFromFile(const wchar_t *file)
 QPixmap Cover::scale(const QPixmap &pixmap, int size, bool fast)
 {
     return pixmap.scaled(size, size, Qt::KeepAspectRatio, fast ? Qt::FastTransformation : Qt::SmoothTransformation);
+}
+
+bool Cover::isValid() const
+{
+    return m_id > 0;
 }
 
 void Cover::setId(int id)
@@ -54,7 +59,7 @@ int Cover::id() const
 
 QPixmap Cover::picture(int size)
 {
-    int id = qMax(0, m_id);
+    int id = qMax(1, m_id);
     static QHash<int, QPixmap> cache;
     if (!cache.contains(id))
         cache.insert(id, loadFromCache(id));
@@ -65,11 +70,11 @@ QPixmap Cover::picture(int size)
 
 QColor Cover::dominantColor()
 {
-    int id = qMax(0, m_id);
+    int id = qMax(1, m_id);
     static QHash<int, QColor> cache;
     if (!cache.contains(id))
     {
-        QColor raw = rawDominantColor(scale(picture(), 25, true).toImage());
+        QColor raw = rawDominantColor(scale(picture(), 30, true).toImage());
         cache.insert(id, adjustDominantColor(raw).toRgb());
     }
     return cache.value(id);

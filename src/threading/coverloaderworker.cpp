@@ -36,7 +36,7 @@ void CoverLoaderWorker::work()
         if (isInterrupted())
             return;
 
-        if (audio->cover()->id() == -1)
+        if (!audio->cover()->isValid())
         {
             QPixmap cover = Cover::loadFromFile(audio->widePath());
 
@@ -44,7 +44,7 @@ void CoverLoaderWorker::work()
             QMutexLocker locker(&mutex);
 
             int id = cache.insertCover(cover);
-            if (id != -1)
+            if (id != 0)
                 cache.setAudioCoverId(audio, id);
         }
     }

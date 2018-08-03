@@ -48,7 +48,7 @@ QSize BorderLayout::minimumSize() const
 
 void BorderLayout::setGeometry(const QRect &rect)
 {
-    ItemWrapper *center = 0;
+    ItemWrapper *center = nullptr;
     int eastWidth = 0;
     int westWidth = 0;
     int northHeight = 0;
@@ -57,7 +57,7 @@ void BorderLayout::setGeometry(const QRect &rect)
 
     QLayout::setGeometry(rect);
 
-    for (int i = 0; i < m_items.size(); i++) {
+    for (int i = 0; i < m_items.size(); ++i) {
         ItemWrapper *wrapper = m_items.at(i);
         QLayoutItem *item = wrapper->item;
         Position position = wrapper->position;
@@ -105,7 +105,7 @@ void BorderLayout::setGeometry(const QRect &rect)
 
     centerHeight = rect.height() - northHeight - southHeight;
 
-    for (int i = 0; i < m_items.size(); i++)
+    for (int i = 0; i < m_items.size(); ++i)
     {
         ItemWrapper *wrapper = m_items.at(i);
         QLayoutItem *item = wrapper->item;
@@ -149,6 +149,7 @@ void BorderLayout::setGeometry(const QRect &rect)
     }
 
     if (center)
+    {
         center->item->setGeometry(
             QRect(
                 westWidth,
@@ -157,6 +158,7 @@ void BorderLayout::setGeometry(const QRect &rect)
                 centerHeight
             )
         );
+    }
 }
 
 QSize BorderLayout::sizeHint() const
@@ -183,7 +185,7 @@ QSize BorderLayout::calculateSize(SizeType sizeType) const
 {
     QSize totalSize;
 
-    for (int i = 0; i < m_items.size(); i++)
+    for (int i = 0; i < m_items.size(); ++i)
     {
         ItemWrapper *wrapper = m_items.at(i);
         Position position = wrapper->position;
