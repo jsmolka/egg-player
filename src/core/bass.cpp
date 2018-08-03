@@ -2,13 +2,17 @@
 
 Bass::Bass()
 {
+    if (++s_instances > 1)
+        return;
+
     if (isValidVersion() && setConfig())
         init();
 }
 
 Bass::~Bass()
 {
-    free();
+    if (--s_instances == 0)
+        free();
 }
 
 BassStream * Bass::stream()
@@ -18,17 +22,17 @@ BassStream * Bass::stream()
 
 bool Bass::start()
 {
-    return call(&BASS_Start);
+    return call(BASS_Start);
 }
 
 bool Bass::pause()
 {
-    return call(&BASS_Pause);
+    return call(BASS_Pause);
 }
 
 bool Bass::stop()
 {
-    return call(&BASS_Stop);
+    return call(BASS_Stop);
 }
 
 bool Bass::setVolume(float volume)
@@ -103,10 +107,10 @@ bool Bass::init()
 
 bool Bass::free()
 {
-    return call(&BASS_Free);
+    return call(BASS_Free);
 }
 
-bool Bass::call(BOOL(*func)())
+bool Bass::call(std::function<BOOL()> func)
 {
     bool success = func();
     if (!success)
@@ -114,3 +118,5 @@ bool Bass::call(BOOL(*func)())
 
     return success;
 }
+
+int Bass::s_instances = 0;

@@ -12,7 +12,6 @@
 #include <taglib/tag.h>
 
 #include "logger.hpp"
-#include "util.hpp"
 
 class Tag
 {

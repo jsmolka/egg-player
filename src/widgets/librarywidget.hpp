@@ -9,7 +9,6 @@
 #include "constants.hpp"
 #include "library.hpp"
 #include "tablewidget.hpp"
-#include "util.hpp"
 
 class LibraryWidget : public TableWidget
 {
@@ -37,6 +36,7 @@ private:
     };
 
     void setup();
+    void setupCss();
 
     QString audioText(Audio *audio, int column);
 

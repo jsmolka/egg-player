@@ -31,7 +31,7 @@ private slots:
 private:
     void setup();
 
-    RowHoverDelegate *pm_delegate;
+    RowHoverDelegate *m_delegate;
 };
 
 #endif // TABLEWIDGET_HPP

@@ -215,7 +215,18 @@ void BarWidget::setup()
 {
     setColor(Cover::defaultCover().dominantColor());
     setFixedHeight(cfgBar->height());
-    setStyleSheet(FileUtil::Css::bar());
+
+    setupCss();
+}
+
+void BarWidget::setupCss()
+{
+    setStyleSheet(FileUtil::read(CSS_BAR)
+        .replace("groove-height", QString::number(cfgBar->grooveHeight()))
+        .replace("handle-size-half", QString::number(cfgBar->handleSize() / 2))
+        .replace("handle-size", QString::number(cfgBar->handleSize()))
+        .replace("icon-size-half", QString::number(cfgBar->iconSize() / 2))
+    );
 }
 
 void BarWidget::setupUi()

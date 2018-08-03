@@ -117,7 +117,7 @@ void SmoothTableWidget::wheelEvent(QWheelEvent *event)
         delta += delta * m_acceleration * accerationRatio;
 
     m_totalSteps = m_fps * m_duration / 1000;
-    m_stepsLeft.push_back(qMakePair(delta, m_totalSteps));
+    m_stepsLeft << qMakePair(delta, m_totalSteps);
     m_smoothTimer.start(1000 / m_fps);
 }
 

@@ -59,6 +59,7 @@ private slots:
 
 private:
     void setup();
+    void setupCss();
     void setupUi();
 
     void setVolumeIcon(int volume);

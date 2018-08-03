@@ -23,10 +23,10 @@ QIcon IconFactory::make(const QString &file)
 
 QPixmap IconFactory::makeActive(const QPixmap &pixmap)
 {
-    QPixmap hoverPixmap(pixmap.size());
-    hoverPixmap.fill(Qt::transparent);
+    QPixmap active(pixmap.size());
+    active.fill(Qt::transparent);
 
-    QPainter painter(&hoverPixmap);
+    QPainter painter(&active);
     painter.setBackground(QBrush(Qt::transparent));
     painter.setBackgroundMode(Qt::TransparentMode);
     painter.eraseRect(pixmap.rect());
@@ -35,5 +35,5 @@ QPixmap IconFactory::makeActive(const QPixmap &pixmap)
     painter.drawPixmap(0, 0, pixmap);
     painter.end();
 
-    return hoverPixmap;
+    return active;
 }

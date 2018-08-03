@@ -5,7 +5,6 @@
 #include "audio.hpp"
 #include "cache.hpp"
 #include "coverloaderworker.hpp"
-#include "util.hpp"
 
 class CoverLoaderController : public AbstractController
 {

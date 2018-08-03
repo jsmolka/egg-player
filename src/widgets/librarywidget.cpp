@@ -40,11 +40,19 @@ void LibraryWidget::insert(Audio *audio, int row)
 
 void LibraryWidget::setup()
 {
-    setStyleSheet(FileUtil::Css::library());
-
     horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
     verticalHeader()->setSectionResizeMode(QHeaderView::Fixed);
     verticalHeader()->setDefaultSectionSize(cfgLibrary->itemHeight());
+
+    setupCss();
+}
+
+void LibraryWidget::setupCss()
+{
+    setStyleSheet(FileUtil::read(CSS_LIBRARY)
+        .replace("cell-padding", QString::number(cfgLibrary->cellPadding()))
+        .replace("scrollbar-width", QString::number(cfgLibrary->scrollBarWidth()))
+    );
 }
 
 QString LibraryWidget::audioText(Audio *audio, int column)

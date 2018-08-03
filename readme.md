@@ -24,18 +24,14 @@ A Groove Music like music player.
 - look into compile error for types
 - rename `Audio` to `Track`
 - prefix static variables with `s_` instead of `_`
-- singleton based on this [answer](https://stackoverflow.com/a/1008289/7057528)
-- count instances in bass again (Schwarz Counter)
 - implement operators for `Audio`, used `std::greater<>()` for sorting
 - compare current implementation of `lowerBound` with `std::lower_bound` in performance perspective
-- caputre `RANGE` in `rawDominantColor` of `Cover` class
 - variadic template for `log` based on [introduction](http://kevinushey.github.io/blog/2016/01/27/introduction-to-c++-variadic-templates/) or multiple arguments
 - reserve vector space
 - rewrite `BorderLayout` (loop increments, initialize pointer with `nullptr`)
-- use `std::array` for `getDominantColor` instead of C-Style array
 - do not allocate `Audio` on heap, consider passing references instead of pointers
-- disable push down animation of button, refer to this [SO answer](https://stackoverflow.com/a/12637682/7057528)
-- fix cover not loading on other computers
+- write proper project file
+- look into profiling for code optimization, see [profile-guided optimizations](https://docs.microsoft.com/de-de/cpp/build/reference/profile-guided-optimizations)
 
 ### Cache
 - remove `coverByAudioPath` from `Cache`
@@ -71,24 +67,12 @@ A Groove Music like music player.
 - do not use 'magic constants', e.g. `12` instead of `december`
 - move simple computation from run time to compile time, see `constexpr`
 - consider using `thread_local` for static variables inside threads
-<!-- Continue here: http://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#e-error-handling -->
+- prefer iterators over range-based for-loop (e.g. `AbstractController::removeObject`, use `erase`instead)
 
 ### Player
 - move playlist and everything related into own class
 - future possibility for `loadFromFile`
 - check for better ways to get the current audio after `shuffle` and `unshuffle`
-
-### Utils
-- use `inline` functions for `Utils`
-- move css loading to its widget
-- move font loading from `Utils` to `main`
-- proper template function implementation for `chunk`
-- consider moving `chunk` into `AbstractController` since it is only used for threading
-- use `div_t` in `chunk` function
-- move remaining `FileUtil` into core and delete utils folder
-
-### Icons
-- use svg format / different sizes
 
 ### Reactive cache
 - use `QFileSystemWatcher`

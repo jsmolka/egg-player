@@ -11,7 +11,6 @@
 
 #include "audio.hpp"
 #include "constants.hpp"
-#include "util.hpp"
 
 class Cache
 {

@@ -102,8 +102,8 @@ QPixmap Cover::loadFromCache(int id)
 
 QColor Cover::rawDominantColor(const QImage &image)
 {
-    constexpr int RANGE = 60;
-    constexpr int LIMIT = 25;
+    constexpr int range = 60;
+    constexpr int limit = 25;
 
     struct HsvRange
     {
@@ -118,8 +118,8 @@ QColor Cover::rawDominantColor(const QImage &image)
         int c;
     };
 
-    HsvRange colorful[RANGE] = {};
-    HsvRange grey[RANGE] = {};
+    std::array<HsvRange, range> colorful = {};
+    std::array<HsvRange, range> grey = {};
 
     bool isColorful = false;
     QRgb *pixels = (QRgb *)image.bits();
@@ -135,9 +135,9 @@ QColor Cover::rawDominantColor(const QImage &image)
         int s = hsv.saturation();
         int v = hsv.value();
 
-        int index = h / (360 / RANGE);
+        int index = h / (360 / range);
 
-        if (qAbs(r - g) > LIMIT || qAbs(g - b) > LIMIT || qAbs(b - r) > LIMIT)
+        if (qAbs(r - g) > limit || qAbs(g - b) > limit || qAbs(b - r) > limit)
         {
             isColorful = true;
             colorful[index].h += h;
@@ -154,13 +154,13 @@ QColor Cover::rawDominantColor(const QImage &image)
         }
     }
 
-    auto dominantColor = [](HsvRange ranges[RANGE], int size) -> QColor
+    auto dominantColor = [&range](std::array<HsvRange, range> hsvs) -> QColor
     {
         int idx = 0;
         int m = 0;
-        for (int i = 0; i < size; ++i)
+        for (int i = 0; i < range; ++i)
         {
-            int t = ranges[i].mix();
+            int t = hsvs[i].mix();
             if (t > m)
             {
                 idx = i;
@@ -168,15 +168,15 @@ QColor Cover::rawDominantColor(const QImage &image)
             }
         }
 
-        float c = static_cast<float>(ranges[idx].c);
-        int h = static_cast<float>(ranges[idx].h) / c;
-        int s = static_cast<float>(ranges[idx].s) / c;
-        int v = static_cast<float>(ranges[idx].v) / c;
+        float c = static_cast<float>(hsvs[idx].c);
+        int h = static_cast<float>(hsvs[idx].h) / c;
+        int s = static_cast<float>(hsvs[idx].s) / c;
+        int v = static_cast<float>(hsvs[idx].v) / c;
 
         return QColor::fromHsv(h, s, v);
     };
 
-    return dominantColor(isColorful ? colorful : grey, RANGE);
+    return dominantColor(isColorful ? colorful : grey);
 }
 
 QColor Cover::adjustDominantColor(const QColor &color)

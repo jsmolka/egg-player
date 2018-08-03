@@ -2,8 +2,8 @@
 
 EggWidget::EggWidget(QWidget *parent)
     : MainWindow(parent)
-    , m_library(this)
     , m_bar(this)
+    , m_library(this)
 {
     setup();
     setupUi();
@@ -38,7 +38,12 @@ void EggWidget::onLibraryDoubleClicked(const QModelIndex &index)
 
 void EggWidget::setup()
 {
-    setStyleSheet(FileUtil::Css::egg());
+    setupCss();
+}
+
+void EggWidget::setupCss()
+{
+    setStyleSheet(FileUtil::read(CSS_EGG));
 }
 
 void EggWidget::setupUi()

@@ -5,7 +5,6 @@
 #include "audioloaderworker.hpp"
 #include "audio.hpp"
 #include "types.hpp"
-#include "util.hpp"
 
 class AudioLoaderController : public AbstractController
 {

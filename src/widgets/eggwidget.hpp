@@ -26,10 +26,11 @@ private slots:
 
 private:
     void setup();
+    void setupCss();
     void setupUi();
 
-    LibraryWidget m_library;
     BarWidget m_bar;
+    LibraryWidget m_library;
 };
 
 #endif // EGGWIDGET_HPP

@@ -1,6 +1,8 @@
 #ifndef COVER_HPP
 #define COVER_HPP
 
+#include <array>
+
 #include <QColor>
 #include <QHash>
 #include <QPainter>

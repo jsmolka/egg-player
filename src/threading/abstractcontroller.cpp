@@ -82,24 +82,24 @@ void AbstractController::workerFinished()
         emit finished();
 }
 
-void AbstractController::removeWorker(QObject *object)
+void AbstractController::removeWorker(const QObject *object)
 {
     removeObject<AbstractWorker *>(m_workers, object);
 }
 
-void AbstractController::removeThread(QObject *object)
+void AbstractController::removeThread(const QObject *object)
 {
     removeObject<QThread *>(m_threads, object);
 }
 
 template <typename T>
-void AbstractController::removeObject(QVector<T> &vector, QObject *object)
+void AbstractController::removeObject(QVector<T> &vector, const QObject *object)
 {
-    for (int i = 0; i < vector.size(); ++i)
+    for (auto iter = vector.begin(); iter != vector.end(); ++iter)
     {
-        if (vector[i] == object)
+        if (*iter == object)
         {
-            vector.remove(i);
+            vector.erase(iter);
             break;
         }
     }

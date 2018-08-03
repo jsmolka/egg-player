@@ -1,4 +1,6 @@
 #include <QApplication>
+#include <QFont>
+#include <QFontDatabase>
 
 #include "cache.hpp"
 #include "config.hpp"
@@ -7,13 +9,25 @@
 #include "library.hpp"
 #include "player.hpp"
 
-void setup()
+QFont font(double size)
+{
+    int id = QFontDatabase::addApplicationFont(FONT_LATO);
+    QString family = QFontDatabase::applicationFontFamilies(id).at(0);
+
+    QFont font(family);
+    font.setPointSizeF(size);
+    font.setWeight(QFont::Weight::Medium);
+
+    return font;
+}
+
+void setup(QApplication &app)
 {
     qsrand(time(0));
 
-    qApp->setApplicationName(APP_NAME);
-    qApp->setOrganizationName(APP_ORG_NAME);
-    qApp->setFont(Util::font(cfgApp->fontSize()));
+    app.setApplicationName(APP_NAME);
+    app.setOrganizationName(APP_ORG_NAME);
+    app.setFont(font(cfgApp->fontSize()));
 
     eLibrary->setSorted(true);
 
@@ -28,7 +42,7 @@ int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
 
-    setup();
+    setup(app);
 
     EggWidget egg;
     egg.showSavedPosition();

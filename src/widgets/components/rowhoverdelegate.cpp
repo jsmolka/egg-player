@@ -7,6 +7,11 @@ RowHoverDelegate::RowHoverDelegate(QObject *parent)
 
 }
 
+RowHoverDelegate::~RowHoverDelegate()
+{
+
+}
+
 int RowHoverDelegate::hoverRow() const
 {
     return m_hoverRow;

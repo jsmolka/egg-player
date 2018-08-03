@@ -30,7 +30,7 @@ Audios CoverLoaderController::audios() const
 
 void CoverLoaderController::start()
 {
-    for (Audios chunk : Util::chunk<Audio *>(m_audios, QThread::idealThreadCount()))
+    for (Audios chunk : chunk<Audio *>(m_audios, QThread::idealThreadCount()))
     {
         CoverLoaderWorker *worker = new CoverLoaderWorker(chunk);
         QThread *thread = createWorkerThread(worker);

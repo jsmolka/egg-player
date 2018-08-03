@@ -32,14 +32,6 @@ CONFIG(debug, debug|release) {
 CONFIG(release, debug|release) {
     LIBS += -L"$$PWD/lib/taglib-1.11.1/lib" -ltag
     DESTDIR = $$PWD/bin/release
-
-    QMAKE_CFLAGS_RELEASE -= -O
-    QMAKE_CFLAGS_RELEASE -= -O1
-    QMAKE_CFLAGS_RELEASE *= -O2
-
-    QMAKE_CXXFLAGS_RELEASE -= -O
-    QMAKE_CXXFLAGS_RELEASE -= -O1
-    QMAKE_CXXFLAGS_RELEASE *= -O2
 }
 
 RESOURCES = egg-player.qrc
@@ -63,8 +55,7 @@ HEADERS += \
     src/core/player.hpp \
     src/core/shortcut.hpp \
     src/core/tag.hpp \
-    src/utils/fileutil.hpp \
-    src/utils/util.hpp \
+    src/core/fileutil.hpp \
     src/widgets/eggwidget.hpp \
     src/widgets/barwidget.hpp \
     src/widgets/librarywidget.hpp \
@@ -108,8 +99,6 @@ SOURCES += \
     src/core/player.cpp \
     src/core/shortcut.cpp \
     src/core/tag.cpp \
-    src/utils/fileutil.cpp \
-    src/utils/util.cpp \
     src/widgets/eggwidget.cpp \
     src/widgets/barwidget.cpp \
     src/widgets/librarywidget.cpp \

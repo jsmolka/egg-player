@@ -9,6 +9,7 @@ class RowHoverDelegate : public QStyledItemDelegate
 
 public:
     RowHoverDelegate(QObject *parent = nullptr);
+    ~RowHoverDelegate();
 
     int hoverRow() const;
 

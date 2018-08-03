@@ -1,6 +1,8 @@
 #ifndef BASS_HPP
 #define BASS_HPP
 
+#include <functional>
+
 #include "bass/bass.h"
 
 #include "basserror.hpp"
@@ -33,7 +35,9 @@ private:
     static bool init();
     static bool free();
 
-    static bool call(BOOL(*func)());
+    static bool call(std::function<BOOL()>);
+
+    static int s_instances;
 
     BassStream m_stream;
 };

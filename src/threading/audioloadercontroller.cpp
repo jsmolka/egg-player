@@ -30,7 +30,7 @@ Files AudioLoaderController::files() const
 
 void AudioLoaderController::start()
 {
-    for (Files chunk : Util::chunk<QString>(m_files, QThread::idealThreadCount()))
+    for (Files chunk : chunk<QString>(m_files, QThread::idealThreadCount()))
     {
         AudioLoaderWorker *worker = new AudioLoaderWorker(chunk);
         connect(worker, &AudioLoaderWorker::loaded, this, &AudioLoaderController::loaded);

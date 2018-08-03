@@ -2,14 +2,14 @@
 
 TableWidget::TableWidget(QWidget *parent)
     : SmoothTableWidget(parent)
-    , pm_delegate(new RowHoverDelegate(this))
+    , m_delegate(new RowHoverDelegate(this))
 {
     setup();
 
     connect(this, &TableWidget::entered, this, &TableWidget::onEntered);
     connect(this, &TableWidget::hoverRowChanged, this, &TableWidget::onHoverRowChanged);
 
-    connect(this, &TableWidget::hoverRowChanged, pm_delegate, &RowHoverDelegate::setHoverRow);
+    connect(this, &TableWidget::hoverRowChanged, m_delegate, &RowHoverDelegate::setHoverRow);
 }
 
 TableWidget::~TableWidget()
@@ -50,7 +50,7 @@ void TableWidget::setup()
     setFocusPolicy(Qt::NoFocus);
     setFrameStyle(QFrame::NoFrame);
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    setItemDelegate(pm_delegate);
+    setItemDelegate(m_delegate);
     setMouseTracking(true);
     setSelectionMode(QAbstractItemView::NoSelection);
     setShowGrid(false);
