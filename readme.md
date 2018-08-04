@@ -9,9 +9,10 @@ A Groove Music like music player.
 - [x] proper dpi scaling
 - [x] proper multithreading
 - [x] global shortcuts
-- [ ] reactive cache
+- [x] reactive cache
 
 ## Changes since lastest release
+- add reactive cache
 - significantly improve audio caching
 - significantly improve cover caching 
 - change icon hover style
@@ -24,12 +25,12 @@ A Groove Music like music player.
 - look into compile error for types
 - rename `Audio` to `Track`
 - prefix static variables with `s_` instead of `_`
-- implement operators for `Audio`, used `std::greater<>()` for sorting
 - compare current implementation of `lowerBound` with `std::lower_bound` in performance perspective
 - variadic template for `log` based on [introduction](http://kevinushey.github.io/blog/2016/01/27/introduction-to-c++-variadic-templates/) or multiple arguments
 - reserve vector space
 - do not allocate `Audio` on heap, consider passing references instead of pointers
 - write proper project file
+- Config value `volumeQuotient` for `Player`
 
 ### C++ Core Guidelines
 - [guidelines](https://github.com/isocpp/CppCoreGuidelines)
@@ -65,10 +66,7 @@ A Groove Music like music player.
 
 ### Reactive cache
 - use `QFileSystemWatcher`
-- update `Library`, `Audio` accordingly
-- store `lastModified.toSecsSinceEpoch()` in database
-- compare cached result with current result during loading
-- reload and update if unequal
+- detect live changes and update library accordingly
 
 ### Windows util
 - create a windows util

@@ -79,7 +79,7 @@ int Library::lowerBound(Audio *audio)
     while (low < high)
     {
         int mid = (low + high) / 2;
-        if (audio->title().compare(m_audios[mid]->title(), Qt::CaseInsensitive) < 0)
+        if (*audio < *m_audios[mid])
             high = mid;
         else
             low = mid + 1;

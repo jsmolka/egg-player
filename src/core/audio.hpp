@@ -20,13 +20,18 @@ public:
           int year,
           int track,
           int duration,
-          int coverId);
+          int coverId,
+          qint64 modified);
     ~Audio();
 
+    void setValid(bool valid);
     bool isValid() const;
 
     void setCached(bool cached);
     bool isCached() const;
+
+    void setOutdated(bool outdated);
+    bool isOutdated() const;
 
     QString path() const;
     QString title() const;
@@ -40,13 +45,26 @@ public:
     Duration * duration();
     Cover * cover();
 
+    qint64 modified() const;
+
+    void update();
+
     const wchar_t * widePath() const;
+
+    bool operator<(const Audio &other) const;
+    bool operator>(const Audio &other) const;
+    bool operator<=(const Audio &other) const;
+    bool operator>=(const Audio &other) const;
+
+    bool operator==(const Audio &other) const;
+    bool operator!=(const Audio &other) const;
 
 private:
     bool readTags();
 
     bool m_valid;
     bool m_cached;
+    bool m_outdated;
 
     QString m_path;
     QString m_title;
@@ -59,8 +77,10 @@ private:
 
     Duration m_duration;
     Cover m_cover;
+
+    qint64 m_modified;
 };
 
-typedef QVector<Audio *> Audios;
+using Audios = QVector<Audio *>;
 
 #endif // AUDIO_HPP

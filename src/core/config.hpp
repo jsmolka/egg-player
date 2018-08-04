@@ -35,6 +35,7 @@ public:
 private:
     void load();
     void save();
+    void setDefaults();
 
     ConfigApp m_app;
     ConfigBar m_bar;

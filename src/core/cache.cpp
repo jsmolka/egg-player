@@ -61,7 +61,8 @@ Audio * Cache::loadAudio(const QString &path)
             m_query.value(5).toInt(),
             m_query.value(6).toInt(),
             m_query.value(7).toInt(),
-            m_query.value(8).toInt()
+            m_query.value(8).toInt(),
+            m_query.value(9).toInt()
         );
     }
     return audio;
@@ -71,15 +72,16 @@ void Cache::insertAudio(Audio *audio)
 {
     m_query.prepare(
         "INSERT INTO audios VALUES ("
-        "  :path,"
-        "  :title,"
-        "  :artist,"
-        "  :album,"
-        "  :genre,"
-        "  :year,"
-        "  :track,"
-        "  :duration,"
-        "  :coverid"
+        " :path,"
+        " :title,"
+        " :artist,"
+        " :album,"
+        " :genre,"
+        " :year,"
+        " :track,"
+        " :duration,"
+        " :coverid,"
+        " :modified"
         ")"
     );
     m_query.bindValue(":path", audio->path());
@@ -91,6 +93,7 @@ void Cache::insertAudio(Audio *audio)
     m_query.bindValue(":track", audio->track());
     m_query.bindValue(":duration", audio->duration()->secs());
     m_query.bindValue(":coverid", audio->cover()->id());
+    m_query.bindValue(":modified", audio->modified());
 
     if (!m_query.exec())
         error();
@@ -102,15 +105,15 @@ void Cache::updateAudio(Audio *audio)
 {
     m_query.prepare(
         "UPDATE audios SET"
-        "  path = :path,"
-        "  title = :title,"
-        "  artist = :artist,"
-        "  album = :album,"
-        "  genre = :genre,"
-        "  year = :year,"
-        "  track = :track,"
-        "  duration = :duration,"
-        "  coverid = :coverid"
+        " title = :title,"
+        " artist = :artist,"
+        " album = :album,"
+        " genre = :genre,"
+        " year = :year,"
+        " track = :track,"
+        " duration = :duration,"
+        " coverid = :coverid,"
+        " modified = :modified "
         "WHERE path = :path"
     );
     m_query.bindValue(":path", audio->path());
@@ -122,9 +125,12 @@ void Cache::updateAudio(Audio *audio)
     m_query.bindValue(":track", audio->track());
     m_query.bindValue(":duration", audio->duration()->secs());
     m_query.bindValue(":coverid", audio->cover()->id());
+    m_query.bindValue(":modified", audio->modified());
 
     if (!m_query.exec())
         error();
+
+    audio->setCached(true);
 }
 
 int Cache::insertCover(const QPixmap &cover)
@@ -151,7 +157,7 @@ void Cache::setAudioCoverId(Audio *audio, int id)
 {
     m_query.prepare(
         "UPDATE audios SET"
-        "  coverid = :coverid "
+        " coverid = :coverid "
         "WHERE path = :path"
     );
     m_query.bindValue(":path", audio->path());
@@ -212,9 +218,9 @@ void Cache::createCovers()
 {
     m_query.prepare(
         "CREATE TABLE IF NOT EXISTS covers("
-        "  id INTEGER PRIMARY KEY,"
-        "  size INTEGER,"
-        "  cover BLOB"
+        " id INTEGER PRIMARY KEY,"
+        " size INTEGER,"
+        " cover BLOB"
         ")"
     );
 
@@ -226,15 +232,16 @@ void Cache::createAudios()
 {
     m_query.prepare(
         "CREATE TABLE IF NOT EXISTS audios("
-        "  path TEXT PRIMARY KEY,"
-        "  title TEXT,"
-        "  artist TEXT,"
-        "  album TEXT,"
-        "  genre TEXT,"
-        "  year INTEGER,"
-        "  track INTEGER,"
-        "  length INTEGER,"
-        "  coverid INTEGER"
+        " path TEXT PRIMARY KEY,"
+        " title TEXT,"
+        " artist TEXT,"
+        " album TEXT,"
+        " genre TEXT,"
+        " year INTEGER,"
+        " track INTEGER,"
+        " duration INTEGER,"
+        " coverid INTEGER,"
+        " modified INTEGER"
         ")"
     );
 
@@ -245,8 +252,8 @@ void Cache::createAudios()
 bool Cache::defaultCoverExists()
 {
     m_query.prepare(
-        "SELECT 1 FROM covers"
-        "  WHERE id = 1"
+        "SELECT 1 FROM covers "
+        "WHERE id = 1"
     );
 
     if (!m_query.exec())
@@ -265,9 +272,9 @@ void Cache::insertDefaultCover()
 
     m_query.prepare(
         "INSERT INTO covers VALUES ("
-        "  :id,"
-        "  :size,"
-        "  :cover"
+        " :id,"
+        " :size,"
+        " :cover"
         ")"
     );
     m_query.bindValue(":id", 1);
@@ -284,9 +291,9 @@ int Cache::insertByteCover(const QByteArray &bytes)
 
     m_query.prepare(
         "INSERT INTO covers VALUES ("
-        "  :id,"
-        "  :size,"
-        "  :cover"
+        " :id,"
+        " :size,"
+        " :cover"
         ")"
     );
     m_query.bindValue(":id", id);
@@ -305,7 +312,7 @@ void Cache::updateByteCover(int id, const QByteArray &bytes)
 {
     m_query.prepare(
         "UPDATE covers SET"
-        "  cover = :cover "
+        " cover = :cover "
         "WHERE id = :id"
     );
     m_query.bindValue(":cover", bytes);
@@ -385,7 +392,7 @@ void Cache::error()
 {
     QSqlError error = m_query.lastError();
     if (error.type() != QSqlError::NoError)
-        log("Cache: Querying \"%1\" failed with error \"%2\"", {lastQuery(), error.databaseText()});
+        log("Cache: Querying \"%1\" failed with errors \"%2\" and \"%3\"", {lastQuery(), error.databaseText(), error.driverText()});
 }
 
 QString Cache::lastQuery()

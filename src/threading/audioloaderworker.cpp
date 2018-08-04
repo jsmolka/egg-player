@@ -42,9 +42,17 @@ void AudioLoaderWorker::work()
 
         if (audio->isValid())
         {
-            emit loaded(audio);
             if (!audio->isCached())
+            {
                 m_uncached << audio;
+            }
+            if (audio->isOutdated())
+            {
+                audio->update();
+                audio->cover()->setId(0);
+                m_outdated << audio;
+            }
+            emit loaded(audio);
         }
         else
         {
@@ -61,6 +69,17 @@ void AudioLoaderWorker::work()
         QMutexLocker locker(&mutex);
 
         cache.insertAudio(audio);
+    }
+
+    for (Audio *audio : m_outdated)
+    {
+        if (isInterrupted())
+            return;
+
+        static QMutex mutex;
+        QMutexLocker locker(&mutex);
+
+        cache.updateAudio(audio);
     }
 
     emit finished();

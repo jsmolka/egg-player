@@ -3,15 +3,10 @@
 Audio::Audio(const QString &path)
     : m_path(path)
     , m_cached(false)
-    , m_cover(-1)
+    , m_outdated(false)
+    , m_cover(0)
 {
-    if (!(m_valid = readTags()))
-    {
-        if (!FileUtil::exists(path))
-            log("Audio: File does not exist %1", {m_path});
-        else
-            log("Audio: Cannot read tags %1", {m_path});
-    }
+    update();
 }
 
 Audio::Audio(const QString &path,
@@ -22,7 +17,8 @@ Audio::Audio(const QString &path,
              int year,
              int track,
              int length,
-             int coverId)
+             int coverId,
+             qint64 modified)
     : m_valid(true)
     , m_cached(true)
     , m_path(path)
@@ -34,13 +30,19 @@ Audio::Audio(const QString &path,
     , m_track(track)
     , m_duration(length)
     , m_cover(coverId)
+    , m_modified(modified)
 {
-
+    m_outdated = modified != FileUtil::modified(path);
 }
 
 Audio::~Audio()
 {
 
+}
+
+void Audio::setValid(bool valid)
+{
+    m_valid = valid;
 }
 
 bool Audio::isValid() const
@@ -56,6 +58,16 @@ void Audio::setCached(bool cached)
 bool Audio::isCached() const
 {
     return m_cached;
+}
+
+void Audio::setOutdated(bool outdated)
+{
+    m_outdated = outdated;
+}
+
+bool Audio::isOutdated() const
+{
+    return m_outdated;
 }
 
 QString Audio::path() const
@@ -103,9 +115,56 @@ Cover * Audio::cover()
     return &m_cover;
 }
 
+qint64 Audio::modified() const
+{
+    return m_modified;
+}
+
+void Audio::update()
+{
+    if (!(m_valid = readTags()))
+    {
+        if (!FileUtil::exists(m_path))
+            log("Audio: File does not exist %1", {m_path});
+        else
+            log("Audio: Cannot read tags %1", {m_path});
+    }
+    m_modified = FileUtil::modified(m_path);
+}
+
 const wchar_t * Audio::widePath() const
 {
     return reinterpret_cast<const wchar_t *>(m_path.constData());
+}
+
+bool Audio::operator<(const Audio &other) const
+{
+    return title().compare(other.title(), Qt::CaseInsensitive) < 0;
+}
+
+bool Audio::operator>(const Audio &other) const
+{
+    return other < *this;
+}
+
+bool Audio::operator<=(const Audio &other) const
+{
+    return !(*this > other);
+}
+
+bool Audio::operator>=(const Audio &other) const
+{
+    return !(*this < other);
+}
+
+bool Audio::operator==(const Audio &other) const
+{
+    return path() == other.path();
+}
+
+bool Audio::operator!=(const Audio &other) const
+{
+    return !(*this == other);
 }
 
 bool Audio::readTags()

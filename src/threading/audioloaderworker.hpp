@@ -30,6 +30,7 @@ public slots:
 private:
     Files m_files;
     Audios m_uncached;
+    Audios m_outdated;
 };
 
 #endif // AUDIOLOADERWORKER_HPP

@@ -5,11 +5,7 @@ Config::Config(QObject *parent)
 {
     load();
 
-    m_app.setDefaults();
-    m_bar.setDefaults();
-    m_library.setDefaults();
-    m_player.setDefaults();
-    m_shortcut.setDefaults();
+    setDefaults();
 }
 
 Config::~Config()
@@ -73,4 +69,13 @@ void Config::save()
     json.setObject(object);
 
     FileUtil::write(CFG_PATH, json.toJson());
+}
+
+void Config::setDefaults()
+{
+    m_app.setDefaults();
+    m_bar.setDefaults();
+    m_library.setDefaults();
+    m_player.setDefaults();
+    m_shortcut.setDefaults();
 }

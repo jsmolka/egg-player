@@ -9,7 +9,6 @@
 #include "bass.hpp"
 #include "config.hpp"
 #include "playlist.hpp"
-#include "types.hpp"
 
 #define ePlayer (Player::instance())
 
