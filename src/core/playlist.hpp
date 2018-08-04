@@ -37,16 +37,17 @@ public:
     Audio * audioAt(int index);
     Audio * currentAudio();
 
+    void create(const Audios &audios);
+
+public slots:
     void next();
     void previous();
-
-    void loadAudios(const Audios &audios);
 
 signals:
     void indexChanged(int index);
 
 private:
-    bool validIndex(int index);
+    bool isValidIndex(int index);
     int nextIndex();
     int previousIndex();
 

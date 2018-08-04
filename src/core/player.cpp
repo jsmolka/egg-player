@@ -9,7 +9,7 @@ Player::Player(QObject *parent)
     , m_playing(false)
 {
     connect(&m_updateTimer, &QTimer::timeout, this, &Player::update);
-    connect(&m_playlist, &Playlist::indexChanged, this, &Player::onIndexChanged);
+    connect(&m_playlist, &Playlist::indexChanged, this, &Player::onPlaylistIndexChanged);
 
     m_updateTimer.start(cfgPlayer->updateInterval());
 }
@@ -25,24 +25,9 @@ Player * Player::instance()
     return player;
 }
 
-void Player::setIndex(int index)
+Playlist * Player::playlist()
 {
-    m_playlist.setIndex(index);
-}
-
-int Player::index() const
-{
-    return m_playlist.index();
-}
-
-bool Player::isLoop() const
-{
-    return m_playlist.isLoop();
-}
-
-bool Player::isShuffle() const
-{
-    return m_playlist.isShuffle();
+    return &m_playlist;
 }
 
 bool Player::isPlaying() const
@@ -53,34 +38,6 @@ bool Player::isPlaying() const
 bool Player::isPaused() const
 {
     return !m_playing;
-}
-
-int Player::volume() const
-{
-    return m_volume;
-}
-
-int Player::position()
-{
-    return m_bass.stream()->isValid() ? m_bass.stream()->position() : -1;
-}
-
-void Player::createPlaylist(const Audios &audios, int index)
-{
-    m_playlist.setIndex(index);
-    m_playlist.loadAudios(audios);
-
-    setAudio(m_playlist.index());
-}
-
-Audio * Player::audioAt(int index)
-{
-    return m_playlist.audioAt(index);
-}
-
-Audio * Player::currentAudio()
-{
-    return m_playlist.currentAudio();
 }
 
 void Player::setVolume(int volume)
@@ -95,6 +52,11 @@ void Player::setVolume(int volume)
     cfgPlayer->setVolume(volume);
 }
 
+int Player::volume() const
+{
+    return m_volume;
+}
+
 void Player::setPosition(int position)
 {
     if (m_bass.stream()->isValid())
@@ -104,16 +66,9 @@ void Player::setPosition(int position)
     emit positionChanged(position);
 }
 
-void Player::setLoop(bool loop)
+int Player::position()
 {
-    m_playlist.setLoop(loop);
-    cfgPlayer->setLoop(loop);
-}
-
-void Player::setShuffle(bool shuffle)
-{
-    m_playlist.setShuffle(shuffle);
-    cfgPlayer->setShuffle(shuffle);
+    return m_bass.stream()->isValid() ? m_bass.stream()->position() : -1;
 }
 
 void Player::play()
@@ -136,17 +91,15 @@ void Player::pause()
     emit stateChanged();
 }
 
-void Player::next()
+void Player::createPlaylist(const Audios &audios, int index)
 {
-    m_playlist.next();
+    m_playlist.setIndex(index);
+    m_playlist.create(audios);
+
+    setAudio(m_playlist.index());
 }
 
-void Player::previous()
-{
-    m_playlist.previous();
-}
-
-void Player::onIndexChanged(int index)
+void Player::onPlaylistIndexChanged(int index)
 {
     if (index != -1)
     {
@@ -179,12 +132,12 @@ void Player::callback(HSYNC handle, DWORD channel, DWORD data, void *user)
     Q_UNUSED(data);
 
     Player *player = static_cast<Player *>(user);
-    player->next();
+    player->playlist()->next();
 }
 
 void Player::setAudio(int index)
 {
-    Audio *audio = audioAt(index);
+    Audio *audio = m_playlist.audioAt(index);
     if (!audio || !m_bass.stream()->create(audio))
         return;
 

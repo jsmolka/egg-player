@@ -28,9 +28,9 @@ BarWidget::BarWidget(QWidget *parent)
     connect(ePlayer, &Player::positionChanged, this, &BarWidget::onPlayerPositionChanged);
     connect(ePlayer, &Player::volumeChanged, this, &BarWidget::onPlayerVolumeChanged);
 
-    connect(&m_nextButton, &IconButton::pressed, ePlayer, &Player::next);
+    connect(&m_nextButton, &IconButton::pressed, ePlayer->playlist(), &Playlist::next);
     connect(&m_playPauseButton, &IconButton::pressed, this, &BarWidget::onPlayPauseButtonPressed);
-    connect(&m_previousButton, &IconButton::pressed, ePlayer, &Player::previous);
+    connect(&m_previousButton, &IconButton::pressed, ePlayer->playlist(), &Playlist::previous);
     connect(&m_shuffleButton, &IconButton::locked, this, &BarWidget::onShuffleButtonLocked);
     connect(&m_loopButton, &IconButton::locked, this, &BarWidget::onLoopButtonLocked);
     connect(&m_volumeButton, &IconButton::pressed, this, &BarWidget::onVolumeButtonPressed);
@@ -40,8 +40,8 @@ BarWidget::BarWidget(QWidget *parent)
     connect(&m_volumeSlider, &Slider::sliderMoved, this, &BarWidget::onVolumeSliderMoved);
 
     connect(&m_scPlayPause, &Shortcut::pressed, this, &BarWidget::onShortcutPlayPausePressed);
-    connect(&m_scNext, &Shortcut::pressed, ePlayer, &Player::next);
-    connect(&m_scPrevious, &Shortcut::pressed, ePlayer, &Player::previous);
+    connect(&m_scNext, &Shortcut::pressed, ePlayer->playlist(), &Playlist::next);
+    connect(&m_scPrevious, &Shortcut::pressed, ePlayer->playlist(), &Playlist::previous);
     connect(&m_scVolumeUp, &Shortcut::pressed, this, &BarWidget::onShortcutVolumeUpPressed);
     connect(&m_scVolumeDown, &Shortcut::pressed, this, &BarWidget::onShortcutVolumeDownPressed);
 }
@@ -147,7 +147,7 @@ void BarWidget::onPlayerVolumeChanged(int volume)
 
 void BarWidget::onPlayPauseButtonPressed()
 {
-    if (!ePlayer->currentAudio())
+    if (!ePlayer->playlist()->currentAudio())
         return;
 
     if (m_playPauseButton.iconIndex() == 0)
@@ -158,12 +158,12 @@ void BarWidget::onPlayPauseButtonPressed()
 
 void BarWidget::onShuffleButtonLocked(bool locked)
 {
-    ePlayer->setShuffle(locked);
+    ePlayer->playlist()->setShuffle(locked);
 }
 
 void BarWidget::onLoopButtonLocked(bool locked)
 {
-    ePlayer->setLoop(locked);
+    ePlayer->playlist()->setLoop(locked);
 }
 
 void BarWidget::onVolumeButtonPressed()

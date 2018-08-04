@@ -27,6 +27,7 @@ int Playlist::index() const
 void Playlist::setLoop(bool loop)
 {
     m_loop = loop;
+    cfgPlayer->setLoop(loop);
 }
 
 bool Playlist::isLoop() const
@@ -37,6 +38,7 @@ bool Playlist::isLoop() const
 void Playlist::setShuffle(bool shuffle)
 {
     m_shuffle = shuffle;
+    cfgPlayer->setShuffle(shuffle);
 
     if (shuffle)
         this->shuffle();
@@ -51,7 +53,7 @@ bool Playlist::isShuffle() const
 
 void Playlist::changeIndex(int index)
 {
-    if (validIndex(index))
+    if (isValidIndex(index))
         setIndex(index);
 
     emit indexChanged(index);
@@ -59,12 +61,23 @@ void Playlist::changeIndex(int index)
 
 Audio * Playlist::audioAt(int index)
 {
-    return validIndex(index) ? m_items[index].audio : nullptr;
+    return isValidIndex(index) ? m_items[index].audio : nullptr;
 }
 
 Audio * Playlist::currentAudio()
 {
     return audioAt(m_index);
+}
+
+void Playlist::create(const Audios &audios)
+{
+    m_items.clear();
+    m_items.reserve(audios.size());
+
+    for (int i = 0; i < audios.size(); ++i)
+        m_items << PlaylistItem(i, audios[i]);
+
+    setShuffle(m_shuffle);
 }
 
 void Playlist::next()
@@ -77,25 +90,14 @@ void Playlist::previous()
     changeIndex(previousIndex());
 }
 
-void Playlist::loadAudios(const Audios &audios)
-{
-    m_items.clear();
-    m_items.reserve(audios.size());
-
-    for (int i = 0; i < audios.size(); ++i)
-        m_items << PlaylistItem(i, audios[i]);
-
-    setShuffle(m_shuffle);
-}
-
-bool Playlist::validIndex(int index)
+bool Playlist::isValidIndex(int index)
 {
     return index >= 0 && index < m_items.size();
 }
 
 int Playlist::nextIndex()
 {
-    if (!validIndex(m_index))
+    if (!isValidIndex(m_index))
         return -1;
 
     if (m_index == m_items.size() - 1)
@@ -106,7 +108,7 @@ int Playlist::nextIndex()
 
 int Playlist::previousIndex()
 {
-    if (!validIndex(m_index))
+    if (!isValidIndex(m_index))
         return -1;
 
     if (m_index == 0)

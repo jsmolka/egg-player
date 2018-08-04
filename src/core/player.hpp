@@ -23,34 +23,21 @@ public:
 
     static Player * instance();
 
-    void setIndex(int index);
-    int index() const;
+    Playlist * playlist();
 
-    bool isLoop() const;
-    bool isShuffle() const;
     bool isPlaying() const;
     bool isPaused() const;
 
-    int volume() const;
-    int position();
-
-    void createPlaylist(const Audios &audios, int index = 0);
-
-    Audio * audioAt(int index);
-    Audio * currentAudio();
-
-public slots:
     void setVolume(int volume);
-    void setPosition(int position);
+    int volume() const;
 
-    void setLoop(bool loop);
-    void setShuffle(bool shuffle);
+    void setPosition(int position);
+    int position();
 
     void play();
     void pause();
 
-    void next();
-    void previous();
+    void createPlaylist(const Audios &audios, int index = 0);
 
 signals:
     void audioChanged(Audio *audio);
@@ -59,7 +46,7 @@ signals:
     void volumeChanged(int volume);
 
 private slots:
-    void onIndexChanged(int index);
+    void onPlaylistIndexChanged(int index);
     void update();
 
 private:
