@@ -46,8 +46,8 @@ private:
     QString m_shortcut;
 
     static int _id;
-    static const QHash<QString, int> _keys;
-    static const QHash<QString, int> _modifiers;
+    static const QHash<QString, int> s_keys;
+    static const QHash<QString, int> s_modifiers;
 };
 
 #endif // SHORTCUT_HPP

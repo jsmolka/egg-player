@@ -69,12 +69,12 @@ bool Shortcut::parseShortcut()
 {
     for (const QString &key : m_shortcut.toUpper().split(" ", QString::SkipEmptyParts))
     {
-        if (_modifiers.contains(key))
-            m_modifier |= _modifiers.value(key);
+        if (s_modifiers.contains(key))
+            m_modifier |= s_modifiers.value(key);
 
-        if (_keys.contains(key))
+        if (s_keys.contains(key))
         {
-            m_vk = _keys.value(key);
+            m_vk = s_keys.value(key);
         }
         else
         {
@@ -108,7 +108,7 @@ bool Shortcut::unregisterShortcut()
 
 int Shortcut::_id = 0;
 
-const QHash<QString, int> Shortcut::_keys =
+const QHash<QString, int> Shortcut::s_keys =
 {
     {"CANCEL"  , 0x0001},
     {"BACK"    , 0x0008},
@@ -217,7 +217,7 @@ const QHash<QString, int> Shortcut::_keys =
     {"SCROLL"  , 0x0091}
 };
 
-const QHash<QString, int> Shortcut::_modifiers =
+const QHash<QString, int> Shortcut::s_modifiers =
 {
     {"SHIFT", MOD_SHIFT  },
     {"CTRL" , MOD_CONTROL},

@@ -24,13 +24,13 @@ A Groove Music like music player.
 - `QKeySequence` for `Shortcut`
 - look into compile error for types
 - rename `Audio` to `Track`
-- prefix static variables with `s_` instead of `_`
-- compare current implementation of `lowerBound` with `std::lower_bound` in performance perspective
 - variadic template for `log` based on [introduction](http://kevinushey.github.io/blog/2016/01/27/introduction-to-c++-variadic-templates/) or multiple arguments
 - reserve vector space
 - do not allocate `Audio` on heap, consider passing references instead of pointers
-- write proper project file
+- write proper project file, use compiler optimization
 - Config value `volumeQuotient` for `Player`
+- change app background color to black to prevent white flashing when resizing
+  - need to use the [windows api](https://forum.qt.io/topic/69867/temporary-white-border-on-resizing-qt-quick-application-window-on-windows-desktop/2)
 
 ### C++ Core Guidelines
 - [guidelines](https://github.com/isocpp/CppCoreGuidelines)
@@ -67,19 +67,9 @@ A Groove Music like music player.
 ### Reactive cache
 - use `QFileSystemWatcher`
 - detect live changes and update library accordingly
-
-### Windows util
-- create a windows util
-- use defines to make it cross platform compatible
-- change app background color to black to prevent white flashing when resizing
-  - need to use the [windows api](https://forum.qt.io/topic/69867/temporary-white-border-on-resizing-qt-quick-application-window-on-windows-desktop/2)
-  - remove background color from css
-- move scale functions into this util
-- move register hotkey functions into this util
   
 ### User interface
 - do not show certain info at low size
 - fuzzy library searching
 - [expand scrollbar](https://stackoverflow.com/a/23677355/7057528)
 - [scrollable text](https://stackoverflow.com/a/10655396/7057528)
-- [color transition](https://stackoverflow.com/a/34445886/7057528)
