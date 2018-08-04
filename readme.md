@@ -30,7 +30,6 @@ A Groove Music like music player.
 - reserve vector space
 - do not allocate `Audio` on heap, consider passing references instead of pointers
 - write proper project file
-- look into profiling for code optimization, see [profile-guided optimizations](https://docs.microsoft.com/de-de/cpp/build/reference/profile-guided-optimizations)
 
 ### C++ Core Guidelines
 - [guidelines](https://github.com/isocpp/CppCoreGuidelines)
@@ -62,12 +61,7 @@ A Groove Music like music player.
 - do not use 'magic constants', e.g. `12` instead of `december`
 - move simple computation from run time to compile time, see `constexpr`
 - consider using `thread_local` for static variables inside threads
-- prefer iterators over range-based for-loop (e.g. `AbstractController::removeObject`, use `erase`instead)
-
-### Player
-- move playlist and everything related into own class
-- future possibility for `loadFromFile`
-- check for better ways to get the current audio after `shuffle` and `unshuffle`
+- prefer iterators over range-based for-loop
 
 ### Reactive cache
 - use `QFileSystemWatcher`

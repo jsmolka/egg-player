@@ -2,15 +2,14 @@
 
 Player::Player(QObject *parent)
     : QObject(parent)
+    , m_playlist(this)
     , m_updateTimer(this)
-    , m_index(-1)
     , m_volume(0)
     , m_position(-1)
-    , m_loop(false)
-    , m_shuffle(false)
     , m_playing(false)
 {
     connect(&m_updateTimer, &QTimer::timeout, this, &Player::update);
+    connect(&m_playlist, &Playlist::indexChanged, this, &Player::onIndexChanged);
 
     m_updateTimer.start(cfgPlayer->updateInterval());
 }
@@ -28,23 +27,22 @@ Player * Player::instance()
 
 void Player::setIndex(int index)
 {
-    m_index = index;
-    setAudio(index);
+    m_playlist.setIndex(index);
 }
 
 int Player::index() const
 {
-    return m_index;
+    return m_playlist.index();
 }
 
 bool Player::isLoop() const
 {
-    return m_loop;
+    return m_playlist.isLoop();
 }
 
 bool Player::isShuffle() const
 {
-    return m_shuffle;
+    return m_playlist.isShuffle();
 }
 
 bool Player::isPlaying() const
@@ -67,27 +65,22 @@ int Player::position()
     return m_bass.stream()->isValid() ? m_bass.stream()->position() : -1;
 }
 
-void Player::loadPlaylist(const Audios &audios, int index)
+void Player::createPlaylist(const Audios &audios, int index)
 {
-    m_playing = false;
-    m_playlist.clear();
-    m_playlist.reserve(audios.size());
+    m_playlist.setIndex(index);
+    m_playlist.loadAudios(audios);
 
-    for (int i = 0; i < audios.size(); ++i)
-        m_playlist << PlaylistItem(i, audios[i]);
-
-    setIndex(index);
-    setShuffle(m_shuffle);
+    setAudio(m_playlist.index());
 }
 
 Audio * Player::audioAt(int index)
 {
-    return validIndex(index) ? m_playlist[index].audio : nullptr;
+    return m_playlist.audioAt(index);
 }
 
 Audio * Player::currentAudio()
 {
-    return audioAt(m_index);
+    return m_playlist.currentAudio();
 }
 
 void Player::setVolume(int volume)
@@ -113,18 +106,13 @@ void Player::setPosition(int position)
 
 void Player::setLoop(bool loop)
 {
-    m_loop = loop;
+    m_playlist.setLoop(loop);
     cfgPlayer->setLoop(loop);
 }
 
 void Player::setShuffle(bool shuffle)
 {
-    if (shuffle)
-        this->shuffle();
-    else
-        unshuffle();
-
-    m_shuffle = shuffle;
+    m_playlist.setShuffle(shuffle);
     cfgPlayer->setShuffle(shuffle);
 }
 
@@ -150,12 +138,25 @@ void Player::pause()
 
 void Player::next()
 {
-    switchOrPause(nextIndex());
+    m_playlist.next();
 }
 
 void Player::previous()
 {
-    switchOrPause(previousIndex());
+    m_playlist.previous();
+}
+
+void Player::onIndexChanged(int index)
+{
+    if (index != -1)
+    {
+        setAudio(index);
+    }
+    else
+    {
+        pause();
+        setPosition(0);
+    }
 }
 
 void Player::update()
@@ -171,46 +172,6 @@ void Player::update()
     }
 }
 
-bool Player::validIndex(int index)
-{
-    return index > -1 && index < m_playlist.size();
-}
-
-void Player::switchOrPause(int index)
-{
-    if (validIndex(index))
-    {
-        setIndex(index);
-    }
-    else
-    {
-        pause();
-        setPosition(0);
-    }
-}
-
-int Player::nextIndex()
-{
-    if (!validIndex(m_index))
-        return -1;
-
-    if (m_index == m_playlist.size() - 1)
-        return m_loop ? 0 : -1;
-
-    return ++m_index;
-}
-
-int Player::previousIndex()
-{
-    if (!validIndex(m_index))
-        return -1;
-
-    if (m_index == 0)
-        return m_loop ? m_playlist.size() - 1 : -1;
-
-    return --m_index;
-}
-
 void Player::callback(HSYNC handle, DWORD channel, DWORD data, void *user)
 {
     Q_UNUSED(handle);
@@ -219,43 +180,6 @@ void Player::callback(HSYNC handle, DWORD channel, DWORD data, void *user)
 
     Player *player = static_cast<Player *>(user);
     player->next();
-}
-
-void Player::shuffle()
-{
-    Audio *audio = currentAudio();
-
-    std::random_shuffle(m_playlist.begin(), m_playlist.end());
-
-    for (int i = 0; i < m_playlist.size(); ++i)
-    {
-        if (audio == audioAt(i))
-        {
-            std::swap(m_playlist[0], m_playlist[i]);
-            break;
-        }
-    }
-    m_index = 0;
-}
-
-void Player::unshuffle()
-{
-    Audio *audio = currentAudio();
-
-    std::sort(m_playlist.begin(), m_playlist.end(),
-        [](const PlaylistItem &i1, const PlaylistItem &i2) {
-            return i1.index < i2.index;
-        }
-    );
-
-    for (int i = 0; i < m_playlist.size(); ++i)
-    {
-        if (audio == audioAt(i))
-        {
-            m_index = i;
-            break;
-        }
-    }
 }
 
 void Player::setAudio(int index)

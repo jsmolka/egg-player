@@ -32,7 +32,7 @@ void EggWidget::closeEvent(QCloseEvent *event)
 
 void EggWidget::onLibraryDoubleClicked(const QModelIndex &index)
 {
-    ePlayer->loadPlaylist(eLibrary->audios(), index.row());
+    ePlayer->createPlaylist(eLibrary->audios(), index.row());
     ePlayer->play();
 }
 

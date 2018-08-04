@@ -8,6 +8,7 @@
 #include "audio.hpp"
 #include "bass.hpp"
 #include "config.hpp"
+#include "playlist.hpp"
 #include "types.hpp"
 
 #define ePlayer (Player::instance())
@@ -33,7 +34,7 @@ public:
     int volume() const;
     int position();
 
-    void loadPlaylist(const Audios &audios, int index = 0);
+    void createPlaylist(const Audios &audios, int index = 0);
 
     Audio * audioAt(int index);
     Audio * currentAudio();
@@ -58,39 +59,19 @@ signals:
     void volumeChanged(int volume);
 
 private slots:
+    void onIndexChanged(int index);
     void update();
 
 private:
-    struct PlaylistItem
-    {
-        PlaylistItem(int index = 0, Audio *audio = nullptr) :
-            index(index), audio(audio) {}
-
-        int index;
-        Audio *audio;
-    };
-
-    bool validIndex(int index);
-
-    void switchOrPause(int index);
-    int nextIndex();
-    int previousIndex();
-
     static void CALLBACK callback(HSYNC handle, DWORD channel, DWORD data, void *user);
-
-    void shuffle();
-    void unshuffle();
 
     void setAudio(int index);
 
-    QVector<PlaylistItem> m_playlist;
+    Playlist m_playlist;
     QTimer m_updateTimer;
     Bass m_bass;
-    int m_index;
     int m_volume;
     int m_position;
-    bool m_loop;
-    bool m_shuffle;
     bool m_playing;
 };
 
