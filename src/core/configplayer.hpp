@@ -21,6 +21,9 @@ public:
 
     void setVolume(int volume);
     int volume();
+
+    void setVolumeQuotient(int quotient);
+    int volumeQuotient();
 };
 
 #endif // CONFIGPLAYER_HPP

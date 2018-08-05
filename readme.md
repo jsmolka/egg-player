@@ -21,14 +21,9 @@ A Groove Music like music player.
 
 ### General
 - rewrite `LibraryWidget`
-- `QKeySequence` for `Shortcut`
-- look into compile error for types
+- look into compile error in `types.hpp`
 - rename `Audio` to `Track`
-- variadic template for `log` based on [introduction](http://kevinushey.github.io/blog/2016/01/27/introduction-to-c++-variadic-templates/) or multiple arguments
-- reserve vector space
-- do not allocate `Audio` on heap, consider passing references instead of pointers
 - write proper project file, use compiler optimization
-- Config value `volumeQuotient` for `Player`
 - change app background color to black to prevent white flashing when resizing
   - need to use the [windows api](https://forum.qt.io/topic/69867/temporary-white-border-on-resizing-qt-quick-application-window-on-windows-desktop/2)
 

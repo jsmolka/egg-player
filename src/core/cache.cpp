@@ -392,7 +392,7 @@ void Cache::error()
 {
     QSqlError error = m_query.lastError();
     if (error.type() != QSqlError::NoError)
-        log("Cache: Querying \"%1\" failed with errors \"%2\" and \"%3\"", {lastQuery(), error.databaseText(), error.driverText()});
+        log("Cache: Querying \"%1\" failed with errors \"%2\" and \"%3\"", lastQuery(), error.databaseText(), error.driverText());
 }
 
 QString Cache::lastQuery()

@@ -6,6 +6,7 @@ void ConfigPlayer::setDefaults()
     setDefault("shuffle", false);
     setDefault("updateInterval", 50);
     setDefault("volume", 25);
+    setDefault("volumeQuotient", 1000);
 }
 
 void ConfigPlayer::setLoop(bool loop)
@@ -46,4 +47,14 @@ void ConfigPlayer::setVolume(int volume)
 int ConfigPlayer::volume()
 {
     return get("volume").toInt();
+}
+
+void ConfigPlayer::setVolumeQuotient(int quotient)
+{
+    set("volumeQuotient", quotient);
+}
+
+int ConfigPlayer::volumeQuotient()
+{
+    return get("volumeQuotient").toInt();
 }

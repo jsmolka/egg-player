@@ -9,12 +9,14 @@ Library::Library(QObject *parent)
 Library::Library(bool sorted, QObject *parent)
     : QObject(parent)
     , m_sorted(sorted)
+    , m_watcher(this)
     , m_audioLoader(this)
     , m_coverLoader(this)
 {
     connect(&m_audioLoader, &AudioLoaderController::loaded, this, &Library::insert);
     connect(&m_audioLoader, &AudioLoaderController::finished,this, &Library::onAudioLoaderFinished);
 
+    connect(&m_watcher, &QFileSystemWatcher::fileChanged, this, &Library::onWatcherFileChanged);
 }
 
 Library::~Library()
@@ -54,22 +56,35 @@ AudioLoaderController * Library::audioLoader()
     return &m_audioLoader;
 }
 
-void Library::load(const Files &paths)
+void Library::load(const Paths &paths)
 {
-    m_audioLoader.setFiles(uniqueFiles(paths));
+    m_audioLoader.setFiles(globFiles(paths));
     m_audioLoader.start();
 }
 
 void Library::insert(Audio *audio)
 {
-    int index = m_sorted ? insertBinary(audio) : append(audio);
+    int index = m_sorted ? insertBinary(audio) : insertLinear(audio);
+    m_watcher.addPath(audio->path());
     emit inserted(audio, index);
+}
+
+void Library::remove(const QString &file)
+{
+    int index = removeLinear(file);
+    emit removed(index);
 }
 
 void Library::onAudioLoaderFinished()
 {
     m_coverLoader.setAudios(m_audios);
     m_coverLoader.start();
+}
+
+void Library::onWatcherFileChanged(const QString &file)
+{
+    if (!FileUtil::exists(file))
+        remove(file);
 }
 
 int Library::lowerBound(Audio *audio)
@@ -94,25 +109,31 @@ int Library::insertBinary(Audio *audio)
     return index;
 }
 
-int Library::append(Audio *audio)
+int Library::insertLinear(Audio *audio)
 {
     m_audios << audio;
     return -1;
 }
 
-Files Library::uniqueFiles(const Files &paths)
+int Library::removeLinear(const QString &file)
+{
+    for (int i = 0; i < m_audios.size(); ++i)
+    {
+        if (*m_audios[i] == file)
+            return i;
+    }
+    return 0;
+}
+
+Files Library::globFiles(const Paths &paths)
 {
     Files files;
     for (const QString &path : paths)
     {
-        if (!m_paths.contains(path))
+        if (!m_loaded.contains(path))
         {
+            m_loaded.insert(path);
             files << FileUtil::glob(path, "*.mp3");
-            m_paths << path;
-        }
-        else
-        {
-            log("Library: Path has already been loaded %1", {path});
         }
     }
     return files;

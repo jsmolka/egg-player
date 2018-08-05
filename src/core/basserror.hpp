@@ -15,6 +15,9 @@ public:
 
 protected:
     static void error();
+
+private:
+    static QHash<int, QString> s_errors;
 };
 
 #endif // BASSERROR_HPP

@@ -11,7 +11,6 @@ namespace FileUtil
 {
     extern bool exists(const QString &file);
     extern QString fileName(const QString &file);
-    extern qint64 created(const QString &file);
     extern qint64 modified(const QString &file);
 
     extern QString read(const QString &file, const QString &defaultValue = QString());

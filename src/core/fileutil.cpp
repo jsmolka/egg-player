@@ -10,11 +10,6 @@ QString FileUtil::fileName(const QString &file)
     return QFileInfo(file).baseName();
 }
 
-qint64 FileUtil::created(const QString &file)
-{
-    return QFileInfo(file).created().toSecsSinceEpoch();
-}
-
 qint64 FileUtil::modified(const QString &file)
 {
     return QFileInfo(file).lastModified().toSecsSinceEpoch();

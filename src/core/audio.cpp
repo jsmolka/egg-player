@@ -125,9 +125,9 @@ void Audio::update()
     if (!(m_valid = readTags()))
     {
         if (!FileUtil::exists(m_path))
-            log("Audio: File does not exist %1", {m_path});
+            log("Audio: File does not exist %1", m_path);
         else
-            log("Audio: Cannot read tags %1", {m_path});
+            log("Audio: Cannot read tags %1", m_path);
     }
     m_modified = FileUtil::modified(m_path);
 }
@@ -157,9 +157,19 @@ bool Audio::operator>=(const Audio &other) const
     return !(*this < other);
 }
 
+bool Audio::operator==(const QString &other) const
+{
+    return path() == other;
+}
+
+bool Audio::operator!=(const QString &other) const
+{
+    return !(*this == other);
+}
+
 bool Audio::operator==(const Audio &other) const
 {
-    return path() == other.path();
+    return *this == other.path();
 }
 
 bool Audio::operator!=(const Audio &other) const

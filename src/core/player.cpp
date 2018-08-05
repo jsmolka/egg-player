@@ -44,7 +44,7 @@ void Player::setVolume(int volume)
 {
     volume = qMax(0, qMin(volume, 100));
     if (m_bass.stream()->isValid())
-        if (!m_bass.stream()->setVolume(static_cast<float>(volume) / 1000.0))
+        if (!m_bass.stream()->setVolume(static_cast<float>(volume) / static_cast<float>(cfgPlayer->volumeQuotient())))
             return;
 
     m_volume = volume;
