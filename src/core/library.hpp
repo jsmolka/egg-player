@@ -35,32 +35,25 @@ public:
 
 public slots:
     void insert(Audio *audio);
-    void remove(const QString &file);
 
 signals:
     void inserted(Audio *audio, int index);
-    void removed(int index);
 
 private slots:
     void onAudioLoaderFinished();
-    void onWatcherFileChanged(const QString &file);
 
 private:
     int lowerBound(Audio *audio);
     int insertBinary(Audio *audio);
     int insertLinear(Audio *audio);
 
-    int removeLinear(const QString &file);
-
     Files globFiles(const Paths &paths);
 
     bool m_sorted;
     Audios m_audios;
     QSet<QString> m_loaded;
-    QFileSystemWatcher m_watcher;
     AudioLoaderController m_audioLoader;
     CoverLoaderController m_coverLoader;
-
 };
 
 #endif // LIBRARY_HPP
