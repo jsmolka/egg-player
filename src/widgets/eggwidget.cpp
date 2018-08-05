@@ -8,9 +8,9 @@ EggWidget::EggWidget(QWidget *parent)
     setup();
     setupUi();
 
-    connect(eLibrary, &Library::inserted, &m_library, &LibraryWidget::insert);
     connect(&m_library, &LibraryWidget::doubleClicked, this, &EggWidget::onLibraryDoubleClicked);
 
+    m_library.setLibrary(eLibrary);
     eLibrary->load(cfgLibrary->paths());
 }
 
@@ -57,7 +57,7 @@ void EggWidget::setupUi()
     m_library.addColumn(LibraryWidget::Album);
     m_library.addColumn(LibraryWidget::Year, Qt::AlignLeft, false);
     m_library.addColumn(LibraryWidget::Genre);
-    m_library.addColumn(LibraryWidget::Length, Qt::AlignRight, false);
+    m_library.addColumn(LibraryWidget::Duration, Qt::AlignRight, false);
 
     BorderLayout *layout = new BorderLayout(0, this);
     layout->addWidget(&m_library, BorderLayout::Center);

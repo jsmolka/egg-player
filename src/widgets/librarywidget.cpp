@@ -11,6 +11,20 @@ LibraryWidget::~LibraryWidget()
 
 }
 
+void LibraryWidget::setLibrary(Library *library)
+{
+    m_library = library;
+
+    connect(library, &Library::inserted, this, &LibraryWidget::insert);
+}
+
+void LibraryWidget::removeLibrary()
+{
+    disconnect(m_library, &Library::inserted, this, &LibraryWidget::insert);
+
+    m_library = nullptr;
+}
+
 void LibraryWidget::addColumn(SongInfo info, Qt::Alignment horizontal, bool expand)
 {
     m_columns << Column(info, Qt::AlignVCenter | horizontal);
@@ -71,7 +85,7 @@ QString LibraryWidget::audioText(Audio *audio, int column)
             return audio->year() == 0 ? QString() : QString::number(audio->year());
         case SongInfo::Genre:
             return audio->genre();
-        case SongInfo::Length:
+        case SongInfo::Duration:
             return audio->duration()->toString();
     }
     return QString();

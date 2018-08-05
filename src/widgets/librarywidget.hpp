@@ -18,7 +18,10 @@ public:
     LibraryWidget(QWidget *parent = nullptr);
     ~LibraryWidget();
 
-    enum SongInfo {None, Title, Artist, Album, Track, Year, Genre, Length};
+    enum SongInfo {None, Title, Artist, Album, Track, Year, Genre, Duration};
+
+    void setLibrary(Library *library);
+    void removeLibrary();
 
     void addColumn(SongInfo info, Qt::Alignment horizontal = Qt::AlignLeft, bool expand = true);
 
@@ -40,6 +43,7 @@ private:
 
     QString audioText(Audio *audio, int column);
 
+    Library *m_library;
     QVector<Column> m_columns;
 };
 

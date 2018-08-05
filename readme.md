@@ -20,12 +20,8 @@ A Groove Music like music player.
 ## Things to do
 
 ### General
-- rewrite `LibraryWidget`
 - look into compile error in `types.hpp`
-- rename `Audio` to `Track`
 - write proper project file, use compiler optimization
-- change app background color to black to prevent white flashing when resizing
-  - need to use the [windows api](https://forum.qt.io/topic/69867/temporary-white-border-on-resizing-qt-quick-application-window-on-windows-desktop/2)
 
 ### C++ Core Guidelines
 - [guidelines](https://github.com/isocpp/CppCoreGuidelines)
@@ -58,6 +54,7 @@ A Groove Music like music player.
 - move simple computation from run time to compile time, see `constexpr`
 - consider using `thread_local` for static variables inside threads
 - prefer iterators over range-based for-loop
+- minimize singleton usage
 
 ### Reactive cache
 - use `QFileSystemWatcher`
