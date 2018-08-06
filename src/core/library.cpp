@@ -9,6 +9,7 @@ Library::Library(QObject *parent)
 Library::Library(bool sorted, QObject *parent)
     : QObject(parent)
     , m_sorted(sorted)
+    , m_audios(this)
     , m_audioLoader(this)
     , m_coverLoader(this)
 {
@@ -19,7 +20,7 @@ Library::Library(bool sorted, QObject *parent)
 Library::~Library()
 {
     while (!m_audios.isEmpty())
-        delete m_audios.takeAt(0);
+        delete m_audios.takeFirst();
 }
 
 Library * Library::instance()
