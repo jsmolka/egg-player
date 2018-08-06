@@ -22,6 +22,40 @@ A Groove Music like music player.
 ### General
 - look into compile error in `types.hpp`
 - write proper project file, use compiler optimization
+- test jpg instead of png for cover conversion
+- space after tables in create tables
+- make PlaylistItem private
+- SongInfo to AudioInfo
+
+### Live changes
+- create `Audios` class an forward necessary vector functions
+    - signal `inserted`, called at `insert` / `append`
+    - signal `removed`, called at `removed`
+    - signal `updated`, forwared from `Audio`
+        - make `Audio` a `QObject` at emit signal at update to handle changes
+- use pointer to this class / object in player and playlist
+- connect `Audios` signals to class when updating is needed
+- keep a list of shuffled indices in `Playlist` ([example](https://stackoverflow.com/a/16968081/7057528))
+    - shuffle indices
+    - create new indices at `sort`
+
+```python
+# Default state, sorted
+i = [0,  1,  2]
+a = [a0, a1, a2]
+
+# Shuffled state
+i = [2,  0,  1]
+a = [a0, a1, a2]
+
+# Remove item at index 2
+index = 2
+i = [2,  0]  # -> [1, 0]
+a = [a0, a1]
+for x, idx in enumerate(i):
+    if x >= index:
+        i[idx] -= 1
+```
 
 ### C++ Core Guidelines
 - [guidelines](https://github.com/isocpp/CppCoreGuidelines)
@@ -55,6 +89,13 @@ A Groove Music like music player.
 - consider using `thread_local` for static variables inside threads
 - prefer iterators over range-based for-loop
 - minimize singleton usage
+- use [Qt algorithms](http://doc.qt.io/qt-5/qtalgorithms.html)
+- use [std algorithms](http://www.cplusplus.com/reference/algorithm/)
+- std::sort with qLess<T>
+- probably useful
+    - [insert binary](https://stackoverflow.com/a/25524075/7057528)
+    - [binary predicate](https://stackoverflow.com/a/4269392/7057528)
+    - [array insert end](https://stackoverflow.com/a/5961066/7057528)
 
 ### Reactive cache
 - use `QFileSystemWatcher`
