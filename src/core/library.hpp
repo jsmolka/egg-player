@@ -27,7 +27,7 @@ public:
     void setSorted(bool sorted);
     bool isSorted() const;
 
-    Audios audios() const;
+    Audios * audios();
     CoverLoaderController * coverLoader();
     AudioLoaderController * audioLoader();
 

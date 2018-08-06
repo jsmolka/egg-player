@@ -6,6 +6,7 @@
 
 #include "abstractworker.hpp"
 #include "audio.hpp"
+#include "audios.hpp"
 #include "cache.hpp"
 #include "types.hpp"
 
@@ -15,17 +16,17 @@ class CoverLoaderWorker : public AbstractWorker
 
 public:
     CoverLoaderWorker(QObject *parent = nullptr);
-    CoverLoaderWorker(const Audios &audios, QObject *parent = nullptr);
+    CoverLoaderWorker(const AudioVector &audios, QObject *parent = nullptr);
     ~CoverLoaderWorker();
 
-    void setAudios(const Audios &audios);
-    Audios audios() const;
+    void setAudios(const AudioVector &audios);
+    AudioVector audios() const;
 
 public slots:
     void work() override;
 
 private:
-    Audios m_audios;
+    AudioVector m_audios;
 };
 
 #endif // COVERLOADERWORKER_HPP

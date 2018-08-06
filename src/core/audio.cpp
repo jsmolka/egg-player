@@ -1,7 +1,15 @@
 #include "audio.hpp"
 
-Audio::Audio(const QString &path)
-    : m_path(path)
+Audio::Audio(QObject *parent)
+    : QObject(parent)
+    , m_valid(false)
+{
+
+}
+
+Audio::Audio(const QString &path, QObject *parent)
+    : QObject(parent)
+    , m_path(path)
     , m_cached(false)
     , m_outdated(false)
     , m_cover(0)
@@ -18,8 +26,10 @@ Audio::Audio(const QString &path,
              int track,
              int length,
              int coverId,
-             qint64 modified)
-    : m_valid(true)
+             qint64 modified,
+             QObject *parent)
+    : QObject(parent)
+    , m_valid(true)
     , m_cached(true)
     , m_path(path)
     , m_title(title)
@@ -130,6 +140,8 @@ void Audio::update()
             log("Audio: Cannot read tags %1", m_path);
     }
     m_modified = FileUtil::modified(m_path);
+
+    emit updated(this);
 }
 
 const wchar_t * Audio::widePath() const

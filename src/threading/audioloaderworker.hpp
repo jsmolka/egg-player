@@ -6,6 +6,7 @@
 
 #include "abstractworker.hpp"
 #include "audio.hpp"
+#include "audios.hpp"
 #include "cache.hpp"
 #include "types.hpp"
 

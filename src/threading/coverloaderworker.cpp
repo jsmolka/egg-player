@@ -1,12 +1,12 @@
 #include "coverloaderworker.hpp"
 
 CoverLoaderWorker::CoverLoaderWorker(QObject *parent)
-    : CoverLoaderWorker(Audios(), parent)
+    : CoverLoaderWorker(AudioVector(), parent)
 {
 
 }
 
-CoverLoaderWorker::CoverLoaderWorker(const Audios &audios, QObject *parent)
+CoverLoaderWorker::CoverLoaderWorker(const AudioVector &audios, QObject *parent)
     : AbstractWorker(parent)
     , m_audios(audios)
 {
@@ -18,12 +18,12 @@ CoverLoaderWorker::~CoverLoaderWorker()
 
 }
 
-void CoverLoaderWorker::setAudios(const Audios &audios)
+void CoverLoaderWorker::setAudios(const AudioVector &audios)
 {
     m_audios = audios;
 }
 
-Audios CoverLoaderWorker::audios() const
+AudioVector CoverLoaderWorker::audios() const
 {
     return m_audios;
 }

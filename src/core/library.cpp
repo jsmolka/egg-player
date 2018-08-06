@@ -19,7 +19,7 @@ Library::Library(bool sorted, QObject *parent)
 Library::~Library()
 {
     while (!m_audios.isEmpty())
-        delete m_audios.takeFirst();
+        delete m_audios.takeAt(0);
 }
 
 Library * Library::instance()
@@ -38,9 +38,9 @@ bool Library::isSorted() const
     return m_sorted;
 }
 
-Audios Library::audios() const
+Audios * Library::audios()
 {
-    return m_audios;
+    return &m_audios;
 }
 
 CoverLoaderController * Library::coverLoader()
@@ -67,7 +67,7 @@ void Library::insert(Audio *audio)
 
 void Library::onAudioLoaderFinished()
 {
-    m_coverLoader.setAudios(m_audios);
+    m_coverLoader.setAudios(m_audios.vector());
     m_coverLoader.start();
 }
 
@@ -78,7 +78,7 @@ int Library::lowerBound(Audio *audio)
     while (low < high)
     {
         int mid = (low + high) / 2;
-        if (*audio < *m_audios[mid])
+        if (*audio < *m_audios.at(mid))
             high = mid;
         else
             low = mid + 1;

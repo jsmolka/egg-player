@@ -5,6 +5,7 @@
 #include <QVector>
 
 #include "audio.hpp"
+#include "audios.hpp"
 
 struct PlaylistItem
 {
@@ -37,7 +38,7 @@ public:
     Audio * audioAt(int index);
     Audio * currentAudio();
 
-    void create(const Audios &audios);
+    void create(Audios *audios);
 
 public slots:
     void next();

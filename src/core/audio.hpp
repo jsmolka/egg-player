@@ -1,6 +1,7 @@
 #ifndef AUDIO_HPP
 #define AUDIO_HPP
 
+#include <QObject>
 #include <QVector>
 
 #include "cover.hpp"
@@ -8,10 +9,13 @@
 #include "logger.hpp"
 #include "tag.hpp"
 
-class Audio
+class Audio : public QObject
 {
+    Q_OBJECT
+
 public:
-    Audio(const QString &path);
+    Audio(QObject *parent = nullptr);
+    Audio(const QString &path, QObject *parent = nullptr);
     Audio(const QString &path,
           const QString &title,
           const QString &artist,
@@ -21,7 +25,8 @@ public:
           int track,
           int duration,
           int coverId,
-          qint64 modified);
+          qint64 modified,
+          QObject *parent = nullptr);
     ~Audio();
 
     void setValid(bool valid);
@@ -61,6 +66,9 @@ public:
     bool operator==(const Audio &other) const;
     bool operator!=(const Audio &other) const;
 
+signals:
+    void updated(Audio *audio);
+
 private:
     bool readTags();
 
@@ -82,7 +90,5 @@ private:
 
     qint64 m_modified;
 };
-
-using Audios = QVector<Audio *>;
 
 #endif // AUDIO_HPP

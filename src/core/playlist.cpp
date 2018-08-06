@@ -69,13 +69,13 @@ Audio * Playlist::currentAudio()
     return audioAt(m_index);
 }
 
-void Playlist::create(const Audios &audios)
+void Playlist::create(Audios *audios)
 {
     m_items.clear();
-    m_items.reserve(audios.size());
+    m_items.reserve(audios->size());
 
-    for (int i = 0; i < audios.size(); ++i)
-        m_items << PlaylistItem(i, audios[i]);
+    for (int i = 0; i < audios->size(); ++i)
+        m_items << PlaylistItem(i, audios->at(i));
 
     setShuffle(m_shuffle);
 }

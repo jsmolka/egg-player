@@ -36,7 +36,7 @@ public:
     void play();
     void pause();
 
-    void createPlaylist(const Audios &audios, int index = 0);
+    void createPlaylist(Audios *audios, int index = 0);
 
 signals:
     void audioChanged(Audio *audio);

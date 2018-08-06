@@ -91,7 +91,7 @@ void Player::pause()
     emit stateChanged();
 }
 
-void Player::createPlaylist(const Audios &audios, int index)
+void Player::createPlaylist(Audios *audios, int index)
 {
     m_playlist.setIndex(index);
     m_playlist.create(audios);

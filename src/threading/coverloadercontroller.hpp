@@ -3,6 +3,7 @@
 
 #include "abstractcontroller.hpp"
 #include "audio.hpp"
+#include "audios.hpp"
 #include "cache.hpp"
 #include "coverloaderworker.hpp"
 
@@ -12,17 +13,17 @@ class CoverLoaderController : public AbstractController
 
 public:
     CoverLoaderController(QObject *parent = nullptr);
-    CoverLoaderController(Audios audios, QObject *parent = nullptr);
+    CoverLoaderController(AudioVector audios, QObject *parent = nullptr);
     ~CoverLoaderController();
 
-    void setAudios(const Audios &audios);
-    Audios audios() const;
+    void setAudios(const AudioVector &audios);
+    AudioVector audios() const;
 
 public slots:
     void start() override;
 
 private:
-    Audios m_audios;
+    AudioVector m_audios;
 };
 
 #endif // COVERLOADERCONTROLLER_HPP

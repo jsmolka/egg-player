@@ -78,7 +78,8 @@ HEADERS += \
     src/threading/audioloadercontroller.hpp \
     src/core/duration.hpp \
     src/core/cover.hpp \
-    src/core/playlist.hpp
+    src/core/playlist.hpp \
+    src/core/audios.hpp
 
 SOURCES += \
     src/main.cpp \
@@ -122,5 +123,6 @@ SOURCES += \
     src/core/duration.cpp \
     src/core/cover.cpp \
     src/core/fileutil.cpp \
-    src/core/playlist.cpp
+    src/core/playlist.cpp \
+    src/core/audios.cpp
 
