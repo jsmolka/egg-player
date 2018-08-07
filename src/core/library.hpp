@@ -41,6 +41,7 @@ signals:
 
 private slots:
     void onAudioLoaderFinished();
+    void onFileChanged(const QString &file);
 
 private:
     int lowerBound(Audio *audio);
@@ -52,6 +53,7 @@ private:
     bool m_sorted;
     Audios m_audios;
     QSet<QString> m_loaded;
+    QFileSystemWatcher m_watcher;
     AudioLoaderController m_audioLoader;
     CoverLoaderController m_coverLoader;
 };

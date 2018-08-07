@@ -7,15 +7,6 @@
 #include "audio.hpp"
 #include "audios.hpp"
 
-struct PlaylistItem
-{
-    PlaylistItem(int index = 0, Audio *audio = nullptr) :
-        index(index), audio(audio) {}
-
-    int index;
-    Audio *audio;
-};
-
 class Playlist : public QObject
 {
     Q_OBJECT
@@ -47,16 +38,19 @@ public slots:
 signals:
     void indexChanged(int index);
 
+private slots:
+    void onAudiosRemoved(int index);
+
 private:
     bool isValidIndex(int index);
     int nextIndex();
     int previousIndex();
 
-    int indexOf(const Audio *audio);
     void shuffle();
     void unshuffle();
 
-    QVector<PlaylistItem> m_items;
+    Audios *m_audios;
+    QVector<int> m_indices;
     int m_index;
     bool m_loop;
     bool m_shuffle;

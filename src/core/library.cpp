@@ -10,9 +10,12 @@ Library::Library(bool sorted, QObject *parent)
     : QObject(parent)
     , m_sorted(sorted)
     , m_audios(this)
+    , m_watcher(this)
     , m_audioLoader(this)
     , m_coverLoader(this)
 {
+    connect(&m_watcher, &QFileSystemWatcher::fileChanged, this, &Library::onFileChanged);
+
     connect(&m_audioLoader, &AudioLoaderController::loaded, this, &Library::insert);
     connect(&m_audioLoader, &AudioLoaderController::finished,this, &Library::onAudioLoaderFinished);
 }
@@ -63,6 +66,7 @@ void Library::load(const Paths &paths)
 void Library::insert(Audio *audio)
 {
     int index = m_sorted ? insertBinary(audio) : insertLinear(audio);
+    m_watcher.addPath(audio->path());
     emit inserted(audio, index);
 }
 
@@ -70,6 +74,19 @@ void Library::onAudioLoaderFinished()
 {
     m_coverLoader.setAudios(m_audios.vector());
     m_coverLoader.start();
+}
+
+void Library::onFileChanged(const QString &file)
+{
+    int index = 0;
+    for (const Audio *audio : m_audios)
+    {
+        if (*audio == file)
+            break;
+
+        ++index;
+    }
+    m_audios.remove(index);
 }
 
 int Library::lowerBound(Audio *audio)

@@ -28,6 +28,9 @@ public:
 public slots:
     void insert(Audio *audio, int row = -1);
 
+private slots:
+    void onAudiosRemoved(int index);
+
 private:
     struct Column
     {

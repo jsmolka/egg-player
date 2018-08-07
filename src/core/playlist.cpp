@@ -61,7 +61,7 @@ void Playlist::changeIndex(int index)
 
 Audio * Playlist::audioAt(int index)
 {
-    return isValidIndex(index) ? m_items[index].audio : nullptr;
+    return isValidIndex(index) ? m_audios->at(m_indices.at(index)) : nullptr;
 }
 
 Audio * Playlist::currentAudio()
@@ -71,11 +71,11 @@ Audio * Playlist::currentAudio()
 
 void Playlist::create(Audios *audios)
 {
-    m_items.clear();
-    m_items.reserve(audios->size());
+    m_audios = audios;
 
-    for (int i = 0; i < audios->size(); ++i)
-        m_items << PlaylistItem(i, audios->at(i));
+    m_indices.clear();
+    for (int i = 0; i < m_audios->size(); ++i)
+        m_indices << i;
 
     setShuffle(m_shuffle);
 }
@@ -90,9 +90,21 @@ void Playlist::previous()
     changeIndex(previousIndex());
 }
 
+void Playlist::onAudiosRemoved(int index)
+{
+    for (auto iter = m_indices.begin(); iter != m_indices.end(); ++iter)
+    {
+        if (*iter == index)
+            iter = m_indices.erase(iter);
+
+        if (*iter > index)
+            --*iter;
+    }
+}
+
 bool Playlist::isValidIndex(int index)
 {
-    return index >= 0 && index < m_items.size();
+    return index >= 0 && index < m_indices.size();
 }
 
 int Playlist::nextIndex()
@@ -100,7 +112,7 @@ int Playlist::nextIndex()
     if (!isValidIndex(m_index))
         return -1;
 
-    if (m_index == m_items.size() - 1)
+    if (m_index == m_indices.size() - 1)
         return m_loop ? 0 : -1;
 
     return ++m_index;
@@ -112,40 +124,23 @@ int Playlist::previousIndex()
         return -1;
 
     if (m_index == 0)
-        return m_loop ? m_items.size() - 1 : -1;
+        return m_loop ? m_indices.size() - 1 : -1;
 
     return --m_index;
 }
 
-int Playlist::indexOf(const Audio *audio)
-{
-    for (int i = 0; i < m_items.size(); ++i)
-    {
-        if (audio == m_items[i].audio)
-            return i;
-    }
-    return 0;
-}
-
 void Playlist::shuffle()
 {
-    Audio *audio = currentAudio();
-
-    std::random_shuffle(m_items.begin(), m_items.end());
-
-    std::swap(m_items[0], m_items[indexOf(audio)]);
+    int index = m_index;
+    std::random_shuffle(m_indices.begin(), m_indices.end());
+    std::swap(m_indices[0], m_indices[m_indices.indexOf(index)]);
     m_index = 0;
 }
 
 void Playlist::unshuffle()
 {
-    Audio *audio = currentAudio();
+    int index = m_indices.at(m_index);
+    std::sort(m_indices.begin(), m_indices.end(), std::less<int>());
+    m_index = m_indices.indexOf(index);
 
-    auto comparer = [](const PlaylistItem &i1, const PlaylistItem &i2) -> bool
-    {
-        return i1.index < i2.index;
-    };
-
-    std::sort(m_items.begin(), m_items.end(), comparer);
-    m_index = indexOf(audio);
 }

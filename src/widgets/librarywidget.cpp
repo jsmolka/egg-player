@@ -16,6 +16,7 @@ void LibraryWidget::setLibrary(Library *library)
     m_library = library;
 
     connect(library, &Library::inserted, this, &LibraryWidget::insert);
+    connect(library->audios(), &Audios::removed, this, &LibraryWidget::onAudiosRemoved);
 }
 
 void LibraryWidget::removeLibrary()
@@ -32,6 +33,11 @@ void LibraryWidget::addColumn(SongInfo info, Qt::Alignment horizontal, bool expa
 
     if (!expand)
         horizontalHeader()->setSectionResizeMode(m_columns.size() - 1, QHeaderView::ResizeToContents);
+}
+
+void LibraryWidget::onAudiosRemoved(int index)
+{
+    removeRow(index);
 }
 
 void LibraryWidget::insert(Audio *audio, int row)
