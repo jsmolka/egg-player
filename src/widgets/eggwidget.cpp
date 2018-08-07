@@ -22,9 +22,11 @@ EggWidget::~EggWidget()
 void EggWidget::closeEvent(QCloseEvent *event)
 {
     AudioLoaderController *audioLoader = eLibrary->audioLoader();
+    AudioUpdaterController *audioUpdater = eLibrary->audioUpdater();
     CoverLoaderController *coverLoader = eLibrary->coverLoader();
 
     audioLoader->stopWorkerThreads();
+    audioUpdater->stopWorkerThreads();
     coverLoader->stopWorkerThreads();
 
     QWidget::closeEvent(event);

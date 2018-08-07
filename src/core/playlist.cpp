@@ -2,6 +2,7 @@
 
 Playlist::Playlist(QObject *parent)
     : QObject(parent)
+    , m_audios(nullptr)
     , m_index(-1)
     , m_loop(false)
     , m_shuffle(false)
@@ -71,11 +72,8 @@ Audio * Playlist::currentAudio()
 
 void Playlist::create(Audios *audios)
 {
-    m_audios = audios;
-
-    m_indices.clear();
-    for (int i = 0; i < m_audios->size(); ++i)
-        m_indices << i;
+    createAudios(audios);
+    createIndices(audios->size());
 
     setShuffle(m_shuffle);
 }
@@ -100,6 +98,25 @@ void Playlist::onAudiosRemoved(int index)
         if (*iter > index)
             --*iter;
     }
+
+    if (m_index >= index)
+        --m_index;
+}
+
+void Playlist::createAudios(Audios *audios)
+{
+    if (m_audios)
+        disconnect(m_audios, &Audios::removed, this, &Playlist::onAudiosRemoved);
+
+    m_audios = audios;
+
+    connect(m_audios, &Audios::removed, this, &Playlist::onAudiosRemoved);
+}
+
+void Playlist::createIndices(int size)
+{
+    m_indices = QVector<int>(size);
+    std::iota(m_indices.begin(), m_indices.end(), 0);
 }
 
 bool Playlist::isValidIndex(int index)
@@ -131,16 +148,16 @@ int Playlist::previousIndex()
 
 void Playlist::shuffle()
 {
-    int index = m_index;
+    int old = m_index;
     std::random_shuffle(m_indices.begin(), m_indices.end());
-    std::swap(m_indices[0], m_indices[m_indices.indexOf(index)]);
+    int current = m_indices.indexOf(old);
+    std::swap(m_indices[0], m_indices[current]);
     m_index = 0;
 }
 
 void Playlist::unshuffle()
 {
-    int index = m_indices.at(m_index);
-    std::sort(m_indices.begin(), m_indices.end(), std::less<int>());
-    m_index = m_indices.indexOf(index);
-
+    int current = m_indices.at(m_index);
+    createIndices(m_indices.size());
+    m_index = current;
 }

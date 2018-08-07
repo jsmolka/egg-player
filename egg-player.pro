@@ -79,7 +79,9 @@ HEADERS += \
     src/core/duration.hpp \
     src/core/cover.hpp \
     src/core/playlist.hpp \
-    src/core/audios.hpp
+    src/core/audios.hpp \
+    src/threading/audioupdatercontroller.hpp \
+    src/threading/audioupdaterworker.hpp
 
 SOURCES += \
     src/main.cpp \
@@ -124,5 +126,7 @@ SOURCES += \
     src/core/cover.cpp \
     src/core/fileutil.cpp \
     src/core/playlist.cpp \
-    src/core/audios.cpp
+    src/core/audios.cpp \
+    src/threading/audioupdatercontroller.cpp \
+    src/threading/audioupdaterworker.cpp
 

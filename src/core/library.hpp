@@ -8,6 +8,7 @@
 
 #include "audio.hpp"
 #include "audioloadercontroller.hpp"
+#include "audioupdatercontroller.hpp"
 #include "coverloadercontroller.hpp"
 #include "types.hpp"
 
@@ -28,8 +29,10 @@ public:
     bool isSorted() const;
 
     Audios * audios();
-    CoverLoaderController * coverLoader();
+
     AudioLoaderController * audioLoader();
+    AudioUpdaterController * audioUpdater();
+    CoverLoaderController * coverLoader();
 
     void load(const Paths &paths);
 
@@ -44,6 +47,9 @@ private slots:
     void onFileChanged(const QString &file);
 
 private:
+    void fileRemoved(const QString &file);
+    void fileUpdated(const QString &file);
+
     int lowerBound(Audio *audio);
     int insertBinary(Audio *audio);
     int insertLinear(Audio *audio);
@@ -55,6 +61,7 @@ private:
     QSet<QString> m_loaded;
     QFileSystemWatcher m_watcher;
     AudioLoaderController m_audioLoader;
+    AudioUpdaterController m_audioUpdater;
     CoverLoaderController m_coverLoader;
 };
 

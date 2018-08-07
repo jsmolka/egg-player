@@ -42,6 +42,9 @@ private slots:
     void onAudiosRemoved(int index);
 
 private:
+    void createAudios(Audios *audios);
+    void createIndices(int size);
+
     bool isValidIndex(int index);
     int nextIndex();
     int previousIndex();

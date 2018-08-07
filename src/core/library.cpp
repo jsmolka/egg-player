@@ -12,6 +12,7 @@ Library::Library(bool sorted, QObject *parent)
     , m_audios(this)
     , m_watcher(this)
     , m_audioLoader(this)
+    , m_audioUpdater(this)
     , m_coverLoader(this)
 {
     connect(&m_watcher, &QFileSystemWatcher::fileChanged, this, &Library::onFileChanged);
@@ -47,14 +48,19 @@ Audios * Library::audios()
     return &m_audios;
 }
 
-CoverLoaderController * Library::coverLoader()
-{
-    return &m_coverLoader;
-}
-
 AudioLoaderController * Library::audioLoader()
 {
     return &m_audioLoader;
+}
+
+AudioUpdaterController * Library::audioUpdater()
+{
+    return &m_audioUpdater;
+}
+
+CoverLoaderController * Library::coverLoader()
+{
+    return &m_coverLoader;
 }
 
 void Library::load(const Paths &paths)
@@ -78,15 +84,35 @@ void Library::onAudioLoaderFinished()
 
 void Library::onFileChanged(const QString &file)
 {
-    int index = 0;
-    for (const Audio *audio : m_audios)
+    if (FileUtil::exists(file))
+        fileUpdated(file);
+    else
+        fileRemoved(file);
+}
+
+void Library::fileRemoved(const QString &file)
+{
+    for (auto iter = m_audios.begin(); iter != m_audios.end(); ++iter)
+    {
+        if (**iter == file)
+        {
+            m_audios.erase(iter);
+            break;
+        }
+    }
+}
+
+void Library::fileUpdated(const QString &file)
+{
+    for (Audio *audio : m_audios)
     {
         if (*audio == file)
+        {
+            m_audioUpdater.setAudio(audio);
+            m_audioUpdater.start();
             break;
-
-        ++index;
+        }
     }
-    m_audios.remove(index);
 }
 
 int Library::lowerBound(Audio *audio)

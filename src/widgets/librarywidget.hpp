@@ -30,6 +30,7 @@ public slots:
 
 private slots:
     void onAudiosRemoved(int index);
+    void onAudiosUpdated(Audio *audio);
 
 private:
     struct Column

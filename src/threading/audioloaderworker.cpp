@@ -76,9 +76,6 @@ void AudioLoaderWorker::work()
         if (isInterrupted())
             return;
 
-        static QMutex mutex;
-        QMutexLocker locker(&mutex);
-
         cache.updateAudio(audio);
     }
 
