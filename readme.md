@@ -27,6 +27,11 @@ A Groove Music like music player.
 - make PlaylistItem private
 - SongInfo to AudioInfo
 
+### File System
+- create own `FileSystem` class
+- detect insert, remove, modify, rename
+- consider using `QHash<path, filesize>`
+
 ### Live changes
 - create `Audios` class an forward necessary vector functions
     - signal `inserted`, called at `insert` / `append`
