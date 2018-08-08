@@ -1,6 +1,7 @@
 #ifndef AUDIO_HPP
 #define AUDIO_HPP
 
+#include <QFileInfo>
 #include <QObject>
 #include <QVector>
 
@@ -51,6 +52,7 @@ public:
     Cover * cover();
 
     qint64 modified() const;
+    QFileInfo info() const;
 
     void update();
 
@@ -89,6 +91,7 @@ private:
     Cover m_cover;
 
     qint64 m_modified;
+    QFileInfo m_info;
 };
 
 #endif // AUDIO_HPP

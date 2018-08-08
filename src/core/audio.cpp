@@ -13,6 +13,7 @@ Audio::Audio(const QString &path, QObject *parent)
     , m_cached(false)
     , m_outdated(false)
     , m_cover(0)
+    , m_info(path)
 {
     update();
 }
@@ -41,8 +42,9 @@ Audio::Audio(const QString &path,
     , m_duration(length)
     , m_cover(coverId)
     , m_modified(modified)
+    , m_info(path)
 {
-    m_outdated = modified != FileUtil::modified(path);
+    m_outdated = modified != m_info.lastModified().toSecsSinceEpoch();
 }
 
 Audio::~Audio()
@@ -130,16 +132,21 @@ qint64 Audio::modified() const
     return m_modified;
 }
 
+QFileInfo Audio::info() const
+{
+    return m_info;
+}
+
 void Audio::update()
 {
     if (!(m_valid = readTags()))
     {
-        if (!FileUtil::exists(m_path))
+        if (!m_info.exists())
             log("Audio: File does not exist %1", m_path);
         else
             log("Audio: Cannot read tags %1", m_path);
     }
-    m_modified = FileUtil::modified(m_path);
+    m_modified = m_info.lastModified().toSecsSinceEpoch();
 
     emit updated(this);
 }
@@ -209,7 +216,7 @@ bool Audio::readTags()
     }
 
     if (m_title.isEmpty())
-        m_title = FileUtil::fileName(m_path);
+        m_title = m_info.baseName();
 
     return true;
 }

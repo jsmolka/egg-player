@@ -81,7 +81,8 @@ HEADERS += \
     src/core/playlist.hpp \
     src/core/audios.hpp \
     src/threading/audioupdatercontroller.hpp \
-    src/threading/audioupdaterworker.hpp
+    src/threading/audioupdaterworker.hpp \
+    filesystemwatcher.hpp
 
 SOURCES += \
     src/main.cpp \
@@ -128,5 +129,6 @@ SOURCES += \
     src/core/playlist.cpp \
     src/core/audios.cpp \
     src/threading/audioupdatercontroller.cpp \
-    src/threading/audioupdaterworker.cpp
+    src/threading/audioupdaterworker.cpp \
+    filesystemwatcher.cpp
 
