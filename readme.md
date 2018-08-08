@@ -27,10 +27,44 @@ A Groove Music like music player.
 - make PlaylistItem private
 - SongInfo to AudioInfo
 
-### File System
-- create own `FileSystem` class
-- detect insert, remove, modify, rename
-- consider using `QHash<path, filesize>`
+### Filesystemwatcher
+- expand audio with several filesystem classes
+- move glob function to this class (public static)
+- member variables
+    - `watcher`
+    - `QHash<path, audio>`
+    - `QHash<size, audio>`
+    - `QHash<dir, count>`
+- functions
+    - `watchAudio`
+        - add path to `watcher`
+        - add dir to `watcher`
+ - `filewatcher` signals
+    - `modified(audio)`
+        - file changed signal
+        - file still exists
+    - `removed(audio)`
+        - file changed signal
+        - file does not exist anymore
+        - current dir file count < old dir file count
+        - decrement dir file count by 1 (so that it properly handles multiple deletes)
+        - update `watcher`
+    - `renamed(audio)`
+        - file changed signal
+        - files does not exist anymore
+        - current dir file count == old dir file count
+        - glob files, compare with size, update path of audio with same size
+        - consider just changing the path
+        - update `watcher`
+    - `added(audiopath)`
+        - dir changed signal
+        - current dir file count > old dir file count
+        - glob files, check if they already exist
+        - will most likely only work for already watched directory
+- detect added directories
+    - create own watcher for root dir
+    - detect changes of directory count, update accordingly
+    - use [QDir::entrylist](http://doc.qt.io/qt-5/qdir.html#entryList) and filters for directory count
 
 ### Live changes
 - create `Audios` class an forward necessary vector functions
