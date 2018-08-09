@@ -17,9 +17,12 @@ public:
     Audios(const AudioVector &vector, QObject *parent = nullptr);
     ~Audios();
 
+    void setVector(const AudioVector &vector);
     AudioVector vector() const;
 
     Audio * at(int index);
+    Audio * first();
+    Audio * last();
 
     Audio * takeAt(int index);
     Audio * takeFirst();

@@ -18,6 +18,11 @@ Audios::~Audios()
 
 }
 
+void Audios::setVector(const AudioVector &vector)
+{
+    m_vector = vector;
+}
+
 AudioVector Audios::vector() const
 {
     return m_vector;
@@ -26,6 +31,16 @@ AudioVector Audios::vector() const
 Audio * Audios::at(int index)
 {
     return m_vector[index];
+}
+
+Audio * Audios::first()
+{
+    return m_vector.first();
+}
+
+Audio * Audios::last()
+{
+    return m_vector.last();
 }
 
 Audio * Audios::takeAt(int index)
