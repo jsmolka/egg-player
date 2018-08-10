@@ -76,8 +76,12 @@ void Library::insert(Audio *audio)
     emit inserted(audio, index);
 }
 
+#include "filesystemwatcher.hpp"
 void Library::onAudioLoaderFinished()
 {
+    FileSystemWatcher *watcher = new FileSystemWatcher;
+    for (Audio *audio : m_audios)
+        watcher->watch(audio);
     m_coverLoader.setAudios(m_audios.vector());
     m_coverLoader.start();
 }

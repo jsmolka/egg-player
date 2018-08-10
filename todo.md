@@ -7,6 +7,21 @@
 - space after tables in create tables
 - make PlaylistItem private
 - SongInfo to AudioInfo
+- separately include header in `.hpp` and `.cpp`
+- read Qt source / documentation to better utilize classes
+
+## Logger
+- use [compiler macros](https://stackoverflow.com/a/4434362)
+- use [variable args](https://stackoverflow.com/a/679993)
+- `log(timestamp, function, message, ...)`
+- `LOG(timestamp(), __FUNCTION__, message, ...)`
+
+
+## Threading
+- possibly rewrite threading
+- create a threadpool to recycle threads
+- try using multiple workers per thread
+- create an easy abstract class to run objects in threads
 
 ## Filesystemwatcher
 - expand audio with several filesystem classes

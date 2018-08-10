@@ -13,7 +13,6 @@ Audio::Audio(const QString &path, QObject *parent)
     , m_cached(false)
     , m_outdated(false)
     , m_cover(0)
-    , m_info(path)
 {
     update();
 }
@@ -42,9 +41,8 @@ Audio::Audio(const QString &path,
     , m_duration(length)
     , m_cover(coverId)
     , m_modified(modified)
-    , m_info(path)
 {
-    m_outdated = modified != m_info.lastModified().toSecsSinceEpoch();
+    m_outdated = modified != info().lastModified().toSecsSinceEpoch();
 }
 
 Audio::~Audio()
@@ -82,9 +80,23 @@ bool Audio::isOutdated() const
     return m_outdated;
 }
 
+void Audio::setPath(const QString &path)
+{
+    m_path = path;
+
+    emit updated(this);
+}
+
 QString Audio::path() const
 {
     return m_path;
+}
+
+void Audio::setTitle(const QString &title)
+{
+    m_title = title;
+
+    emit updated(this);
 }
 
 QString Audio::title() const
@@ -92,9 +104,23 @@ QString Audio::title() const
     return m_title;
 }
 
+void Audio::setArtist(const QString &artist)
+{
+    m_artist = artist;
+
+    emit updated(this);
+}
+
 QString Audio::artist() const
 {
     return m_artist;
+}
+
+void Audio::setAlbum(const QString &album)
+{
+    m_album = album;
+
+    emit updated(this);
 }
 
 QString Audio::album() const
@@ -102,14 +128,35 @@ QString Audio::album() const
     return m_album;
 }
 
+void Audio::setGenre(const QString &genre)
+{
+    m_genre = genre;
+
+    emit updated(this);
+}
+
 QString Audio::genre() const
 {
     return m_genre;
 }
 
+void Audio::setYear(int year)
+{
+    m_year = year;
+
+    emit updated(this);
+}
+
 int Audio::year() const
 {
     return m_year;
+}
+
+void Audio::setTrack(int track)
+{
+    m_track = track;
+
+    emit updated(this);
 }
 
 int Audio::track() const
@@ -134,19 +181,19 @@ qint64 Audio::modified() const
 
 QFileInfo Audio::info() const
 {
-    return m_info;
+    return QFileInfo(m_path);
 }
 
 void Audio::update()
 {
     if (!(m_valid = readTags()))
     {
-        if (!m_info.exists())
+        if (!info().exists())
             log("Audio: File does not exist %1", m_path);
         else
             log("Audio: Cannot read tags %1", m_path);
     }
-    m_modified = m_info.lastModified().toSecsSinceEpoch();
+    m_modified = info().lastModified().toSecsSinceEpoch();
 
     emit updated(this);
 }
@@ -181,14 +228,14 @@ bool Audio::operator==(const QString &other) const
     return path() == other;
 }
 
-bool Audio::operator!=(const QString &other) const
-{
-    return !(*this == other);
-}
-
 bool Audio::operator==(const Audio &other) const
 {
     return *this == other.path();
+}
+
+bool Audio::operator!=(const QString &other) const
+{
+    return !(*this == other);
 }
 
 bool Audio::operator!=(const Audio &other) const
@@ -216,7 +263,7 @@ bool Audio::readTags()
     }
 
     if (m_title.isEmpty())
-        m_title = m_info.baseName();
+        m_title = info().baseName();
 
     return true;
 }

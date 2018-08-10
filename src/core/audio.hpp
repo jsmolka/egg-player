@@ -39,13 +39,25 @@ public:
     void setOutdated(bool outdated);
     bool isOutdated() const;
 
+    void setPath(const QString &path);
     QString path() const;
+
+    void setTitle(const QString &title);
     QString title() const;
+
+    void setArtist(const QString &artist);
     QString artist() const;
+
+    void setAlbum(const QString &album);
     QString album() const;
+
+    void setGenre(const QString &genre);
     QString genre() const;
 
+    void setYear(int year);
     int year() const;
+
+    void setTrack(int track);
     int track() const;
 
     Duration * duration();
@@ -64,8 +76,8 @@ public:
     bool operator>=(const Audio &other) const;
 
     bool operator==(const QString &other) const;
-    bool operator!=(const QString &other) const;
     bool operator==(const Audio &other) const;
+    bool operator!=(const QString &other) const;
     bool operator!=(const Audio &other) const;
 
 signals:
@@ -91,7 +103,6 @@ private:
     Cover m_cover;
 
     qint64 m_modified;
-    QFileInfo m_info;
 };
 
 #endif // AUDIO_HPP
