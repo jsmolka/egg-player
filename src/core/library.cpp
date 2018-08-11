@@ -15,10 +15,13 @@ Library::Library(bool sorted, QObject *parent)
     , m_audioUpdater(this)
     , m_coverLoader(this)
 {
-    connect(&m_watcher, &QFileSystemWatcher::fileChanged, this, &Library::onFileChanged);
-
     connect(&m_audioLoader, &AudioLoaderController::loaded, this, &Library::insert);
     connect(&m_audioLoader, &AudioLoaderController::finished,this, &Library::onAudioLoaderFinished);
+
+    connect(&m_watcher, &FileSystemWatcher::added, this, &Library::onWatcherAdded);
+    connect(&m_watcher, &FileSystemWatcher::removed, this, &Library::onWatcherRemoved);
+    connect(&m_watcher, &FileSystemWatcher::modified, this, &Library::onWatcherModified);
+    connect(&m_watcher, &FileSystemWatcher::renamed, this, &Library::onWatcherRenamed);
 }
 
 Library::~Library()
@@ -65,6 +68,11 @@ CoverLoaderController * Library::coverLoader()
 
 void Library::load(const Paths &paths)
 {
+    for (const QString &path : paths)
+    {
+        m_watcher.watchDir(path);
+    }
+
     m_audioLoader.setFiles(globFiles(paths));
     m_audioLoader.start();
 }
@@ -72,51 +80,38 @@ void Library::load(const Paths &paths)
 void Library::insert(Audio *audio)
 {
     int index = m_sorted ? insertBinary(audio) : insertLinear(audio);
-    m_watcher.addPath(audio->path());
+    m_watcher.watchAudio(audio);
     emit inserted(audio, index);
 }
 
-#include "filesystemwatcher.hpp"
 void Library::onAudioLoaderFinished()
 {
-    FileSystemWatcher *watcher = new FileSystemWatcher;
-    for (Audio *audio : m_audios)
-        watcher->watch(audio);
     m_coverLoader.setAudios(m_audios.vector());
     m_coverLoader.start();
 }
 
-void Library::onFileChanged(const QString &file)
+void Library::onWatcherAdded(const QString &file)
 {
-    if (FileUtil::exists(file))
-        fileUpdated(file);
-    else
-        fileRemoved(file);
+    m_audioLoader.setFiles(Files() << file);
+    m_audioLoader.start();
 }
 
-void Library::fileRemoved(const QString &file)
+void Library::onWatcherRemoved(Audio *audio)
 {
-    for (auto iter = m_audios.begin(); iter != m_audios.end(); ++iter)
-    {
-        if (**iter == file)
-        {
-            m_audios.erase(iter);
-            break;
-        }
-    }
+    int index = m_audios.indexOf(audio);
+    m_audios.remove(index);
 }
 
-void Library::fileUpdated(const QString &file)
+void Library::onWatcherModified(Audio *audio)
 {
-    for (Audio *audio : m_audios)
-    {
-        if (*audio == file)
-        {
-            m_audioUpdater.setAudio(audio);
-            m_audioUpdater.start();
-            break;
-        }
-    }
+    m_audioUpdater.setAudio(audio);
+    m_audioUpdater.start();
+}
+
+void Library::onWatcherRenamed(Audio *audio, const QString &file)
+{
+    audio->setPath(file);
+    Cache().updateAudio(audio);
 }
 
 int Library::lowerBound(Audio *audio)

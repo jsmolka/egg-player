@@ -105,6 +105,7 @@ void Cache::updateAudio(Audio *audio)
 {
     m_query.prepare(
         "UPDATE audios SET"
+        " path = :path,"
         " title = :title,"
         " artist = :artist,"
         " album = :album,"

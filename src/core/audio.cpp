@@ -83,8 +83,6 @@ bool Audio::isOutdated() const
 void Audio::setPath(const QString &path)
 {
     m_path = path;
-
-    emit updated(this);
 }
 
 QString Audio::path() const

@@ -8,6 +8,8 @@
 #include <QFileSystemWatcher>
 #include <QHash>
 #include <QObject>
+#include <QSet>
+#include <QTimer>
 
 class FileSystemWatcher : public QObject
 {
@@ -17,11 +19,13 @@ public:
     FileSystemWatcher(QObject *parent = nullptr);
     ~FileSystemWatcher();
 
-    static Files globFiles(const QString &path, const QString &filter, bool recursive = true);
     static Files globAudios(const QString &path, bool recursive = true);
-    static Paths globDirs(const QString &path, bool recursive = true);
 
-    void watch(Audio *audio);
+    void setBufferDuration(int duration);
+    int bufferDuration() const;
+
+    void watchAudio(Audio *audio);
+    void watchDir(const QString &dir);
 
 signals:
     void added(const QString &file);
@@ -31,20 +35,34 @@ signals:
 
 private slots:
     void onWatcherFileChanged(const QString &file);
-    void onWatcherDirectoryChanged(const QString &directory);
+    void onWatcherDirChanged(const QString &dir);
+
+    void onFileTimerTimeout();
+    void onDirTimerTimeout();
 
 private:
-    void emitAdded(const QString &file);
-    void emitRemoved(Audio *audio);
-    void emitModified(Audio *audio);
-    void emitRenamed(Audio *audio, const QString &file);
+    void fileChanged(const QString &file);
+    void dirChanged(const QString &dir);
 
-    int dirCount(const QString &dir);
+    void parseDirectory(const QString &dir);
+
+    void eventAdded(const QString &file);
+    void eventRemoved(Audio *audio);
+    void eventModified(Audio *audio);
+    void eventRenamed(Audio *audio, const QString &file);
 
     QFileSystemWatcher m_watcher;
+
+    QSet<QString> m_fileBuffer;
+    QSet<QString> m_dirBuffer;
+
+    QTimer m_fileTimer;
+    QTimer m_dirTimer;
+    int m_bufferDuration;
+
     QHash<QString, Audio *> m_audios;
     QHash<qint64, Audio *> m_sizes;
-    QHash<QString, int> m_dirs;
+    QSet<QString> m_dirs;
 };
 
 #endif // FILESYSTEMWATCHER_HPP

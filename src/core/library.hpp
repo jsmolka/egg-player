@@ -10,6 +10,7 @@
 #include "audioloadercontroller.hpp"
 #include "audioupdatercontroller.hpp"
 #include "coverloadercontroller.hpp"
+#include "filesystemwatcher.hpp"
 #include "types.hpp"
 
 #define eLibrary (Library::instance())
@@ -44,12 +45,13 @@ signals:
 
 private slots:
     void onAudioLoaderFinished();
-    void onFileChanged(const QString &file);
+
+    void onWatcherAdded(const QString &file);
+    void onWatcherRemoved(Audio *audio);
+    void onWatcherModified(Audio *audio);
+    void onWatcherRenamed(Audio *audio, const QString &file);
 
 private:
-    void fileRemoved(const QString &file);
-    void fileUpdated(const QString &file);
-
     int lowerBound(Audio *audio);
     int insertBinary(Audio *audio);
     int insertLinear(Audio *audio);
@@ -59,7 +61,7 @@ private:
     bool m_sorted;
     Audios m_audios;
     QSet<QString> m_loaded;
-    QFileSystemWatcher m_watcher;
+    FileSystemWatcher m_watcher;
     AudioLoaderController m_audioLoader;
     AudioUpdaterController m_audioUpdater;
     CoverLoaderController m_coverLoader;
