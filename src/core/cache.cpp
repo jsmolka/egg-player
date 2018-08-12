@@ -101,11 +101,11 @@ void Cache::insertAudio(Audio *audio)
     audio->setCached(true);
 }
 
-void Cache::updateAudio(Audio *audio)
+void Cache::updateAudio(Audio *audio, const QString &newPath)
 {
     m_query.prepare(
         "UPDATE audios SET"
-        " path = :path,"
+        " path = :newpath,"
         " title = :title,"
         " artist = :artist,"
         " album = :album,"
@@ -117,7 +117,7 @@ void Cache::updateAudio(Audio *audio)
         " modified = :modified "
         "WHERE path = :path"
     );
-    m_query.bindValue(":path", audio->path());
+    m_query.bindValue(":newpath", newPath.isNull() ? audio->path() : newPath);
     m_query.bindValue(":title", audio->title());
     m_query.bindValue(":artist", audio->artist());
     m_query.bindValue(":album", audio->album());
@@ -127,6 +127,7 @@ void Cache::updateAudio(Audio *audio)
     m_query.bindValue(":duration", audio->duration()->secs());
     m_query.bindValue(":coverid", audio->cover()->id());
     m_query.bindValue(":modified", audio->modified());
+    m_query.bindValue(":path", audio->path());
 
     if (!m_query.exec())
         error();
@@ -210,7 +211,7 @@ QByteArray Cache::coverToBytes(const QPixmap &cover)
 
     QBuffer buffer(&bytes);
     buffer.open(QIODevice::WriteOnly);
-    cover.save(&buffer, "PNG");
+    cover.save(&buffer, "JPG");
 
     return bytes;
 }

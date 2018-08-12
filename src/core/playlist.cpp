@@ -41,6 +41,9 @@ void Playlist::setShuffle(bool shuffle)
     m_shuffle = shuffle;
     cfgPlayer->setShuffle(shuffle);
 
+    if (m_indices.isEmpty())
+        return;
+
     if (shuffle)
         this->shuffle();
     else

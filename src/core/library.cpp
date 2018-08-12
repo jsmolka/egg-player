@@ -26,8 +26,7 @@ Library::Library(bool sorted, QObject *parent)
 
 Library::~Library()
 {
-    while (!m_audios.isEmpty())
-        delete m_audios.takeFirst();
+
 }
 
 Library * Library::instance()
@@ -110,8 +109,8 @@ void Library::onWatcherModified(Audio *audio)
 
 void Library::onWatcherRenamed(Audio *audio, const QString &file)
 {
+    Cache().updateAudio(audio, file);
     audio->setPath(file);
-    Cache().updateAudio(audio);
 }
 
 int Library::lowerBound(Audio *audio)

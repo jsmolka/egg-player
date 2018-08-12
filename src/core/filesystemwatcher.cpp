@@ -19,12 +19,11 @@ FileSystemWatcher::~FileSystemWatcher()
 
 }
 
-Files FileSystemWatcher::globAudios(const QString &path, bool recursive)
+Files FileSystemWatcher::globAudios(const QString &path)
 {
     Files result;
 
-    QDirIterator::IteratorFlag flags = recursive ? QDirIterator::Subdirectories : QDirIterator::NoIteratorFlags;
-    QDirIterator iter(path, QStringList() << "*.mp3", QDir::Files, flags);
+    QDirIterator iter(path, QStringList() << "*.mp3", QDir::Files, QDirIterator::Subdirectories);
     while (iter.hasNext())
     {
         iter.next();
@@ -100,11 +99,12 @@ void FileSystemWatcher::onDirTimerTimeout()
 void FileSystemWatcher::fileChanged(const QString &file)
 {
     Audio *audio = m_audios.value(file);
+    const QFileInfo info = audio->info();
 
-    if (audio->info().exists())
+    if (info.exists())
         return eventModified(audio);
 
-    QString dir = audio->info().dir().absolutePath();
+    const QString dir = info.dir().absolutePath();
     QDirIterator iter(dir, QStringList() << "*.mp3", QDir::Files);
     while (iter.hasNext())
     {
@@ -120,25 +120,42 @@ void FileSystemWatcher::fileChanged(const QString &file)
 
 void FileSystemWatcher::dirChanged(const QString &dir)
 {
-    parseDirectory(dir);
+    parseDirectory(dir, true);
 }
 
-void FileSystemWatcher::parseDirectory(const QString &dir)
+void FileSystemWatcher::parseDirectory(const QString &dir, bool isRoot)
 {
     QDirIterator iter(dir, QDir::Dirs | QDir::Files | QDir::NoDotAndDotDot);
     while (iter.hasNext())
     {
         iter.next();
         const QString filePath = iter.filePath();
-        if (iter.fileInfo().isDir())
+        const QFileInfo info = iter.fileInfo();
+        if (info.isDir())
         {
-            if (!m_dirs.contains(filePath))
+            if (isRoot || !m_dirs.contains(filePath))
                 parseDirectory(filePath);
         }
         else
         {
-            if (filePath.endsWith(".mp3") && !m_audios.contains(filePath))
-                eventAdded(filePath);
+            if (filePath.endsWith(".mp3"))
+            {
+                if (!m_audios.contains(filePath))
+                {
+                    if (m_sizes.contains(info.size()))
+                    {
+                        Audio *audio = m_sizes.value(info.size());
+                        if (audio)
+                            eventRenamed(m_sizes.value(info.size()), filePath);
+                        else
+                            eventAdded(filePath);
+                    }
+                    else
+                    {
+                        eventAdded(filePath);
+                    }
+                }
+            }
         }
     }
 }
@@ -152,6 +169,7 @@ void FileSystemWatcher::eventRemoved(Audio *audio)
 {
     m_watcher.removePath(audio->path());
     m_audios.remove(audio->path());
+    m_sizes.remove(m_sizes.key(audio));
 
     emit removed(audio);
 }
@@ -170,7 +188,6 @@ void FileSystemWatcher::eventRenamed(Audio *audio, const QString &file)
     m_audios.insert(file, audio);
 
     qint64 size = m_sizes.key(audio);
-    m_sizes.remove(size);
     m_sizes.insert(size, audio);
 
     emit renamed(audio, file);

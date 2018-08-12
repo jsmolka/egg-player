@@ -19,7 +19,7 @@ public:
     FileSystemWatcher(QObject *parent = nullptr);
     ~FileSystemWatcher();
 
-    static Files globAudios(const QString &path, bool recursive = true);
+    static Files globAudios(const QString &path);
 
     void setBufferDuration(int duration);
     int bufferDuration() const;
@@ -44,7 +44,7 @@ private:
     void fileChanged(const QString &file);
     void dirChanged(const QString &dir);
 
-    void parseDirectory(const QString &dir);
+    void parseDirectory(const QString &dir, bool isRoot = false);
 
     void eventAdded(const QString &file);
     void eventRemoved(Audio *audio);
