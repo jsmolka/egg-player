@@ -9,6 +9,7 @@
 - SongInfo to AudioInfo
 - separately include header in `.hpp` and `.cpp`
 - read Qt source / documentation to better utilize classes
+- do not cache loaded cover, calculate dominant color right after first load and store for id
 
 ## Logger
 - use [compiler macros](https://stackoverflow.com/a/4434362)

@@ -211,7 +211,7 @@ QByteArray Cache::coverToBytes(const QPixmap &cover)
 
     QBuffer buffer(&bytes);
     buffer.open(QIODevice::WriteOnly);
-    cover.save(&buffer, "JPG");
+    cover.save(&buffer, "PNG");
 
     return bytes;
 }

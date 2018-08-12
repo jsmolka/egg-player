@@ -26,7 +26,8 @@ Library::Library(bool sorted, QObject *parent)
 
 Library::~Library()
 {
-
+    while (!m_audios.isEmpty())
+        delete m_audios.takeFirst();
 }
 
 Library * Library::instance()
@@ -67,11 +68,6 @@ CoverLoaderController * Library::coverLoader()
 
 void Library::load(const Paths &paths)
 {
-    for (const QString &path : paths)
-    {
-        m_watcher.watchDir(path);
-    }
-
     m_audioLoader.setFiles(globFiles(paths));
     m_audioLoader.start();
 }
@@ -99,6 +95,7 @@ void Library::onWatcherRemoved(Audio *audio)
 {
     int index = m_audios.indexOf(audio);
     m_audios.remove(index);
+    delete audio;
 }
 
 void Library::onWatcherModified(Audio *audio)
@@ -148,6 +145,7 @@ Files Library::globFiles(const Paths &paths)
     {
         if (!m_loaded.contains(path))
         {
+            m_watcher.watchDir(path);
             m_loaded.insert(path);
             files << FileUtil::glob(path, "*.mp3");
         }

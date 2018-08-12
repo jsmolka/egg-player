@@ -15,8 +15,7 @@ Audios::Audios(const AudioVector &vector, QObject *parent)
 
 Audios::~Audios()
 {
-    while (!m_vector.isEmpty())
-        delete m_vector.takeFirst();
+
 }
 
 void Audios::setVector(const AudioVector &vector)
@@ -106,7 +105,7 @@ void Audios::append(Audio *audio)
 void Audios::remove(int index)
 {
     disconnect(at(index), &Audio::updated, this, &Audios::updated);
-    delete m_vector.takeAt(index);
+    m_vector.remove(index);
     emit removed(index);
 }
 
@@ -121,10 +120,9 @@ AudioVector::iterator Audios::insert(AudioVector::iterator before, Audio *audio)
 AudioVector::iterator Audios::erase(AudioVector::iterator position)
 {
     disconnect(*position, &Audio::updated, this, &Audios::updated);
-    int index = position - begin();
-    delete m_vector.takeAt(index);
-    emit removed(index);
-    return ++position;
+    auto next = m_vector.erase(position);
+    emit removed(position - begin());
+    return next;
 }
 
 AudioVector::iterator Audios::begin()
