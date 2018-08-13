@@ -93,13 +93,59 @@ for x, idx in enumerate(i):
         i[idx] -= 1
 ```
 
+## AudioDirectory
+- contains a vector of audio paths
+- contains a vector of audio directories
+- constructs from a path
+- constructor
+    - iterates over all files and directories
+    - creates a new audio directory if it is a direcotry
+    - inserts audios into the vector
+    - emits creates with path and pointer (or ref?)
+- rename filesystemwatcher to filesystem
+- store directory inside of it
+- filesystem gets a watcher which will watch the emitted dirs
+- connect signals between dirs
+
+```cpp
+void AudioDirectory::parse()
+{
+    QDirIterator iter(m_path);
+    while (iter.hasNext())
+    {
+        iter.next();
+        if (iter.isDir())
+        {
+            AudioDirectory dir(iter.filePath(), this);
+            connect(&dir, created, this, created);
+            dir.parse();
+            m_dirs << dir;
+        }
+        else
+        {
+            if (iter.isAudioFile())
+                m_files << iter.filePath();
+        }
+    }
+    emit created(this)
+}
+```
+
+## FileSystem
+- a combination or AudioDirectory and FileSystemWatcher
+- provides detailed added, removed, renamed and modified events
+- contains a methods for file globbing based on the directory
+- [unique file information](https://docs.microsoft.com/de-de/windows/desktop/api/fileapi/nf-fileapi-getfileinformationbyhandle)
+- [file handle](https://docs.microsoft.com/en-us/windows/desktop/api/fileapi/nf-fileapi-createfilew)
+
+
 ## C++ Core Guidelines
 - [guidelines](https://github.com/isocpp/CppCoreGuidelines)
 - use `const` for all not changing variables
 - declare functions without member variables as `static`
 - do not leak resources
 - properly throw and handle exception
-- use `shared_pointer` and `unique_pointer` properly
+- use [smart pointers](https://stackoverflow.com/a/5026705), `shared_pointer` and `unique_pointer` properly
 - keep the function argument count low, consider `struct`
 - look into polymophism and virtual classes, maybe use for config classes to call `setDefaults` automatically at initialization
 - keep functions short and simple with a single operation only

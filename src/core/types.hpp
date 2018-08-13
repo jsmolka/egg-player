@@ -1,9 +1,12 @@
 #ifndef TYPES_HPP
 #define TYPES_HPP
 
+#include <QString>
 #include <QVector>
 
-//using Audios = QVector<Audio *>;
+using File = QString;
+using Path = QString;
+
 using Files = QVector<QString>;
 using Paths = QVector<QString>;
 

@@ -137,7 +137,7 @@ int Library::insertLinear(Audio *audio)
     m_audios << audio;
     return -1;
 }
-
+#include "directory.hpp"
 Files Library::globFiles(const Paths &paths)
 {
     Files files;
@@ -145,6 +145,8 @@ Files Library::globFiles(const Paths &paths)
     {
         if (!m_loaded.contains(path))
         {
+            Directory dir(path);
+            dir.parse();
             m_watcher.watchDir(path);
             m_loaded.insert(path);
             files << FileUtil::glob(path, "*.mp3");
