@@ -10,6 +10,10 @@
 #include "logger.hpp"
 #include "tag.hpp"
 
+class Audio;
+
+using AudioVector = QVector<Audio *>;
+
 class Audio : public QObject
 {
     Q_OBJECT

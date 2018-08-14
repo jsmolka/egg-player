@@ -6,8 +6,6 @@
 
 #include "audio.hpp"
 
-using AudioVector = QVector<Audio *>;
-
 class Audios : public QObject
 {
     Q_OBJECT

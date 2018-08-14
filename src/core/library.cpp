@@ -10,18 +10,13 @@ Library::Library(bool sorted, QObject *parent)
     : QObject(parent)
     , m_sorted(sorted)
     , m_audios(this)
-    , m_watcher(this)
+    , m_fileSystem(this)
     , m_audioLoader(this)
     , m_audioUpdater(this)
     , m_coverLoader(this)
 {
     connect(&m_audioLoader, &AudioLoaderController::loaded, this, &Library::insert);
     connect(&m_audioLoader, &AudioLoaderController::finished,this, &Library::onAudioLoaderFinished);
-
-    connect(&m_watcher, &FileSystemWatcher::added, this, &Library::onWatcherAdded);
-    connect(&m_watcher, &FileSystemWatcher::removed, this, &Library::onWatcherRemoved);
-    connect(&m_watcher, &FileSystemWatcher::modified, this, &Library::onWatcherModified);
-    connect(&m_watcher, &FileSystemWatcher::renamed, this, &Library::onWatcherRenamed);
 }
 
 Library::~Library()
@@ -68,14 +63,16 @@ CoverLoaderController * Library::coverLoader()
 
 void Library::load(const Paths &paths)
 {
-    m_audioLoader.setFiles(globFiles(paths));
+    for (const Path path: paths)
+        m_fileSystem.addPath(path);
+
+    m_audioLoader.setFiles(m_fileSystem.globAudios());
     m_audioLoader.start();
 }
 
 void Library::insert(Audio *audio)
 {
     int index = m_sorted ? insertBinary(audio) : insertLinear(audio);
-    m_watcher.watchAudio(audio);
     emit inserted(audio, index);
 }
 
@@ -83,31 +80,6 @@ void Library::onAudioLoaderFinished()
 {
     m_coverLoader.setAudios(m_audios.vector());
     m_coverLoader.start();
-}
-
-void Library::onWatcherAdded(const QString &file)
-{
-    m_audioLoader.setFiles(Files() << file);
-    m_audioLoader.start();
-}
-
-void Library::onWatcherRemoved(Audio *audio)
-{
-    int index = m_audios.indexOf(audio);
-    m_audios.remove(index);
-    delete audio;
-}
-
-void Library::onWatcherModified(Audio *audio)
-{
-    m_audioUpdater.setAudio(audio);
-    m_audioUpdater.start();
-}
-
-void Library::onWatcherRenamed(Audio *audio, const QString &file)
-{
-    Cache().updateAudio(audio, file);
-    audio->setPath(file);
 }
 
 int Library::lowerBound(Audio *audio)
@@ -136,21 +108,4 @@ int Library::insertLinear(Audio *audio)
 {
     m_audios << audio;
     return -1;
-}
-#include "directory.hpp"
-Files Library::globFiles(const Paths &paths)
-{
-    Files files;
-    for (const QString &path : paths)
-    {
-        if (!m_loaded.contains(path))
-        {
-            Directory dir(path);
-            dir.parse();
-            m_watcher.watchDir(path);
-            m_loaded.insert(path);
-            files << FileUtil::glob(path, "*.mp3");
-        }
-    }
-    return files;
 }

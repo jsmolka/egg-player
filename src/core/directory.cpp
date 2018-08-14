@@ -42,7 +42,7 @@ void Directory::parse()
         if (iter.fileInfo().isDir())
         {
             Directory *dir = new Directory(iter.filePath(), this);
-            connect(dir, &Directory::created, this, &Directory::created);
+            connect(dir, &Directory::parsed, this, &Directory::parsed);
             dir->parse();
             m_dirs << dir;
         }
@@ -52,5 +52,5 @@ void Directory::parse()
                 m_files << iter.filePath();
         }
     }
-    emit created(this);
+    emit parsed(this);
 }

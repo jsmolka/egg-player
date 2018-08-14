@@ -27,7 +27,7 @@ public:
     void parse();
 
 signals:
-    void created(Directory *dir);
+    void parsed(Directory *dir);
 
 private:
     Path m_path;
