@@ -50,16 +50,3 @@ void FileUtil::write(const QString &file, const QByteArray &content)
 
     qFile.write(content);
 }
-
-Files FileUtil::glob(const QString &path, const QString &filter)
-{
-    Files result;
-
-    QDirIterator iterator(path, QStringList() << filter, QDir::Files, QDirIterator::Subdirectories);
-    while (iterator.hasNext())
-    {
-        iterator.next();
-        result << iterator.filePath();
-    }
-    return result;
-}

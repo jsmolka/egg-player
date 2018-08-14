@@ -20,7 +20,9 @@ public:
     Directory(const Path &path, QObject *parent = nullptr);
     ~Directory();
 
+    void setPath(const Path &path);
     Path path() const;
+
     Files files() const;
     DirectoryVector dirs() const;
 

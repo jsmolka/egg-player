@@ -7,10 +7,13 @@
 
 #include "audio.hpp"
 #include "directory.hpp"
+#include "filesystemwatcher.hpp"
 #include "types.hpp"
 
 class FileSystem : public QObject
 {
+    Q_OBJECT
+
 public:
     FileSystem(QObject *parent = nullptr);
     ~FileSystem();
@@ -24,8 +27,12 @@ public:
 private slots:
     void onDirParsed(Directory *dir);
 
+    void onFileChanged(const File &file);
+    void onDirectoryChanged(const Path &dir);
+
 private:
     QHash<Path, Directory *> m_dirs;
+    FileSystemWatcher m_watcher;
 };
 
 #endif // FILESYSTEM_HPP

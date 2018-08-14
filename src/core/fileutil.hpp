@@ -18,8 +18,6 @@ namespace FileUtil
 
     extern void write(const QString &file, const QString &content);
     extern void write(const QString &file, const QByteArray &content);
-
-    extern Files glob(const QString &path, const QString &filter);
 }
 
 #endif // FILEUTIL_HPP

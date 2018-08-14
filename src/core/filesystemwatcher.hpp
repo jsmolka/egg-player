@@ -1,15 +1,11 @@
 #ifndef FILESYSTEMWATCHER_HPP
 #define FILESYSTEMWATCHER_HPP
 
-#include "audio.hpp"
-#include "types.hpp"
-
-#include <QFileInfo>
 #include <QFileSystemWatcher>
-#include <QHash>
-#include <QObject>
 #include <QSet>
 #include <QTimer>
+
+#include "types.hpp"
 
 class FileSystemWatcher : public QObject
 {
@@ -19,50 +15,29 @@ public:
     FileSystemWatcher(QObject *parent = nullptr);
     ~FileSystemWatcher();
 
-    static Files globAudios(const QString &path);
-
     void setBufferDuration(int duration);
     int bufferDuration() const;
 
-    void watchAudio(Audio *audio);
-    void watchDir(const QString &dir);
+    void addPath(const Path &path);
+    void addPaths(const QStringList &paths);
+
+    void removePath(const Path &path);
+    void removePaths(const QStringList &paths);
 
 signals:
-    void added(const QString &file);
-    void removed(Audio *audio);
-    void modified(Audio *audio);
-    void renamed(Audio *audio, const QString &file);
+    void fileChanged(const File &file);
+    void directoryChanged(const Path &dir);
 
 private slots:
-    void onWatcherFileChanged(const QString &file);
-    void onWatcherDirChanged(const QString &dir);
-
-    void onFileTimerTimeout();
-    void onDirTimerTimeout();
+    void onDirectoryChanged(const Path &dir);
+    void onTimeout();
 
 private:
-    void fileChanged(const QString &file);
-    void dirChanged(const QString &dir);
-
-    void parseDirectory(const QString &dir, bool isRoot = false);
-
-    void eventAdded(const QString &file);
-    void eventRemoved(Audio *audio);
-    void eventModified(Audio *audio);
-    void eventRenamed(Audio *audio, const QString &file);
-
     QFileSystemWatcher m_watcher;
+    QSet<Path> m_buffer;
+    QTimer m_timer;
 
-    QSet<QString> m_fileBuffer;
-    QSet<QString> m_dirBuffer;
-
-    QTimer m_fileTimer;
-    QTimer m_dirTimer;
     int m_bufferDuration;
-
-    QHash<QString, Audio *> m_audios;
-    QHash<qint64, Audio *> m_sizes;
-    QSet<QString> m_dirs;
 };
 
 #endif // FILESYSTEMWATCHER_HPP

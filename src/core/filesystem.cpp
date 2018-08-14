@@ -2,8 +2,10 @@
 
 FileSystem::FileSystem(QObject *parent)
     : QObject(parent)
+    , m_watcher(this)
 {
-
+    connect(&m_watcher, &FileSystemWatcher::fileChanged, this, &FileSystem::onFileChanged);
+    connect(&m_watcher, &FileSystemWatcher::directoryChanged, this, &FileSystem::onDirectoryChanged);
 }
 
 FileSystem::~FileSystem()
@@ -32,10 +34,22 @@ Files FileSystem::globAudios() const
         iter.next();
         result << iter.value()->files();
     }
+    // Todo: Maybe reserve space here to const inserting time
     return result;
 }
 
 void FileSystem::onDirParsed(Directory *dir)
 {
+    m_watcher.addPath(dir->path());
     m_dirs.insert(dir->path(), dir);
+}
+
+void FileSystem::onFileChanged(const File &file)
+{
+    qDebug() << "changed file" << file;
+}
+
+void FileSystem::onDirectoryChanged(const Path &dir)
+{
+    qDebug() << "changed dir" << dir;
 }

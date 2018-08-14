@@ -18,6 +18,11 @@ Directory::~Directory()
 
 }
 
+void Directory::setPath(const Path &path)
+{
+    m_path = path;
+}
+
 Path Directory::path() const
 {
     return m_path;
