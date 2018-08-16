@@ -8,6 +8,7 @@
 #include <QObject>
 
 #include "audio.hpp"
+#include "bimap.hpp"
 #include "directory.hpp"
 #include "filesystemwatcher.hpp"
 #include "logger.hpp"
@@ -54,6 +55,7 @@ private slots:
 private:
     UniqueInfo uniqueInfo(const File &file);
 
+    Bimap<Path, UniqueInfo> m_unique;
     QHash<Path, Directory *> m_dirs;
     FileSystemWatcher m_watcher;
 };

@@ -84,7 +84,8 @@ HEADERS += \
     src/threading/audioupdaterworker.hpp \
     src/core/filesystemwatcher.hpp \
     src/core/directory.hpp \
-    src/core/filesystem.hpp
+    src/core/filesystem.hpp \
+    src/core/bimap.hpp
 
 SOURCES += \
     src/main.cpp \
