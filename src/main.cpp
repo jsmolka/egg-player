@@ -45,7 +45,7 @@ int main(int argc, char *argv[])
     setup(app);
 
     EggWidget egg;
-    egg.showSavedPosition();
+    egg.show();//showSavedPosition();
 
     return app.exec();
 }
