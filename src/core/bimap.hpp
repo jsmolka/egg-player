@@ -19,6 +19,9 @@ public:
     bool contains(const T1 &key) const;
     bool contains(const T2 &key) const;
 
+    void update(const T1 &value1, const T2 &value2);
+    void update(const T2 &value2, const T1 &value1);
+
     void reserve(int size);
 
     bool isEmpty() const;
@@ -91,6 +94,20 @@ inline void Bimap<T1, T2>::reserve(int size)
 {
     m_hash.reserve(size);
     m_reverse.reserve(size);
+}
+
+template <typename T1, typename T2>
+inline void Bimap<T1, T2>::update(const T1 &value1, const T2 &value2)
+{
+    m_hash.insert(value1, value2);
+    m_reverse.insert(value2, value1);
+}
+
+template <typename T1, typename T2>
+inline void Bimap<T1, T2>::update(const T2 &value2, const T1 &value1)
+{
+    m_reverse.insert(value2, value1);
+    m_hash.insert(value1, value2);
 }
 
 template <typename T1, typename T2>

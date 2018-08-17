@@ -3,6 +3,7 @@
 
 #include <QDirIterator>
 #include <QObject>
+#include <QSet>
 #include <QVector>
 
 #include "types.hpp"
@@ -23,17 +24,19 @@ public:
     void setPath(const Path &path);
     Path path() const;
 
-    Files files() const;
+    QSet<File> files() const;
     DirectoryVector dirs() const;
 
     void parse();
+
+    Files processChanges();
 
 signals:
     void parsed(Directory *dir);
 
 private:
     Path m_path;
-    Files m_files;
+    QSet<File> m_files;
     DirectoryVector m_dirs;
 };
 

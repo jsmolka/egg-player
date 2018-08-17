@@ -1,7 +1,7 @@
 #include "directory.hpp"
 
 Directory::Directory(QObject *parent)
-    : Directory(QString(), parent)
+    : Directory(Path(), parent)
 {
 
 }
@@ -28,7 +28,7 @@ Path Directory::path() const
     return m_path;
 }
 
-Files Directory::files() const
+QSet<File> Directory::files() const
 {
     return m_files;
 }
@@ -58,4 +58,42 @@ void Directory::parse()
         }
     }
     emit parsed(this);
+}
+
+Files Directory::processChanges()
+{
+    Files result;
+
+    for (Directory *dir : m_dirs)
+        result << dir->processChanges();
+
+    if (!QFileInfo(m_path).exists())
+    {
+        for (const File &file : m_files)
+            result << file;
+    }
+    else
+    {
+        for (const File &file : m_files)
+        {
+            if (!QFileInfo(file).exists())
+            {
+                result << file;
+                m_files.remove(file);
+            }
+        }
+
+        QDirIterator iter(m_path, QStringList() << "*.mp3", QDir::Files);
+        while (iter.hasNext())
+        {
+            iter.next();
+            const File file = iter.filePath();
+            if (!m_files.contains(file))
+            {
+                result << file;
+                m_files.insert(file);
+            }
+        }
+    }
+    return result;
 }

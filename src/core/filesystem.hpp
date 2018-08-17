@@ -6,6 +6,7 @@
 #include <QHash>
 #include <QHashIterator>
 #include <QObject>
+#include <QSet>
 
 #include "audio.hpp"
 #include "bimap.hpp"
@@ -19,15 +20,22 @@ struct UniqueInfo
     UniqueInfo(DWORD volume = 0, DWORD low = 0, DWORD high = 0)
         : volume(volume), low(low), high(high) {}
 
-    bool operator==(const UniqueInfo &info) const
-    {
-        return volume == info.volume && low == info.low && high == info.high;
-    }
-
     DWORD volume;
     DWORD low;
     DWORD high;
 };
+
+inline bool operator==(const UniqueInfo &info1, const UniqueInfo &info2)
+{
+    return info1.volume == info2.volume
+            && info1.low == info2.low
+            && info1.high == info2.high;
+}
+
+inline uint qHash(const UniqueInfo &key, uint seed)
+{
+    return qHash(key.volume ^ key.low ^ key.high, seed);
+}
 
 class FileSystem : public QObject
 {
@@ -45,6 +53,9 @@ public:
 
 public: // Make signals in future
     void eventModified(const File &file);
+    void eventRenamed(const File &from, const File &to);
+    void eventAdded(const File &file);
+    void eventRemoved(const File &file);
 
 private slots:
     void onDirParsed(Directory *dir);
@@ -55,7 +66,7 @@ private slots:
 private:
     UniqueInfo uniqueInfo(const File &file);
 
-    Bimap<Path, UniqueInfo> m_unique;
+    Bimap<File, UniqueInfo> m_unique;
     QHash<Path, Directory *> m_dirs;
     FileSystemWatcher m_watcher;
 };
