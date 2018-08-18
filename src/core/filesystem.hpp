@@ -59,6 +59,8 @@ public: // Make signals in future
 
 private slots:
     void onDirParsed(Directory *dir);
+    void onDirCreated(Directory *dir);
+    void onDirRemoved(Directory *dir);
 
     void onFileChanged(const File &file);
     void onDirectoryChanged(const Path &dir);

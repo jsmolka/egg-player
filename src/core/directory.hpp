@@ -2,15 +2,13 @@
 #define DIRECTORY_HPP
 
 #include <QDirIterator>
+#include <QHash>
+#include <QHashIterator>
 #include <QObject>
+#include <QMutableSetIterator>
 #include <QSet>
-#include <QVector>
 
 #include "types.hpp"
-
-class Directory;
-
-using DirectoryVector = QVector<Directory *>;
 
 class Directory : public QObject
 {
@@ -25,7 +23,9 @@ public:
     Path path() const;
 
     QSet<File> files() const;
-    DirectoryVector dirs() const;
+    QHash<Path, Directory *> dirs() const;
+
+    bool exists() const;
 
     void parse();
 
@@ -33,11 +33,16 @@ public:
 
 signals:
     void parsed(Directory *dir);
+    void created(Directory *dir);
+    void removed(Directory *dir);
 
 private:
+    void processDirChanges(Files &changes);
+    void processFileChanges(Files &changes);
+
     Path m_path;
     QSet<File> m_files;
-    DirectoryVector m_dirs;
+    QHash<Path, Directory *> m_dirs;
 };
 
 #endif // DIRECTORY_HPP

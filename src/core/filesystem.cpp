@@ -22,6 +22,8 @@ void FileSystem::addPath(const Path &path)
 {
     Directory *dir = new Directory(path, this);
     connect(dir, &Directory::parsed, this, &FileSystem::onDirParsed);
+    connect(dir, &Directory::created, this, &FileSystem::onDirCreated);
+    connect(dir, &Directory::removed, this, &FileSystem::onDirRemoved);
     dir->parse();
 }
 
@@ -35,7 +37,6 @@ Files FileSystem::globAudios() const
         for (const File &file : iter.value()->files())
             result << file;
     }
-    // Todo: Maybe reserve space here to const inserting time
     return result;
 }
 
@@ -71,6 +72,16 @@ void FileSystem::onDirParsed(Directory *dir)
 
     m_watcher.addPaths(paths);
     m_dirs.insert(dir->path(), dir);
+}
+
+void FileSystem::onDirCreated(Directory *dir)
+{
+    qDebug() << "dir created" << dir->path();
+}
+
+void FileSystem::onDirRemoved(Directory *dir)
+{
+    qDebug() << "dir removed" << dir->path();
 }
 
 void FileSystem::onFileChanged(const File &file)

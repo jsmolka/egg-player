@@ -9,6 +9,8 @@ Directory::Directory(QObject *parent)
 Directory::Directory(const Path &path, QObject *parent)
     : QObject(parent)
     , m_path(path)
+    , m_files()
+    , m_dirs()
 {
 
 }
@@ -33,9 +35,14 @@ QSet<File> Directory::files() const
     return m_files;
 }
 
-DirectoryVector Directory::dirs() const
+QHash<Path, Directory *> Directory::dirs() const
 {
     return m_dirs;
+}
+
+bool Directory::exists() const
+{
+    return QDir(m_path).exists();
 }
 
 void Directory::parse()
@@ -44,17 +51,20 @@ void Directory::parse()
     while (iter.hasNext())
     {
         iter.next();
+        const File file = iter.filePath();
         if (iter.fileInfo().isDir())
         {
-            Directory *dir = new Directory(iter.filePath(), this);
+            Directory *dir = new Directory(file, this);
             connect(dir, &Directory::parsed, this, &Directory::parsed);
+            connect(dir, &Directory::created, this, &Directory::created);
+            connect(dir, &Directory::removed, this, &Directory::removed);
             dir->parse();
-            m_dirs << dir;
+            m_dirs.insert(file, dir);
         }
         else
         {
-            if (iter.filePath().endsWith("mp3", Qt::CaseInsensitive))
-                m_files << iter.filePath();
+            if (file.endsWith("mp3", Qt::CaseInsensitive))
+                m_files << file;
         }
     }
     emit parsed(this);
@@ -62,38 +72,81 @@ void Directory::parse()
 
 Files Directory::processChanges()
 {
-    Files result;
+    Files changes;
 
-    for (Directory *dir : m_dirs)
-        result << dir->processChanges();
+    processDirChanges(changes);
+    processFileChanges(changes);
 
+    return changes;
+}
+
+void Directory::processDirChanges(Files &changes)
+{
+    QHashIterator<Path, Directory *> hashIter(m_dirs);
+    while (hashIter.hasNext())
+    {
+        hashIter.next();
+        Directory *dir = hashIter.value();
+        if (!dir->exists())
+        {
+            for (const File &file : dir->files())
+                changes << file;
+
+            emit removed(dir);
+            m_dirs.remove(dir->path());
+        }
+    }
+
+    QDirIterator dirIter(m_path, QDir::Dirs | QDir::NoDotAndDotDot);
+    while (dirIter.hasNext())
+    {
+        dirIter.next();
+        const Path path = dirIter.filePath();
+        Directory *dir = m_dirs.value(path, nullptr);
+        if (!dir)
+        {
+            dir = new Directory(path, this);
+            connect(dir, &Directory::created, this, &Directory::created);
+            connect(dir, &Directory::removed, this, &Directory::removed);
+            m_dirs.insert(path, dir);
+            emit created(dir);
+        }
+        changes << dir->processChanges();
+    }
+}
+
+void Directory::processFileChanges(Files &changes)
+{
     if (!QFileInfo(m_path).exists())
     {
         for (const File &file : m_files)
-            result << file;
+            changes << file;
+
+        emit removed(this);
     }
     else
     {
-        for (const File &file : m_files)
+        QMutableSetIterator<File> setIter(m_files);
+        while (setIter.hasNext())
         {
-            if (!QFileInfo(file).exists())
+            setIter.next();
+            if (!QFileInfo(setIter.value()).exists())
             {
-                result << file;
-                m_files.remove(file);
+                changes << setIter.value();
+                setIter.remove();
             }
         }
 
-        QDirIterator iter(m_path, QStringList() << "*.mp3", QDir::Files);
-        while (iter.hasNext())
+        QDirIterator fileIter(m_path, QStringList() << "*.mp3", QDir::Files);
+        while (fileIter.hasNext())
         {
-            iter.next();
-            const File file = iter.filePath();
+            fileIter.next();
+            const File file = fileIter.filePath();
             if (!m_files.contains(file))
             {
-                result << file;
+                changes << file;
                 m_files.insert(file);
             }
         }
     }
-    return result;
 }
