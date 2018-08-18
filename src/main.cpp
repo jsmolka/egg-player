@@ -41,7 +41,6 @@ void setup(QApplication &app)
 int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
-
     setup(app);
 
     EggWidget egg;

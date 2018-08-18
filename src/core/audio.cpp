@@ -187,9 +187,9 @@ void Audio::update()
     if (!(m_valid = readTags()))
     {
         if (!info().exists())
-            log("Audio: File does not exist %1", m_path);
+            LOG("File does not exist %1", m_path);
         else
-            log("Audio: Cannot read tags %1", m_path);
+            LOG("Cannot read tags %1", m_path);
     }
     m_modified = info().lastModified().toSecsSinceEpoch();
 

@@ -1,20 +1,20 @@
 #ifndef LOGGER_HPP
 #define LOGGER_HPP
 
-#include <QDateTime>
-#include <QDebug>
-#include <QFile>
-#include <QTextStream>
-#include <QVariant>
+#include <QString>
 #include <QVector>
+#include <QVariant>
 
-#include "config.hpp"
-#include "constants.hpp"
+#define LOG(message, ...)                                               \
+    do {                                                                \
+        Logger::log(message, __FUNCTION__, {__VA_ARGS__});     \
+    } while (0)
 
-extern void log(const QString &message,
-                const QVariant &arg1 = QVariant(),
-                const QVariant &arg2 = QVariant(),
-                const QVariant &arg3 = QVariant(),
-                const QVariant &arg4 = QVariant());
+namespace Logger
+{
+    extern void log(const QString &message, const char *function, const QVector<QVariant> &args);
+}
+
+
 
 #endif // LOGGER_HPP

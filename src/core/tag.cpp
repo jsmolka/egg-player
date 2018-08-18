@@ -76,7 +76,7 @@ QPixmap Tag::cover()
     }
 
     if (cover.isNull())
-        log("Tag: Cannot read cover %1", toQString(m_file.name()));
+        LOG("Cannot read cover %1", toQString(m_file.name()));
 
     return cover;
 }

@@ -1,7 +1,11 @@
 #include "abstractcontroller.hpp"
 
+#include "logger.hpp"
+
 AbstractController::AbstractController(QObject *parent)
     : QObject(parent)
+    , m_workers()
+    , m_threads()
     , m_finished(0)
     , m_total(0)
 {
@@ -25,7 +29,7 @@ QVector<QThread *> AbstractController::threads() const
 
 bool AbstractController::isRunning() const
 {
-    for (QThread *thread : m_threads)
+    for (const QThread *thread : m_threads)
     {
         if (thread->isRunning())
             return true;
@@ -67,9 +71,9 @@ void AbstractController::stopWorkerThreads()
     for (QThread *thread : m_threads)
     {
         thread->quit();
-        if (!thread->wait(2500))
+        if (!thread->wait(m_timeout))
         {
-            log("AbstractController: Could not exit thread within 2.5 seconds");
+            LOG("Could not exit thread within %1 ms", m_timeout);
             thread->terminate();
             thread->wait();
         }

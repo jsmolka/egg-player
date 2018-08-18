@@ -23,14 +23,14 @@ UniqueFileInfo::UniqueFileInfo(const File &file)
 
     if (handle == INVALID_HANDLE_VALUE)
     {
-        log("UniqueFileInfo: Cannot open file %1", file);
+        LOG("Cannot open file %1", file);
         return;
     }
 
     BY_HANDLE_FILE_INFORMATION info;
     if (!GetFileInformationByHandle(handle, &info))
     {
-        log("UniqueFileInfo: Cannot get file information %1", file);
+        LOG("Cannot get file information %1", file);
         return;
     }
 
@@ -39,7 +39,7 @@ UniqueFileInfo::UniqueFileInfo(const File &file)
     m_high = info.nFileIndexHigh;
 
     if (!CloseHandle(handle))
-        log("UniqueFileInfo: Cannot close handle %1", file);
+        LOG("Cannot close handle %1", file);
 }
 
 UniqueFileInfo::~UniqueFileInfo()

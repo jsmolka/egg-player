@@ -6,6 +6,7 @@
 
 #include "audio.hpp"
 #include "audios.hpp"
+#include "config.hpp"
 
 class Playlist : public QObject
 {

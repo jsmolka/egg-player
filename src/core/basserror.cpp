@@ -13,7 +13,7 @@ BassError::~BassError()
 void BassError::error()
 {
     if (BASS_ErrorGetCode() != BASS_OK)
-        log("BassError: %1", s_errors.value(BASS_ErrorGetCode()));
+        LOG(s_errors.value(BASS_ErrorGetCode()));
 }
 
 QHash<int, QString> BassError::s_errors =

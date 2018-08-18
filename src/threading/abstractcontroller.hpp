@@ -1,12 +1,11 @@
 #ifndef ABSTRACTCONTROLLER_HPP
 #define ABSTRACTCONTROLLER_HPP
 
-#include <QThread>
 #include <QObject>
+#include <QThread>
 #include <QVector>
 
 #include "abstractworker.hpp"
-#include "logger.hpp"
 
 class AbstractController : public QObject
 {
@@ -33,17 +32,17 @@ signals:
 
 protected:
     template <typename T>
-    QVector<QVector<T>> chunk(const QVector<T> &vector, int n)
+    static QVector<QVector<T>> chunk(const QVector<T> &vector, int n)
     {
         n = qMin(qMax(1, n), vector.size());
-        int quo = vector.size() / n;
-        int rem = vector.size() % n;
+        const int quo = vector.size() / n;
+        const int rem = vector.size() % n;
 
         QVector<QVector<T>> result;
         for (int i = 0; i < n; ++i)
         {
-            int l = i * quo + qMin(i, rem);
-            int r = (i + 1) * quo + qMin(i + 1, rem);
+            const int l = i * quo + qMin(i, rem);
+            const int r = (i + 1) * quo + qMin(i + 1, rem);
             result << vector.mid(l, r - l);
         }
         return result;
@@ -56,7 +55,9 @@ private slots:
 
 private:    
     template <typename T>
-    void removeObject(QVector<T> &vector, const QObject *object);
+    static void removeObject(QVector<T> &vector, const QObject *object);
+
+    static constexpr int m_timeout = 2500;
 
     QVector<AbstractWorker *> m_workers;
     QVector<QThread *> m_threads;

@@ -14,7 +14,7 @@ Shortcut::Shortcut(const QString &shortcut, bool repeat, QObject *parent)
     if (m_registered)
         qApp->eventDispatcher()->installNativeEventFilter(this);
     else
-        log("Shortcut: Cannot register shortcut %1", shortcut);
+        LOG("Cannot register shortcut %1", shortcut);
 }
 
 Shortcut::~Shortcut()
@@ -78,7 +78,7 @@ bool Shortcut::parseShortcut()
         }
         else
         {
-            log("Shortcut: Unknown key %1", key);
+            LOG("Unknown key %1", key);
             return false;
         }
     }

@@ -1,6 +1,6 @@
 RC_ICONS = resource/images/egg/egg.ico
 
-VERSION = 0.1.5.32
+VERSION = 0.1.5.33
 
 QMAKE_TARGET             = Egg Player
 QMAKE_TARGET_PRODUCT     = Egg Player
