@@ -9,6 +9,7 @@ FileSystemWatcher::FileSystemWatcher(QObject *parent)
     connect(&m_watcher, &QFileSystemWatcher::directoryChanged, this, &FileSystemWatcher::onDirectoryChanged);
 
     connect(&m_timer, &QTimer::timeout, this, &FileSystemWatcher::onTimeout);
+    m_timer.setSingleShot(true);
 }
 
 FileSystemWatcher::~FileSystemWatcher()
@@ -48,14 +49,30 @@ int FileSystemWatcher::bufferDuration() const
 
 void FileSystemWatcher::onDirectoryChanged(const Path &dir)
 {
-    m_buffer << dir;
+    queueDirectory(dir);
+
     m_timer.start(m_bufferDuration);
 }
 
 void FileSystemWatcher::onTimeout()
 {
-    m_timer.stop();
     for (const Path path : m_buffer)
         emit directoryChanged(path);
+
     m_buffer.clear();
+}
+
+void FileSystemWatcher::queueDirectory(const Path &dir)
+{
+    QMutableSetIterator<Path> iter(m_buffer);
+    while (iter.hasNext())
+    {
+        iter.next();
+        if (dir.contains(iter.value()))
+            return;
+
+        if (iter.value().contains(dir))
+            iter.remove();
+    }
+    m_buffer << dir;
 }

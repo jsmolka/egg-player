@@ -17,6 +17,11 @@ Library::Library(bool sorted, QObject *parent)
 {
     connect(&m_audioLoader, &AudioLoaderController::loaded, this, &Library::insert);
     connect(&m_audioLoader, &AudioLoaderController::finished,this, &Library::onAudioLoaderFinished);
+
+    connect(&m_fileSystem, &FileSystem::modified, this, &Library::onFileSystemModified);
+    connect(&m_fileSystem, &FileSystem::renamed, this, &Library::onFileSystemRenamed);
+    connect(&m_fileSystem, &FileSystem::added, this, &Library::onFileSystemAdded);
+    connect(&m_fileSystem, &FileSystem::removed, this, &Library::onFileSystemRemoved);
 }
 
 Library::~Library()
@@ -72,14 +77,46 @@ void Library::load(const Paths &paths)
 
 void Library::insert(Audio *audio)
 {
-    int index = m_sorted ? insertBinary(audio) : insertLinear(audio);
-    emit inserted(audio, index);
+    m_fileSystem.watchAudio(audio);
+    if (m_sorted)
+    {
+        int index = lowerBound(audio);
+        m_audios.insert(index, audio);
+    }
+    else
+    {
+        m_audios.append(audio);
+    }
 }
 
 void Library::onAudioLoaderFinished()
 {
     m_coverLoader.setAudios(m_audios.vector());
     m_coverLoader.start();
+}
+
+void Library::onFileSystemModified(Audio *audio)
+{
+    m_audioUpdater.setAudio(audio);
+    m_audioUpdater.start();
+}
+
+void Library::onFileSystemRenamed(Audio *audio, const File &to)
+{
+    audio->setPath(to);
+}
+
+void Library::onFileSystemAdded(const File &file)
+{
+    m_audioLoader.setFiles(Files() << file);
+    m_audioLoader.start();
+}
+
+void Library::onFileSystemRemoved(Audio *audio)
+{
+    int index = m_audios.indexOf(audio);
+    if (index != -1)
+        m_audios.remove(index);
 }
 
 int Library::lowerBound(Audio *audio)
@@ -95,17 +132,4 @@ int Library::lowerBound(Audio *audio)
             low = mid + 1;
     }
     return low;
-}
-
-int Library::insertBinary(Audio *audio)
-{
-    int index = lowerBound(audio);
-    m_audios.insert(index, audio);
-    return index;
-}
-
-int Library::insertLinear(Audio *audio)
-{
-    m_audios << audio;
-    return -1;
 }

@@ -15,10 +15,9 @@ void LibraryWidget::setLibrary(Library *library)
 {
     m_library = library;
 
-    connect(library, &Library::inserted, this, &LibraryWidget::insert);
-
-    connect(library->audios(), &Audios::removed, this, &LibraryWidget::onAudiosRemoved);
+    connect(library->audios(), &Audios::inserted, this, &LibraryWidget::onAudioInserted);
     connect(library->audios(), &Audios::updated, this, &LibraryWidget::onAudiosUpdated);
+    connect(library->audios(), &Audios::removed, this, &LibraryWidget::onAudiosRemoved);
 }
 
 void LibraryWidget::removeLibrary()
@@ -37,11 +36,6 @@ void LibraryWidget::addColumn(SongInfo info, Qt::Alignment horizontal, bool expa
         horizontalHeader()->setSectionResizeMode(m_columns.size() - 1, QHeaderView::ResizeToContents);
 }
 
-void LibraryWidget::onAudiosRemoved(int index)
-{
-    removeRow(index);
-}
-
 void LibraryWidget::onAudiosUpdated(Audio *audio)
 {
     int row = m_library->audios()->indexOf(audio);
@@ -49,14 +43,21 @@ void LibraryWidget::onAudiosUpdated(Audio *audio)
     insert(audio, row);
 }
 
+void LibraryWidget::onAudioInserted(int index)
+{
+    insert(m_library->audios()->at(index), index);
+}
+
+void LibraryWidget::onAudiosRemoved(int index)
+{
+    removeRow(index);
+}
+
 void LibraryWidget::insert(Audio *audio, int row)
 {
     setUpdatesEnabled(false);
 
-    if (row == -1)
-        row = rowCount();
     insertRow(row);
-
     for (int i = 0; i < m_columns.size(); i++)
     {
         QTableWidgetItem *item = new QTableWidgetItem(audioText(audio, i));

@@ -40,24 +40,9 @@ Files FileSystem::globAudios() const
     return result;
 }
 
-void FileSystem::eventModified(const File &file)
+void FileSystem::watchAudio(Audio *audio)
 {
-    qDebug() << "modified" << file;
-}
-
-void FileSystem::eventRenamed(const File &from, const File &to)
-{
-    qDebug() << "renamed" << from << "to" << to;
-}
-
-void FileSystem::eventAdded(const File &file)
-{
-    qDebug() << "added" << file;
-}
-
-void FileSystem::eventRemoved(const File &file)
-{
-    qDebug() << "removed" << file;
+    m_audios.insert(audio->path(), audio);
 }
 
 void FileSystem::onDirParsed(Directory *dir)
@@ -66,7 +51,7 @@ void FileSystem::onDirParsed(Directory *dir)
     for (const File &file : dir->files())
     {
         paths << file;
-        m_unique.insert(file, uniqueInfo(file));
+        m_unique.insert(file, UniqueFileInfo(file));
     }
     paths << dir->path();
 
@@ -76,12 +61,14 @@ void FileSystem::onDirParsed(Directory *dir)
 
 void FileSystem::onDirCreated(Directory *dir)
 {
-    qDebug() << "dir created" << dir->path();
+    m_watcher.addPath(dir->path());
+    m_dirs.insert(dir->path(), dir);
 }
 
 void FileSystem::onDirRemoved(Directory *dir)
 {
-    qDebug() << "dir removed" << dir->path();
+    m_watcher.removePath(dir->path());
+    m_dirs.remove(dir->path());
 }
 
 void FileSystem::onFileChanged(const File &file)
@@ -93,26 +80,21 @@ void FileSystem::onFileChanged(const File &file)
 void FileSystem::onDirectoryChanged(const Path &dir)
 {
     const Files files = m_dirs.value(dir)->processChanges();
-    QHash<UniqueInfo, File> renamedFrom;
-    QHash<UniqueInfo, File> renamedTo;
+    QHash<UniqueFileInfo, File> renamedFrom;
+    QHash<UniqueFileInfo, File> renamedTo;
     for (const File file : files)
     {
         if (m_unique.contains(file))
-        {
             renamedFrom.insert(m_unique.value(file), file);
-        }
         else
-        {
-            const UniqueInfo info = uniqueInfo(file);
-            renamedTo.insert(info, file);
-        }
+            renamedTo.insert(UniqueFileInfo(file), file);
     }
 
-    QHashIterator<UniqueInfo, File> iter(renamedFrom);
+    QHashIterator<UniqueFileInfo, File> iter(renamedFrom);
     while (iter.hasNext())
     {
         iter.next();
-        const UniqueInfo info = iter.key();
+        const UniqueFileInfo info = iter.key();
         if (renamedTo.contains(info))
         {
             eventRenamed(iter.value(), renamedTo.value(info));
@@ -124,7 +106,7 @@ void FileSystem::onDirectoryChanged(const Path &dir)
         }
     }
 
-    iter = QHashIterator<UniqueInfo, File>(renamedTo);
+    iter = QHashIterator<UniqueFileInfo, File>(renamedTo);
     while (iter.hasNext())
     {
         iter.next();
@@ -132,39 +114,45 @@ void FileSystem::onDirectoryChanged(const Path &dir)
     }
 }
 
-UniqueInfo FileSystem::uniqueInfo(const File &file)
+void FileSystem::eventModified(const File &file)
 {
-    UniqueInfo unique;
+    if (m_audios.contains(file))
+        emit modified(m_audios.value(file));
+}
 
-    HANDLE handle = CreateFileW(
-        reinterpret_cast<const wchar_t *>(file.constData()),
-        GENERIC_READ,
-        FILE_SHARE_DELETE | FILE_SHARE_READ | FILE_SHARE_WRITE,
-        NULL,
-        OPEN_EXISTING,
-        FILE_ATTRIBUTE_NORMAL,
-        NULL
-    );
+void FileSystem::eventRenamed(const File &from, const File &to)
+{
+    m_watcher.removePath(from);
+    m_watcher.addPath(to);
 
-    if (handle == INVALID_HANDLE_VALUE)
+    const UniqueFileInfo info = m_unique.value(from);
+    m_unique.remove(from);
+    m_unique.insert(to, info);
+
+    if (m_audios.contains(from))
     {
-        log("FileSystem: Cannot open file %1", file);
-        return unique;
+        emit renamed(m_audios.value(from), to);
+        m_audios.insert(to, m_audios.value(from));
+        m_audios.remove(from);
     }
+}
 
-    BY_HANDLE_FILE_INFORMATION info;
-    if (!GetFileInformationByHandle(handle, &info))
+void FileSystem::eventAdded(const File &file)
+{
+    m_watcher.addPath(file);
+    m_unique.insert(file, UniqueFileInfo(file));
+
+    emit added(file);
+}
+
+void FileSystem::eventRemoved(const File &file)
+{
+    m_watcher.removePath(file);
+    m_unique.remove(file);
+
+    if (m_audios.contains(file))
     {
-        log("FileSystem: Cannot get file information %1", file);
-        return unique;
+        emit removed(m_audios.value(file));
+        m_audios.remove(file);
     }
-
-    unique.volume = info.dwVolumeSerialNumber;
-    unique.low = info.nFileIndexLow;
-    unique.high = info.nFileIndexHigh;
-
-    if (!CloseHandle(handle))
-        log("FileSystem: Cannot close handle %1", file);
-
-    return unique;
 }

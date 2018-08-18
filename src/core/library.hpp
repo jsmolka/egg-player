@@ -47,10 +47,13 @@ signals:
 private slots:
     void onAudioLoaderFinished();
 
+    void onFileSystemModified(Audio *audio);
+    void onFileSystemRenamed(Audio *audio, const File &to);
+    void onFileSystemAdded(const File &file);
+    void onFileSystemRemoved(Audio *audio);
+
 private:
     int lowerBound(Audio *audio);
-    int insertBinary(Audio *audio);
-    int insertLinear(Audio *audio);
 
     bool m_sorted;
     Audios m_audios;

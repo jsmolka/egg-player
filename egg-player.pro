@@ -85,7 +85,8 @@ HEADERS += \
     src/core/filesystemwatcher.hpp \
     src/core/directory.hpp \
     src/core/filesystem.hpp \
-    src/core/bimap.hpp
+    src/core/bimap.hpp \
+    src/core/uniquefileinfo.hpp
 
 SOURCES += \
     src/main.cpp \
@@ -135,5 +136,6 @@ SOURCES += \
     src/threading/audioupdaterworker.cpp \
     src/core/filesystemwatcher.cpp \
     src/core/directory.cpp \
-    src/core/filesystem.cpp
+    src/core/filesystem.cpp \
+    src/core/uniquefileinfo.cpp
 

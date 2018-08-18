@@ -2,6 +2,7 @@
 #define FILESYSTEMWATCHER_HPP
 
 #include <QFileSystemWatcher>
+#include <QMutableSetIterator>
 #include <QSet>
 #include <QTimer>
 
@@ -33,6 +34,8 @@ private slots:
     void onTimeout();
 
 private:
+    void queueDirectory(const Path &dir);
+
     QFileSystemWatcher m_watcher;
     QSet<Path> m_buffer;
     QTimer m_timer;

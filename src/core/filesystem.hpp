@@ -1,8 +1,6 @@
 #ifndef FILESYSTEM_HPP
 #define FILESYSTEM_HPP
 
-#include <Windows.h>
-
 #include <QHash>
 #include <QHashIterator>
 #include <QObject>
@@ -12,30 +10,8 @@
 #include "bimap.hpp"
 #include "directory.hpp"
 #include "filesystemwatcher.hpp"
-#include "logger.hpp"
 #include "types.hpp"
-
-struct UniqueInfo
-{
-    UniqueInfo(DWORD volume = 0, DWORD low = 0, DWORD high = 0)
-        : volume(volume), low(low), high(high) {}
-
-    DWORD volume;
-    DWORD low;
-    DWORD high;
-};
-
-inline bool operator==(const UniqueInfo &info1, const UniqueInfo &info2)
-{
-    return info1.volume == info2.volume
-            && info1.low == info2.low
-            && info1.high == info2.high;
-}
-
-inline uint qHash(const UniqueInfo &key, uint seed)
-{
-    return qHash(key.volume ^ key.low ^ key.high, seed);
-}
+#include "uniquefileinfo.hpp"
 
 class FileSystem : public QObject
 {
@@ -51,11 +27,13 @@ public:
 
     Files globAudios() const;
 
-public: // Make signals in future
-    void eventModified(const File &file);
-    void eventRenamed(const File &from, const File &to);
-    void eventAdded(const File &file);
-    void eventRemoved(const File &file);
+    void watchAudio(Audio *audio);
+
+signals:
+    void modified(Audio *audio);
+    void renamed(Audio *audio, const File &to);
+    void added(const File &file);
+    void removed(Audio *audio);
 
 private slots:
     void onDirParsed(Directory *dir);
@@ -66,10 +44,14 @@ private slots:
     void onDirectoryChanged(const Path &dir);
 
 private:
-    UniqueInfo uniqueInfo(const File &file);
+    void eventModified(const File &file);
+    void eventRenamed(const File &from, const File &to);
+    void eventAdded(const File &file);
+    void eventRemoved(const File &file);
 
-    Bimap<File, UniqueInfo> m_unique;
+    Bimap<File, UniqueFileInfo> m_unique;
     QHash<Path, Directory *> m_dirs;
+    QHash<File, Audio *> m_audios;
     FileSystemWatcher m_watcher;
 };
 
