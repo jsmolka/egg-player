@@ -1,7 +1,10 @@
 #include "iconbutton.hpp"
 
+#include <QStyle>
+
 IconButton::IconButton(QWidget *parent)
     : QPushButton(parent)
+    , m_icons()
     , m_iconIndex(0)
     , m_lockable(false)
     , m_locked(false)
@@ -16,13 +19,13 @@ IconButton::~IconButton()
 
 }
 
-void IconButton::setIcons(const QVector<QIcon> &icons)
+void IconButton::setIcons(const Icons &icons)
 {
     m_icons = icons;
     setIcon(m_icons.first());
 }
 
-QVector<QIcon> IconButton::icons() const
+Icons IconButton::icons() const
 {
     return m_icons;
 }

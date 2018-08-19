@@ -1,21 +1,14 @@
 #ifndef COVER_HPP
 #define COVER_HPP
 
-#include <array>
-
 #include <QColor>
-#include <QHash>
-#include <QPainter>
 #include <QPixmap>
-
-#include "logger.hpp"
-#include "tag.hpp"
 
 class Cover
 {
 public:
     Cover();
-    Cover(int id);
+    explicit Cover(int id);
     ~Cover();
 
     static int defaultSize();
@@ -38,6 +31,8 @@ private:
     static QColor adjustDominantColor(const QColor &color);
 
     static constexpr int s_size = 200;
+    static constexpr int s_defaultId = 1;
+    static constexpr int s_dominantSize = 30;
 
     int m_id;
 };

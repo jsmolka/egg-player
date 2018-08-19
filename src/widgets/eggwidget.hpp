@@ -2,20 +2,15 @@
 #define EGGWIDGET_HPP
 
 #include "barwidget.hpp"
-#include "borderlayout.hpp"
-#include "constants.hpp"
-#include "coverloadercontroller.hpp"
-#include "library.hpp"
 #include "librarywidget.hpp"
 #include "mainwindow.hpp"
-#include "types.hpp"
 
 class EggWidget : public MainWindow
 {
     Q_OBJECT
 
 public:
-    EggWidget(QWidget *parent = nullptr);
+    explicit EggWidget(QWidget *parent = nullptr);
     ~EggWidget();
 
 protected:

@@ -10,11 +10,11 @@ class AudioLoaderWorker : public AbstractWorker
 
 public:
     explicit AudioLoaderWorker(QObject *parent = nullptr);
-    explicit AudioLoaderWorker(const Paths &paths, QObject *parent = nullptr);
+    explicit AudioLoaderWorker(const Files &files, QObject *parent = nullptr);
     ~AudioLoaderWorker();
 
-    void setPaths(const Paths &paths);
-    Paths paths() const;
+    void setFiles(const Files &files);
+    Files files() const;
 
 signals:
     void loaded(Audio *audio);
@@ -23,7 +23,7 @@ public slots:
     void work() override;
 
 private:
-    Paths m_paths;
+    Files m_files;
     AudioVector m_uncached;
     AudioVector m_outdated;
 };

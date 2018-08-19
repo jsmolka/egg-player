@@ -1,5 +1,7 @@
 #include "duration.hpp"
 
+#include <QTime>
+
 Duration::Duration()
     : Duration(0)
 {
@@ -30,8 +32,7 @@ int Duration::secs() const
 
 QString Duration::toString() const
 {
-    QTime time(0, 0);
-    time = time.addSecs(m_secs);
+    const QTime time = QTime(0, 0).addSecs(m_secs);
 
     if (m_secs < 600)
         return time.toString("m:ss");

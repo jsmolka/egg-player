@@ -1,8 +1,12 @@
 #include "filesystemwatcher.hpp"
 
+#include <QMutableSetIterator>
+
 FileSystemWatcher::FileSystemWatcher(QObject *parent)
     : QObject(parent)
     , m_watcher(this)
+    , m_buffer()
+    , m_timer(this)
     , m_bufferDuration(200)
 {
     connect(&m_watcher, &QFileSystemWatcher::fileChanged, this, &FileSystemWatcher::fileChanged);

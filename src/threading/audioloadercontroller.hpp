@@ -11,11 +11,11 @@ class AudioLoaderController : public AbstractController
 
 public:
     explicit AudioLoaderController(QObject *parent = nullptr);
-    explicit AudioLoaderController(const Paths &paths, QObject *parent = nullptr);
+    explicit AudioLoaderController(const Files &files, QObject *parent = nullptr);
     ~AudioLoaderController();
 
-    void setPaths(const Paths &paths);
-    Paths paths() const;
+    void setFiles(const Files &files);
+    Files files() const;
 
 public slots:
     void start() override;
@@ -24,7 +24,7 @@ signals:
     void loaded(Audio *audio);
 
 private:
-    Paths m_paths;
+    Files m_files;
 };
 
 #endif // AUDIOLOADERCONTROLLER_HPP

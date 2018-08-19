@@ -2,9 +2,7 @@
 #define FILESYSTEM_HPP
 
 #include <QHash>
-#include <QHashIterator>
 #include <QObject>
-#include <QSet>
 
 #include "audio.hpp"
 #include "bimap.hpp"
@@ -18,7 +16,7 @@ class FileSystem : public QObject
     Q_OBJECT
 
 public:
-    FileSystem(QObject *parent = nullptr);
+    explicit FileSystem(QObject *parent = nullptr);
     ~FileSystem();
 
     QHash<Path, Directory *> dirs() const;

@@ -8,7 +8,7 @@ class ConfigAbstract
 {
 public:
     ConfigAbstract();
-    ConfigAbstract(const QJsonObject &object);
+    explicit ConfigAbstract(const QJsonObject &object);
     ~ConfigAbstract();
 
     QJsonObject object() const;

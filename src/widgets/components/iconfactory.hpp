@@ -2,7 +2,6 @@
 #define ICONFACTORY_HPP
 
 #include <QIcon>
-#include <QPainter>
 #include <QPixmap>
 
 class IconFactory

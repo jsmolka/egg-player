@@ -18,7 +18,7 @@
 class Config : QObject
 {
 public:
-    Config(QObject *parent = nullptr);
+    explicit Config(QObject *parent = nullptr);
     ~Config();
 
     static Config *instance();

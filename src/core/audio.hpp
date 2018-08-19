@@ -19,8 +19,8 @@ class Audio : public QObject
 
 public:
     explicit Audio(QObject *parent = nullptr);
-    Audio(const QString &path, QObject *parent = nullptr);
-    Audio(const QString &path,
+    Audio(const QString &file, QObject *parent = nullptr);
+    Audio(const QString &file,
           const QString &title,
           const QString &artist,
           const QString &album,
@@ -42,8 +42,8 @@ public:
     void setOutdated(bool outdated);
     bool isOutdated() const;
 
-    void setPath(const Path &path);
-    Path path() const;
+    void setFile(const File &file);
+    File file() const;
 
     void setTitle(const QString &title);
     QString title() const;
@@ -93,7 +93,7 @@ private:
     bool m_cached;
     bool m_outdated;
 
-    QString m_path;
+    QString m_file;
     QString m_title;
     QString m_artist;
     QString m_album;

@@ -2,10 +2,8 @@
 
 ## General
 - write proper project file, use compiler optimization
-- test jpg instead of png for cover conversion
 - make PlaylistItem private
 - SongInfo to AudioInfo
-- do not cache loaded cover, calculate dominant color right after first load and store for id
 
 ## Threading
 - possibly rewrite threading
@@ -51,10 +49,13 @@
 - probably useful
     - [insert binary](https://stackoverflow.com/a/25524075/7057528)
     - [binary predicate](https://stackoverflow.com/a/4269392/7057528)
-    - [array insert end](https://stackoverflow.com/a/5961066/7057528)
   
 ## User interface
 - do not show certain info at low size
 - fuzzy library searching
 - [expand scrollbar](https://stackoverflow.com/a/23677355/7057528)
 - [scrollable text](https://stackoverflow.com/a/10655396/7057528)
+
+## Possible future changes
+- do not cache loaded covers, calculate dominant color right after first load and store for id
+- test jpg instead of png for cover caching

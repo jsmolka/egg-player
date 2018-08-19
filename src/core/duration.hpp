@@ -2,13 +2,12 @@
 #define DURATION_HPP
 
 #include <QString>
-#include <QTime>
 
 class Duration
 {
 public:
     Duration();
-    Duration(int secs);
+    explicit Duration(int secs);
     ~Duration();
 
     void setSecs(int secs);

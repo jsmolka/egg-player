@@ -7,14 +7,14 @@
 #include "types.hpp"
 
 AudioLoaderWorker::AudioLoaderWorker(QObject *parent)
-    : AudioLoaderWorker(Paths(), parent)
+    : AudioLoaderWorker(Files(), parent)
 {
 
 }
 
-AudioLoaderWorker::AudioLoaderWorker(const Paths &paths, QObject *parent)
+AudioLoaderWorker::AudioLoaderWorker(const Files &files, QObject *parent)
     : AbstractWorker(parent)
-    , m_paths(paths)
+    , m_files(files)
 {
 
 }
@@ -24,27 +24,27 @@ AudioLoaderWorker::~AudioLoaderWorker()
 
 }
 
-void AudioLoaderWorker::setPaths(const Paths &paths)
+void AudioLoaderWorker::setFiles(const Files &files)
 {
-    m_paths = paths;
+    m_files = files;
 }
 
-Files AudioLoaderWorker::paths() const
+Files AudioLoaderWorker::files() const
 {
-    return m_paths;
+    return m_files;
 }
 
 void AudioLoaderWorker::work()
 {
     Cache cache;
-    for (const QString &path : m_paths)
+    for (const File &file : m_files)
     {
         if (isInterrupted())
             return;
 
-        Audio *audio = cache.loadAudio(path);
+        Audio *audio = cache.loadAudio(file);
         if (!audio)
-            audio = new Audio(path);
+            audio = new Audio(file);
 
         if (audio->isValid())
         {

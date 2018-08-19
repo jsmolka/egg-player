@@ -1,7 +1,12 @@
 #include "filesystem.hpp"
 
+#include <QHashIterator>
+
 FileSystem::FileSystem(QObject *parent)
     : QObject(parent)
+    , m_unique()
+    , m_dirs()
+    , m_audios()
     , m_watcher(this)
 {
     connect(&m_watcher, &FileSystemWatcher::fileChanged, this, &FileSystem::onFileChanged);
@@ -20,6 +25,9 @@ QHash<Path, Directory *> FileSystem::dirs() const
 
 void FileSystem::addPath(const Path &path)
 {
+    if (m_dirs.contains(path))
+        return;
+
     Directory *dir = new Directory(path, this);
     connect(dir, &Directory::parsed, this, &FileSystem::onDirParsed);
     connect(dir, &Directory::created, this, &FileSystem::onDirCreated);
@@ -42,7 +50,7 @@ Files FileSystem::globAudios() const
 
 void FileSystem::watchAudio(Audio *audio)
 {
-    m_audios.insert(audio->path(), audio);
+    m_audios.insert(audio->file(), audio);
 }
 
 void FileSystem::onDirParsed(Directory *dir)
@@ -90,27 +98,27 @@ void FileSystem::onDirectoryChanged(const Path &dir)
             renamedTo.insert(UniqueFileInfo(file), file);
     }
 
-    QHashIterator<UniqueFileInfo, File> iter(renamedFrom);
-    while (iter.hasNext())
+    QHashIterator<UniqueFileInfo, File> fromIter(renamedFrom);
+    while (fromIter.hasNext())
     {
-        iter.next();
-        const UniqueFileInfo info = iter.key();
+        fromIter.next();
+        const UniqueFileInfo info = fromIter.key();
         if (renamedTo.contains(info))
         {
-            eventRenamed(iter.value(), renamedTo.value(info));
+            eventRenamed(fromIter.value(), renamedTo.value(info));
             renamedTo.remove(info);
         }
         else
         {
-            eventRemoved(iter.value());
+            eventRemoved(fromIter.value());
         }
     }
 
-    iter = QHashIterator<UniqueFileInfo, File>(renamedTo);
-    while (iter.hasNext())
+    QHashIterator<UniqueFileInfo, File> toIter(renamedTo);
+    while (toIter.hasNext())
     {
-        iter.next();
-        eventAdded(iter.value());
+        toIter.next();
+        eventAdded(toIter.value());
     }
 }
 
@@ -141,7 +149,6 @@ void FileSystem::eventAdded(const File &file)
 {
     m_watcher.addPath(file);
     m_unique.insert(file, UniqueFileInfo(file));
-
     emit added(file);
 }
 

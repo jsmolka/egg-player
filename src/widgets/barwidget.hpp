@@ -14,7 +14,7 @@ class BarWidget : public ColorTransitionWidget
     Q_OBJECT
 
 public:
-    BarWidget(QWidget *parent = nullptr);
+    explicit BarWidget(QWidget *parent = nullptr);
     ~BarWidget();
 
     QLabel &coverLabel();

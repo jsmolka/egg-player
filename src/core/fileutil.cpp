@@ -1,24 +1,27 @@
 #include "fileutil.hpp"
 
-QString FileUtil::read(const QString &file, const QString &defaultValue)
+#include <QFile>
+#include <QTextStream>
+
+QString FileUtil::read(const File &file, const QString &defaultValue)
 {
     QFile qFile(file);
-    if (!qFile.open(QFile::ReadOnly | QFile::Text))
+    if (!qFile.open(QFile::ReadOnly))
         return defaultValue;
 
     return QTextStream(&qFile).readAll();
 }
 
-QByteArray FileUtil::readBytes(const QString &file, const QByteArray &defaultValue)
+QByteArray FileUtil::readBytes(const File &file, const QByteArray &defaultValue)
 {
     QFile qFile(file);
-    if (!qFile.open(QFile::ReadOnly | QFile::Text))
+    if (!qFile.open(QFile::ReadOnly))
         return defaultValue;
 
     return qFile.readAll();
 }
 
-void FileUtil::write(const QString &file, const QString &content)
+void FileUtil::write(const File &file, const QString &content)
 {
     QFile qFile(file);
     if (!qFile.open(QFile::WriteOnly))
@@ -27,7 +30,7 @@ void FileUtil::write(const QString &file, const QString &content)
     QTextStream(&qFile) << content;
 }
 
-void FileUtil::write(const QString &file, const QByteArray &content)
+void FileUtil::write(const File &file, const QByteArray &content)
 {
     QFile qFile(file);
     if (!qFile.open(QFile::WriteOnly))

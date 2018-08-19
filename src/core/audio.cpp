@@ -1,5 +1,7 @@
 #include "audio.hpp"
 
+#include <QTime>
+
 #include "logger.hpp"
 #include "tag.hpp"
 
@@ -8,7 +10,7 @@ Audio::Audio(QObject *parent)
     , m_valid(false)
     , m_cached(false)
     , m_outdated(false)
-    , m_path()
+    , m_file()
     , m_title()
     , m_artist()
     , m_album()
@@ -25,7 +27,7 @@ Audio::Audio(QObject *parent)
 Audio::Audio(const QString &path, QObject *parent)
     : Audio(parent)
 {
-    m_path = path;
+    m_file = path;
 
     update();
 }
@@ -44,7 +46,7 @@ Audio::Audio(const QString &path,
     : QObject(parent)
     , m_valid(true)
     , m_cached(true)
-    , m_path(path)
+    , m_file(path)
     , m_title(title)
     , m_artist(artist)
     , m_album(album)
@@ -93,14 +95,14 @@ bool Audio::isOutdated() const
     return m_outdated;
 }
 
-void Audio::setPath(const Path &path)
+void Audio::setFile(const File &file)
 {
-    m_path = path;
+    m_file = file;
 }
 
-Path Audio::path() const
+File Audio::file() const
 {
-    return m_path;
+    return m_file;
 }
 
 void Audio::setTitle(const QString &title)
@@ -192,7 +194,7 @@ qint64 Audio::modified() const
 
 QFileInfo Audio::info() const
 {
-    return QFileInfo(m_path);
+    return QFileInfo(m_file);
 }
 
 void Audio::update()
@@ -200,9 +202,9 @@ void Audio::update()
     if (!(m_valid = readTags()))
     {
         if (!info().exists())
-            LOG("File does not exist %1", m_path);
+            LOG("File does not exist %1", m_file);
         else
-            LOG("Cannot read tags %1", m_path);
+            LOG("Cannot read tags %1", m_file);
     }
     m_modified = info().lastModified().toSecsSinceEpoch();
 
@@ -211,7 +213,7 @@ void Audio::update()
 
 const wchar_t * Audio::widePath() const
 {
-    return reinterpret_cast<const wchar_t *>(m_path.constData());
+    return reinterpret_cast<const wchar_t *>(m_file.constData());
 }
 
 bool Audio::operator<(const Audio &other) const
@@ -236,12 +238,12 @@ bool Audio::operator>=(const Audio &other) const
 
 bool Audio::operator==(const QString &other) const
 {
-    return m_path == other;
+    return m_file == other;
 }
 
 bool Audio::operator==(const Audio &other) const
 {
-    return *this == other.path();
+    return *this == other.file();
 }
 
 bool Audio::operator!=(const QString &other) const

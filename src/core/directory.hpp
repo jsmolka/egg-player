@@ -1,11 +1,8 @@
 #ifndef DIRECTORY_HPP
 #define DIRECTORY_HPP
 
-#include <QDirIterator>
 #include <QHash>
-#include <QHashIterator>
 #include <QObject>
-#include <QMutableSetIterator>
 #include <QSet>
 
 #include "types.hpp"
@@ -15,8 +12,8 @@ class Directory : public QObject
     Q_OBJECT
 
 public:
-    Directory(QObject *parent = nullptr);
-    Directory(const Path &path, QObject *parent = nullptr);
+    explicit Directory(QObject *parent = nullptr);
+    explicit Directory(const Path &path, QObject *parent = nullptr);
     ~Directory();
 
     void setPath(const Path &path);

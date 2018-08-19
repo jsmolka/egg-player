@@ -3,17 +3,14 @@
 
 #include "abstractcontroller.hpp"
 #include "audio.hpp"
-#include "audios.hpp"
-#include "cache.hpp"
-#include "coverloaderworker.hpp"
 
 class CoverLoaderController : public AbstractController
 {
     Q_OBJECT
 
 public:
-    CoverLoaderController(QObject *parent = nullptr);
-    CoverLoaderController(AudioVector audios, QObject *parent = nullptr);
+    explicit CoverLoaderController(QObject *parent = nullptr);
+    explicit CoverLoaderController(AudioVector audios, QObject *parent = nullptr);
     ~CoverLoaderController();
 
     void setAudios(const AudioVector &audios);

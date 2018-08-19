@@ -2,8 +2,10 @@
 
 #include <QSqlError>
 #include <QThread>
+#include <QVariant>
 
 #include "constants.hpp"
+#include "logger.hpp"
 
 Cache::Cache()
     : m_db()
@@ -91,7 +93,7 @@ void Cache::insertAudio(Audio *audio)
         " :modified"
         ")"
     );
-    m_query.bindValue(":path", audio->path());
+    m_query.bindValue(":path", audio->file());
     m_query.bindValue(":title", audio->title());
     m_query.bindValue(":artist", audio->artist());
     m_query.bindValue(":album", audio->album());
@@ -124,7 +126,7 @@ void Cache::updateAudio(Audio *audio, const QString &newPath)
         " modified = :modified "
         "WHERE path = :path"
     );
-    m_query.bindValue(":newpath", newPath.isNull() ? audio->path() : newPath);
+    m_query.bindValue(":newpath", newPath.isNull() ? audio->file() : newPath);
     m_query.bindValue(":title", audio->title());
     m_query.bindValue(":artist", audio->artist());
     m_query.bindValue(":album", audio->album());
@@ -134,7 +136,7 @@ void Cache::updateAudio(Audio *audio, const QString &newPath)
     m_query.bindValue(":duration", audio->duration().secs());
     m_query.bindValue(":coverid", audio->cover().id());
     m_query.bindValue(":modified", audio->modified());
-    m_query.bindValue(":path", audio->path());
+    m_query.bindValue(":path", audio->file());
 
     if (!m_query.exec())
         error();
@@ -169,7 +171,7 @@ void Cache::setAudioCoverId(Audio *audio, int id)
         " coverid = :coverid "
         "WHERE path = :path"
     );
-    m_query.bindValue(":path", audio->path());
+    m_query.bindValue(":path", audio->file());
     m_query.bindValue(":coverid", id);
 
     if (!m_query.exec())

@@ -1,17 +1,14 @@
 #ifndef LIBRARY_HPP
 #define LIBRARY_HPP
 
-#include <QApplication>
-#include <QFileSystemWatcher>
 #include <QObject>
-#include <QSet>
 
 #include "audio.hpp"
+#include "audios.hpp"
 #include "audioloadercontroller.hpp"
 #include "audioupdatercontroller.hpp"
 #include "coverloadercontroller.hpp"
 #include "filesystem.hpp"
-#include "filesystemwatcher.hpp"
 #include "types.hpp"
 
 #define eLibrary (Library::instance())
@@ -21,20 +18,20 @@ class Library : public QObject
     Q_OBJECT
 
 public:
-    Library(QObject *parent = nullptr);
-    Library(bool sorted, QObject *parent = nullptr);
+    explicit Library(QObject *parent = nullptr);
+    explicit Library(bool sorted, QObject *parent = nullptr);
     ~Library();
 
-    static Library * instance();
+    static Library *instance();
 
     void setSorted(bool sorted);
     bool isSorted() const;
 
-    Audios * audios();
+    Audios *audios();
 
-    AudioLoaderController * audioLoader();
-    AudioUpdaterController * audioUpdater();
-    CoverLoaderController * coverLoader();
+    AudioLoaderController &audioLoader();
+    AudioUpdaterController &audioUpdater();
+    CoverLoaderController &coverLoader();
 
     void load(const Paths &paths);
 
@@ -57,7 +54,6 @@ private:
 
     bool m_sorted;
     Audios m_audios;
-    QSet<QString> m_loaded;
     FileSystem m_fileSystem;
     AudioLoaderController m_audioLoader;
     AudioUpdaterController m_audioUpdater;

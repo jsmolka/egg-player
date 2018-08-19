@@ -1,5 +1,7 @@
 #include "iconfactory.hpp"
 
+#include <QPainter>
+
 IconFactory::IconFactory()
 {
 
@@ -14,7 +16,7 @@ QIcon IconFactory::make(const QString &file)
 {
     QIcon icon;
 
-    QPixmap normal = QPixmap(file);
+    const QPixmap normal = QPixmap(file);
     icon.addPixmap(normal, QIcon::Normal, QIcon::Off);
     icon.addPixmap(makeActive(normal), QIcon::Active, QIcon::Off);
 

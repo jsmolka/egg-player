@@ -2,7 +2,6 @@
 #define FILESYSTEMWATCHER_HPP
 
 #include <QFileSystemWatcher>
-#include <QMutableSetIterator>
 #include <QSet>
 #include <QTimer>
 
@@ -13,7 +12,7 @@ class FileSystemWatcher : public QObject
     Q_OBJECT
 
 public:
-    FileSystemWatcher(QObject *parent = nullptr);
+    explicit FileSystemWatcher(QObject *parent = nullptr);
     ~FileSystemWatcher();
 
     void setBufferDuration(int duration);

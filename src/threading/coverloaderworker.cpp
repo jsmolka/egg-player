@@ -1,5 +1,10 @@
 #include "coverloaderworker.hpp"
 
+#include <QMutex>
+#include <QMutexLocker>
+
+#include "cache.hpp"
+
 CoverLoaderWorker::CoverLoaderWorker(QObject *parent)
     : CoverLoaderWorker(AudioVector(), parent)
 {
@@ -38,13 +43,13 @@ void CoverLoaderWorker::work()
 
         if (!audio->cover().isValid())
         {
-            QPixmap cover = Cover::loadFromFile(audio->widePath());
+            const QPixmap cover = Cover::loadFromFile(audio->widePath());
 
             static QMutex mutex;
-            QMutexLocker locker(&mutex);
+            const QMutexLocker locker(&mutex);
 
-            int id = cache.insertCover(cover);
-            if (id != 0)
+            const int id = cache.insertCover(cover);
+            if (id > 0)
                 cache.setAudioCoverId(audio, id);
         }
     }

@@ -11,7 +11,7 @@ class ColorTransitionWidget : public QWidget
     Q_PROPERTY(QColor color READ color WRITE setColor)
 
 public:
-    ColorTransitionWidget(QWidget *parent = nullptr);
+    explicit ColorTransitionWidget(QWidget *parent = nullptr);
     ~ColorTransitionWidget();
 
     void setDuration(int duration);

@@ -1,5 +1,7 @@
 #include "library.hpp"
 
+#include <QApplication>
+
 Library::Library(QObject *parent)
     : Library(false, parent)
 {
@@ -30,7 +32,7 @@ Library::~Library()
         delete m_audios.takeFirst();
 }
 
-Library * Library::instance()
+Library *Library::instance()
 {
     static Library *library = new Library(qApp);
     return library;
@@ -46,47 +48,43 @@ bool Library::isSorted() const
     return m_sorted;
 }
 
-Audios * Library::audios()
+Audios *Library::audios()
 {
     return &m_audios;
 }
 
-AudioLoaderController * Library::audioLoader()
+AudioLoaderController &Library::audioLoader()
 {
-    return &m_audioLoader;
+    return m_audioLoader;
 }
 
-AudioUpdaterController * Library::audioUpdater()
+AudioUpdaterController &Library::audioUpdater()
 {
-    return &m_audioUpdater;
+    return m_audioUpdater;
 }
 
-CoverLoaderController * Library::coverLoader()
+CoverLoaderController &Library::coverLoader()
 {
-    return &m_coverLoader;
+    return m_coverLoader;
 }
 
 void Library::load(const Paths &paths)
 {
-    for (const Path path: paths)
+    for (const Path path : paths)
         m_fileSystem.addPath(path);
 
-    m_audioLoader.setPaths(m_fileSystem.globAudios());
+    m_audioLoader.setFiles(m_fileSystem.globAudios());
     m_audioLoader.start();
 }
 
 void Library::insert(Audio *audio)
 {
     m_fileSystem.watchAudio(audio);
+
     if (m_sorted)
-    {
-        int index = lowerBound(audio);
-        m_audios.insert(index, audio);
-    }
+        m_audios.insert(lowerBound(audio), audio);
     else
-    {
         m_audios.append(audio);
-    }
 }
 
 void Library::onAudioLoaderFinished()
@@ -103,18 +101,18 @@ void Library::onFileSystemModified(Audio *audio)
 
 void Library::onFileSystemRenamed(Audio *audio, const File &to)
 {
-    audio->setPath(to);
+    audio->setFile(to);
 }
 
 void Library::onFileSystemAdded(const File &file)
 {
-    m_audioLoader.setPaths(Files() << file);
+    m_audioLoader.setFiles(Files() << file);
     m_audioLoader.start();
 }
 
 void Library::onFileSystemRemoved(Audio *audio)
 {
-    int index = m_audios.indexOf(audio);
+    const int index = m_audios.indexOf(audio);
     if (index != -1)
         m_audios.remove(index);
 }
@@ -125,7 +123,7 @@ int Library::lowerBound(Audio *audio)
     int high = m_audios.size();
     while (low < high)
     {
-        int mid = (low + high) / 2;
+        const int mid = (low + high) / 2;
         if (*audio < *m_audios.at(mid))
             high = mid;
         else

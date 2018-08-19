@@ -1,5 +1,13 @@
-#include "cache.hpp"
 #include "cover.hpp"
+
+#include <array>
+
+#include <QHash>
+#include <QPainter>
+
+#include "cache.hpp"
+#include "logger.hpp"
+#include "tag.hpp"
 
 Cover::Cover()
     : Cover(0)
@@ -25,14 +33,14 @@ int Cover::defaultSize()
 
 Cover Cover::defaultCover()
 {
-    return Cover(1);
+    return Cover(s_defaultId);
 }
 
 QPixmap Cover::loadFromFile(const wchar_t *file)
 {
     QPixmap cover = Tag(file).cover();
     if (cover.isNull())
-        cover = loadFromCache(1);
+        cover = loadFromCache(s_defaultId);
 
     return scale(coverify(cover), s_size);
 }
@@ -59,22 +67,22 @@ int Cover::id() const
 
 QPixmap Cover::picture(int size)
 {
-    int id = qMax(1, m_id);
+    const int id = qMax(1, m_id);
     static QHash<int, QPixmap> cache;
     if (!cache.contains(id))
         cache.insert(id, loadFromCache(id));
 
-    QPixmap pixmap = cache.value(id);
+    const QPixmap pixmap = cache.value(id);
     return size == -1 ? pixmap : scale(pixmap, size);
 }
 
 QColor Cover::dominantColor()
 {
-    int id = qMax(1, m_id);
+    const int id = qMax(1, m_id);
     static QHash<int, QColor> cache;
     if (!cache.contains(id))
     {
-        QColor raw = rawDominantColor(scale(picture(), 30, true).toImage());
+        const QColor raw = rawDominantColor(scale(picture(), s_dominantSize, true).toImage());
         cache.insert(id, adjustDominantColor(raw).toRgb());
     }
     return cache.value(id);
@@ -82,18 +90,18 @@ QColor Cover::dominantColor()
 
 QPixmap Cover::coverify(const QPixmap &cover)
 {
-    int height = cover.height();
-    int width = cover.width();
+    const int height = cover.height();
+    const int width = cover.width();
 
     if (height != width)
     {
-        int size = qMax(height, width);
+        const int size = qMax(height, width);
         QPixmap square(size, size);
         square.fill(Qt::transparent);
 
         QPainter painter(&square);
-        int x = (size - width) / 2;
-        int y = (size - height) / 2;
+        const int x = (size - width) / 2;
+        const int y = (size - height) / 2;
         painter.drawPixmap(x, y, cover);
         return square;
     }
@@ -130,17 +138,17 @@ QColor Cover::rawDominantColor(const QImage &image)
     QRgb *pixels = (QRgb *)image.bits();
     for (int i = 0; i < image.height() * image.width(); ++i)
     {
-        QColor rgb(pixels[i]);
-        int r = rgb.red();
-        int g = rgb.green();
-        int b = rgb.blue();
+        const QColor rgb(pixels[i]);
+        const int r = rgb.red();
+        const int g = rgb.green();
+        const int b = rgb.blue();
 
-        QColor hsv = rgb.toHsv();
-        int h = qMax(0, hsv.hue());
-        int s = hsv.saturation();
-        int v = hsv.value();
+        const QColor hsv = rgb.toHsv();
+        const int h = qMax(0, hsv.hue());
+        const int s = hsv.saturation();
+        const int v = hsv.value();
 
-        int index = h / (360 / range);
+        const int index = h / (360 / range);
 
         if (qAbs(r - g) > limit || qAbs(g - b) > limit || qAbs(b - r) > limit)
         {
@@ -173,10 +181,10 @@ QColor Cover::rawDominantColor(const QImage &image)
             }
         }
 
-        float c = static_cast<float>(hsvs[idx].c);
-        int h = static_cast<float>(hsvs[idx].h) / c;
-        int s = static_cast<float>(hsvs[idx].s) / c;
-        int v = static_cast<float>(hsvs[idx].v) / c;
+        const float c = static_cast<float>(hsvs[idx].c);
+        const int h = static_cast<float>(hsvs[idx].h) / c;
+        const int s = static_cast<float>(hsvs[idx].s) / c;
+        const int v = static_cast<float>(hsvs[idx].v) / c;
 
         return QColor::fromHsv(h, s, v);
     };
@@ -186,9 +194,9 @@ QColor Cover::rawDominantColor(const QImage &image)
 
 QColor Cover::adjustDominantColor(const QColor &color)
 {
-    qreal hue = color.hsvHueF();
-    qreal saturation = qMin(color.hsvSaturationF(), 0.8);
-    qreal value = qMin(color.valueF(), 0.36);
+    const qreal hue = color.hsvHueF();
+    const qreal saturation = qMin(color.hsvSaturationF(), 0.8);
+    const qreal value = qMin(color.valueF(), 0.36);
 
     return QColor::fromHsvF(hue, saturation, value);
 }

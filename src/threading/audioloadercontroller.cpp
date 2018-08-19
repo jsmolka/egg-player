@@ -3,14 +3,14 @@
 #include "audioloaderworker.hpp"
 
 AudioLoaderController::AudioLoaderController(QObject *parent)
-    : AudioLoaderController(Paths(), parent)
+    : AudioLoaderController(Files(), parent)
 {
 
 }
 
 AudioLoaderController::AudioLoaderController(const Files &files, QObject *parent)
     : AbstractController(parent)
-    , m_paths(files)
+    , m_files(files)
 {
 
 }
@@ -20,19 +20,19 @@ AudioLoaderController::~AudioLoaderController()
 
 }
 
-void AudioLoaderController::setPaths(const Paths &paths)
+void AudioLoaderController::setFiles(const Files &files)
 {
-    m_paths = paths;
+    m_files = files;
 }
 
-Paths AudioLoaderController::paths() const
+Files AudioLoaderController::files() const
 {
-    return m_paths;
+    return m_files;
 }
 
 void AudioLoaderController::start()
 {
-    for (const Paths chunk : chunk<Path>(m_paths, QThread::idealThreadCount()))
+    for (const Files chunk : chunk<Path>(m_files, QThread::idealThreadCount()))
     {
         AudioLoaderWorker *worker = new AudioLoaderWorker(chunk);
         connect(worker, &AudioLoaderWorker::loaded, this, &AudioLoaderController::loaded);

@@ -1,5 +1,9 @@
 #include "directory.hpp"
 
+#include <QDirIterator>
+#include <QHashIterator>
+#include <QMutableSetIterator>
+
 Directory::Directory(QObject *parent)
     : Directory(Path(), parent)
 {
@@ -63,7 +67,7 @@ void Directory::parse()
         }
         else
         {
-            if (file.endsWith("mp3", Qt::CaseInsensitive))
+            if (file.endsWith(".mp3", Qt::CaseInsensitive))
                 m_files << file;
         }
     }
