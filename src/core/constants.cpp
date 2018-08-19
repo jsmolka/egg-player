@@ -1,9 +1,12 @@
 #include "constants.hpp"
 
+#include <QDir>
+#include <QStandardPaths>
+
 QString documents(const QString &file)
 {
-    QString documents = QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation);
-    QString egg = documents + "/egg-player/";
+    const QString documents = QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation);
+    const QString egg = documents + "/egg-player/";
     QDir().mkpath(egg);
 
     return egg + file;

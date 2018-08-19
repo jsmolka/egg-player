@@ -10,7 +10,7 @@
 
 void Logger::log(const QString &message, const char *function, const QVector<QVariant> &args)
 {
-    if (!cfgApp->log())
+    if (!cfgApp.log())
         return;
 
     QString logMessage = message;

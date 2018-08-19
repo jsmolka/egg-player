@@ -28,32 +28,32 @@ AudioVector Audios::vector() const
     return m_vector;
 }
 
-Audio * Audios::at(int index)
+Audio *Audios::at(int index)
 {
     return m_vector[index];
 }
 
-Audio * Audios::first()
+Audio *Audios::first()
 {
     return m_vector.first();
 }
 
-Audio * Audios::last()
+Audio *Audios::last()
 {
     return m_vector.last();
 }
 
-Audio * Audios::takeAt(int index)
+Audio *Audios::takeAt(int index)
 {
     return m_vector.takeAt(index);
 }
 
-Audio * Audios::takeFirst()
+Audio *Audios::takeFirst()
 {
     return m_vector.takeFirst();
 }
 
-Audio * Audios::takeLast()
+Audio *Audios::takeLast()
 {
     return m_vector.takeLast();
 }
@@ -113,7 +113,7 @@ AudioVector::iterator Audios::insert(AudioVector::iterator before, Audio *audio)
 {
     auto position = m_vector.insert(before, audio);
     connect(audio, &Audio::updated, this, &Audios::updated);
-    emit inserted(position - begin());
+    emit inserted(position - m_vector.begin());
     return position;
 }
 
@@ -121,7 +121,7 @@ AudioVector::iterator Audios::erase(AudioVector::iterator position)
 {
     disconnect(*position, &Audio::updated, this, &Audios::updated);
     auto next = m_vector.erase(position);
-    emit removed(position - begin());
+    emit removed(position - m_vector.begin());
     return next;
 }
 
@@ -165,7 +165,7 @@ AudioVector::const_reverse_iterator Audios::crend() const
     return m_vector.crend();
 }
 
-Audios & Audios::operator<<(Audio *audio)
+Audios &Audios::operator<<(Audio *audio)
 {
     append(audio);
     return *this;

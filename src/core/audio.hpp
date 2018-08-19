@@ -7,8 +7,7 @@
 
 #include "cover.hpp"
 #include "duration.hpp"
-#include "logger.hpp"
-#include "tag.hpp"
+#include "types.hpp"
 
 class Audio;
 
@@ -19,7 +18,7 @@ class Audio : public QObject
     Q_OBJECT
 
 public:
-    Audio(QObject *parent = nullptr);
+    explicit Audio(QObject *parent = nullptr);
     Audio(const QString &path, QObject *parent = nullptr);
     Audio(const QString &path,
           const QString &title,
@@ -43,8 +42,8 @@ public:
     void setOutdated(bool outdated);
     bool isOutdated() const;
 
-    void setPath(const QString &path);
-    QString path() const;
+    void setPath(const Path &path);
+    Path path() const;
 
     void setTitle(const QString &title);
     QString title() const;
@@ -64,8 +63,8 @@ public:
     void setTrack(int track);
     int track() const;
 
-    Duration * duration();
-    Cover * cover();
+    Duration &duration();
+    Cover &cover();
 
     qint64 modified() const;
     QFileInfo info() const;

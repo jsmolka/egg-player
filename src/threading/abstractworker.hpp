@@ -1,7 +1,6 @@
 #ifndef ABSTRACTWORKER_HPP
 #define ABSTRACTWORKER_HPP
 
-#include <QApplication>
 #include <QObject>
 
 class AbstractWorker : public QObject
@@ -9,7 +8,7 @@ class AbstractWorker : public QObject
     Q_OBJECT
 
 public:
-    AbstractWorker(QObject *parent = nullptr);
+    explicit AbstractWorker(QObject *parent = nullptr);
     ~AbstractWorker();
 
     bool isInterrupted() const;

@@ -19,7 +19,7 @@ void ConfigBar::setGrooveHeight(int height)
 
 int ConfigBar::grooveHeight()
 {
-    return makeEven(scale(get("grooveHeight").toInt()));
+    return scale(get("grooveHeight").toInt());
 }
 
 void ConfigBar::setHandleSize(int size)
@@ -29,7 +29,7 @@ void ConfigBar::setHandleSize(int size)
 
 int ConfigBar::handleSize()
 {
-    return makeEven(scale(get("handleSize").toInt()));
+    return scale(get("handleSize").toInt());
 }
 
 void ConfigBar::setHeight(int height)
@@ -39,7 +39,7 @@ void ConfigBar::setHeight(int height)
 
 int ConfigBar::height()
 {
-    return makeEven(scale(get("height").toInt()));
+    return scale(get("height").toInt());
 }
 
 void ConfigBar::setIconSize(int size)
@@ -49,7 +49,7 @@ void ConfigBar::setIconSize(int size)
 
 int ConfigBar::iconSize()
 {
-    return makeEven(scale(get("iconSize").toInt()));
+    return scale(get("iconSize").toInt());
 }
 
 void ConfigBar::setMargin(int margin)

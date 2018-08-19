@@ -18,6 +18,11 @@ Duration::~Duration()
 
 }
 
+void Duration::setSecs(int secs)
+{
+    m_secs = secs;
+}
+
 int Duration::secs() const
 {
     return m_secs;

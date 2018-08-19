@@ -1,5 +1,8 @@
 #include "colortransitionwidget.hpp"
 
+#include <QPalette>
+#include <QPropertyAnimation>
+
 ColorTransitionWidget::ColorTransitionWidget(QWidget *parent)
     : QWidget(parent)
     , m_duration(250)
@@ -12,12 +15,12 @@ ColorTransitionWidget::~ColorTransitionWidget()
 
 }
 
-void ColorTransitionWidget::setTransitionDuration(int duration)
+void ColorTransitionWidget::setDuration(int duration)
 {
     m_duration = duration;
 }
 
-int ColorTransitionWidget::transitionDuration() const
+int ColorTransitionWidget::duration() const
 {
     return m_duration;
 }
@@ -34,13 +37,13 @@ QColor ColorTransitionWidget::color() const
     return palette().color(QPalette::Background);
 }
 
-void ColorTransitionWidget::startTransition(const QColor &color)
+void ColorTransitionWidget::colorTransition(const QColor &color)
 {
     QPropertyAnimation *animation = new QPropertyAnimation(this, "color", this);
     animation->setDuration(m_duration);
     animation->setStartValue(this->color());
     animation->setEndValue(color);
-    animation->start();
+    animation->start(QAbstractAnimation::DeletionPolicy::DeleteWhenStopped);
 }
 
 void ColorTransitionWidget::setup()

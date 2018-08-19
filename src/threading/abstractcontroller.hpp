@@ -12,7 +12,7 @@ class AbstractController : public QObject
     Q_OBJECT
 
 public:
-    AbstractController(QObject *parent = nullptr);
+    explicit AbstractController(QObject *parent = nullptr);
     ~AbstractController();
 
     QVector<AbstractWorker *> workers() const;
@@ -21,7 +21,7 @@ public:
     bool isRunning() const;
     bool isFinished() const;
 
-    QThread * createWorkerThread(AbstractWorker *worker);
+    QThread *createWorkerThread(AbstractWorker *worker);
     void stopWorkerThreads();
 
 public slots:
@@ -32,21 +32,7 @@ signals:
 
 protected:
     template <typename T>
-    static QVector<QVector<T>> chunk(const QVector<T> &vector, int n)
-    {
-        n = qMin(qMax(1, n), vector.size());
-        const int quo = vector.size() / n;
-        const int rem = vector.size() % n;
-
-        QVector<QVector<T>> result;
-        for (int i = 0; i < n; ++i)
-        {
-            const int l = i * quo + qMin(i, rem);
-            const int r = (i + 1) * quo + qMin(i + 1, rem);
-            result << vector.mid(l, r - l);
-        }
-        return result;
-    }
+    static inline QVector<QVector<T>> chunk(const QVector<T> &vector, int n);
 
 private slots:
     void workerFinished();
@@ -55,9 +41,9 @@ private slots:
 
 private:    
     template <typename T>
-    static void removeObject(QVector<T> &vector, const QObject *object);
+    static inline void removeObject(QVector<T> &vector, const QObject *object);
 
-    static constexpr int m_timeout = 2500;
+    static constexpr int s_timeout = 2500;
 
     QVector<AbstractWorker *> m_workers;
     QVector<QThread *> m_threads;
@@ -65,5 +51,35 @@ private:
     int m_finished;
     int m_total;
 };
+
+template <typename T>
+static inline QVector<QVector<T>> AbstractController::chunk(const QVector<T> &vector, int n)
+{
+    n = qMin(qMax(1, n), vector.size());
+    const int quo = vector.size() / n;
+    const int rem = vector.size() % n;
+
+    QVector<QVector<T>> result;
+    for (int i = 0; i < n; ++i)
+    {
+        const int l = i * quo + qMin(i, rem);
+        const int r = (i + 1) * quo + qMin(i + 1, rem);
+        result << vector.mid(l, r - l);
+    }
+    return result;
+}
+
+template <typename T>
+static inline void AbstractController::removeObject(QVector<T> &vector, const QObject *object)
+{
+    for (auto iter = vector.begin(); iter != vector.end(); ++iter)
+    {
+        if (*iter == object)
+        {
+            vector.erase(iter);
+            break;
+        }
+    }
+}
 
 #endif // ABSTRACTCONTROLLER_HPP

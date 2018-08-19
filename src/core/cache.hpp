@@ -2,15 +2,11 @@
 #define CACHE_HPP
 
 #include <QBuffer>
-#include <QHash>
 #include <QPixmap>
 #include <QSqlDatabase>
-#include <QSqlError>
 #include <QSqlQuery>
-#include <QThread>
 
 #include "audio.hpp"
-#include "constants.hpp"
 
 class Cache
 {
@@ -24,7 +20,7 @@ public:
 
     void createTables();
 
-    Audio * loadAudio(const QString &path);
+    Audio *loadAudio(const QString &path);
     void insertAudio(Audio *audio);
     void updateAudio(Audio *audio, const QString &newPath = QString());
 

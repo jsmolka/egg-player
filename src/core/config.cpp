@@ -1,7 +1,18 @@
 #include "config.hpp"
 
+#include <QApplication>
+#include <QJsonDocument>
+
+#include "constants.hpp"
+#include "fileutil.hpp"
+
 Config::Config(QObject *parent)
     : QObject(parent)
+    , m_app()
+    , m_bar()
+    , m_library()
+    , m_player()
+    , m_shortcut()
 {
     load();
 
@@ -13,35 +24,35 @@ Config::~Config()
     save();
 }
 
-Config * Config::instance()
+Config *Config::instance()
 {
     static Config *config = new Config(qApp);
     return config;
 }
 
-ConfigApp * Config::app()
+ConfigApp &Config::app()
 {
-    return &m_app;
+    return m_app;
 }
 
-ConfigBar * Config::bar()
+ConfigBar &Config::bar()
 {
-    return &m_bar;
+    return m_bar;
 }
 
-ConfigLibrary * Config::library()
+ConfigLibrary &Config::library()
 {
-    return &m_library;
+    return m_library;
 }
 
-ConfigPlayer * Config::player()
+ConfigPlayer &Config::player()
 {
-    return &m_player;
+    return m_player;
 }
 
-ConfigShortcut * Config::shortcut()
+ConfigShortcut &Config::shortcut()
 {
-    return &m_shortcut;
+    return m_shortcut;
 }
 
 void Config::load()

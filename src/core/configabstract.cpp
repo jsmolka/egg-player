@@ -1,6 +1,9 @@
 #include "configabstract.hpp"
 
+#include <ShellScalingApi.h>
+
 ConfigAbstract::ConfigAbstract()
+    : m_object()
 {
 
 }
@@ -44,10 +47,5 @@ float ConfigAbstract::scale(float value)
 
 int ConfigAbstract::scale(int value)
 {
-    return static_cast<int>(scale(static_cast<float>(value)));
-}
-
-int ConfigAbstract::makeEven(int value)
-{
-    return value % 2 == 0 ? value : --value;
+    return scale(static_cast<float>(value));
 }

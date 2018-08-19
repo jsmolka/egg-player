@@ -1,5 +1,7 @@
 #include "librarywidget.hpp"
 
+#include "fileutil.hpp"
+
 LibraryWidget::LibraryWidget(QWidget *parent)
     : TableWidget(parent)
 {
@@ -72,7 +74,7 @@ void LibraryWidget::setup()
 {
     horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
     verticalHeader()->setSectionResizeMode(QHeaderView::Fixed);
-    verticalHeader()->setDefaultSectionSize(cfgLibrary->itemHeight());
+    verticalHeader()->setDefaultSectionSize(cfgLibrary.itemHeight());
 
     setupCss();
 }
@@ -80,8 +82,8 @@ void LibraryWidget::setup()
 void LibraryWidget::setupCss()
 {
     setStyleSheet(FileUtil::read(CSS_LIBRARY)
-        .replace("cell-padding", QString::number(cfgLibrary->cellPadding()))
-        .replace("scrollbar-width", QString::number(cfgLibrary->scrollBarWidth()))
+        .replace("cell-padding", QString::number(cfgLibrary.cellPadding()))
+        .replace("scrollbar-width", QString::number(cfgLibrary.scrollBarWidth()))
     );
 }
 
@@ -102,7 +104,7 @@ QString LibraryWidget::audioText(Audio *audio, int column)
         case SongInfo::Genre:
             return audio->genre();
         case SongInfo::Duration:
-            return audio->duration()->toString();
+            return audio->duration().toString();
     }
     return QString();
 }

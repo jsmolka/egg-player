@@ -1,8 +1,7 @@
 #ifndef CONSTANTS_HPP
 #define CONSTANTS_HPP
 
-#include <QDir>
-#include <QStandardPaths>
+#include <QString>
 
 const extern QString CSS_BAR;
 const extern QString CSS_EGG;

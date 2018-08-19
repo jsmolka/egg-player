@@ -7,6 +7,9 @@ template <typename T1, typename T2>
 class Bimap
 {
 public:
+    Bimap();
+    ~Bimap();
+
     void insert(const T1 &value1, const T2 &value2);
     void insert(const T2 &value2, const T1 &value1);
 
@@ -33,6 +36,20 @@ private:
     QHash<T1, T2> m_hash;
     QHash<T2, T1> m_reverse;
 };
+
+template <typename T1, typename T2>
+inline Bimap<T1, T2>::Bimap()
+    : m_hash()
+    , m_reverse()
+{
+
+}
+
+template <typename T1, typename T2>
+inline Bimap<T1, T2>::~Bimap()
+{
+
+}
 
 template <typename T1, typename T2>
 inline void Bimap<T1, T2>::insert(const T1 &value1, const T2 &value2)

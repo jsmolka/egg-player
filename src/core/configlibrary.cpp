@@ -1,10 +1,15 @@
 #include "configlibrary.hpp"
 
+#include <QJsonArray>
+#include <QStandardPaths>
+#include <QVariant>
+#include <QVector>
+
 void ConfigLibrary::setDefaults()
 {
     setDefault("cellPadding", 5);
     setDefault("itemHeight", 50);
-    setDefault("paths", QJsonValue(QJsonArray({QStandardPaths::writableLocation(QStandardPaths::MusicLocation)})));
+    setDefault("paths", QJsonArray({QStandardPaths::writableLocation(QStandardPaths::MusicLocation)}));
     setDefault("scrollBarWidth", 12);
 }
 
@@ -31,7 +36,7 @@ int ConfigLibrary::itemHeight()
 void ConfigLibrary::setPaths(const Paths &paths)
 {
     QJsonArray array;
-    for (const QString &path : paths)
+    for (const Path &path : paths)
         array << QJsonValue::fromVariant(path);
 
     set("paths", QJsonValue(array));

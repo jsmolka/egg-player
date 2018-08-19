@@ -29,20 +29,15 @@ QVector<QThread *> AbstractController::threads() const
 
 bool AbstractController::isRunning() const
 {
-    for (const QThread *thread : m_threads)
-    {
-        if (thread->isRunning())
-            return true;
-    }
-    return false;
+    return m_finished != m_total;
 }
 
 bool AbstractController::isFinished() const
 {
-    return !isRunning();
+    return m_finished == m_total;
 }
 
-QThread * AbstractController::createWorkerThread(AbstractWorker *worker)
+QThread *AbstractController::createWorkerThread(AbstractWorker *worker)
 {
     QThread *thread = new QThread;
 
@@ -71,9 +66,9 @@ void AbstractController::stopWorkerThreads()
     for (QThread *thread : m_threads)
     {
         thread->quit();
-        if (!thread->wait(m_timeout))
+        if (!thread->wait(s_timeout))
         {
-            LOG("Could not exit thread within %1 ms", m_timeout);
+            LOG("Could not exit thread within %1 ms", s_timeout);
             thread->terminate();
             thread->wait();
         }
@@ -94,17 +89,4 @@ void AbstractController::removeWorker(const QObject *object)
 void AbstractController::removeThread(const QObject *object)
 {
     removeObject<QThread *>(m_threads, object);
-}
-
-template <typename T>
-void AbstractController::removeObject(QVector<T> &vector, const QObject *object)
-{
-    for (auto iter = vector.begin(); iter != vector.end(); ++iter)
-    {
-        if (*iter == object)
-        {
-            vector.erase(iter);
-            break;
-        }
-    }
 }

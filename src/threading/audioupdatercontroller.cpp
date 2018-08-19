@@ -1,5 +1,7 @@
 #include "audioupdatercontroller.hpp"
 
+#include "audioupdaterworker.hpp"
+
 AudioUpdaterController::AudioUpdaterController(QObject *parent)
     : AudioUpdaterController(nullptr, parent)
 {
@@ -23,7 +25,7 @@ void AudioUpdaterController::setAudio(Audio *audio)
     m_audio = audio;
 }
 
-Audio * AudioUpdaterController::audio() const
+Audio *AudioUpdaterController::audio() const
 {
     return m_audio;
 }

@@ -1,5 +1,8 @@
 #include "eggwidget.hpp"
 
+#include "fileutil.hpp"
+#include "player.hpp"
+
 EggWidget::EggWidget(QWidget *parent)
     : MainWindow(parent)
     , m_bar(this)
@@ -11,7 +14,7 @@ EggWidget::EggWidget(QWidget *parent)
     connect(&m_library, &LibraryWidget::doubleClicked, this, &EggWidget::onLibraryDoubleClicked);
 
     m_library.setLibrary(eLibrary);
-    eLibrary->load(cfgLibrary->paths());
+    eLibrary->load(cfgLibrary.paths());
 }
 
 EggWidget::~EggWidget()

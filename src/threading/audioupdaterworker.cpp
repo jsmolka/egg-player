@@ -1,5 +1,11 @@
 #include "audioupdaterworker.hpp"
 
+#include <QMutex>
+#include <QMutexLocker>
+
+#include "cache.hpp"
+#include "cover.hpp"
+
 AudioUpdaterWorker::AudioUpdaterWorker(QObject *parent)
     : AudioUpdaterWorker(nullptr, parent)
 {
@@ -23,7 +29,7 @@ void AudioUpdaterWorker::setAudio(Audio *audio)
     m_audio = audio;
 }
 
-Audio * AudioUpdaterWorker::audio() const
+Audio *AudioUpdaterWorker::audio() const
 {
     return m_audio;
 }
@@ -31,19 +37,19 @@ Audio * AudioUpdaterWorker::audio() const
 void AudioUpdaterWorker::work()
 {
     Cache cache;
-    m_audio->cover()->setId(0);
+    m_audio->cover().setId(0);
     m_audio->update();
     cache.updateAudio(m_audio);
 
     if (isInterrupted())
         return;
 
-    QPixmap cover = Cover::loadFromFile(m_audio->widePath());
+    const QPixmap cover = Cover::loadFromFile(m_audio->widePath());
 
     static QMutex mutex;
-    QMutexLocker locker(&mutex);
+    const QMutexLocker locker(&mutex);
 
-    int id = cache.insertCover(cover);
-    if (id != 0)
+    const int id = cache.insertCover(cover);
+    if (id > 0)
         cache.setAudioCoverId(m_audio, id);
 }

@@ -1,8 +1,6 @@
 #ifndef CONFIGITEM_HPP
 #define CONFIGITEM_HPP
 
-#include <ShellScalingApi.h>
-
 #include <QJsonObject>
 #include <QJsonValue>
 
@@ -25,7 +23,6 @@ protected:
 
     float scale(float value);
     int scale(int value);
-    int makeEven(int value);
 
 private:
     QJsonObject m_object;

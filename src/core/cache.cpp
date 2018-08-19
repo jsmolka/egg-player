@@ -1,6 +1,13 @@
 #include "cache.hpp"
 
+#include <QSqlError>
+#include <QThread>
+
+#include "constants.hpp"
+
 Cache::Cache()
+    : m_db()
+    , m_query()
 {    
     if (!QSqlDatabase::contains(dbName()))
         QSqlDatabase::addDatabase("QSQLITE", dbName());
@@ -37,7 +44,7 @@ void Cache::createTables()
     insertDefaultCover();
 }
 
-Audio * Cache::loadAudio(const QString &path)
+Audio *Cache::loadAudio(const QString &path)
 {
     Audio *audio = nullptr;
 
@@ -91,8 +98,8 @@ void Cache::insertAudio(Audio *audio)
     m_query.bindValue(":genre", audio->genre());
     m_query.bindValue(":year", audio->year());
     m_query.bindValue(":track", audio->track());
-    m_query.bindValue(":duration", audio->duration()->secs());
-    m_query.bindValue(":coverid", audio->cover()->id());
+    m_query.bindValue(":duration", audio->duration().secs());
+    m_query.bindValue(":coverid", audio->cover().id());
     m_query.bindValue(":modified", audio->modified());
 
     if (!m_query.exec())
@@ -124,8 +131,8 @@ void Cache::updateAudio(Audio *audio, const QString &newPath)
     m_query.bindValue(":genre", audio->genre());
     m_query.bindValue(":year", audio->year());
     m_query.bindValue(":track", audio->track());
-    m_query.bindValue(":duration", audio->duration()->secs());
-    m_query.bindValue(":coverid", audio->cover()->id());
+    m_query.bindValue(":duration", audio->duration().secs());
+    m_query.bindValue(":coverid", audio->cover().id());
     m_query.bindValue(":modified", audio->modified());
     m_query.bindValue(":path", audio->path());
 
@@ -137,7 +144,7 @@ void Cache::updateAudio(Audio *audio, const QString &newPath)
 
 int Cache::insertCover(const QPixmap &cover)
 {
-    QByteArray bytes = coverToBytes(cover);
+    const QByteArray bytes = coverToBytes(cover);
 
     int id = coverId(bytes);
     if (id == 0)
@@ -148,7 +155,7 @@ int Cache::insertCover(const QPixmap &cover)
 
 void Cache::updateCover(const QPixmap &cover)
 {
-    QByteArray bytes = coverToBytes(cover);
+    const QByteArray bytes = coverToBytes(cover);
 
     int id = coverId(bytes);
     if (id > 0)
@@ -168,7 +175,7 @@ void Cache::setAudioCoverId(Audio *audio, int id)
     if (!m_query.exec())
         error();
 
-    audio->cover()->setId(id);
+    audio->cover().setId(id);
 }
 
 QPixmap Cache::coverById(int id)
@@ -269,8 +276,8 @@ void Cache::insertDefaultCover()
     if (defaultCoverExists())
         return;
 
-    QPixmap cover = Cover::scale(QPixmap(IMG_DEFAULT_COVER), Cover::defaultSize());
-    QByteArray bytes = coverToBytes(cover);
+    const QPixmap cover = Cover::scale(QPixmap(IMG_DEFAULT_COVER), Cover::defaultSize());
+    const QByteArray bytes = coverToBytes(cover);
 
     m_query.prepare(
         "INSERT INTO covers VALUES ("
@@ -392,16 +399,17 @@ int Cache::coverIdByBlob(const QByteArray &bytes)
 
 void Cache::error()
 {
-    QSqlError error = m_query.lastError();
-    if (error.type() != QSqlError::NoError)
-        LOG("Querying \"%1\" failed with errors \"%2\" and \"%3\"", lastQuery(), error.databaseText(), error.driverText());
+    const QSqlError error = m_query.lastError();
+    if (error.type() == QSqlError::NoError)
+        return;
+
+    LOG("Querying \"%1\" failed with errors \"%2\" and \"%3\"", lastQuery(), error.databaseText(), error.driverText());
 }
 
 QString Cache::lastQuery()
 {
     QString query = m_query.lastQuery();
     QMapIterator<QString, QVariant> iter(m_query.boundValues());
-
     while (iter.hasNext())
     {
         iter.next();

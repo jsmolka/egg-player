@@ -1,11 +1,6 @@
 #ifndef CONFIGLIBRARY_HPP
 #define CONFIGLIBRARY_HPP
 
-#include <QJsonArray>
-#include <QStandardPaths>
-#include <QVariant>
-#include <QVector>
-
 #include "configabstract.hpp"
 #include "types.hpp"
 

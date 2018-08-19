@@ -2,8 +2,6 @@
 #define COLORTRANSITIONWIDGET_HPP
 
 #include <QColor>
-#include <QPalette>
-#include <QPropertyAnimation>
 #include <QWidget>
 
 class ColorTransitionWidget : public QWidget
@@ -16,13 +14,13 @@ public:
     ColorTransitionWidget(QWidget *parent = nullptr);
     ~ColorTransitionWidget();
 
-    void setTransitionDuration(int duration);
-    int transitionDuration() const;
+    void setDuration(int duration);
+    int duration() const;
 
     void setColor(const QColor &color);
     QColor color() const;
 
-    void startTransition(const QColor &color);
+    void colorTransition(const QColor &color);
 
 private:
     void setup();

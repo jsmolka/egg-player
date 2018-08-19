@@ -71,7 +71,7 @@ void Library::load(const Paths &paths)
     for (const Path path: paths)
         m_fileSystem.addPath(path);
 
-    m_audioLoader.setFiles(m_fileSystem.globAudios());
+    m_audioLoader.setPaths(m_fileSystem.globAudios());
     m_audioLoader.start();
 }
 
@@ -108,7 +108,7 @@ void Library::onFileSystemRenamed(Audio *audio, const File &to)
 
 void Library::onFileSystemAdded(const File &file)
 {
-    m_audioLoader.setFiles(Files() << file);
+    m_audioLoader.setPaths(Files() << file);
     m_audioLoader.start();
 }
 

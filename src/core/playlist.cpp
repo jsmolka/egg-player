@@ -28,7 +28,7 @@ int Playlist::index() const
 void Playlist::setLoop(bool loop)
 {
     m_loop = loop;
-    cfgPlayer->setLoop(loop);
+    cfgPlayer.setLoop(loop);
 }
 
 bool Playlist::isLoop() const
@@ -39,7 +39,7 @@ bool Playlist::isLoop() const
 void Playlist::setShuffle(bool shuffle)
 {
     m_shuffle = shuffle;
-    cfgPlayer->setShuffle(shuffle);
+    cfgPlayer.setShuffle(shuffle);
 
     if (m_indices.isEmpty())
         return;

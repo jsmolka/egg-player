@@ -7,13 +7,14 @@
 
 #include "basserror.hpp"
 #include "bassstream.hpp"
-#include "logger.hpp"
 
 class Bass : public BassError
 {
 public:
     Bass();
     ~Bass();
+
+    static int references();
 
     static bool start();
     static bool pause();
@@ -27,7 +28,7 @@ public:
 
     static BASS_DEVICEINFO deviceInfo();
 
-    BassStream * stream();
+    BassStream &stream();
 
 private:
     static bool setConfig();
@@ -37,7 +38,7 @@ private:
 
     static bool call(std::function<BOOL()>);
 
-    static int s_instances;
+    static int s_references;
 
     BassStream m_stream;
 };

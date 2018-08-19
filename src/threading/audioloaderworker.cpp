@@ -1,14 +1,20 @@
 #include "audioloaderworker.hpp"
 
+#include <QMutex>
+#include <QMutexLocker>
+
+#include "cache.hpp"
+#include "types.hpp"
+
 AudioLoaderWorker::AudioLoaderWorker(QObject *parent)
-    : AudioLoaderWorker(Files(), parent)
+    : AudioLoaderWorker(Paths(), parent)
 {
 
 }
 
-AudioLoaderWorker::AudioLoaderWorker(const Files &files, QObject *parent)
+AudioLoaderWorker::AudioLoaderWorker(const Paths &paths, QObject *parent)
     : AbstractWorker(parent)
-    , m_files(files)
+    , m_paths(paths)
 {
 
 }
@@ -18,27 +24,27 @@ AudioLoaderWorker::~AudioLoaderWorker()
 
 }
 
-void AudioLoaderWorker::setFiles(const Files &files)
+void AudioLoaderWorker::setPaths(const Paths &paths)
 {
-    m_files = files;
+    m_paths = paths;
 }
 
-Files AudioLoaderWorker::files() const
+Files AudioLoaderWorker::paths() const
 {
-    return m_files;
+    return m_paths;
 }
 
 void AudioLoaderWorker::work()
 {
     Cache cache;
-    for (const QString &file : m_files)
+    for (const QString &path : m_paths)
     {
         if (isInterrupted())
             return;
 
-        Audio *audio = cache.loadAudio(file);
+        Audio *audio = cache.loadAudio(path);
         if (!audio)
-            audio = new Audio(file);
+            audio = new Audio(path);
 
         if (audio->isValid())
         {
@@ -49,7 +55,7 @@ void AudioLoaderWorker::work()
             if (audio->isOutdated())
             {
                 audio->update();
-                audio->cover()->setId(0);
+                audio->cover().setId(0);
                 m_outdated << audio;
             }
             emit loaded(audio);
@@ -66,7 +72,7 @@ void AudioLoaderWorker::work()
             return;
 
         static QMutex mutex;
-        QMutexLocker locker(&mutex);
+        const QMutexLocker locker(&mutex);
 
         cache.insertAudio(audio);
     }

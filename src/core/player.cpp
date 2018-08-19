@@ -11,7 +11,7 @@ Player::Player(QObject *parent)
     connect(&m_updateTimer, &QTimer::timeout, this, &Player::update);
     connect(&m_playlist, &Playlist::indexChanged, this, &Player::onPlaylistIndexChanged);
 
-    m_updateTimer.start(cfgPlayer->updateInterval());
+    m_updateTimer.start(cfgPlayer.updateInterval());
 }
 
 Player::~Player()
@@ -43,13 +43,13 @@ bool Player::isPaused() const
 void Player::setVolume(int volume)
 {
     volume = qMax(0, qMin(volume, 100));
-    if (m_bass.stream()->isValid())
-        if (!m_bass.stream()->setVolume(static_cast<float>(volume) / static_cast<float>(cfgPlayer->volumeQuotient())))
+    if (m_bass.stream().isValid())
+        if (!m_bass.stream().setVolume(static_cast<float>(volume) / static_cast<float>(cfgPlayer.volumeQuotient())))
             return;
 
     m_volume = volume;
+    cfgPlayer.setVolume(volume);
     emit volumeChanged(volume);
-    cfgPlayer->setVolume(volume);
 }
 
 int Player::volume() const
@@ -59,8 +59,8 @@ int Player::volume() const
 
 void Player::setPosition(int position)
 {
-    if (m_bass.stream()->isValid())
-        if (!m_bass.stream()->setPosition(position))
+    if (m_bass.stream().isValid())
+        if (!m_bass.stream().setPosition(position))
             return;
 
     emit positionChanged(position);
@@ -68,13 +68,13 @@ void Player::setPosition(int position)
 
 int Player::position()
 {
-    return m_bass.stream()->isValid() ? m_bass.stream()->position() : -1;
+    return m_bass.stream().isValid() ? m_bass.stream().position() : -1;
 }
 
 void Player::play()
 {
-    if (m_bass.stream()->isValid())
-        if (!m_bass.stream()->play())
+    if (m_bass.stream().isValid())
+        if (!m_bass.stream().play())
             return;
 
     m_playing = true;
@@ -83,8 +83,8 @@ void Player::play()
 
 void Player::pause()
 {
-    if (m_bass.stream()->isValid())
-        if (!m_bass.stream()->pause())
+    if (m_bass.stream().isValid())
+        if (!m_bass.stream().pause())
             return;
 
     m_playing = false;
@@ -114,7 +114,7 @@ void Player::onPlaylistIndexChanged(int index)
 
 void Player::update()
 {
-    if (!m_bass.stream()->isValid() || !m_playing)
+    if (!m_bass.stream().isValid() || !m_playing)
         return;
 
     int position = this->position();
@@ -138,10 +138,10 @@ void Player::callback(HSYNC handle, DWORD channel, DWORD data, void *user)
 void Player::setAudio(int index)
 {
     Audio *audio = m_playlist.audioAt(index);
-    if (!audio || !m_bass.stream()->create(audio))
+    if (!audio || !m_bass.stream().create(audio))
         return;
 
-    m_bass.stream()->setCallback(callback, this);
+    m_bass.stream().setCallback(callback, this);
     setVolume(m_volume);
 
     if (m_playing)

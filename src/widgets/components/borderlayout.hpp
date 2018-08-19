@@ -17,18 +17,18 @@ public:
     void addItem(QLayoutItem *item) override;
     void addWidget(QWidget *widget, Position position);
     int count() const override;
-    QLayoutItem * itemAt(int index) const override;
+    QLayoutItem *itemAt(int index) const override;
     QSize minimumSize() const override;
     void setGeometry(const QRect &rect) override;
     QSize sizeHint() const override;
-    QLayoutItem * takeAt(int index) override;
+    QLayoutItem *takeAt(int index) override;
     void add(QLayoutItem *item, Position position);
 
 private:
     struct ItemWrapper
     {
-        ItemWrapper(QLayoutItem *i, Position p) :
-            item(i), position(p) {}
+        ItemWrapper(QLayoutItem *item, Position position) :
+            item(item), position(position) {}
 
         QLayoutItem *item;
         Position position;

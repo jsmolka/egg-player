@@ -27,13 +27,13 @@ void setup(QApplication &app)
 
     app.setApplicationName(APP_NAME);
     app.setOrganizationName(APP_ORG_NAME);
-    app.setFont(font(cfgApp->fontSize()));
+    app.setFont(font(cfgApp.fontSize()));
 
     eLibrary->setSorted(true);
 
-    ePlayer->setVolume(cfgPlayer->volume());
-    ePlayer->playlist()->setLoop(cfgPlayer->loop());
-    ePlayer->playlist()->setShuffle(cfgPlayer->shuffle());
+    ePlayer->setVolume(cfgPlayer.volume());
+    ePlayer->playlist()->setLoop(cfgPlayer.loop());
+    ePlayer->playlist()->setShuffle(cfgPlayer.shuffle());
 
     Cache().createTables();
 }

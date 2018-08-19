@@ -13,6 +13,7 @@ public:
     ~BassStream();
 
     HSTREAM handle() const;
+    HSYNC sync() const;
 
     bool isValid() const;
 

@@ -1,21 +1,12 @@
 #ifndef BARWIDGET_HPP
 #define BARWIDGET_HPP
 
-#include <QGridLayout>
 #include <QLabel>
-#include <QPainter>
-#include <QStyleOption>
-#include <QWidget>
 
-#include "cache.hpp"
+#include "audio.hpp"
 #include "colortransitionwidget.hpp"
-#include "config.hpp"
-#include "constants.hpp"
-#include "duration.hpp"
 #include "iconbutton.hpp"
-#include "iconfactory.hpp"
 #include "slider.hpp"
-#include "player.hpp"
 #include "shortcut.hpp"
 
 class BarWidget : public ColorTransitionWidget
@@ -26,20 +17,20 @@ public:
     BarWidget(QWidget *parent = nullptr);
     ~BarWidget();
 
-    QLabel * coverLabel();
-    QLabel * trackLabel();
-    QLabel * currentTimeLabel();
-    QLabel * totalTimeLabel();
+    QLabel &coverLabel();
+    QLabel &trackLabel();
+    QLabel &currentTimeLabel();
+    QLabel &totalTimeLabel();
 
-    IconButton * playPauseButton();
-    IconButton * nextButton();
-    IconButton * previousButton();
-    IconButton * shuffleButton();
-    IconButton * loopButton();
-    IconButton * volumeButton();
+    IconButton &playPauseButton();
+    IconButton &nextButton();
+    IconButton &previousButton();
+    IconButton &shuffleButton();
+    IconButton &loopButton();
+    IconButton &volumeButton();
 
-    Slider * lengthSlider();
-    Slider * volumeSlider();
+    Slider &lengthSlider();
+    Slider &volumeSlider();
 
 private slots:
     void onPlayerAudioChanged(Audio *audio);

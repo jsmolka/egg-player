@@ -2,7 +2,6 @@
 #define AUDIOUPDATERCONTROLLER_HPP
 
 #include "abstractcontroller.hpp"
-#include "audioupdaterworker.hpp"
 #include "audio.hpp"
 
 class AudioUpdaterController : public AbstractController
@@ -10,12 +9,12 @@ class AudioUpdaterController : public AbstractController
     Q_OBJECT
 
 public:
-    AudioUpdaterController(QObject *parent = nullptr);
-    AudioUpdaterController(Audio *audio, QObject *parent = nullptr);
+    explicit AudioUpdaterController(QObject *parent = nullptr);
+    explicit AudioUpdaterController(Audio *audio, QObject *parent = nullptr);
     ~AudioUpdaterController();
 
     void setAudio(Audio *audio);
-    Audio * audio() const;
+    Audio *audio() const;
 
 public slots:
     void start() override;

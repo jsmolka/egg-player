@@ -1,20 +1,5 @@
 #include "fileutil.hpp"
 
-bool FileUtil::exists(const QString &file)
-{
-    return QFileInfo(file).exists();
-}
-
-QString FileUtil::fileName(const QString &file)
-{
-    return QFileInfo(file).baseName();
-}
-
-qint64 FileUtil::modified(const QString &file)
-{
-    return QFileInfo(file).lastModified().toSecsSinceEpoch();
-}
-
 QString FileUtil::read(const QString &file, const QString &defaultValue)
 {
     QFile qFile(file);

@@ -1,8 +1,11 @@
 #include "bass.hpp"
 
+#include "logger.hpp"
+
 Bass::Bass()
+    : m_stream()
 {
-    if (++s_instances > 1)
+    if (++s_references > 1)
         return;
 
     if (isValidVersion() && setConfig())
@@ -11,13 +14,18 @@ Bass::Bass()
 
 Bass::~Bass()
 {
-    if (--s_instances == 0)
+    if (--s_references == 0)
         free();
 }
 
-BassStream * Bass::stream()
+int Bass::references()
 {
-    return &m_stream;
+    return s_references;
+}
+
+BassStream &Bass::stream()
+{
+    return m_stream;
 }
 
 bool Bass::start()
@@ -37,7 +45,7 @@ bool Bass::stop()
 
 bool Bass::setVolume(float volume)
 {
-    bool success = BASS_SetVolume(volume);
+    const bool success = BASS_SetVolume(volume);
     if (!success)
         error();
 
@@ -54,7 +62,7 @@ float Bass::volume()
 
 bool Bass::setDevice(DWORD device)
 {
-    bool success = BASS_SetDevice(device);
+    const bool success = BASS_SetDevice(device);
     if (!success)
         error();
 
@@ -80,7 +88,7 @@ BASS_DEVICEINFO Bass::deviceInfo()
 
 bool Bass::setConfig()
 {
-    bool success = BASS_SetConfig(BASS_CONFIG_DEV_DEFAULT, 1);
+    const bool success = BASS_SetConfig(BASS_CONFIG_DEV_DEFAULT, 1);
     if (!success)
         error();
 
@@ -89,7 +97,7 @@ bool Bass::setConfig()
 
 bool Bass::isValidVersion()
 {
-    bool valid = HIWORD(BASS_GetVersion()) == BASSVERSION;
+    const bool valid = HIWORD(BASS_GetVersion()) == BASSVERSION;
     if (!valid)
         LOG("Different BASS versions");
 
@@ -98,7 +106,7 @@ bool Bass::isValidVersion()
 
 bool Bass::init()
 {
-    bool success = BASS_Init(-1, 44100, 0, 0, NULL);
+    const bool success = BASS_Init(-1, 44100, 0, 0, NULL);
     if (!success)
         error();
 
@@ -112,11 +120,11 @@ bool Bass::free()
 
 bool Bass::call(std::function<BOOL()> func)
 {
-    bool success = func();
+    const bool success = func();
     if (!success)
         error();
 
     return success;
 }
 
-int Bass::s_instances = 0;
+int Bass::s_references = 0;

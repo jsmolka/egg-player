@@ -11,20 +11,20 @@ class Audios : public QObject
     Q_OBJECT
 
 public:
-    Audios(QObject *parent = nullptr);
-    Audios(const AudioVector &vector, QObject *parent = nullptr);
+    explicit Audios(QObject *parent = nullptr);
+    explicit Audios(const AudioVector &vector, QObject *parent = nullptr);
     ~Audios();
 
     void setVector(const AudioVector &vector);
     AudioVector vector() const;
 
-    Audio * at(int index);
-    Audio * first();
-    Audio * last();
+    Audio *at(int index);
+    Audio *first();
+    Audio *last();
 
-    Audio * takeAt(int index);
-    Audio * takeFirst();
-    Audio * takeLast();
+    Audio *takeAt(int index);
+    Audio *takeFirst();
+    Audio *takeLast();
 
     bool isEmpty() const;
 
@@ -54,7 +54,7 @@ public:
     AudioVector::const_reverse_iterator crbegin() const;
     AudioVector::const_reverse_iterator crend() const;
 
-    Audios & operator<<(Audio *audio);
+    Audios &operator<<(Audio *audio);
 
 signals:
     void inserted(int index);

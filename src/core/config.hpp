@@ -1,16 +1,13 @@
 #ifndef CONFIG_HPP
 #define CONFIG_HPP
 
-#include <QApplication>
-#include <QJsonDocument>
+#include <QObject>
 
 #include "configapp.hpp"
 #include "configbar.hpp"
 #include "configlibrary.hpp"
 #include "configplayer.hpp"
 #include "configshortcut.hpp"
-#include "constants.hpp"
-#include "fileutil.hpp"
 
 #define cfgApp (Config::instance()->app())
 #define cfgBar (Config::instance()->bar())
@@ -24,13 +21,13 @@ public:
     Config(QObject *parent = nullptr);
     ~Config();
 
-    static Config * instance();
+    static Config *instance();
 
-    ConfigApp * app();
-    ConfigBar * bar();
-    ConfigLibrary * library();
-    ConfigPlayer * player();
-    ConfigShortcut * shortcut();
+    ConfigApp &app();
+    ConfigBar &bar();
+    ConfigLibrary &library();
+    ConfigPlayer &player();
+    ConfigShortcut &shortcut();
 
 private:
     void load();

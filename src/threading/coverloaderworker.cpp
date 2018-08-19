@@ -36,7 +36,7 @@ void CoverLoaderWorker::work()
         if (isInterrupted())
             return;
 
-        if (!audio->cover()->isValid())
+        if (!audio->cover().isValid())
         {
             QPixmap cover = Cover::loadFromFile(audio->widePath());
 

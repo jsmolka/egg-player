@@ -3,11 +3,8 @@
 ## General
 - write proper project file, use compiler optimization
 - test jpg instead of png for cover conversion
-- space after tables in create tables
 - make PlaylistItem private
 - SongInfo to AudioInfo
-- separately include header in `.hpp` and `.cpp`
-- read Qt source / documentation to better utilize classes
 - do not cache loaded cover, calculate dominant color right after first load and store for id
 
 ## Threading

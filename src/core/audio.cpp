@@ -1,19 +1,32 @@
 #include "audio.hpp"
 
+#include "logger.hpp"
+#include "tag.hpp"
+
 Audio::Audio(QObject *parent)
     : QObject(parent)
     , m_valid(false)
+    , m_cached(false)
+    , m_outdated(false)
+    , m_path()
+    , m_title()
+    , m_artist()
+    , m_album()
+    , m_genre()
+    , m_year(0)
+    , m_track(0)
+    , m_duration()
+    , m_cover()
+    , m_modified(0)
 {
 
 }
 
 Audio::Audio(const QString &path, QObject *parent)
-    : QObject(parent)
-    , m_path(path)
-    , m_cached(false)
-    , m_outdated(false)
-    , m_cover(0)
+    : Audio(parent)
 {
+    m_path = path;
+
     update();
 }
 
@@ -80,12 +93,12 @@ bool Audio::isOutdated() const
     return m_outdated;
 }
 
-void Audio::setPath(const QString &path)
+void Audio::setPath(const Path &path)
 {
     m_path = path;
 }
 
-QString Audio::path() const
+Path Audio::path() const
 {
     return m_path;
 }
@@ -162,14 +175,14 @@ int Audio::track() const
     return m_track;
 }
 
-Duration * Audio::duration()
+Duration &Audio::duration()
 {
-    return &m_duration;
+    return m_duration;
 }
 
-Cover * Audio::cover()
+Cover &Audio::cover()
 {
-    return &m_cover;
+    return m_cover;
 }
 
 qint64 Audio::modified() const
@@ -203,7 +216,7 @@ const wchar_t * Audio::widePath() const
 
 bool Audio::operator<(const Audio &other) const
 {
-    return title().compare(other.title(), Qt::CaseInsensitive) < 0;
+    return m_title.compare(other.title(), Qt::CaseInsensitive) < 0;
 }
 
 bool Audio::operator>(const Audio &other) const
@@ -223,7 +236,7 @@ bool Audio::operator>=(const Audio &other) const
 
 bool Audio::operator==(const QString &other) const
 {
-    return path() == other;
+    return m_path == other;
 }
 
 bool Audio::operator==(const Audio &other) const
@@ -243,12 +256,12 @@ bool Audio::operator!=(const Audio &other) const
 
 bool Audio::readTags()
 {
-    Tag tag(widePath());
+    const Tag tag(widePath());
 
     if (!tag.isValid() || !tag.isAudioValid())
         return false;
 
-    m_duration = Duration(tag.duration());
+    m_duration.setSecs(tag.duration());
 
     if (tag.isTagValid())
     {
