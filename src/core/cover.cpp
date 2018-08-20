@@ -120,7 +120,7 @@ QColor Cover::rawDominantColor(const QImage &image)
 
     struct HsvRange
     {
-        int mix()
+        int mix() const
         {
             return h + 2 * s + 3 * v;
         }
@@ -167,16 +167,16 @@ QColor Cover::rawDominantColor(const QImage &image)
         }
     }
 
-    auto dominantColor = [&range](std::array<HsvRange, range> hsvs) -> QColor
+    static auto dominantColor = [&range](std::array<HsvRange, range> hsvs) -> QColor
     {
         int max = 0;
-        HsvRange most = *hsvs.begin();
-        for (auto iter = hsvs.begin(); iter != hsvs.end(); ++iter)
+        HsvRange most;
+        for (const HsvRange &hsv : hsvs)
         {
-            const int temp = (*iter).mix();
+            const int temp = hsv.mix();
             if (temp > max)
             {
-                most = *iter;
+                most = hsv;
                 max = temp;
             }
         }
