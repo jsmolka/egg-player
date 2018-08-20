@@ -169,22 +169,22 @@ QColor Cover::rawDominantColor(const QImage &image)
 
     auto dominantColor = [&range](std::array<HsvRange, range> hsvs) -> QColor
     {
-        int idx = 0;
-        int m = 0;
-        for (int i = 0; i < range; ++i)
+        int max = 0;
+        HsvRange most = *hsvs.begin();
+        for (auto iter = hsvs.begin(); iter != hsvs.end(); ++iter)
         {
-            int t = hsvs[i].mix();
-            if (t > m)
+            const int temp = (*iter).mix();
+            if (temp > max)
             {
-                idx = i;
-                m = t;
+                most = *iter;
+                max = temp;
             }
         }
 
-        const float c = static_cast<float>(hsvs[idx].c);
-        const int h = static_cast<float>(hsvs[idx].h) / c;
-        const int s = static_cast<float>(hsvs[idx].s) / c;
-        const int v = static_cast<float>(hsvs[idx].v) / c;
+        const float c = static_cast<float>(most.c);
+        const int h = static_cast<float>(most.h) / c;
+        const int s = static_cast<float>(most.s) / c;
+        const int v = static_cast<float>(most.v) / c;
 
         return QColor::fromHsv(h, s, v);
     };

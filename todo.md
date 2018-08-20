@@ -4,6 +4,8 @@
 - write proper project file, use compiler optimization
 - make PlaylistItem private
 - SongInfo to AudioInfo
+- QSet vs QVector for files in Directory
+- [utilize string better](https://wiki.qt.io/Using_QString_Effectively)
 
 ## Threading
 - possibly rewrite threading
