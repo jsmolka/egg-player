@@ -17,7 +17,7 @@ EggWidget::EggWidget(QWidget *parent)
 
     connect(&m_library, &LibraryWidget::doubleClicked, this, &EggWidget::onLibraryDoubleClicked);
 
-    m_library.setLibrary(eLibrary);
+    m_library.setAudios(eLibrary->audios());
     eLibrary->load(cfgLibrary.paths());
 }
 
@@ -32,7 +32,7 @@ void EggWidget::closeEvent(QCloseEvent *event)
     eLibrary->audioUpdater().stopWorkerThreads();
     eLibrary->coverLoader().stopWorkerThreads();
 
-    QWidget::closeEvent(event);
+    MainWindow::closeEvent(event);
 }
 
 void EggWidget::onLibraryDoubleClicked(const QModelIndex &index)

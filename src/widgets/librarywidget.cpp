@@ -1,9 +1,15 @@
 #include "librarywidget.hpp"
 
+#include <QHeaderView>
+
+#include "config.hpp"
+#include "constants.hpp"
 #include "fileutil.hpp"
 
 LibraryWidget::LibraryWidget(QWidget *parent)
     : TableWidget(parent)
+    , m_audios(nullptr)
+    , m_columns()
 {
     setup();
 }
@@ -13,20 +19,21 @@ LibraryWidget::~LibraryWidget()
 
 }
 
-void LibraryWidget::setLibrary(Library *library)
+void LibraryWidget::setAudios(Audios *audios)
 {
-    m_library = library;
+    m_audios = audios;
 
-    connect(library->audios(), &Audios::inserted, this, &LibraryWidget::onAudioInserted);
-    connect(library->audios(), &Audios::updated, this, &LibraryWidget::onAudiosUpdated);
-    connect(library->audios(), &Audios::removed, this, &LibraryWidget::onAudiosRemoved);
+    connect(audios, &Audios::inserted, this, &LibraryWidget::onAudioInserted);
+    connect(audios, &Audios::updated, this, &LibraryWidget::onAudiosUpdated);
+    connect(audios, &Audios::removed, this, &LibraryWidget::onAudiosRemoved);
 }
 
-void LibraryWidget::removeLibrary()
+void LibraryWidget::removeAudios()
 {
-    disconnect(m_library, &Library::inserted, this, &LibraryWidget::insert);
+    if (m_audios)
+        disconnect(m_audios, &Audios::inserted, this, &LibraryWidget::onAudioInserted);
 
-    m_library = nullptr;
+    m_audios = nullptr;
 }
 
 void LibraryWidget::addColumn(SongInfo info, Qt::Alignment horizontal, bool expand)
@@ -40,14 +47,15 @@ void LibraryWidget::addColumn(SongInfo info, Qt::Alignment horizontal, bool expa
 
 void LibraryWidget::onAudiosUpdated(Audio *audio)
 {
-    int row = m_library->audios()->indexOf(audio);
+    const int row = m_audios ->indexOf(audio);
+
     removeRow(row);
     insert(audio, row);
 }
 
 void LibraryWidget::onAudioInserted(int index)
 {
-    insert(m_library->audios()->at(index), index);
+    insert(m_audios->at(index), index);
 }
 
 void LibraryWidget::onAudiosRemoved(int index)
@@ -60,7 +68,7 @@ void LibraryWidget::insert(Audio *audio, int row)
     setUpdatesEnabled(false);
 
     insertRow(row);
-    for (int i = 0; i < m_columns.size(); i++)
+    for (int i = 0; i < m_columns.size(); ++i)
     {
         QTableWidgetItem *item = new QTableWidgetItem(audioText(audio, i));
         item->setTextAlignment(m_columns[i].alignment);
@@ -87,7 +95,7 @@ void LibraryWidget::setupCss()
     );
 }
 
-QString LibraryWidget::audioText(Audio *audio, int column)
+QString LibraryWidget::audioText(Audio *audio, int column) const
 {
     switch(m_columns[column].info)
     {

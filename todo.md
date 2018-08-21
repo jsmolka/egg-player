@@ -6,6 +6,8 @@
 - SongInfo to AudioInfo
 - QSet vs QVector for files in Directory
 - [utilize string better](https://wiki.qt.io/Using_QString_Effectively)
+- update qt creator
+- [use clang features](http://blog.qt.io/blog/2018/07/18/qt-creator-4-7-0-released/)
 
 ## Threading
 - possibly rewrite threading

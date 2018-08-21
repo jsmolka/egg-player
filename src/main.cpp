@@ -11,8 +11,8 @@
 
 QFont font(double size)
 {
-    int id = QFontDatabase::addApplicationFont(FONT_LATO);
-    QString family = QFontDatabase::applicationFontFamilies(id).at(0);
+    const int id = QFontDatabase::addApplicationFont(FONT_LATO);
+    const QString family = QFontDatabase::applicationFontFamilies(id).at(0);
 
     QFont font(family);
     font.setPointSizeF(size);
@@ -44,7 +44,7 @@ int main(int argc, char *argv[])
     setup(app);
 
     EggWidget egg;
-    egg.show();//showSavedPosition();
+    egg.showSavedPosition();
 
     return app.exec();
 }

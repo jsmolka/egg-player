@@ -38,10 +38,8 @@ void FileSystem::addPath(const Path &path)
 Files FileSystem::globAudios() const
 {
     Files result;
-    QHashIterator<Path, Directory *> iter(m_dirs);
-    while (iter.hasNext())
+    for (auto iter = m_dirs.begin(); iter != m_dirs.end(); ++iter)
     {
-        iter.next();
         for (const File &file : iter.value()->files())
             result << file;
     }
@@ -81,7 +79,7 @@ void FileSystem::onDirRemoved(Directory *dir)
 
 void FileSystem::onFileChanged(const File &file)
 {
-    if (QFileInfo(file).exists())
+    if (QFileInfo::exists(file))
         eventModified(file);
 }
 
@@ -90,7 +88,8 @@ void FileSystem::onDirectoryChanged(const Path &dir)
     const Files files = m_dirs.value(dir)->processChanges();
     QHash<UniqueFileInfo, File> renamedFrom;
     QHash<UniqueFileInfo, File> renamedTo;
-    for (const File file : files)
+
+    for (const File &file : files)
     {
         if (m_unique.contains(file))
             renamedFrom.insert(m_unique.value(file), file);
@@ -98,28 +97,22 @@ void FileSystem::onDirectoryChanged(const Path &dir)
             renamedTo.insert(UniqueFileInfo(file), file);
     }
 
-    QHashIterator<UniqueFileInfo, File> fromIter(renamedFrom);
-    while (fromIter.hasNext())
+    for (auto iter = renamedFrom.begin(); iter != renamedFrom.end(); ++iter)
     {
-        fromIter.next();
-        const UniqueFileInfo info = fromIter.key();
+        const UniqueFileInfo info = iter.key();
         if (renamedTo.contains(info))
         {
-            eventRenamed(fromIter.value(), renamedTo.value(info));
+            eventRenamed(iter.value(), renamedTo.value(info));
             renamedTo.remove(info);
         }
         else
         {
-            eventRemoved(fromIter.value());
+            eventRemoved(iter.value());
         }
     }
 
-    QHashIterator<UniqueFileInfo, File> toIter(renamedTo);
-    while (toIter.hasNext())
-    {
-        toIter.next();
-        eventAdded(toIter.value());
-    }
+    for (auto iter = renamedTo.begin(); iter != renamedTo.end(); ++iter)
+        eventAdded(iter.value());
 }
 
 void FileSystem::eventModified(const File &file)
@@ -139,9 +132,10 @@ void FileSystem::eventRenamed(const File &from, const File &to)
 
     if (m_audios.contains(from))
     {
-        emit renamed(m_audios.value(from), to);
-        m_audios.insert(to, m_audios.value(from));
+        Audio *audio = m_audios.value(from);
         m_audios.remove(from);
+        m_audios.insert(to, audio);
+        emit renamed(audio, to);
     }
 }
 
@@ -159,7 +153,8 @@ void FileSystem::eventRemoved(const File &file)
 
     if (m_audios.contains(file))
     {
-        emit removed(m_audios.value(file));
+        Audio *audio = m_audios.value(file);
         m_audios.remove(file);
+        emit removed(audio);
     }
 }

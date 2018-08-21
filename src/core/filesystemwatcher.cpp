@@ -1,7 +1,5 @@
 #include "filesystemwatcher.hpp"
 
-#include <QMutableSetIterator>
-
 FileSystemWatcher::FileSystemWatcher(QObject *parent)
     : QObject(parent)
     , m_watcher(this)
@@ -60,7 +58,7 @@ void FileSystemWatcher::onDirectoryChanged(const Path &dir)
 
 void FileSystemWatcher::onTimeout()
 {
-    for (const Path path : m_buffer)
+    for (const Path &path : m_buffer)
         emit directoryChanged(path);
 
     m_buffer.clear();
@@ -68,15 +66,16 @@ void FileSystemWatcher::onTimeout()
 
 void FileSystemWatcher::queueDirectory(const Path &dir)
 {
-    QMutableSetIterator<Path> iter(m_buffer);
-    while (iter.hasNext())
+    auto iter = m_buffer.begin();
+    while (iter != m_buffer.end())
     {
-        iter.next();
-        if (dir.contains(iter.value()))
+        if (dir.contains(*iter))
             return;
 
-        if (iter.value().contains(dir))
-            iter.remove();
+        if ((*iter).contains(dir))
+            iter = m_buffer.erase(iter);
+        else
+            ++iter;
     }
     m_buffer << dir;
 }

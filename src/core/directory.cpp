@@ -1,8 +1,6 @@
 #include "directory.hpp"
 
 #include <QDirIterator>
-#include <QHashIterator>
-#include <QMutableSetIterator>
 
 Directory::Directory(QObject *parent)
     : Directory(Path(), parent)
@@ -86,18 +84,16 @@ Files Directory::processChanges()
 
 void Directory::processDirChanges(Files &changes)
 {
-    QHashIterator<Path, Directory *> hashIter(m_dirs);
-    while (hashIter.hasNext())
+    for (auto iter = m_dirs.begin(); iter != m_dirs.end(); ++iter)
     {
-        hashIter.next();
-        Directory *dir = hashIter.value();
+        Directory *dir = iter.value();
         if (!dir->exists())
         {
             for (const File &file : dir->files())
                 changes << file;
 
-            emit removed(dir);
             m_dirs.remove(dir->path());
+            emit removed(dir);
         }
     }
 
@@ -121,7 +117,7 @@ void Directory::processDirChanges(Files &changes)
 
 void Directory::processFileChanges(Files &changes)
 {
-    if (!QFileInfo(m_path).exists())
+    if (!QFileInfo::exists(m_path))
     {
         for (const File &file : m_files)
             changes << file;
@@ -130,22 +126,25 @@ void Directory::processFileChanges(Files &changes)
     }
     else
     {
-        QMutableSetIterator<File> setIter(m_files);
-        while (setIter.hasNext())
+        auto iter = m_files.begin();
+        while (iter != m_files.end())
         {
-            setIter.next();
-            if (!QFileInfo(setIter.value()).exists())
+            if (!QFileInfo::exists(*iter))
             {
-                changes << setIter.value();
-                setIter.remove();
+                changes << *iter;
+                iter = m_files.erase(iter);
+            }
+            else
+            {
+                ++iter;
             }
         }
 
-        QDirIterator fileIter(m_path, QStringList() << "*.mp3", QDir::Files);
-        while (fileIter.hasNext())
+        QDirIterator dirIter(m_path, QStringList() << "*.mp3", QDir::Files);
+        while (dirIter.hasNext())
         {
-            fileIter.next();
-            const File file = fileIter.filePath();
+            dirIter.next();
+            const File file = dirIter.filePath();
             if (!m_files.contains(file))
             {
                 changes << file;

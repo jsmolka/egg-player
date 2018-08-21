@@ -1,13 +1,10 @@
 #ifndef LIBRARYWIDGET_HPP
 #define LIBRARYWIDGET_HPP
 
-#include <QHeaderView>
 #include <QVector>
 
 #include "audio.hpp"
-#include "config.hpp"
-#include "constants.hpp"
-#include "library.hpp"
+#include "audios.hpp"
 #include "tablewidget.hpp"
 
 class LibraryWidget : public TableWidget
@@ -15,13 +12,13 @@ class LibraryWidget : public TableWidget
     Q_OBJECT
 
 public:
-    LibraryWidget(QWidget *parent = nullptr);
+    explicit LibraryWidget(QWidget *parent = nullptr);
     ~LibraryWidget();
 
     enum SongInfo {None, Title, Artist, Album, Track, Year, Genre, Duration};
 
-    void setLibrary(Library *library);
-    void removeLibrary();
+    void setAudios(Audios *audios);
+    void removeAudios();
 
     void addColumn(SongInfo info, Qt::Alignment horizontal = Qt::AlignLeft, bool expand = true);
 
@@ -46,9 +43,9 @@ private:
     void setup();
     void setupCss();
 
-    QString audioText(Audio *audio, int column);
+    QString audioText(Audio *audio, int column) const;
 
-    Library *m_library;
+    Audios *m_audios;
     QVector<Column> m_columns;
 };
 

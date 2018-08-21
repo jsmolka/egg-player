@@ -1,5 +1,7 @@
 #include "mainwindow.hpp"
 
+#include <QSettings>
+
 MainWindow::MainWindow(QWidget *parent)
     : QWidget(parent)
 {

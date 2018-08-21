@@ -1,13 +1,12 @@
 #ifndef MAINWINDOW_HPP
 #define MAINWINDOW_HPP
 
-#include <QSettings>
 #include <QWidget>
 
 class MainWindow : public QWidget
 {
 public:
-    MainWindow(QWidget *parent = nullptr);
+    explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
     void showSavedPosition();
