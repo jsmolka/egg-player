@@ -19,7 +19,7 @@ BassError::~BassError()
 
 void BassError::error()
 {
-    static QHash<int, QString> errors =
+    const static QHash<int, QString> errors =
     {
         {BASS_OK            , "all is OK"},
         {BASS_ERROR_MEM     , "memory error"},

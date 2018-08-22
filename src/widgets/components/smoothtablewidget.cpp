@@ -1,5 +1,10 @@
 #include "smoothtablewidget.hpp"
 
+#include <QApplication>
+#include <QDateTime>
+#include <QQueue>
+#include <QtMath>
+
 SmoothTableWidget::SmoothTableWidget(QWidget *parent)
     : QTableWidget(parent)
     , m_fps(144)
@@ -9,9 +14,10 @@ SmoothTableWidget::SmoothTableWidget(QWidget *parent)
     , m_bigStepRatio(3.0)
     , m_smallStepModifier(Qt::ControlModifier)
     , m_bigStepModifier(Qt::ShiftModifier)
+    , m_totalSteps(0)
     , m_stepsLeft(0)
     , m_smoothTimer(this)
-    , pm_lastEvent(nullptr)
+    , m_lastEvent(nullptr)
 {
     setup();
 
@@ -96,16 +102,16 @@ Qt::KeyboardModifier SmoothTableWidget::bigStepModifier() const
 void SmoothTableWidget::wheelEvent(QWheelEvent *event)
 {
     static QQueue<qint64> scrollStamps;
-    qint64 now = QDateTime::currentDateTime().toMSecsSinceEpoch();
+    const qint64 now = QDateTime::currentDateTime().toMSecsSinceEpoch();
     scrollStamps.enqueue(now);
     while (now - scrollStamps.front() > 600)
         scrollStamps.dequeue();
-    double accerationRatio = qMin(scrollStamps.size() / 15.0, 1.0);
+    const double accerationRatio = qMin(scrollStamps.size() / 15.0, 1.0);
 
-    if (!pm_lastEvent)
-        pm_lastEvent = new QWheelEvent(*event);
+    if (!m_lastEvent)
+        m_lastEvent = new QWheelEvent(*event);
     else
-        *pm_lastEvent = *event;
+        *m_lastEvent = *event;
 
     double multiplier = 0.8;
     if (QApplication::keyboardModifiers() & m_smallStepModifier)
@@ -125,8 +131,7 @@ void SmoothTableWidget::onTimeout()
 {
     double totalDelta = 0;
 
-    QVector<QPair<double, int>>::Iterator iter;
-    for (iter = m_stepsLeft.begin(); iter != m_stepsLeft.end(); ++iter)
+    for (auto iter = m_stepsLeft.begin(); iter != m_stepsLeft.end(); ++iter)
     {
         totalDelta += subDelta(iter->first, iter->second);
         --(iter->second);
@@ -139,12 +144,12 @@ void SmoothTableWidget::onTimeout()
         m_smoothTimer.stop();
 
     QWheelEvent event(
-        pm_lastEvent->pos(),
-        pm_lastEvent->globalPos(),
+        m_lastEvent->pos(),
+        m_lastEvent->globalPos(),
         qRound(totalDelta),
-        pm_lastEvent->buttons(),
+        m_lastEvent->buttons(),
         0,
-        pm_lastEvent->orientation()
+        m_lastEvent->orientation()
     );
 
     QApplication::sendEvent(verticalScrollBar(), &event);
@@ -155,10 +160,10 @@ void SmoothTableWidget::setup()
     setVerticalScrollMode(QAbstractItemView::ScrollPerPixel);
 }
 
-double SmoothTableWidget::subDelta(double delta, int stepsLeft)
+double SmoothTableWidget::subDelta(double delta, int stepsLeft) const
 {
-    double m = m_totalSteps / 2.0;
-    double x = abs(m_totalSteps - stepsLeft - m);
+    const double m = m_totalSteps / 2.0;
+    const double x = abs(m_totalSteps - stepsLeft - m);
 
     return (cos(x * M_PI / m) + 1.0) / (2.0 * m) * delta;
 }

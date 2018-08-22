@@ -1,12 +1,12 @@
 #ifndef CONFIGSHORTCUT_HPP
 #define CONFIGSHORTCUT_HPP
 
-#include "configabstract.hpp"
+#include "configitem.hpp"
 
-class ConfigShortcut : public ConfigAbstract
+class ConfigShortcut : public ConfigItem
 {
 public:
-    using ConfigAbstract::ConfigAbstract;
+    using ConfigItem::ConfigItem;
 
     void setDefaults() override;
 

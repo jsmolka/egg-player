@@ -1,8 +1,10 @@
 #include "shortcut.hpp"
 
+#include "logger.hpp"
+
 Shortcut::Shortcut(const QString &shortcut, bool repeat, QObject *parent)
     : QObject(parent)
-    , m_id(++_id)
+    , m_id(++s_id)
     , m_vk(0)
     , m_modifier(0)
     , m_repeat(repeat)
@@ -106,7 +108,7 @@ bool Shortcut::unregisterShortcut()
     return static_cast<bool>(UnregisterHotKey(NULL, m_id));
 }
 
-int Shortcut::_id = 0;
+int Shortcut::s_id = 0;
 
 const QHash<QString, int> Shortcut::s_keys =
 {

@@ -1,11 +1,6 @@
 #ifndef TABLEWIDGET_HPP
 #define TABLEWIDGET_HPP
 
-#include <QHeaderView>
-#include <QScrollBar>
-#include <QTableWidget>
-
-#include "clickablestyle.hpp"
 #include "rowhoverdelegate.hpp"
 #include "smoothtablewidget.hpp"
 
@@ -14,7 +9,7 @@ class TableWidget : public SmoothTableWidget
     Q_OBJECT
 
 public:
-    TableWidget(QWidget *parent = nullptr);
+    explicit TableWidget(QWidget *parent = nullptr);
     ~TableWidget();
 
 signals:
@@ -25,7 +20,7 @@ protected:
     void resizeEvent(QResizeEvent *event);
 
 private slots:
-    void onEntered(QModelIndex index);
+    void onEntered(const QModelIndex &index);
     void onHoverRowChanged(int row);
 
 private:

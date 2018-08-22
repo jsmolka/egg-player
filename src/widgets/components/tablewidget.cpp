@@ -1,5 +1,10 @@
 #include "tablewidget.hpp"
 
+#include <QHeaderView>
+#include <QScrollBar>
+
+#include "clickablestyle.hpp"
+
 TableWidget::TableWidget(QWidget *parent)
     : SmoothTableWidget(parent)
     , m_delegate(new RowHoverDelegate(this))
@@ -31,7 +36,7 @@ void TableWidget::resizeEvent(QResizeEvent *event)
     emit hoverRowChanged(indexAt(mapFromGlobal(QCursor::pos())).row());
 }
 
-void TableWidget::onEntered(QModelIndex index)
+void TableWidget::onEntered(const QModelIndex &index)
 {
     emit hoverRowChanged(index.row());
 }

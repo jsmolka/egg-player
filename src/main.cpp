@@ -32,8 +32,8 @@ void setup(QApplication &app)
     eLibrary->setSorted(true);
 
     ePlayer->setVolume(cfgPlayer.volume());
-    ePlayer->playlist()->setLoop(cfgPlayer.loop());
-    ePlayer->playlist()->setShuffle(cfgPlayer.shuffle());
+    ePlayer->playlist().setLoop(cfgPlayer.loop());
+    ePlayer->playlist().setShuffle(cfgPlayer.shuffle());
 
     Cache().createTables();
 }

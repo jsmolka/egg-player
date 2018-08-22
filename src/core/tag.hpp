@@ -4,19 +4,12 @@
 #include <QString>
 #include <QPixmap>
 
-#include <taglib/attachedpictureframe.h>
-#include <taglib/fileref.h>
-#include <taglib/id3v2tag.h>
-#include <taglib/id3v2frame.h>
 #include <taglib/mpegfile.h>
-#include <taglib/tag.h>
-
-#include "logger.hpp"
 
 class Tag
 {
 public:
-    Tag(const wchar_t *file);
+    explicit Tag(const wchar_t *file);
     ~Tag();
 
     bool isValid() const;

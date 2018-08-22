@@ -1,5 +1,7 @@
 #include "uniquefileinfo.hpp"
 
+#include "logger.hpp"
+
 UniqueFileInfo::UniqueFileInfo()
     : m_low(0)
     , m_high(0)
@@ -11,35 +13,7 @@ UniqueFileInfo::UniqueFileInfo()
 UniqueFileInfo::UniqueFileInfo(const File &file)
     : UniqueFileInfo()
 {
-    HANDLE handle = CreateFileW(
-        reinterpret_cast<const wchar_t *>(file.constData()),
-        GENERIC_READ,
-        FILE_SHARE_DELETE | FILE_SHARE_READ | FILE_SHARE_WRITE,
-        NULL,
-        OPEN_EXISTING,
-        FILE_ATTRIBUTE_NORMAL,
-        NULL
-    );
-
-    if (handle == INVALID_HANDLE_VALUE)
-    {
-        LOG("Cannot open file %1", file);
-        return;
-    }
-
-    BY_HANDLE_FILE_INFORMATION info;
-    if (!GetFileInformationByHandle(handle, &info))
-    {
-        LOG("Cannot get file information %1", file);
-        return;
-    }
-
-    m_volume = info.dwVolumeSerialNumber;
-    m_low = info.nFileIndexLow;
-    m_high = info.nFileIndexHigh;
-
-    if (!CloseHandle(handle))
-        LOG("Cannot close handle %1", file);
+    readInfo(file);
 }
 
 UniqueFileInfo::~UniqueFileInfo()
@@ -75,4 +49,37 @@ void UniqueFileInfo::setVolume(DWORD volume)
 DWORD UniqueFileInfo::volume() const
 {
     return m_volume;
+}
+
+void UniqueFileInfo::readInfo(const File &file)
+{
+    HANDLE handle = CreateFileW(
+        reinterpret_cast<const wchar_t *>(file.constData()),
+        GENERIC_READ,
+        FILE_SHARE_DELETE | FILE_SHARE_READ | FILE_SHARE_WRITE,
+        NULL,
+        OPEN_EXISTING,
+        FILE_ATTRIBUTE_NORMAL,
+        NULL
+    );
+
+    if (handle == INVALID_HANDLE_VALUE)
+    {
+        LOG("Cannot open file %1", file);
+        return;
+    }
+
+    BY_HANDLE_FILE_INFORMATION info;
+    if (!GetFileInformationByHandle(handle, &info))
+    {
+        LOG("Cannot get file information %1", file);
+        return;
+    }
+
+    m_volume = info.dwVolumeSerialNumber;
+    m_low = info.nFileIndexLow;
+    m_high = info.nFileIndexHigh;
+
+    if (!CloseHandle(handle))
+        LOG("Cannot close handle %1", file);
 }

@@ -5,14 +5,13 @@
 
 #include <QHashFunctions>
 
-#include "logger.hpp"
 #include "types.hpp"
 
 class UniqueFileInfo
 {
 public:
     UniqueFileInfo();
-    UniqueFileInfo(const File &file);
+    explicit UniqueFileInfo(const File &file);
     ~UniqueFileInfo();
 
     void setLow(DWORD low);
@@ -25,6 +24,8 @@ public:
     DWORD volume() const;
 
 private:
+    void readInfo(const File &file);
+
     DWORD m_low;
     DWORD m_high;
     DWORD m_volume;

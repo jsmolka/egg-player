@@ -11,14 +11,10 @@ QT += \
 INCLUDEPATH += \
     lib/bass-2.4/include \
     lib/taglib-1.11.1/include \
-    src/common \
     src/core \
     src/threading \
-    src/utils \
-    src/utils/config \
     src/widgets \
-    src/widgets/components \
-    src/widgets/layouts
+    src/widgets/components
 
 LIBS += \
     -luser32 \
@@ -32,9 +28,16 @@ CONFIG(debug, debug|release) {
 CONFIG(release, debug|release) {
     LIBS += -L"$$PWD/lib/taglib-1.11.1/lib" -ltag
     DESTDIR = $$PWD/bin/release
+
+    QMAKE_CFLAGS_RELEASE -= /O1
+    QMAKE_CFLAGS_RELEASE *= /O2
+    QMAKE_CXXFLAGS_RELEASE -= /O1
+    QMAKE_CXXFLAGS_RELEASE *= /O2
 }
 
 RESOURCES = egg-player.qrc
+
+DEFINES *= QT_USE_QSTRINGBUILDER
 
 HEADERS += \
     src/core/audio.hpp \
@@ -44,7 +47,6 @@ HEADERS += \
     src/core/cache.hpp \
     src/core/constants.hpp \
     src/core/config.hpp \
-    src/core/configabstract.hpp \
     src/core/configapp.hpp \
     src/core/configbar.hpp \
     src/core/configlibrary.hpp \
@@ -86,7 +88,8 @@ HEADERS += \
     src/core/directory.hpp \
     src/core/filesystem.hpp \
     src/core/bimap.hpp \
-    src/core/uniquefileinfo.hpp
+    src/core/uniquefileinfo.hpp \
+    src/core/configitem.hpp
 
 SOURCES += \
     src/main.cpp \
@@ -97,7 +100,6 @@ SOURCES += \
     src/core/cache.cpp \
     src/core/constants.cpp \
     src/core/config.cpp \
-    src/core/configabstract.cpp \
     src/core/configapp.cpp \
     src/core/configbar.cpp \
     src/core/configlibrary.cpp \
@@ -137,5 +139,5 @@ SOURCES += \
     src/core/filesystemwatcher.cpp \
     src/core/directory.cpp \
     src/core/filesystem.cpp \
-    src/core/uniquefileinfo.cpp
-
+    src/core/uniquefileinfo.cpp \
+    src/core/configitem.cpp

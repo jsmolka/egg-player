@@ -1,12 +1,12 @@
 #ifndef CONFIGBAR_HPP
 #define CONFIGBAR_HPP
 
-#include "configabstract.hpp"
+#include "configitem.hpp"
 
-class ConfigBar : public ConfigAbstract
+class ConfigBar : public ConfigItem
 {
 public:
-    using ConfigAbstract::ConfigAbstract;
+    using ConfigItem::ConfigItem;
 
     void setDefaults() override;
 

@@ -1,5 +1,13 @@
 #include "tag.hpp"
 
+#include <taglib/attachedpictureframe.h>
+#include <taglib/fileref.h>
+#include <taglib/id3v2tag.h>
+#include <taglib/id3v2frame.h>
+#include <taglib/tag.h>
+
+#include "logger.hpp"
+
 Tag::Tag(const wchar_t *file)
     : m_file(file)
 {
@@ -66,11 +74,11 @@ QPixmap Tag::cover()
     QPixmap cover;
     if (m_file.hasID3v2Tag())
     {
-        TagLib::ID3v2::Tag *tag = m_file.ID3v2Tag();
-        TagLib::ID3v2::FrameList frameList = tag->frameList("APIC");
+        const TagLib::ID3v2::Tag *tag = m_file.ID3v2Tag();
+        const TagLib::ID3v2::FrameList frameList = tag->frameList("APIC");
         if (!frameList.isEmpty())
         {
-            TagLib::ID3v2::AttachedPictureFrame *frame = static_cast<TagLib::ID3v2::AttachedPictureFrame *>(frameList.front());
+            const TagLib::ID3v2::AttachedPictureFrame *frame = static_cast<TagLib::ID3v2::AttachedPictureFrame *>(frameList.front());
             cover.loadFromData((const uchar *)frame->picture().data(), frame->picture().size());
         }
     }

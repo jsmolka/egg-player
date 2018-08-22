@@ -36,7 +36,7 @@ void LibraryWidget::removeAudios()
     m_audios = nullptr;
 }
 
-void LibraryWidget::addColumn(SongInfo info, Qt::Alignment horizontal, bool expand)
+void LibraryWidget::addColumn(AudioInfo info, Qt::Alignment horizontal, bool expand)
 {
     m_columns << Column(info, Qt::AlignVCenter | horizontal);
     setColumnCount(m_columns.size());
@@ -99,19 +99,19 @@ QString LibraryWidget::audioText(Audio *audio, int column) const
 {
     switch(m_columns[column].info)
     {
-        case SongInfo::Title:
+        case AudioInfo::Title:
             return audio->title();
-        case SongInfo::Artist:
+        case AudioInfo::Artist:
             return audio->artist();
-        case SongInfo::Album:
+        case AudioInfo::Album:
             return audio->album();
-        case SongInfo::Track:
+        case AudioInfo::Track:
             return audio->track() == 0 ? QString() : QString::number(audio->track());
-        case SongInfo::Year:
+        case AudioInfo::Year:
             return audio->year() == 0 ? QString() : QString::number(audio->year());
-        case SongInfo::Genre:
+        case AudioInfo::Genre:
             return audio->genre();
-        case SongInfo::Duration:
+        case AudioInfo::Duration:
             return audio->duration().toString();
     }
     return QString();

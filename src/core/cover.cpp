@@ -167,7 +167,7 @@ QColor Cover::rawDominantColor(const QImage &image)
         }
     }
 
-    static auto dominantColor = [&range](std::array<HsvRange, range> hsvs) -> QColor
+    const static auto dominantColor = [&range](std::array<HsvRange, range> hsvs) -> QColor
     {
         int max = 0;
         HsvRange most;

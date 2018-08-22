@@ -1,6 +1,7 @@
 #include "eggwidget.hpp"
 
 #include "borderlayout.hpp"
+#include "config.hpp"
 #include "constants.hpp"
 #include "fileutil.hpp"
 #include "library.hpp"

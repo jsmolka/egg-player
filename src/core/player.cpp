@@ -1,5 +1,9 @@
 #include "player.hpp"
 
+#include <QApplication>
+
+#include "config.hpp"
+
 Player::Player(QObject *parent)
     : QObject(parent)
     , m_playlist(this)
@@ -19,15 +23,15 @@ Player::~Player()
 
 }
 
-Player * Player::instance()
+Player *Player::instance()
 {
     static Player *player = new Player(qApp);
     return player;
 }
 
-Playlist * Player::playlist()
+Playlist & Player::playlist()
 {
-    return &m_playlist;
+    return m_playlist;
 }
 
 bool Player::isPlaying() const
@@ -42,7 +46,7 @@ bool Player::isPaused() const
 
 void Player::setVolume(int volume)
 {
-    volume = qMax(0, qMin(volume, 100));
+    volume = qBound(0, volume, 100);
     if (m_bass.stream().isValid())
         if (!m_bass.stream().setVolume(static_cast<float>(volume) / static_cast<float>(cfgPlayer.volumeQuotient())))
             return;
@@ -68,7 +72,9 @@ void Player::setPosition(int position)
 
 int Player::position()
 {
-    return m_bass.stream().isValid() ? m_bass.stream().position() : -1;
+    return m_bass.stream().isValid()
+        ? m_bass.stream().position()
+        : -1;
 }
 
 void Player::play()
@@ -117,7 +123,7 @@ void Player::update()
     if (!m_bass.stream().isValid() || !m_playing)
         return;
 
-    int position = this->position();
+    const int position = this->position();
     if (position != m_position)
     {
         m_position = position;
@@ -132,7 +138,7 @@ void Player::callback(HSYNC handle, DWORD channel, DWORD data, void *user)
     Q_UNUSED(data);
 
     Player *player = static_cast<Player *>(user);
-    player->playlist()->next();
+    player->playlist().next();
 }
 
 void Player::setAudio(int index)

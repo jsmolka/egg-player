@@ -1,5 +1,7 @@
 #include "slider.hpp"
 
+#include "clickablestyle.hpp"
+
 Slider::Slider(QWidget *parent)
     : QSlider(parent)
     , m_pressed(false)

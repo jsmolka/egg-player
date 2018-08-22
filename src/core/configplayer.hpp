@@ -1,12 +1,12 @@
 #ifndef CONFIGPLAYER_HPP
 #define CONFIGPLAYER_HPP
 
-#include "configabstract.hpp"
+#include "configitem.hpp"
 
-class ConfigPlayer : public ConfigAbstract
+class ConfigPlayer : public ConfigItem
 {
 public:
-    using ConfigAbstract::ConfigAbstract;
+    using ConfigItem::ConfigItem;
 
     void setDefaults() override;
 

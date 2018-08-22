@@ -65,7 +65,7 @@ void Directory::parse()
         }
         else
         {
-            if (file.endsWith(".mp3", Qt::CaseInsensitive))
+            if (file.endsWith(QLatin1String(".mp3"), Qt::CaseInsensitive))
                 m_files << file;
         }
     }

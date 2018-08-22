@@ -15,12 +15,12 @@ public:
     explicit LibraryWidget(QWidget *parent = nullptr);
     ~LibraryWidget();
 
-    enum SongInfo {None, Title, Artist, Album, Track, Year, Genre, Duration};
+    enum AudioInfo {None, Title, Artist, Album, Track, Year, Genre, Duration};
 
     void setAudios(Audios *audios);
     void removeAudios();
 
-    void addColumn(SongInfo info, Qt::Alignment horizontal = Qt::AlignLeft, bool expand = true);
+    void addColumn(AudioInfo info, Qt::Alignment horizontal = Qt::AlignLeft, bool expand = true);
 
 public slots:
     void insert(Audio *audio, int row = -1);
@@ -33,10 +33,10 @@ private slots:
 private:
     struct Column
     {
-        Column(SongInfo info = SongInfo::None, Qt::Alignment alignment = 0) :
+        Column(AudioInfo info = AudioInfo::None, Qt::Alignment alignment = 0) :
             info(info), alignment(alignment) {}
 
-        SongInfo info;
+        AudioInfo info;
         Qt::Alignment alignment;
     };
 

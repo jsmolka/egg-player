@@ -1,8 +1,11 @@
 #include "playlist.hpp"
 
+#include "config.hpp"
+
 Playlist::Playlist(QObject *parent)
     : QObject(parent)
     , m_audios(nullptr)
+    , m_indices()
     , m_index(-1)
     , m_loop(false)
     , m_shuffle(false)
@@ -65,7 +68,9 @@ void Playlist::changeIndex(int index)
 
 Audio * Playlist::audioAt(int index)
 {
-    return isValidIndex(index) ? m_audios->at(m_indices.at(index)) : nullptr;
+    return isValidIndex(index)
+        ? m_audios->at(m_indices.at(index))
+        : nullptr;
 }
 
 Audio * Playlist::currentAudio()
@@ -91,6 +96,13 @@ void Playlist::previous()
     changeIndex(previousIndex());
 }
 
+void Playlist::onAudiosInserted(int index)
+{
+    Q_UNUSED(index);
+
+    m_indices.append(m_indices.size());
+}
+
 void Playlist::onAudiosRemoved(int index)
 {
     for (auto iter = m_indices.begin(); iter != m_indices.end(); ++iter)
@@ -109,10 +121,14 @@ void Playlist::onAudiosRemoved(int index)
 void Playlist::createAudios(Audios *audios)
 {
     if (m_audios)
+    {
+        disconnect(m_audios, &Audios::inserted, this, &Playlist::onAudiosInserted);
         disconnect(m_audios, &Audios::removed, this, &Playlist::onAudiosRemoved);
+    }
 
     m_audios = audios;
 
+    connect(m_audios, &Audios::inserted, this, &Playlist::onAudiosInserted);
     connect(m_audios, &Audios::removed, this, &Playlist::onAudiosRemoved);
 }
 
@@ -151,16 +167,16 @@ int Playlist::previousIndex()
 
 void Playlist::shuffle()
 {
-    int old = m_index;
+    const int old = m_index;
     std::random_shuffle(m_indices.begin(), m_indices.end());
-    int current = m_indices.indexOf(old);
+    const int current = m_indices.indexOf(old);
     std::swap(m_indices[0], m_indices[current]);
     m_index = 0;
 }
 
 void Playlist::unshuffle()
 {
-    int current = m_indices.at(m_index);
+    const int current = m_indices.at(m_index);
     createIndices(m_indices.size());
     m_index = current;
 }

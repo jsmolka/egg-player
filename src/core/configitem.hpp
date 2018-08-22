@@ -4,12 +4,12 @@
 #include <QJsonObject>
 #include <QJsonValue>
 
-class ConfigAbstract
+class ConfigItem
 {
 public:
-    ConfigAbstract();
-    explicit ConfigAbstract(const QJsonObject &object);
-    ~ConfigAbstract();
+    ConfigItem();
+    explicit ConfigItem(const QJsonObject &object);
+    ~ConfigItem();
 
     QJsonObject object() const;
 

@@ -1,13 +1,11 @@
 #ifndef PLAYER_HPP
 #define PLAYER_HPP
 
-#include <QApplication>
 #include <QObject>
 #include <QTimer>
 
 #include "audio.hpp"
 #include "bass.hpp"
-#include "config.hpp"
 #include "playlist.hpp"
 
 #define ePlayer (Player::instance())
@@ -17,12 +15,12 @@ class Player : public QObject
     Q_OBJECT
 
 public:
-    Player(QObject *parent = nullptr);
+    explicit Player(QObject *parent = nullptr);
     ~Player();
 
-    static Player * instance();
+    static Player *instance();
 
-    Playlist * playlist();
+    Playlist &playlist();
 
     bool isPlaying() const;
     bool isPaused() const;

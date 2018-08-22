@@ -3,14 +3,12 @@
 
 #include <QSlider>
 
-#include "clickablestyle.hpp"
-
 class Slider : public QSlider
 {
     Q_OBJECT
 
 public:
-    Slider(QWidget *parent = nullptr);
+    explicit Slider(QWidget *parent = nullptr);
     ~Slider();
 
     bool isPressed() const;

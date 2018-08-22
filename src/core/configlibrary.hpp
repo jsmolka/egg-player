@@ -1,13 +1,13 @@
 #ifndef CONFIGLIBRARY_HPP
 #define CONFIGLIBRARY_HPP
 
-#include "configabstract.hpp"
+#include "configitem.hpp"
 #include "types.hpp"
 
-class ConfigLibrary : public ConfigAbstract
+class ConfigLibrary : public ConfigItem
 {
 public:
-    using ConfigAbstract::ConfigAbstract;
+    using ConfigItem::ConfigItem;
 
     void setDefaults() override;
 

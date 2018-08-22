@@ -6,14 +6,13 @@
 
 #include "audio.hpp"
 #include "audios.hpp"
-#include "config.hpp"
 
 class Playlist : public QObject
 {
     Q_OBJECT
 
 public:
-    Playlist(QObject *parent = nullptr);
+    explicit Playlist(QObject *parent = nullptr);
     ~Playlist();
 
     void setIndex(int index);
@@ -40,6 +39,7 @@ signals:
     void indexChanged(int index);
 
 private slots:
+    void onAudiosInserted(int index);
     void onAudiosRemoved(int index);
 
 private:

@@ -105,7 +105,7 @@ bool BassStream::setPosition(int position)
     return success;
 }
 
-int BassStream::position()
+int BassStream::position() const
 {
     const QWORD bytes = BASS_ChannelGetPosition(m_handle, BASS_POS_BYTE);
     if (bytes == -1)
@@ -133,7 +133,7 @@ bool BassStream::setVolume(float volume)
     return success;
 }
 
-float BassStream::volume()
+float BassStream::volume() const
 {
     float volume = -1;
     if (!BASS_ChannelGetAttribute(m_handle, BASS_ATTRIB_VOL, &volume))
@@ -151,7 +151,7 @@ bool BassStream::setDevice(DWORD device)
     return success;
 }
 
-DWORD BassStream::device()
+DWORD BassStream::device() const
 {
     if (BASS_ChannelGetDevice(m_handle) == -1)
         error();

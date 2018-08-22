@@ -29,13 +29,13 @@ public:
     bool free();
 
     bool setPosition(int position);
-    int position();
+    int position() const;
 
     bool setVolume(float volume);
-    float volume();
+    float volume() const;
 
     bool setDevice(DWORD device);
-    DWORD device();
+    DWORD device() const;
 
     bool setCallback(SYNCPROC *proc, void *user);
     bool removeCallback();

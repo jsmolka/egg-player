@@ -9,8 +9,6 @@
 #include <QHash>
 #include <QObject>
 
-#include "logger.hpp"
-
 class Shortcut : public QObject, public QAbstractNativeEventFilter
 {
     Q_OBJECT
@@ -45,7 +43,7 @@ private:
     bool m_registered;
     QString m_shortcut;
 
-    static int _id;
+    static int s_id;
     static const QHash<QString, int> s_keys;
     static const QHash<QString, int> s_modifiers;
 };

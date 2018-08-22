@@ -1,14 +1,10 @@
 #ifndef SMOOTHTABLEWIDGET_HPP
 #define SMOOTHTABLEWIDGET_HPP
 
-#include <QApplication>
-#include <QDateTime>
 #include <QPair>
-#include <QQueue>
 #include <QScrollBar>
 #include <QTableWidget>
 #include <QTimer>
-#include <QtMath>
 #include <QVector>
 #include <QWheelEvent>
 
@@ -17,7 +13,7 @@ class SmoothTableWidget : public QTableWidget
     Q_OBJECT
 
 public:
-    SmoothTableWidget(QWidget *parent = nullptr);
+    explicit SmoothTableWidget(QWidget *parent = nullptr);
     ~SmoothTableWidget();
 
     void setFps(int fps);
@@ -50,7 +46,7 @@ private slots:
 private:
     void setup();
 
-    double subDelta(double delta, int stepsLeft);
+    double subDelta(double delta, int stepsLeft) const;
 
     int m_fps;
     int m_duration;
@@ -65,7 +61,7 @@ private:
     QVector<QPair<double, int>> m_stepsLeft;
 
     QTimer m_smoothTimer;
-    QWheelEvent *pm_lastEvent;
+    QWheelEvent *m_lastEvent;
 };
 
 #endif // SMOOTHTABLEWIDGET_HPP
