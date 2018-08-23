@@ -84,7 +84,7 @@ Files Directory::processChanges()
 
 void Directory::processDirChanges(Files &changes)
 {
-    for (auto iter = m_dirs.begin(); iter != m_dirs.end(); ++iter)
+    for (auto iter = m_dirs.cbegin(); iter != m_dirs.cend(); ++iter)
     {
         Directory *dir = iter.value();
         if (!dir->exists())

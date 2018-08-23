@@ -6,12 +6,12 @@
 #include "cache.hpp"
 
 CoverLoaderWorker::CoverLoaderWorker(QObject *parent)
-    : CoverLoaderWorker(AudioVector(), parent)
+    : CoverLoaderWorker(Audio::vector(), parent)
 {
 
 }
 
-CoverLoaderWorker::CoverLoaderWorker(const AudioVector &audios, QObject *parent)
+CoverLoaderWorker::CoverLoaderWorker(const Audio::vector &audios, QObject *parent)
     : AbstractWorker(parent)
     , m_audios(audios)
 {
@@ -23,12 +23,12 @@ CoverLoaderWorker::~CoverLoaderWorker()
 
 }
 
-void CoverLoaderWorker::setAudios(const AudioVector &audios)
+void CoverLoaderWorker::setAudios(const Audio::vector &audios)
 {
     m_audios = audios;
 }
 
-AudioVector CoverLoaderWorker::audios() const
+Audio::vector CoverLoaderWorker::audios() const
 {
     return m_audios;
 }
@@ -43,7 +43,7 @@ void CoverLoaderWorker::work()
 
         if (!audio->cover().isValid())
         {
-            const QPixmap cover = Cover::loadFromFile(audio->widePath());
+            const QPixmap cover = Cover::loadFromFile(audio->wideFile());
 
             static QMutex mutex;
             const QMutexLocker locker(&mutex);

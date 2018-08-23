@@ -201,17 +201,17 @@ void Audio::update()
 {
     if (!(m_valid = readTags()))
     {
-        if (!info().exists())
-            LOG("File does not exist %1", m_file);
-        else
+        if (QFileInfo::exists(m_file))
             LOG("Cannot read tags %1", m_file);
+        else
+            LOG("File does not exist %1", m_file);
     }
     m_modified = info().lastModified().toSecsSinceEpoch();
 
     emit updated(this);
 }
 
-const wchar_t * Audio::widePath() const
+const wchar_t * Audio::wideFile() const
 {
     return reinterpret_cast<const wchar_t *>(m_file.constData());
 }
@@ -258,7 +258,7 @@ bool Audio::operator!=(const Audio &other) const
 
 bool Audio::readTags()
 {
-    const Tag tag(widePath());
+    const Tag tag(wideFile());
 
     if (!tag.isValid() || !tag.isAudioValid())
         return false;

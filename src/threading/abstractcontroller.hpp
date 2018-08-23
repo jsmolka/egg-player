@@ -36,12 +36,12 @@ protected:
 
 private slots:
     void workerFinished();
-    void removeWorker(const QObject *object);
-    void removeThread(const QObject *object);
+    void removeWorker(QObject *object);
+    void removeThread(QObject *object);
 
 private:    
     template <typename T>
-    static inline void removeObject(QVector<T> &vector, const QObject *object);
+    static inline void removeObject(QVector<T> &vector, QObject *object);
 
     static constexpr int s_timeout = 2500;
 
@@ -55,7 +55,7 @@ private:
 template <typename T>
 static inline QVector<QVector<T>> AbstractController::chunk(const QVector<T> &vector, int n)
 {
-    n = qMin(qMax(1, n), vector.size());
+    n = qBound(1, n, vector.size());
     const int quo = vector.size() / n;
     const int rem = vector.size() % n;
 
@@ -70,7 +70,7 @@ static inline QVector<QVector<T>> AbstractController::chunk(const QVector<T> &ve
 }
 
 template <typename T>
-static inline void AbstractController::removeObject(QVector<T> &vector, const QObject *object)
+static inline void AbstractController::removeObject(QVector<T> &vector, QObject *object)
 {
     for (auto iter = vector.begin(); iter != vector.end(); ++iter)
     {

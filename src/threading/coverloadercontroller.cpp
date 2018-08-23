@@ -4,12 +4,12 @@
 #include "coverloaderworker.hpp"
 
 CoverLoaderController::CoverLoaderController(QObject *parent)
-    : CoverLoaderController(AudioVector(), parent)
+    : CoverLoaderController(Audio::vector(), parent)
 {
 
 }
 
-CoverLoaderController::CoverLoaderController(AudioVector audios, QObject *parent)
+CoverLoaderController::CoverLoaderController(Audio::vector audios, QObject *parent)
     : AbstractController(parent)
     , m_audios(audios)
 {
@@ -21,19 +21,19 @@ CoverLoaderController::~CoverLoaderController()
 
 }
 
-void CoverLoaderController::setAudios(const AudioVector &audios)
+void CoverLoaderController::setAudios(const Audio::vector &audios)
 {
     m_audios = audios;
 }
 
-AudioVector CoverLoaderController::audios() const
+Audio::vector CoverLoaderController::audios() const
 {
     return m_audios;
 }
 
 void CoverLoaderController::start()
 {
-    for (const AudioVector chunk : chunk<Audio *>(m_audios, QThread::idealThreadCount()))
+    for (const Audio::vector chunk : chunk<Audio *>(m_audios, QThread::idealThreadCount()))
     {
         CoverLoaderWorker *worker = new CoverLoaderWorker(chunk);
         QThread *thread = createWorkerThread(worker);

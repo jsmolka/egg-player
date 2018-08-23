@@ -100,7 +100,7 @@ void Playlist::onAudiosInserted(int index)
 {
     Q_UNUSED(index);
 
-    m_indices.append(m_indices.size());
+    m_indices << m_indices.size();
 }
 
 void Playlist::onAudiosRemoved(int index)

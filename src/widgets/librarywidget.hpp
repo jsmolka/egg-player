@@ -26,7 +26,7 @@ public slots:
     void insert(Audio *audio, int row = -1);
 
 private slots:
-    void onAudiosUpdated(Audio *audio);
+    void onAudiosUpdated(int index);
     void onAudioInserted(int index);
     void onAudiosRemoved(int index);
 

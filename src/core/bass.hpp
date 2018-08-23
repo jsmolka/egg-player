@@ -3,6 +3,8 @@
 
 #include <functional>
 
+#include <QAtomicInt>
+
 #include "bass/bass.h"
 
 #include "basserror.hpp"
@@ -13,8 +15,6 @@ class Bass : public BassError
 public:
     Bass();
     ~Bass();
-
-    static int references();
 
     static bool start();
     static bool pause();
@@ -38,7 +38,7 @@ private:
 
     static bool call(std::function<BOOL()>);
 
-    static int s_references;
+    static QAtomicInt s_refs;
 
     BassStream m_stream;
 };

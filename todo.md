@@ -4,8 +4,6 @@
 - QSet vs QVector for files in Directory
 - update qt creator
 - [use clang features](http://blog.qt.io/blog/2018/07/18/qt-creator-4-7-0-released/)
-- use deleteLater for deleting audios
-- consider using QSharedPointer for audio pointer (since they are orphans)
 - consider using a set for audios, see [SO](https://stackoverflow.com/a/25524075)
 - consider internal typedefs / using to clean up the code, see [SO](https://stackoverflow.com/q/759512)
 

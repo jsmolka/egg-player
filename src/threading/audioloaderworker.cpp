@@ -1,5 +1,6 @@
 #include "audioloaderworker.hpp"
 
+#include <QApplication>
 #include <QMutex>
 #include <QMutexLocker>
 
@@ -58,6 +59,7 @@ void AudioLoaderWorker::work()
                 audio->cover().setId(0);
                 m_outdated << audio;
             }
+            audio->moveToThread(qApp->thread());
             emit loaded(audio);
         }
         else

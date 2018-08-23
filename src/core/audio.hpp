@@ -9,15 +9,13 @@
 #include "duration.hpp"
 #include "types.hpp"
 
-class Audio;
-
-using AudioVector = QVector<Audio *>;
-
 class Audio : public QObject
 {
     Q_OBJECT
 
 public:
+    using vector = QVector<Audio *>;
+
     explicit Audio(QObject *parent = nullptr);
     Audio(const QString &file, QObject *parent = nullptr);
     Audio(const QString &file,
@@ -71,7 +69,7 @@ public:
 
     void update();
 
-    const wchar_t * widePath() const;
+    const wchar_t * wideFile() const;
 
     bool operator<(const Audio &other) const;
     bool operator>(const Audio &other) const;

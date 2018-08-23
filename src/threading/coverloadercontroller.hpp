@@ -10,17 +10,17 @@ class CoverLoaderController : public AbstractController
 
 public:
     explicit CoverLoaderController(QObject *parent = nullptr);
-    explicit CoverLoaderController(AudioVector audios, QObject *parent = nullptr);
+    explicit CoverLoaderController(Audio::vector audios, QObject *parent = nullptr);
     ~CoverLoaderController();
 
-    void setAudios(const AudioVector &audios);
-    AudioVector audios() const;
+    void setAudios(const Audio::vector &audios);
+    Audio::vector audios() const;
 
 public slots:
     void start() override;
 
 private:
-    AudioVector m_audios;
+    Audio::vector m_audios;
 };
 
 #endif // COVERLOADERCONTROLLER_HPP

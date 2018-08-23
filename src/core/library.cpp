@@ -29,7 +29,7 @@ Library::Library(bool sorted, QObject *parent)
 Library::~Library()
 {
     while (!m_audios.isEmpty())
-        delete m_audios.takeFirst();
+        m_audios.takeFirst()->deleteLater();
 }
 
 Library *Library::instance()
@@ -70,7 +70,7 @@ CoverLoaderController &Library::coverLoader()
 
 void Library::load(const Paths &paths)
 {
-    for (const Path path : paths)
+    for (const Path &path : paths)
         m_fileSystem.addPath(path);
 
     m_audioLoader.setFiles(m_fileSystem.globAudios());
@@ -79,6 +79,7 @@ void Library::load(const Paths &paths)
 
 void Library::insert(Audio *audio)
 {
+    audio->setParent(this);
     m_fileSystem.watchAudio(audio);
 
     if (m_sorted)

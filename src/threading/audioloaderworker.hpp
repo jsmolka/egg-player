@@ -24,8 +24,8 @@ public slots:
 
 private:
     Files m_files;
-    AudioVector m_uncached;
-    AudioVector m_outdated;
+    Audio::vector m_uncached;
+    Audio::vector m_outdated;
 };
 
 #endif // AUDIOLOADERWORKER_HPP

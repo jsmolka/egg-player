@@ -81,12 +81,12 @@ void AbstractController::workerFinished()
         emit finished();
 }
 
-void AbstractController::removeWorker(const QObject *object)
+void AbstractController::removeWorker(QObject *object)
 {
     removeObject<AbstractWorker *>(m_workers, object);
 }
 
-void AbstractController::removeThread(const QObject *object)
+void AbstractController::removeThread(QObject *object)
 {
     removeObject<QThread *>(m_threads, object);
 }

@@ -45,12 +45,10 @@ void LibraryWidget::addColumn(AudioInfo info, Qt::Alignment horizontal, bool exp
         horizontalHeader()->setSectionResizeMode(m_columns.size() - 1, QHeaderView::ResizeToContents);
 }
 
-void LibraryWidget::onAudiosUpdated(Audio *audio)
+void LibraryWidget::onAudiosUpdated(int index)
 {
-    const int row = m_audios ->indexOf(audio);
-
-    removeRow(row);
-    insert(audio, row);
+    removeRow(index);
+    insert(m_audios->at(index), index);
 }
 
 void LibraryWidget::onAudioInserted(int index)

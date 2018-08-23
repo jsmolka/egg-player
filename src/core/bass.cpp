@@ -5,22 +5,19 @@
 Bass::Bass()
     : m_stream()
 {
-    if (++s_references > 1)
+    if (s_refs.ref())
         return;
 
     if (isValidVersion() && setConfig())
         init();
+
+    s_refs.ref();
 }
 
 Bass::~Bass()
 {
-    if (--s_references == 0)
+    if (!s_refs.deref())
         free();
-}
-
-int Bass::references()
-{
-    return s_references;
 }
 
 BassStream &Bass::stream()
@@ -127,4 +124,4 @@ bool Bass::call(std::function<BOOL()> func)
     return success;
 }
 
-int Bass::s_references = 0;
+QAtomicInt Bass::s_refs = -1;

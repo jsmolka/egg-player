@@ -38,7 +38,7 @@ void FileSystem::addPath(const Path &path)
 Files FileSystem::globAudios() const
 {
     Files result;
-    for (auto iter = m_dirs.begin(); iter != m_dirs.end(); ++iter)
+    for (auto iter = m_dirs.cbegin(); iter != m_dirs.cend(); ++iter)
     {
         for (const File &file : iter.value()->files())
             result << file;
@@ -97,7 +97,7 @@ void FileSystem::onDirectoryChanged(const Path &dir)
             renamedTo.insert(UniqueFileInfo(file), file);
     }
 
-    for (auto iter = renamedFrom.begin(); iter != renamedFrom.end(); ++iter)
+    for (auto iter = renamedFrom.cbegin(); iter != renamedFrom.cend(); ++iter)
     {
         const UniqueFileInfo info = iter.key();
         if (renamedTo.contains(info))
@@ -111,7 +111,7 @@ void FileSystem::onDirectoryChanged(const Path &dir)
         }
     }
 
-    for (auto iter = renamedTo.begin(); iter != renamedTo.end(); ++iter)
+    for (auto iter = renamedTo.cbegin(); iter != renamedTo.cend(); ++iter)
         eventAdded(iter.value());
 }
 

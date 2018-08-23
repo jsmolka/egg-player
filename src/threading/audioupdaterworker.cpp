@@ -44,7 +44,7 @@ void AudioUpdaterWorker::work()
     if (isInterrupted())
         return;
 
-    const QPixmap cover = Cover::loadFromFile(m_audio->widePath());
+    const QPixmap cover = Cover::loadFromFile(m_audio->wideFile());
 
     static QMutex mutex;
     const QMutexLocker locker(&mutex);

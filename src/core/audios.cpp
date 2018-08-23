@@ -1,12 +1,12 @@
 #include "audios.hpp"
 
 Audios::Audios(QObject *parent)
-    : Audios(AudioVector(), parent)
+    : Audios(Audio::vector(), parent)
 {
 
 }
 
-Audios::Audios(const AudioVector &vector, QObject *parent)
+Audios::Audios(const Audio::vector &vector, QObject *parent)
     : QObject(parent)
     , m_vector(vector)
 {
@@ -18,12 +18,12 @@ Audios::~Audios()
 
 }
 
-void Audios::setVector(const AudioVector &vector)
+void Audios::setVector(const Audio::vector &vector)
 {
     m_vector = vector;
 }
 
-AudioVector Audios::vector() const
+Audio::vector Audios::vector() const
 {
     return m_vector;
 }
@@ -68,7 +68,7 @@ int Audios::size() const
     return m_vector.size();
 }
 
-int Audios::indexOf(Audio *audio) const
+int Audios::indexOf(Audio *const audio) const
 {
     return m_vector.indexOf(audio);
 }
@@ -90,83 +90,77 @@ void Audios::move(int from, int to)
 
 void Audios::insert(int index, Audio *audio)
 {
+    connect(audio, &Audio::updated, this, &Audios::onAudioUpdated);
     m_vector.insert(index, audio);
-    connect(audio, &Audio::updated, this, &Audios::updated);
     emit inserted(index);
 }
 
 void Audios::append(Audio *audio)
 {
+    connect(audio, &Audio::updated, this, &Audios::onAudioUpdated);
     m_vector.append(audio);
-    connect(audio, &Audio::updated, this, &Audios::updated);
     emit inserted(size() - 1);
 }
 
 void Audios::remove(int index)
 {
-    disconnect(at(index), &Audio::updated, this, &Audios::updated);
+    Audio *audio = at(index);
     m_vector.remove(index);
+    audio->deleteLater();
     emit removed(index);
 }
 
-AudioVector::iterator Audios::insert(AudioVector::iterator before, Audio *audio)
+Audio::vector::iterator Audios::insert(Audio::vector::iterator before, Audio *audio)
 {
+    connect(audio, &Audio::updated, this, &Audios::onAudioUpdated);
     auto position = m_vector.insert(before, audio);
-    connect(audio, &Audio::updated, this, &Audios::updated);
     emit inserted(position - m_vector.begin());
     return position;
 }
 
-AudioVector::iterator Audios::erase(AudioVector::iterator position)
+Audio::vector::iterator Audios::erase(Audio::vector::iterator position)
 {
-    disconnect(*position, &Audio::updated, this, &Audios::updated);
+    Audio *audio = *position;
     auto next = m_vector.erase(position);
+    audio->deleteLater();
     emit removed(position - m_vector.begin());
     return next;
 }
 
-AudioVector::iterator Audios::begin()
+Audio::vector::iterator Audios::begin()
 {
     return m_vector.begin();
 }
 
-AudioVector::iterator Audios::end()
+Audio::vector::iterator Audios::end()
 {
     return m_vector.end();
 }
 
-AudioVector::reverse_iterator Audios::rbegin()
-{
-    return m_vector.rbegin();
-}
-
-AudioVector::reverse_iterator Audios::rend()
-{
-    return m_vector.rend();
-}
-
-AudioVector::const_iterator Audios::cbegin() const
+Audio::vector::const_iterator Audios::cbegin() const
 {
     return m_vector.cbegin();
 }
 
-AudioVector::const_iterator Audios::cend() const
+Audio::vector::const_iterator Audios::cend() const
 {
     return m_vector.cend();
-}
-
-AudioVector::const_reverse_iterator Audios::crbegin() const
-{
-    return m_vector.crbegin();
-}
-
-AudioVector::const_reverse_iterator Audios::crend() const
-{
-    return m_vector.crend();
 }
 
 Audios &Audios::operator<<(Audio *audio)
 {
     append(audio);
     return *this;
+}
+
+void Audios::onAudioUpdated(Audio *audio)
+{
+    for (int i = 0; i < m_vector.size(); ++i)
+    {
+        if (m_vector.at(i) == audio)
+        {
+            emit updated(i);
+            return;
+        }
+    }
 }
