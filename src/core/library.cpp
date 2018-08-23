@@ -28,8 +28,7 @@ Library::Library(bool sorted, QObject *parent)
 
 Library::~Library()
 {
-    while (!m_audios.isEmpty())
-        m_audios.takeFirst()->deleteLater();
+
 }
 
 Library *Library::instance()
