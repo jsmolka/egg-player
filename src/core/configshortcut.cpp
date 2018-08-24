@@ -2,11 +2,11 @@
 
 void ConfigShortcut::setDefaults()
 {
-    setDefault("next", "Ctrl F12");
-    setDefault("playPause", "Ctrl F11");
-    setDefault("previous", "Ctrl F10");
-    setDefault("volumeDown", "Ctrl F7");
-    setDefault("volumeUp", "Ctrl F8");
+    setDefault("next", "Ctrl + F12");
+    setDefault("playPause", "Ctrl + F11");
+    setDefault("previous", "Ctrl + F10");
+    setDefault("volumeDown", "Ctrl + F7");
+    setDefault("volumeUp", "Ctrl + F8");
 }
 
 void ConfigShortcut::setNext(const QString &shortcut)

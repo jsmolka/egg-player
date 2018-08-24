@@ -55,7 +55,6 @@ HEADERS += \
     src/core/library.hpp \
     src/core/logger.hpp \
     src/core/player.hpp \
-    src/core/shortcut.hpp \
     src/core/tag.hpp \
     src/core/fileutil.hpp \
     src/widgets/eggwidget.hpp \
@@ -89,7 +88,8 @@ HEADERS += \
     src/core/filesystem.hpp \
     src/core/bimap.hpp \
     src/core/uniquefileinfo.hpp \
-    src/core/configitem.hpp
+    src/core/configitem.hpp \
+    src/core/shortcut.hpp
 
 SOURCES += \
     src/main.cpp \
@@ -108,7 +108,6 @@ SOURCES += \
     src/core/library.cpp \
     src/core/logger.cpp \
     src/core/player.cpp \
-    src/core/shortcut.cpp \
     src/core/tag.cpp \
     src/widgets/eggwidget.cpp \
     src/widgets/barwidget.cpp \
@@ -140,4 +139,5 @@ SOURCES += \
     src/core/directory.cpp \
     src/core/filesystem.cpp \
     src/core/uniquefileinfo.cpp \
-    src/core/configitem.cpp
+    src/core/configitem.cpp \
+    src/core/shortcut.cpp

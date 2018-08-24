@@ -3,9 +3,9 @@
 
 #include <Windows.h>
 
-#include <QApplication>
 #include <QAbstractEventDispatcher>
 #include <QAbstractNativeEventFilter>
+#include <QAtomicInt>
 #include <QHash>
 #include <QObject>
 
@@ -18,9 +18,6 @@ public:
     ~Shortcut();
 
     int id() const;
-    int vk() const;
-    int modifier() const;
-
     bool isRepeat() const;
     bool isRegistered() const;
     QString shortcut() const;
@@ -32,18 +29,21 @@ protected:
     bool nativeEventFilter(const QByteArray &eventType, void *message, long *result) override;
 
 private:
-    bool parseShortcut();
-    bool registerShortcut();
+    void activate();
+
+    QStringList prepareShortcut();
+    UINT parseModifier(const QStringList &sequence);
+    UINT parseVirtualKey(const QStringList &sequence);
+
+    bool registerShortcut(UINT modifier, UINT vk);
     bool unregisterShortcut();
 
     int m_id;
-    int m_vk;
-    int m_modifier;
     bool m_repeat;
     bool m_registered;
     QString m_shortcut;
 
-    static int s_id;
+    static QAtomicInt s_id;
     static const QHash<QString, int> s_keys;
     static const QHash<QString, int> s_modifiers;
 };
