@@ -22,14 +22,10 @@ public:
     Audio *first();
     Audio *last();
 
-    Audio *takeAt(int index);
-    Audio *takeFirst();
-    Audio *takeLast();
-
     bool isEmpty() const;
 
     int size() const;
-    int indexOf(Audio *const audio) const;
+    int indexOf(Audio *audio) const;
 
     void clear();
     void reserve(int size);
@@ -38,6 +34,7 @@ public:
     void insert(int index, Audio *audio);
     void append(Audio *audio);
     void remove(int index);
+    void remove(Audio *audio);
 
     Audio::vector::iterator insert(Audio::vector::iterator before, Audio *audio);
     Audio::vector::iterator erase(Audio::vector::iterator position);

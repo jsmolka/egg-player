@@ -112,9 +112,8 @@ void Library::onFileSystemAdded(const File &file)
 
 void Library::onFileSystemRemoved(Audio *audio)
 {
-    const int index = m_audios.indexOf(audio);
-    if (index != -1)
-        m_audios.remove(index);
+    m_audios.remove(audio);
+    audio->deleteLater();
 }
 
 int Library::lowerBound(Audio *audio)

@@ -43,21 +43,6 @@ Audio *Audios::last()
     return m_vector.last();
 }
 
-Audio *Audios::takeAt(int index)
-{
-    return m_vector.takeAt(index);
-}
-
-Audio *Audios::takeFirst()
-{
-    return m_vector.takeFirst();
-}
-
-Audio *Audios::takeLast()
-{
-    return m_vector.takeLast();
-}
-
 bool Audios::isEmpty() const
 {
     return m_vector.isEmpty();
@@ -68,7 +53,7 @@ int Audios::size() const
     return m_vector.size();
 }
 
-int Audios::indexOf(Audio *const audio) const
+int Audios::indexOf(Audio *audio) const
 {
     return m_vector.indexOf(audio);
 }
@@ -104,10 +89,16 @@ void Audios::append(Audio *audio)
 
 void Audios::remove(int index)
 {
-    Audio *audio = at(index);
+    disconnect(at(index), &Audio::updated, this, &Audios::onAudioUpdated);
     m_vector.remove(index);
-    audio->deleteLater();
     emit removed(index);
+}
+
+void Audios::remove(Audio *audio)
+{
+    const int index = indexOf(audio);
+    if (index != -1)
+        remove(index);
 }
 
 Audio::vector::iterator Audios::insert(Audio::vector::iterator before, Audio *audio)
@@ -120,10 +111,9 @@ Audio::vector::iterator Audios::insert(Audio::vector::iterator before, Audio *au
 
 Audio::vector::iterator Audios::erase(Audio::vector::iterator position)
 {
-    Audio *audio = *position;
+    disconnect(*position, &Audio::updated, this, &Audios::onAudioUpdated);
     auto next = m_vector.erase(position);
-    audio->deleteLater();
-    emit removed(position - m_vector.begin());
+    emit removed(position - begin());
     return next;
 }
 
@@ -155,9 +145,9 @@ Audios &Audios::operator<<(Audio *audio)
 
 void Audios::onAudioUpdated(Audio *audio)
 {
-    for (int i = 0; i < m_vector.size(); ++i)
+    for (int i = 0; i < size(); ++i)
     {
-        if (m_vector.at(i) == audio)
+        if (at(i) == audio)
         {
             emit updated(i);
             return;
