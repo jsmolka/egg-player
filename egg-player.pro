@@ -89,7 +89,9 @@ HEADERS += \
     src/core/bimap.hpp \
     src/core/uniquefileinfo.hpp \
     src/core/configitem.hpp \
-    src/core/shortcut.hpp
+    src/core/shortcut.hpp \
+    src/widgets/components/volumebutton.hpp \
+    src/widgets/components/playpausebutton.hpp
 
 SOURCES += \
     src/main.cpp \
@@ -140,4 +142,6 @@ SOURCES += \
     src/core/filesystem.cpp \
     src/core/uniquefileinfo.cpp \
     src/core/configitem.cpp \
-    src/core/shortcut.cpp
+    src/core/shortcut.cpp \
+    src/widgets/components/volumebutton.cpp \
+    src/widgets/components/playpausebutton.cpp

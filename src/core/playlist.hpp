@@ -17,11 +17,10 @@ public:
     void setIndex(int index);
     int index() const;
 
-    void setLoop(bool loop);
     bool isLoop() const;
-
-    void setShuffle(bool shuffle);
     bool isShuffle() const;
+
+    bool isEmpty() const;
 
     void changeIndex(int index);
 
@@ -31,6 +30,9 @@ public:
     void create(Audios *audios);
 
 public slots:
+    void setLoop(bool loop);
+    void setShuffle(bool shuffle);
+
     void next();
     void previous();
 

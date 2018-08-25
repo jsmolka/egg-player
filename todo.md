@@ -1,8 +1,5 @@
 # Things to do
 
-## General
-- subclass buttons and use enumerations for icons
-
 ## Threading
 - possibly rewrite threading
 - create a threadpool to recycle threads

@@ -92,6 +92,14 @@ void Player::pause()
     emit stateChanged();
 }
 
+void Player::toggleState()
+{
+    if (m_playing)
+        pause();
+    else
+        play();
+}
+
 void Player::createPlaylist(Audios *audios, int index)
 {
     m_playlist.setIndex(index);

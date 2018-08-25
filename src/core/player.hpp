@@ -32,6 +32,7 @@ public:
 
     void play();
     void pause();
+    void toggleState();
 
     void createPlaylist(Audios *audios, int index = 0);
 

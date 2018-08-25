@@ -6,8 +6,10 @@
 #include "audio.hpp"
 #include "colortransitionwidget.hpp"
 #include "iconbutton.hpp"
+#include "playpausebutton.hpp"
 #include "slider.hpp"
 #include "shortcut.hpp"
+#include "volumebutton.hpp"
 
 class BarWidget : public ColorTransitionWidget
 {
@@ -37,8 +39,6 @@ private slots:
     void onPlayerPositionChanged(int position);
     void onPlayerVolumeChanged(int volume);
     void onPlayPauseButtonPressed();
-    void onShuffleButtonLocked(bool locked);
-    void onLoopButtonLocked(bool locked);
     void onVolumeButtonPressed();
     void onLengthSliderMoved(int value);
     void onLengthSliderValueChanged(int value);
@@ -52,21 +52,17 @@ private:
     void setupCss();
     void setupUi();
 
-    void setVolumeIcon(int volume);
-    void setVolumePlayer(int volume);
-    void setVolumeSlider(int volume);
-
     QLabel m_coverLabel;
     QLabel m_trackLabel;
     QLabel m_currentTimeLabel;
     QLabel m_totalTimeLabel;
 
-    IconButton m_playPauseButton;
+    PlayPauseButton m_playPauseButton;
     IconButton m_nextButton;
     IconButton m_previousButton;
     IconButton m_shuffleButton;
     IconButton m_loopButton;
-    IconButton m_volumeButton;
+    VolumeButton m_volumeButton;
 
     Slider m_lengthSlider;
     Slider m_volumeSlider;

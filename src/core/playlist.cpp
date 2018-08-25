@@ -22,34 +22,19 @@ int Playlist::index() const
     return m_index;
 }
 
-void Playlist::setLoop(bool loop)
-{
-    m_loop = loop;
-    cfgPlayer.setLoop(loop);
-}
-
 bool Playlist::isLoop() const
 {
     return m_loop;
 }
 
-void Playlist::setShuffle(bool shuffle)
-{
-    m_shuffle = shuffle;
-    cfgPlayer.setShuffle(shuffle);
-
-    if (m_indices.isEmpty())
-        return;
-
-    if (shuffle)
-        this->shuffle();
-    else
-        this->unshuffle();
-}
-
 bool Playlist::isShuffle() const
 {
     return m_shuffle;
+}
+
+bool Playlist::isEmpty() const
+{
+    return m_indices.isEmpty();
 }
 
 void Playlist::changeIndex(int index)
@@ -78,6 +63,26 @@ void Playlist::create(Audios *audios)
     createIndices(audios->size());
 
     setShuffle(m_shuffle);
+}
+
+void Playlist::setLoop(bool loop)
+{
+    m_loop = loop;
+    cfgPlayer.setLoop(loop);
+}
+
+void Playlist::setShuffle(bool shuffle)
+{
+    m_shuffle = shuffle;
+    cfgPlayer.setShuffle(shuffle);
+
+    if (m_indices.isEmpty())
+        return;
+
+    if (shuffle)
+        this->shuffle();
+    else
+        this->unshuffle();
 }
 
 void Playlist::next()

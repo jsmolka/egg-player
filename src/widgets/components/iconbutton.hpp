@@ -16,7 +16,6 @@ class IconButton : public QPushButton
 
 public:
     explicit IconButton(QWidget *parent = nullptr);
-    ~IconButton() = default;
 
     void setIcons(const Icons &icons);
     Icons icons() const;

@@ -43,8 +43,8 @@ BarWidget::BarWidget(QWidget *parent)
     connect(&m_nextButton, &IconButton::pressed, &ePlayer->playlist(), &Playlist::next);
     connect(&m_playPauseButton, &IconButton::pressed, this, &BarWidget::onPlayPauseButtonPressed);
     connect(&m_previousButton, &IconButton::pressed, &ePlayer->playlist(), &Playlist::previous);
-    connect(&m_shuffleButton, &IconButton::locked, this, &BarWidget::onShuffleButtonLocked);
-    connect(&m_loopButton, &IconButton::locked, this, &BarWidget::onLoopButtonLocked);
+    connect(&m_shuffleButton, &IconButton::locked, &ePlayer->playlist(), &Playlist::setShuffle);
+    connect(&m_loopButton, &IconButton::locked, &ePlayer->playlist(), &Playlist::setLoop);
     connect(&m_volumeButton, &IconButton::pressed, this, &BarWidget::onVolumeButtonPressed);
 
     connect(&m_lengthSlider, &Slider::sliderMoved, this, &BarWidget::onLengthSliderMoved);
@@ -126,15 +126,19 @@ void BarWidget::onPlayerAudioChanged(Audio *audio)
     m_currentTimeLabel.setText(Duration(0).toString());
     m_totalTimeLabel.setText(audio->duration().toString());
 
-    m_lengthSlider.setRange(0, audio->duration().secs());
     m_lengthSlider.setEnabled(true);
+    m_lengthSlider.setRange(0, audio->duration().secs());
 
     colorTransition(audio->cover().dominantColor());
 }
 
 void BarWidget::onPlayerStateChanged()
 {
-    m_playPauseButton.setIconIndex(ePlayer->isPlaying() ? 1 : 0);
+    m_playPauseButton.setIcon(
+        ePlayer->isPlaying()
+            ? PlayPauseButton::Pause
+            : PlayPauseButton::Play
+    );
 }
 
 void BarWidget::onPlayerPositionChanged(int position)
@@ -148,29 +152,15 @@ void BarWidget::onPlayerPositionChanged(int position)
 
 void BarWidget::onPlayerVolumeChanged(int volume)
 {
-    setVolumeIcon(volume);
-    setVolumeSlider(volume);
+    m_volumeSlider.setValue(volume);
 }
 
 void BarWidget::onPlayPauseButtonPressed()
 {
-    if (!ePlayer->playlist().currentAudio())
+    if (ePlayer->playlist().isEmpty())
         return;
 
-    if (m_playPauseButton.iconIndex() == 0)
-        ePlayer->play();
-    else
-        ePlayer->pause();
-}
-
-void BarWidget::onShuffleButtonLocked(bool locked)
-{
-    ePlayer->playlist().setShuffle(locked);
-}
-
-void BarWidget::onLoopButtonLocked(bool locked)
-{
-    ePlayer->playlist().setLoop(locked);
+    ePlayer->toggleState();
 }
 
 void BarWidget::onVolumeButtonPressed()
@@ -197,25 +187,25 @@ void BarWidget::onLengthSliderValueChanged(int value)
 
 void BarWidget::onVolumeSliderMoved(int value)
 {
-    setVolumePlayer(value);
+    m_volumeButton.setVolume(value);
 }
 
 void BarWidget::onShortcutPlayPausePressed()
 {
-    if (ePlayer->isPlaying())
-        ePlayer->pause();
-    else
-        ePlayer->play();
+    if (ePlayer->playlist().isEmpty())
+        return;
+
+    ePlayer->toggleState();
 }
 
 void BarWidget::onShortcutVolumeUpPressed()
 {
-    setVolumePlayer(ePlayer->volume() + 1);
+    m_volumeButton.setVolume(ePlayer->volume() + 1);
 }
 
 void BarWidget::onShortcutVolumeDownPressed()
 {
-    setVolumePlayer(ePlayer->volume() - 1);
+    m_volumeButton.setVolume(ePlayer->volume() - 1);
 }
 
 void BarWidget::setup()
@@ -256,28 +246,10 @@ void BarWidget::setupUi()
     m_volumeSlider.setSizePolicy(QSizePolicy::Fixed, QSizePolicy::MinimumExpanding);
     m_volumeSlider.setFixedWidth(5 * cfgBar.iconSize() + 4 * cfgBar.spacing());
 
-    m_playPauseButton.setIcons({
-        IconFactory::make(ICO_PLAY),
-        IconFactory::make(ICO_PAUSE)
-    });
-    m_previousButton.setIcons({
-        IconFactory::make(ICO_PREVIOUS)
-    });
-    m_nextButton.setIcons({
-        IconFactory::make(ICO_NEXT)
-    });
-    m_shuffleButton.setIcons({
-        IconFactory::make(ICO_SHUFFLE)
-    });
-    m_loopButton.setIcons({
-        IconFactory::make(ICO_LOOP)
-    });
-    m_volumeButton.setIcons({
-        IconFactory::make(ICO_VOLUME_FULL),
-        IconFactory::make(ICO_VOLUME_MEDIUM),
-        IconFactory::make(ICO_VOLUME_LOW),
-        IconFactory::make(ICO_VOLUME_MUTE)
-    });
+    m_previousButton.setIcons({IconFactory::make(ICO_PREVIOUS)});
+    m_nextButton.setIcons({IconFactory::make(ICO_NEXT)});
+    m_shuffleButton.setIcons({IconFactory::make(ICO_SHUFFLE)});
+    m_loopButton.setIcons({IconFactory::make(ICO_LOOP)});
 
     m_shuffleButton.setLockable(true);
     m_loopButton.setLockable(true);
@@ -292,7 +264,6 @@ void BarWidget::setupUi()
 
     m_shuffleButton.setLocked(cfgPlayer.shuffle());
     m_loopButton.setLocked(cfgPlayer.loop());
-    setVolumeIcon(cfgPlayer.volume());
 
     QGridLayout *layout = new QGridLayout(this);
     layout->setHorizontalSpacing(cfgBar.spacing());
@@ -310,22 +281,4 @@ void BarWidget::setupUi()
     layout->addWidget(&m_loopButton, 0, 9);
     layout->addWidget(&m_volumeButton, 0, 10);
     setLayout(layout);
-}
-
-void BarWidget::setVolumeIcon(int volume)
-{
-    if (volume == 0)
-        m_volumeButton.setIconIndex(3);
-    else
-        m_volumeButton.setIconIndex(2 - volume / 34);
-}
-
-void BarWidget::setVolumePlayer(int volume)
-{
-    ePlayer->setVolume(volume);
-}
-
-void BarWidget::setVolumeSlider(int volume)
-{
-    m_volumeSlider.setValue(volume);
 }
