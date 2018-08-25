@@ -26,11 +26,6 @@ Library::Library(bool sorted, QObject *parent)
     connect(&m_fileSystem, &FileSystem::removed, this, &Library::onFileSystemRemoved);
 }
 
-Library::~Library()
-{
-
-}
-
 Library *Library::instance()
 {
     static Library *library = new Library(qApp);

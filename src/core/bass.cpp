@@ -3,7 +3,6 @@
 #include "logger.hpp"
 
 Bass::Bass()
-    : m_stream()
 {
     if (s_refs++ > 0)
         return;
@@ -66,7 +65,7 @@ bool Bass::setDevice(DWORD device)
 
 DWORD Bass::device()
 {
-    if (BASS_GetDevice() == -1)
+    if (BASS_GetDevice() == 0)
         error();
 
     return BASS_GetDevice();
@@ -101,7 +100,7 @@ bool Bass::isValidVersion()
 
 bool Bass::init()
 {
-    const bool success = BASS_Init(-1, 44100, 0, 0, NULL);
+    const bool success = BASS_Init(-1, 44100, 0, nullptr, nullptr);
     if (!success)
         error();
 
@@ -113,7 +112,7 @@ bool Bass::free()
     return call(BASS_Free);
 }
 
-bool Bass::call(std::function<BOOL()> func)
+bool Bass::call(const std::function<BOOL()> &func)
 {
     const bool success = func();
     if (!success)

@@ -8,8 +8,6 @@
 #include "logger.hpp"
 
 Cache::Cache()
-    : m_db()
-    , m_query()
 {    
     if (!QSqlDatabase::contains(dbName()))
         QSqlDatabase::addDatabase("QSQLITE", dbName());
@@ -17,11 +15,6 @@ Cache::Cache()
     m_db = db();
     m_query = QSqlQuery(m_db);
     m_query.setForwardOnly(true);
-}
-
-Cache::~Cache()
-{
-
 }
 
 bool Cache::transaction()
@@ -159,7 +152,7 @@ void Cache::updateCover(const QPixmap &cover)
 {
     const QByteArray bytes = coverToBytes(cover);
 
-    int id = coverId(bytes);
+    const int id = coverId(bytes);
     if (id > 0)
         updateByteCover(id, bytes);
 }
@@ -298,7 +291,7 @@ void Cache::insertDefaultCover()
 
 int Cache::insertByteCover(const QByteArray &bytes)
 {
-    int id = lastCoverId() + 1;
+    const int id = lastCoverId() + 1;
 
     m_query.prepare(
         "INSERT INTO covers VALUES ("
@@ -314,7 +307,7 @@ int Cache::insertByteCover(const QByteArray &bytes)
     if (!m_query.exec())
     {
         error();
-        id = 0;
+        return 0;
     }
     return id;
 }

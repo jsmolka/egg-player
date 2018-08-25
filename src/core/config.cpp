@@ -8,11 +8,6 @@
 
 Config::Config(QObject *parent)
     : QObject(parent)
-    , m_app()
-    , m_bar()
-    , m_library()
-    , m_player()
-    , m_shortcut()
 {
     load();
 

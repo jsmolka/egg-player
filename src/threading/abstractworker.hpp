@@ -9,7 +9,6 @@ class AbstractWorker : public QObject
 
 public:
     explicit AbstractWorker(QObject *parent = nullptr);
-    ~AbstractWorker();
 
     bool isInterrupted() const;
 

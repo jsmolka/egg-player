@@ -20,11 +20,6 @@ AudioLoaderWorker::AudioLoaderWorker(const Files &files, QObject *parent)
 
 }
 
-AudioLoaderWorker::~AudioLoaderWorker()
-{
-
-}
-
 void AudioLoaderWorker::setFiles(const Files &files)
 {
     m_files = files;
@@ -38,7 +33,7 @@ Files AudioLoaderWorker::files() const
 void AudioLoaderWorker::work()
 {
     Cache cache;
-    for (const File &file : m_files)
+    for (const File &file : qAsConst(m_files))
     {
         if (isInterrupted())
             return;
@@ -68,7 +63,7 @@ void AudioLoaderWorker::work()
         }
     }
 
-    for (Audio *audio : m_uncached)
+    for (Audio *audio : qAsConst(m_uncached))
     {
         if (isInterrupted())
             return;
@@ -79,7 +74,7 @@ void AudioLoaderWorker::work()
         cache.insertAudio(audio);
     }
 
-    for (Audio *audio : m_outdated)
+    for (Audio *audio : qAsConst(m_outdated))
     {
         if (isInterrupted())
             return;

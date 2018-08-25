@@ -10,7 +10,6 @@ class TableWidget : public SmoothTableWidget
 
 public:
     explicit TableWidget(QWidget *parent = nullptr);
-    ~TableWidget();
 
 signals:
     void hoverRowChanged(int row);

@@ -1,6 +1,7 @@
 #include "directory.hpp"
 
 #include <QDirIterator>
+#include <QtGlobal>
 
 Directory::Directory(QObject *parent)
     : Directory(Path(), parent)
@@ -11,13 +12,6 @@ Directory::Directory(QObject *parent)
 Directory::Directory(const Path &path, QObject *parent)
     : QObject(parent)
     , m_path(path)
-    , m_files()
-    , m_dirs()
-{
-
-}
-
-Directory::~Directory()
 {
 
 }
@@ -119,7 +113,7 @@ void Directory::processFileChanges(Files &changes)
 {
     if (!QFileInfo::exists(m_path))
     {
-        for (const File &file : m_files)
+        for (const File &file : qAsConst(m_files))
             changes << file;
 
         emit removed(this);

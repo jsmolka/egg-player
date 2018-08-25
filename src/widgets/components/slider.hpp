@@ -9,7 +9,6 @@ class Slider : public QSlider
 
 public:
     explicit Slider(QWidget *parent = nullptr);
-    ~Slider();
 
     bool isPressed() const;
 

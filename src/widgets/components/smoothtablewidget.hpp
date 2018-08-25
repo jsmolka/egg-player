@@ -14,7 +14,6 @@ class SmoothTableWidget : public QTableWidget
 
 public:
     explicit SmoothTableWidget(QWidget *parent = nullptr);
-    ~SmoothTableWidget();
 
     void setFps(int fps);
     int fps() const;

@@ -4,7 +4,6 @@
 
 IconButton::IconButton(QWidget *parent)
     : QPushButton(parent)
-    , m_icons()
     , m_iconIndex(0)
     , m_lockable(false)
     , m_locked(false)
@@ -12,11 +11,6 @@ IconButton::IconButton(QWidget *parent)
     setup();
 
     connect(this, &IconButton::clicked, this, &IconButton::onClicked);
-}
-
-IconButton::~IconButton()
-{
-
 }
 
 void IconButton::setIcons(const Icons &icons)
@@ -82,14 +76,12 @@ bool IconButton::event(QEvent *event)
         setIcon(m_icons.at(m_iconIndex).pixmap(size(), QIcon::Active));
         return true;
     }
-
     if (event->type() == QEvent::HoverLeave)
     {
         setIcon(m_icons.at(m_iconIndex).pixmap(size(), QIcon::Normal));
         return true;
     }
-
-    return QWidget::event(event);
+    return QPushButton::event(event);
 }
 
 void IconButton::onClicked()

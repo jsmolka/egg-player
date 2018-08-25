@@ -13,7 +13,6 @@ class Playlist : public QObject
 
 public:
     explicit Playlist(QObject *parent = nullptr);
-    ~Playlist();
 
     void setIndex(int index);
     int index() const;

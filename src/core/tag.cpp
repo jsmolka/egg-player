@@ -14,11 +14,6 @@ Tag::Tag(const wchar_t *file)
 
 }
 
-Tag::~Tag()
-{
-
-}
-
 bool Tag::isValid() const
 {
     return m_file.isValid();

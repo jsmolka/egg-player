@@ -33,7 +33,7 @@ int ConfigLibrary::itemHeight()
     return scale(get("itemHeight").toInt());
 }
 
-void ConfigLibrary::setPaths(const Files &paths)
+void ConfigLibrary::setPaths(const Paths &paths)
 {
     QJsonArray array;
     for (const Path &path : paths)
@@ -42,11 +42,12 @@ void ConfigLibrary::setPaths(const Files &paths)
     set("paths", QJsonValue(array));
 }
 
-Files ConfigLibrary::paths()
+Paths ConfigLibrary::paths()
 {
-    Files paths;
-    for (const QJsonValue &element : get("paths").toArray())
-        paths << element.toString();
+    Paths paths;
+    const QJsonArray array = get("paths").toArray();
+    for (const QJsonValue &value : array)
+        paths << value.toString();
 
     return paths;
 }

@@ -15,11 +15,6 @@ Duration::Duration(int secs)
 
 }
 
-Duration::~Duration()
-{
-
-}
-
 void Duration::setSecs(int secs)
 {
     m_secs = secs;
@@ -36,10 +31,9 @@ QString Duration::toString() const
 
     if (m_secs < 600)
         return time.toString("m:ss");
-    else if (m_secs < 3600)
+    if (m_secs < 3600)
         return time.toString("mm:ss");
-    else if (m_secs < 36000)
+    if (m_secs < 36000)
         return time.toString("h:mm:ss");
-    else
-        return time.toString("hh:mm:ss");
+    return time.toString("hh:mm:ss");
 }

@@ -21,11 +21,6 @@ Cover::Cover(int id)
 
 }
 
-Cover::~Cover()
-{
-
-}
-
 int Cover::defaultSize()
 {
     return s_size;
@@ -170,7 +165,7 @@ QColor Cover::rawDominantColor(const QImage &image)
     const static auto dominantColor = [&range](std::array<HsvRange, range> hsvs) -> QColor
     {
         int max = 0;
-        HsvRange most;
+        HsvRange most = hsvs[0];
         for (const HsvRange &hsv : hsvs)
         {
             const int temp = hsv.mix();

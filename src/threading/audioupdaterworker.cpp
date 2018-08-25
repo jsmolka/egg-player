@@ -19,11 +19,6 @@ AudioUpdaterWorker::AudioUpdaterWorker(Audio *audio, QObject *parent)
 
 }
 
-AudioUpdaterWorker::~AudioUpdaterWorker()
-{
-
-}
-
 void AudioUpdaterWorker::setAudio(Audio *audio)
 {
     m_audio = audio;

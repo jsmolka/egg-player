@@ -2,16 +2,6 @@
 
 #include <QPainter>
 
-IconFactory::IconFactory()
-{
-
-}
-
-IconFactory::~IconFactory()
-{
-
-}
-
 QIcon IconFactory::make(const QString &file)
 {
     QIcon icon;

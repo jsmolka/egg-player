@@ -13,7 +13,6 @@ class Audios : public QObject
 public:
     explicit Audios(QObject *parent = nullptr);
     explicit Audios(const Audio::vector &vector, QObject *parent = nullptr);
-    ~Audios();
 
     void setVector(const Audio::vector &vector);
     Audio::vector vector() const;

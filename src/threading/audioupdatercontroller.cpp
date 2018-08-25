@@ -15,11 +15,6 @@ AudioUpdaterController::AudioUpdaterController(Audio *audio, QObject *parent)
 
 }
 
-AudioUpdaterController::~AudioUpdaterController()
-{
-
-}
-
 void AudioUpdaterController::setAudio(Audio *audio)
 {
     m_audio = audio;

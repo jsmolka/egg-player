@@ -5,15 +5,9 @@
 Playlist::Playlist(QObject *parent)
     : QObject(parent)
     , m_audios(nullptr)
-    , m_indices()
     , m_index(-1)
     , m_loop(false)
     , m_shuffle(false)
-{
-
-}
-
-Playlist::~Playlist()
 {
 
 }
@@ -98,20 +92,30 @@ void Playlist::previous()
 
 void Playlist::onAudiosInserted(int index)
 {
-    Q_UNUSED(index);
-
-    m_indices << m_indices.size();
+    for (int &element : m_indices)
+    {
+        if (element >= index)
+            ++element;
+    }
+    m_indices << index;
 }
 
 void Playlist::onAudiosRemoved(int index)
 {
-    for (auto iter = m_indices.begin(); iter != m_indices.end(); ++iter)
+    auto iter = m_indices.begin();
+    while (iter != m_indices.end())
     {
         if (*iter == index)
+        {
             iter = m_indices.erase(iter);
+        }
+        else
+        {
+            if (*iter > index)
+                --*iter;
+            ++iter;
+        }
 
-        if (*iter > index)
-            --*iter;
     }
 
     if (m_index >= index)

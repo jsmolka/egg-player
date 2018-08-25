@@ -4,15 +4,8 @@
 
 AbstractController::AbstractController(QObject *parent)
     : QObject(parent)
-    , m_workers()
-    , m_threads()
     , m_finished(0)
     , m_total(0)
-{
-
-}
-
-AbstractController::~AbstractController()
 {
 
 }
@@ -60,10 +53,10 @@ QThread *AbstractController::createWorkerThread(AbstractWorker *worker)
 
 void AbstractController::stopWorkerThreads()
 {
-    for (AbstractWorker *worker : m_workers)
+    for (AbstractWorker *worker : qAsConst(m_workers))
         worker->interrupt();
 
-    for (QThread *thread : m_threads)
+    for (QThread *thread : qAsConst(m_threads))
     {
         thread->quit();
         if (!thread->wait(s_timeout))

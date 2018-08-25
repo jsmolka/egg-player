@@ -11,7 +11,6 @@ class EggWidget : public MainWindow
 
 public:
     explicit EggWidget(QWidget *parent = nullptr);
-    ~EggWidget();
 
 protected:
     void closeEvent(QCloseEvent *event);

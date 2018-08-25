@@ -16,11 +16,6 @@ CoverLoaderController::CoverLoaderController(Audio::vector audios, QObject *pare
 
 }
 
-CoverLoaderController::~CoverLoaderController()
-{
-
-}
-
 void CoverLoaderController::setAudios(const Audio::vector &audios)
 {
     m_audios = audios;
@@ -33,7 +28,7 @@ Audio::vector CoverLoaderController::audios() const
 
 void CoverLoaderController::start()
 {
-    for (const Audio::vector chunk : chunk<Audio *>(m_audios, QThread::idealThreadCount()))
+    for (const Audio::vector &chunk : chunk<Audio *>(m_audios, QThread::idealThreadCount()))
     {
         CoverLoaderWorker *worker = new CoverLoaderWorker(chunk);
         QThread *thread = createWorkerThread(worker);

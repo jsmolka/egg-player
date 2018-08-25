@@ -15,7 +15,7 @@ class Shortcut : public QObject, public QAbstractNativeEventFilter
 
 public:
     Shortcut(const QString &shortcut, bool repeat, QObject *parent = nullptr);
-    ~Shortcut();
+    ~Shortcut() override;
 
     int id() const;
     bool isRepeat() const;
@@ -44,8 +44,8 @@ private:
     QString m_shortcut;
 
     static QAtomicInt s_id;
-    static const QHash<QString, int> s_keys;
-    static const QHash<QString, int> s_modifiers;
+    static const QHash<QString, UINT> s_keys;
+    static const QHash<QString, UINT> s_modifiers;
 };
 
 #endif // SHORTCUT_HPP

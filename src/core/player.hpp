@@ -16,7 +16,6 @@ class Player : public QObject
 
 public:
     explicit Player(QObject *parent = nullptr);
-    ~Player();
 
     static Player *instance();
 

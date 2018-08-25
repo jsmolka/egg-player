@@ -11,7 +11,6 @@ class AudioUpdaterController : public AbstractController
 public:
     explicit AudioUpdaterController(QObject *parent = nullptr);
     explicit AudioUpdaterController(Audio *audio, QObject *parent = nullptr);
-    ~AudioUpdaterController();
 
     void setAudio(Audio *audio);
     Audio *audio() const;

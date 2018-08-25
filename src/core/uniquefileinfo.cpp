@@ -16,11 +16,6 @@ UniqueFileInfo::UniqueFileInfo(const File &file)
     readInfo(file);
 }
 
-UniqueFileInfo::~UniqueFileInfo()
-{
-
-}
-
 void UniqueFileInfo::setLow(DWORD low)
 {
     m_low = low;
@@ -57,10 +52,10 @@ void UniqueFileInfo::readInfo(const File &file)
         reinterpret_cast<const wchar_t *>(file.constData()),
         GENERIC_READ,
         FILE_SHARE_DELETE | FILE_SHARE_READ | FILE_SHARE_WRITE,
-        NULL,
+        nullptr,
         OPEN_EXISTING,
         FILE_ATTRIBUTE_NORMAL,
-        NULL
+        nullptr
     );
 
     if (handle == INVALID_HANDLE_VALUE)

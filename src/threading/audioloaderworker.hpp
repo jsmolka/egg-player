@@ -11,7 +11,6 @@ class AudioLoaderWorker : public AbstractWorker
 public:
     explicit AudioLoaderWorker(QObject *parent = nullptr);
     explicit AudioLoaderWorker(const Files &files, QObject *parent = nullptr);
-    ~AudioLoaderWorker();
 
     void setFiles(const Files &files);
     Files files() const;

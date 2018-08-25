@@ -8,7 +8,6 @@ class Duration
 public:
     Duration();
     explicit Duration(int secs);
-    ~Duration();
 
     void setSecs(int secs);
     int secs() const;

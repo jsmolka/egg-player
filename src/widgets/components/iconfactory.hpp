@@ -7,9 +7,6 @@
 class IconFactory
 {
 public:
-    IconFactory();
-    ~IconFactory();
-
     static QIcon make(const QString &file);
 
 private:

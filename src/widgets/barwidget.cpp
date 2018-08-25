@@ -58,11 +58,6 @@ BarWidget::BarWidget(QWidget *parent)
     connect(&m_scVolumeDown, &Shortcut::pressed, this, &BarWidget::onShortcutVolumeDownPressed);
 }
 
-BarWidget::~BarWidget()
-{
-
-}
-
 QLabel &BarWidget::coverLabel()
 {
     return m_coverLabel;

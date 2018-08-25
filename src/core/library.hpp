@@ -20,7 +20,6 @@ class Library : public QObject
 public:
     explicit Library(QObject *parent = nullptr);
     explicit Library(bool sorted, QObject *parent = nullptr);
-    ~Library();
 
     static Library *instance();
 

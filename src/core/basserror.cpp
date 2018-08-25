@@ -7,16 +7,6 @@
 
 #include "logger.hpp"
 
-BassError::BassError()
-{
-
-}
-
-BassError::~BassError()
-{
-
-}
-
 void BassError::error()
 {
     const static QHash<int, QString> errors =

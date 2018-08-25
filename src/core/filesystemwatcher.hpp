@@ -13,7 +13,6 @@ class FileSystemWatcher : public QObject
 
 public:
     explicit FileSystemWatcher(QObject *parent = nullptr);
-    ~FileSystemWatcher();
 
     void setBufferDuration(int duration);
     int bufferDuration() const;

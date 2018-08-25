@@ -104,17 +104,17 @@ UINT Shortcut::parseVirtualKey(const QStringList &sequence)
 
 bool Shortcut::registerShortcut(UINT modifier, UINT vk)
 {
-    return (m_registered = RegisterHotKey(NULL, m_id, modifier, vk));
+    return (m_registered = RegisterHotKey(nullptr, m_id, modifier, vk));
 }
 
 bool Shortcut::unregisterShortcut()
 {
-    return (m_registered = UnregisterHotKey(NULL, m_id));
+    return (m_registered = UnregisterHotKey(nullptr, m_id));
 }
 
 QAtomicInt Shortcut::s_id = 0;
 
-const QHash<QString, int> Shortcut::s_keys =
+const QHash<QString, UINT> Shortcut::s_keys =
 {
     {"CANCEL"   , VK_CANCEL   },
     {"BACK"     , VK_BACK     },
@@ -221,7 +221,7 @@ const QHash<QString, int> Shortcut::s_keys =
     {"SCROLL"   , VK_SCROLL   }
 };
 
-const QHash<QString, int> Shortcut::s_modifiers =
+const QHash<QString, UINT> Shortcut::s_modifiers =
 {
     {"CONTROL", MOD_CONTROL},
     {"CTRL"   , MOD_CONTROL},

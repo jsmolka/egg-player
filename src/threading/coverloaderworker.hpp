@@ -11,7 +11,6 @@ class CoverLoaderWorker : public AbstractWorker
 public:
     explicit CoverLoaderWorker(QObject *parent = nullptr);
     explicit CoverLoaderWorker(const Audio::vector &audios, QObject *parent = nullptr);
-    ~CoverLoaderWorker();
 
     void setAudios(const Audio::vector &audios);
     Audio::vector audios() const;

@@ -18,11 +18,6 @@ CoverLoaderWorker::CoverLoaderWorker(const Audio::vector &audios, QObject *paren
 
 }
 
-CoverLoaderWorker::~CoverLoaderWorker()
-{
-
-}
-
 void CoverLoaderWorker::setAudios(const Audio::vector &audios)
 {
     m_audios = audios;
@@ -36,7 +31,7 @@ Audio::vector CoverLoaderWorker::audios() const
 void CoverLoaderWorker::work()
 {
     Cache cache;
-    for (Audio *audio : m_audios)
+    for (Audio *audio : qAsConst(m_audios))
     {
         if (isInterrupted())
             return;

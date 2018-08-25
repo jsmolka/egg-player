@@ -17,8 +17,8 @@ public:
     void setItemHeight(int height);
     int itemHeight();
 
-    void setPaths(const Files &paths);
-    Files paths();
+    void setPaths(const Paths &paths);
+    Paths paths();
 
     void setScrollBarWidth(int width);
     int scrollBarWidth();

@@ -12,7 +12,6 @@ class UniqueFileInfo
 public:
     UniqueFileInfo();
     explicit UniqueFileInfo(const File &file);
-    ~UniqueFileInfo();
 
     void setLow(DWORD low);
     DWORD low() const;

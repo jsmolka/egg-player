@@ -10,7 +10,7 @@ class BassStream : public BassError
 {
 public:
     BassStream();
-    ~BassStream();
+    ~BassStream() = default;
 
     HSTREAM handle() const;
     HSYNC sync() const;

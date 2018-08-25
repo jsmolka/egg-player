@@ -1,9 +1,10 @@
 #include "filesystemwatcher.hpp"
 
+#include <QtGlobal>
+
 FileSystemWatcher::FileSystemWatcher(QObject *parent)
     : QObject(parent)
     , m_watcher(this)
-    , m_buffer()
     , m_timer(this)
     , m_bufferDuration(200)
 {
@@ -12,11 +13,6 @@ FileSystemWatcher::FileSystemWatcher(QObject *parent)
 
     connect(&m_timer, &QTimer::timeout, this, &FileSystemWatcher::onTimeout);
     m_timer.setSingleShot(true);
-}
-
-FileSystemWatcher::~FileSystemWatcher()
-{
-
 }
 
 void FileSystemWatcher::addPath(const Path &path)
@@ -58,7 +54,7 @@ void FileSystemWatcher::onDirectoryChanged(const Path &dir)
 
 void FileSystemWatcher::onTimeout()
 {
-    for (const Path &path : m_buffer)
+    for (const Path &path : qAsConst(m_buffer))
         emit directoryChanged(path);
 
     m_buffer.clear();

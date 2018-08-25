@@ -9,14 +9,8 @@
 LibraryWidget::LibraryWidget(QWidget *parent)
     : TableWidget(parent)
     , m_audios(nullptr)
-    , m_columns()
 {
     setup();
-}
-
-LibraryWidget::~LibraryWidget()
-{
-
 }
 
 void LibraryWidget::setAudios(Audios *audios)

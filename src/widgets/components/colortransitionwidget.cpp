@@ -10,11 +10,6 @@ ColorTransitionWidget::ColorTransitionWidget(QWidget *parent)
     setup();
 }
 
-ColorTransitionWidget::~ColorTransitionWidget()
-{
-
-}
-
 void ColorTransitionWidget::setDuration(int duration)
 {
     m_duration = duration;

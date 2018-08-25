@@ -12,7 +12,7 @@ public:
 
     BorderLayout(int margin = 0, int spacing = -1, QWidget *parent = nullptr);
     BorderLayout(int spacing = -1, QWidget *parent = nullptr);
-    ~BorderLayout();
+    ~BorderLayout() override;
 
     void addItem(QLayoutItem *item) override;
     void addWidget(QWidget *widget, Position position);

@@ -15,11 +15,6 @@ AudioLoaderController::AudioLoaderController(const Files &files, QObject *parent
 
 }
 
-AudioLoaderController::~AudioLoaderController()
-{
-
-}
-
 void AudioLoaderController::setFiles(const Files &files)
 {
     m_files = files;

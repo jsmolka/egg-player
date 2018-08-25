@@ -11,7 +11,6 @@ class AudioUpdaterWorker : public AbstractWorker
 public:
     explicit AudioUpdaterWorker(QObject *parent = nullptr);
     explicit AudioUpdaterWorker(Audio *audio, QObject *parent = nullptr);
-    ~AudioUpdaterWorker();
 
     void setAudio(Audio *audio);
     Audio *audio() const;

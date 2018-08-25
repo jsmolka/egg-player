@@ -12,7 +12,6 @@ class ColorTransitionWidget : public QWidget
 
 public:
     explicit ColorTransitionWidget(QWidget *parent = nullptr);
-    ~ColorTransitionWidget();
 
     void setDuration(int duration);
     int duration() const;

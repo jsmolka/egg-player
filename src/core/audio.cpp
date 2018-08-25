@@ -10,15 +10,8 @@ Audio::Audio(QObject *parent)
     , m_valid(false)
     , m_cached(false)
     , m_outdated(false)
-    , m_file()
-    , m_title()
-    , m_artist()
-    , m_album()
-    , m_genre()
     , m_year(0)
     , m_track(0)
-    , m_duration()
-    , m_cover()
     , m_modified(0)
 {
 
@@ -58,11 +51,6 @@ Audio::Audio(const QString &path,
     , m_modified(modified)
 {
     m_outdated = modified != info().lastModified().toSecsSinceEpoch();
-}
-
-Audio::~Audio()
-{
-
 }
 
 void Audio::setValid(bool valid)

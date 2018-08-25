@@ -36,7 +36,7 @@ private:
     static bool init();
     static bool free();
 
-    static bool call(std::function<BOOL()>);
+    static bool call(const std::function<BOOL()> &func);
 
     static QAtomicInt s_refs;
 

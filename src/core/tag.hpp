@@ -10,7 +10,6 @@ class Tag
 {
 public:
     explicit Tag(const wchar_t *file);
-    ~Tag();
 
     bool isValid() const;
     bool isAudioValid() const;

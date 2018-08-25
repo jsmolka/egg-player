@@ -13,11 +13,6 @@ Audios::Audios(const Audio::vector &vector, QObject *parent)
 
 }
 
-Audios::~Audios()
-{
-
-}
-
 void Audios::setVector(const Audio::vector &vector)
 {
     m_vector = vector;

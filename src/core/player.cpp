@@ -18,11 +18,6 @@ Player::Player(QObject *parent)
     m_updateTimer.start(cfgPlayer.updateInterval());
 }
 
-Player::~Player()
-{
-
-}
-
 Player *Player::instance()
 {
     static Player *player = new Player(qApp);

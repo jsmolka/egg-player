@@ -22,11 +22,6 @@ EggWidget::EggWidget(QWidget *parent)
     eLibrary->load(cfgLibrary.paths());
 }
 
-EggWidget::~EggWidget()
-{
-
-}
-
 void EggWidget::closeEvent(QCloseEvent *event)
 {
     eLibrary->audioLoader().stopWorkerThreads();

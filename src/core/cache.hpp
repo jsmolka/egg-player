@@ -12,7 +12,6 @@ class Cache
 {
 public:
     Cache();
-    ~Cache();
 
     bool transaction();
     bool commit();

@@ -17,7 +17,6 @@ class FileSystem : public QObject
 
 public:
     explicit FileSystem(QObject *parent = nullptr);
-    ~FileSystem();
 
     QHash<Path, Directory *> dirs() const;
 

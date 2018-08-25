@@ -8,11 +8,6 @@ MainWindow::MainWindow(QWidget *parent)
 
 }
 
-MainWindow::~MainWindow()
-{
-
-}
-
 void MainWindow::showSavedPosition()
 {
     QSettings settings;

@@ -24,11 +24,6 @@ SmoothTableWidget::SmoothTableWidget(QWidget *parent)
     connect(&m_smoothTimer, &QTimer::timeout, this, &SmoothTableWidget::onTimeout);
 }
 
-SmoothTableWidget::~SmoothTableWidget()
-{
-
-}
-
 void SmoothTableWidget::setFps(int fps)
 {
     m_fps = fps;
@@ -118,7 +113,7 @@ void SmoothTableWidget::wheelEvent(QWheelEvent *event)
         multiplier *= m_smallStepRatio;
     if (QApplication::keyboardModifiers() & m_bigStepModifier)
         multiplier *= m_bigStepRatio;
-    double delta = (double)event->delta() *  multiplier;
+    double delta = static_cast<double>(event->delta()) *  multiplier;
     if (m_acceleration > 0)
         delta += delta * m_acceleration * accerationRatio;
 
@@ -131,10 +126,10 @@ void SmoothTableWidget::onTimeout()
 {
     double totalDelta = 0;
 
-    for (auto iter = m_stepsLeft.begin(); iter != m_stepsLeft.end(); ++iter)
+    for (QPair<double, int> &step : m_stepsLeft)
     {
-        totalDelta += subDelta(iter->first, iter->second);
-        --(iter->second);
+        totalDelta += subDelta(step.first, step.second);
+        --step.second;
     }
 
     while (!m_stepsLeft.empty() && m_stepsLeft.begin()->second == 0)
@@ -148,7 +143,7 @@ void SmoothTableWidget::onTimeout()
         m_lastEvent->globalPos(),
         qRound(totalDelta),
         m_lastEvent->buttons(),
-        0,
+        nullptr,
         m_lastEvent->orientation()
     );
 

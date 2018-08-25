@@ -7,11 +7,6 @@ BassStream::BassStream()
 
 }
 
-BassStream::~BassStream()
-{
-
-}
-
 HSTREAM BassStream::handle() const
 {
     return m_handle;
@@ -98,7 +93,7 @@ bool BassStream::free()
 bool BassStream::setPosition(int position)
 {
     const QWORD bytes = BASS_ChannelSeconds2Bytes(m_handle, static_cast<double>(position));
-    const bool success = bytes != -1 && BASS_ChannelSetPosition(m_handle, bytes, BASS_POS_BYTE);
+    const bool success = BASS_ChannelSetPosition(m_handle, bytes, BASS_POS_BYTE);
     if (!success)
         error();
 
@@ -108,19 +103,12 @@ bool BassStream::setPosition(int position)
 int BassStream::position() const
 {
     const QWORD bytes = BASS_ChannelGetPosition(m_handle, BASS_POS_BYTE);
-    if (bytes == -1)
-    {
-        error();
-        return -1;
-    }
-
     const int position = static_cast<int>(BASS_ChannelBytes2Seconds(m_handle, bytes));
     if (position < 0)
     {
         error();
         return -1;
     }
-
     return position;
 }
 
@@ -153,7 +141,7 @@ bool BassStream::setDevice(DWORD device)
 
 DWORD BassStream::device() const
 {
-    if (BASS_ChannelGetDevice(m_handle) == -1)
+    if (BASS_ChannelGetDevice(m_handle) == 0)
         error();
 
     return BASS_ChannelGetDevice(m_handle);

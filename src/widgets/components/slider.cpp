@@ -12,11 +12,6 @@ Slider::Slider(QWidget *parent)
     connect(this, &Slider::sliderReleased, this, &Slider::onSliderReleased);
 }
 
-Slider::~Slider()
-{
-
-}
-
 bool Slider::isPressed() const
 {
     return m_pressed;

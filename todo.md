@@ -1,7 +1,7 @@
 # Things to do
 
 ## General
-- update qt creator and use [clang features](http://blog.qt.io/blog/2018/07/18/qt-creator-4-7-0-released/)
+- subclass buttons and use enumerations for icons
 
 ## Threading
 - possibly rewrite threading

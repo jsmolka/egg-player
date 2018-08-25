@@ -2,7 +2,6 @@
 
 BorderLayout::BorderLayout(int margin, int spacing, QWidget *parent)
     : QLayout(parent)
-    , m_items()
 {
     setMargin(margin);
     setSpacing(spacing);
@@ -58,7 +57,7 @@ void BorderLayout::setGeometry(const QRect &rect)
 
     QLayout::setGeometry(rect);
 
-    for (ItemWrapper *wrapper : m_items)
+    for (ItemWrapper *wrapper : qAsConst(m_items))
     {
         QLayoutItem *item = wrapper->item;
         const Position position = wrapper->position;
@@ -97,7 +96,7 @@ void BorderLayout::setGeometry(const QRect &rect)
     }
     centerHeight = rect.height() - northHeight - southHeight;
 
-    for (ItemWrapper *wrapper : m_items)
+    for (ItemWrapper *wrapper : qAsConst(m_items))
     {
         QLayoutItem *item = wrapper->item;
         const Position position = wrapper->position;

@@ -9,7 +9,6 @@ class Cover
 public:
     Cover();
     explicit Cover(int id);
-    ~Cover();
 
     static int defaultSize();
     static Cover defaultCover();

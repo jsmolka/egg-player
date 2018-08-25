@@ -29,7 +29,6 @@ public:
           int coverId,
           qint64 modified,
           QObject *parent = nullptr);
-    ~Audio();
 
     void setValid(bool valid);
     bool isValid() const;

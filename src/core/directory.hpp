@@ -14,7 +14,6 @@ class Directory : public QObject
 public:
     explicit Directory(QObject *parent = nullptr);
     explicit Directory(const Path &path, QObject *parent = nullptr);
-    ~Directory();
 
     void setPath(const Path &path);
     Path path() const;

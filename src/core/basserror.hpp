@@ -3,10 +3,6 @@
 
 class BassError
 {
-public:
-    BassError();
-    ~BassError();
-
 protected:
     static void error();
 };

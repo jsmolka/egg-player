@@ -12,7 +12,6 @@ class AudioLoaderController : public AbstractController
 public:
     explicit AudioLoaderController(QObject *parent = nullptr);
     explicit AudioLoaderController(const Files &files, QObject *parent = nullptr);
-    ~AudioLoaderController();
 
     void setFiles(const Files &files);
     Files files() const;

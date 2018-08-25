@@ -4,18 +4,10 @@
 
 FileSystem::FileSystem(QObject *parent)
     : QObject(parent)
-    , m_unique()
-    , m_dirs()
-    , m_audios()
     , m_watcher(this)
 {
     connect(&m_watcher, &FileSystemWatcher::fileChanged, this, &FileSystem::onFileChanged);
     connect(&m_watcher, &FileSystemWatcher::directoryChanged, this, &FileSystem::onDirectoryChanged);
-}
-
-FileSystem::~FileSystem()
-{
-
 }
 
 QHash<Path, Directory *> FileSystem::dirs() const
@@ -54,6 +46,7 @@ void FileSystem::watchAudio(Audio *audio)
 void FileSystem::onDirParsed(Directory *dir)
 {
     QStringList paths;
+    paths.reserve(dir->files().size() + 1);
     for (const File &file : dir->files())
     {
         paths << file;
@@ -126,7 +119,7 @@ void FileSystem::eventRenamed(const File &from, const File &to)
     m_watcher.removePath(from);
     m_watcher.addPath(to);
 
-    const UniqueFileInfo info = m_unique.value(from);
+    const UniqueFileInfo &info = m_unique.value(from);
     m_unique.remove(from);
     m_unique.insert(to, info);
 

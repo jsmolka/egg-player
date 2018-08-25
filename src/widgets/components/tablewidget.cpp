@@ -17,11 +17,6 @@ TableWidget::TableWidget(QWidget *parent)
     connect(this, &TableWidget::hoverRowChanged, m_delegate, &RowHoverDelegate::setHoverRow);
 }
 
-TableWidget::~TableWidget()
-{
-
-}
-
 void TableWidget::leaveEvent(QEvent *event)
 {
     emit hoverRowChanged(-1);

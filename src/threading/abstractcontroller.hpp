@@ -13,7 +13,6 @@ class AbstractController : public QObject
 
 public:
     explicit AbstractController(QObject *parent = nullptr);
-    ~AbstractController();
 
     QVector<AbstractWorker *> workers() const;
     QVector<QThread *> threads() const;
@@ -53,7 +52,7 @@ private:
 };
 
 template <typename T>
-static inline QVector<QVector<T>> AbstractController::chunk(const QVector<T> &vector, int n)
+inline QVector<QVector<T>> AbstractController::chunk(const QVector<T> &vector, int n)
 {
     n = qBound(1, n, vector.size());
     const int quo = vector.size() / n;
@@ -70,7 +69,7 @@ static inline QVector<QVector<T>> AbstractController::chunk(const QVector<T> &ve
 }
 
 template <typename T>
-static inline void AbstractController::removeObject(QVector<T> &vector, QObject *object)
+inline void AbstractController::removeObject(QVector<T> &vector, QObject *object)
 {
     for (auto iter = vector.begin(); iter != vector.end(); ++iter)
     {
