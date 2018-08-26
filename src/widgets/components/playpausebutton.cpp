@@ -2,6 +2,7 @@
 
 #include "constants.hpp"
 #include "iconfactory.hpp"
+#include "player.hpp"
 
 PlayPauseButton::PlayPauseButton(QWidget *parent)
     : IconButton(parent)
@@ -12,10 +13,11 @@ PlayPauseButton::PlayPauseButton(QWidget *parent)
         IconFactory::make(ICO_PAUSE)
     });
 
-    setIcon(m_icon);
+    updateIcon();
+    connect(ePlayer, &Player::stateChanged, this, &PlayPauseButton::updateIcon);
 }
 
-void PlayPauseButton::setIcon(Icon icon)
+void PlayPauseButton::setIcon(PlayPauseButton::Icon icon)
 {
     m_icon = icon;
 
@@ -31,4 +33,9 @@ void PlayPauseButton::setIcon(Icon icon)
 PlayPauseButton::Icon PlayPauseButton::icon() const
 {
     return m_icon;
+}
+
+void PlayPauseButton::updateIcon()
+{
+    setIcon(ePlayer->isPlaying() ? Pause : Play);
 }

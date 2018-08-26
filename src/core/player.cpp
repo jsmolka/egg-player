@@ -24,7 +24,7 @@ Player *Player::instance()
     return player;
 }
 
-Playlist & Player::playlist()
+Playlist &Player::playlist()
 {
     return m_playlist;
 }
@@ -39,6 +39,26 @@ bool Player::isPaused() const
     return !m_playing;
 }
 
+int Player::volume() const
+{
+    return m_volume;
+}
+
+int Player::position()
+{
+    return m_bass.stream().isValid()
+        ? m_bass.stream().position()
+        : -1;
+}
+
+void Player::createPlaylist(Audios *audios, int index)
+{
+    m_playlist.setIndex(index);
+    m_playlist.create(audios);
+
+    setAudio(m_playlist.audioAt(index));
+}
+
 void Player::setVolume(int volume)
 {
     volume = qBound(0, volume, 100);
@@ -51,11 +71,6 @@ void Player::setVolume(int volume)
     emit volumeChanged(volume);
 }
 
-int Player::volume() const
-{
-    return m_volume;
-}
-
 void Player::setPosition(int position)
 {
     if (m_bass.stream().isValid())
@@ -65,11 +80,14 @@ void Player::setPosition(int position)
     emit positionChanged(position);
 }
 
-int Player::position()
+void Player::increaseVolume()
 {
-    return m_bass.stream().isValid()
-        ? m_bass.stream().position()
-        : -1;
+    setVolume(m_volume + 1);
+}
+
+void Player::decreaseVolume()
+{
+    setVolume(m_volume - 1);
 }
 
 void Player::play()
@@ -94,25 +112,20 @@ void Player::pause()
 
 void Player::toggleState()
 {
+    if (m_playlist.isEmpty())
+        return;
+
     if (m_playing)
         pause();
     else
         play();
 }
 
-void Player::createPlaylist(Audios *audios, int index)
-{
-    m_playlist.setIndex(index);
-    m_playlist.create(audios);
-
-    setAudio(m_playlist.index());
-}
-
 void Player::onPlaylistIndexChanged(int index)
 {
     if (index != -1)
     {
-        setAudio(index);
+        setAudio(m_playlist.audioAt(index));
     }
     else
     {
@@ -144,9 +157,8 @@ void Player::callback(HSYNC handle, DWORD channel, DWORD data, void *user)
     player->playlist().next();
 }
 
-void Player::setAudio(int index)
+void Player::setAudio(Audio *audio)
 {
-    Audio *audio = m_playlist.audioAt(index);
     if (!audio || !m_bass.stream().create(audio))
         return;
 

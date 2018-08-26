@@ -13,8 +13,11 @@ public:
     void setIcon(PlayPauseButton::Icon icon);
     PlayPauseButton::Icon icon() const;
 
+private slots:
+    void updateIcon();
+
 private:
-    Icon m_icon;
+    PlayPauseButton::Icon m_icon;
 };
 
 #endif // PLAYPAUSEBUTTON_HPP

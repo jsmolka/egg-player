@@ -35,17 +35,9 @@ public:
 
 private slots:
     void onPlayerAudioChanged(Audio *audio);
-    void onPlayerStateChanged();
     void onPlayerPositionChanged(int position);
-    void onPlayerVolumeChanged(int volume);
-    void onPlayPauseButtonPressed();
     void onVolumeButtonPressed();
     void onLengthSliderMoved(int value);
-    void onLengthSliderValueChanged(int value);
-    void onVolumeSliderMoved(int value);
-    void onShortcutPlayPausePressed();
-    void onShortcutVolumeUpPressed();
-    void onShortcutVolumeDownPressed();
 
 private:
     void setup();

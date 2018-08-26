@@ -13,10 +13,11 @@ public:
     void setIcon(VolumeButton::Icon icon);
     VolumeButton::Icon icon() const;
 
-    void setVolume(int volume);
+private slots:
+    void updateIcon(int volume);
 
 private:
-    Icon m_icon;
+    VolumeButton::Icon m_icon;
 };
 
 #endif // VOLUMEBUTTON_HPP

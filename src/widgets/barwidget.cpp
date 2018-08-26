@@ -36,26 +36,25 @@ BarWidget::BarWidget(QWidget *parent)
     setupUi();
 
     connect(ePlayer, &Player::audioChanged, this, &BarWidget::onPlayerAudioChanged);
-    connect(ePlayer, &Player::stateChanged, this, &BarWidget::onPlayerStateChanged);
     connect(ePlayer, &Player::positionChanged, this, &BarWidget::onPlayerPositionChanged);
-    connect(ePlayer, &Player::volumeChanged, this, &BarWidget::onPlayerVolumeChanged);
+    connect(ePlayer, &Player::volumeChanged, &m_volumeSlider, &Slider::setValue);
 
     connect(&m_nextButton, &IconButton::pressed, &ePlayer->playlist(), &Playlist::next);
-    connect(&m_playPauseButton, &IconButton::pressed, this, &BarWidget::onPlayPauseButtonPressed);
+    connect(&m_playPauseButton, &IconButton::pressed, ePlayer, &Player::toggleState);
     connect(&m_previousButton, &IconButton::pressed, &ePlayer->playlist(), &Playlist::previous);
     connect(&m_shuffleButton, &IconButton::locked, &ePlayer->playlist(), &Playlist::setShuffle);
     connect(&m_loopButton, &IconButton::locked, &ePlayer->playlist(), &Playlist::setLoop);
     connect(&m_volumeButton, &IconButton::pressed, this, &BarWidget::onVolumeButtonPressed);
 
     connect(&m_lengthSlider, &Slider::sliderMoved, this, &BarWidget::onLengthSliderMoved);
-    connect(&m_lengthSlider, &Slider::sliderValueChanged, this, &BarWidget::onLengthSliderValueChanged);
-    connect(&m_volumeSlider, &Slider::sliderMoved, this, &BarWidget::onVolumeSliderMoved);
+    connect(&m_lengthSlider, &Slider::sliderValueChanged, ePlayer, &Player::setPosition);
+    connect(&m_volumeSlider, &Slider::sliderMoved, ePlayer, &Player::setVolume);
 
-    connect(&m_scPlayPause, &Shortcut::pressed, this, &BarWidget::onShortcutPlayPausePressed);
+    connect(&m_scPlayPause, &Shortcut::pressed, ePlayer, &Player::toggleState);
     connect(&m_scNext, &Shortcut::pressed, &ePlayer->playlist(), &Playlist::next);
     connect(&m_scPrevious, &Shortcut::pressed, &ePlayer->playlist(), &Playlist::previous);
-    connect(&m_scVolumeUp, &Shortcut::pressed, this, &BarWidget::onShortcutVolumeUpPressed);
-    connect(&m_scVolumeDown, &Shortcut::pressed, this, &BarWidget::onShortcutVolumeDownPressed);
+    connect(&m_scVolumeUp, &Shortcut::pressed, ePlayer, &Player::increaseVolume);
+    connect(&m_scVolumeDown, &Shortcut::pressed, ePlayer, &Player::decreaseVolume);
 }
 
 QLabel &BarWidget::coverLabel()
@@ -120,25 +119,16 @@ Slider &BarWidget::volumeSlider()
 
 void BarWidget::onPlayerAudioChanged(Audio *audio)
 {
+    m_lengthSlider.setEnabled(true);
+    m_lengthSlider.setRange(0, audio->duration().secs());
+
     m_coverLabel.setPixmap(audio->cover().picture(cfgBar.coverSize()));
     m_trackLabel.setText(QString("%1\n%2").arg(audio->title(), audio->artist()));
 
     m_currentTimeLabel.setText(Duration(0).toString());
     m_totalTimeLabel.setText(audio->duration().toString());
 
-    m_lengthSlider.setEnabled(true);
-    m_lengthSlider.setRange(0, audio->duration().secs());
-
     colorTransition(audio->cover().dominantColor());
-}
-
-void BarWidget::onPlayerStateChanged()
-{
-    m_playPauseButton.setIcon(
-        ePlayer->isPlaying()
-            ? PlayPauseButton::Pause
-            : PlayPauseButton::Play
-    );
 }
 
 void BarWidget::onPlayerPositionChanged(int position)
@@ -146,21 +136,8 @@ void BarWidget::onPlayerPositionChanged(int position)
     if (m_lengthSlider.isPressed() || m_lengthSlider.maximum() < position)
         return;
 
-    m_currentTimeLabel.setText(Duration(position).toString());
     m_lengthSlider.setValue(position);
-}
-
-void BarWidget::onPlayerVolumeChanged(int volume)
-{
-    m_volumeSlider.setValue(volume);
-}
-
-void BarWidget::onPlayPauseButtonPressed()
-{
-    if (ePlayer->playlist().isEmpty())
-        return;
-
-    ePlayer->toggleState();
+    m_currentTimeLabel.setText(Duration(position).toString());
 }
 
 void BarWidget::onVolumeButtonPressed()
@@ -178,34 +155,6 @@ void BarWidget::onVolumeButtonPressed()
 void BarWidget::onLengthSliderMoved(int value)
 {
     m_currentTimeLabel.setText(Duration(value).toString());
-}
-
-void BarWidget::onLengthSliderValueChanged(int value)
-{
-    ePlayer->setPosition(value);
-}
-
-void BarWidget::onVolumeSliderMoved(int value)
-{
-    m_volumeButton.setVolume(value);
-}
-
-void BarWidget::onShortcutPlayPausePressed()
-{
-    if (ePlayer->playlist().isEmpty())
-        return;
-
-    ePlayer->toggleState();
-}
-
-void BarWidget::onShortcutVolumeUpPressed()
-{
-    m_volumeButton.setVolume(ePlayer->volume() + 1);
-}
-
-void BarWidget::onShortcutVolumeDownPressed()
-{
-    m_volumeButton.setVolume(ePlayer->volume() - 1);
 }
 
 void BarWidget::setup()

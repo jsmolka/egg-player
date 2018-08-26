@@ -24,17 +24,21 @@ public:
     bool isPlaying() const;
     bool isPaused() const;
 
-    void setVolume(int volume);
     int volume() const;
-
-    void setPosition(int position);
     int position();
+
+    void createPlaylist(Audios *audios, int index = 0);
+
+public slots:
+    void setVolume(int volume);
+    void setPosition(int position);
+
+    void increaseVolume();
+    void decreaseVolume();
 
     void play();
     void pause();
     void toggleState();
-
-    void createPlaylist(Audios *audios, int index = 0);
 
 signals:
     void audioChanged(Audio *audio);
@@ -49,7 +53,7 @@ private slots:
 private:
     static void CALLBACK callback(HSYNC handle, DWORD channel, DWORD data, void *user);
 
-    void setAudio(int index);
+    void setAudio(Audio *audio);
 
     Playlist m_playlist;
     QTimer m_updateTimer;

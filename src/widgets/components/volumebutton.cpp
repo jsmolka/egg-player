@@ -16,7 +16,8 @@ VolumeButton::VolumeButton(QWidget *parent)
         IconFactory::make(ICO_VOLUME_MUTE)
     });
 
-    setVolume(cfgPlayer.volume());
+    updateIcon(ePlayer->volume());
+    connect(ePlayer, &Player::volumeChanged, this, &VolumeButton::updateIcon);
 }
 
 void VolumeButton::setIcon(VolumeButton::Icon icon)
@@ -41,16 +42,13 @@ VolumeButton::Icon VolumeButton::icon() const
     return m_icon;
 }
 
-void VolumeButton::setVolume(int volume)
+void VolumeButton::updateIcon(int volume)
 {
-    volume = qBound(0, volume, 100);
-    ePlayer->setVolume(volume);
-
     if (volume == 0)
         return setIcon(VolumeMute);
-    if (volume < 34)
+    if (volume <= 33)
         return setIcon(VolumeLow);
-    if (volume < 67)
+    if (volume <= 66)
         return setIcon(VolumeMedium);
     setIcon(VolumeFull);
 }
