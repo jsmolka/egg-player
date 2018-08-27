@@ -3,8 +3,6 @@
 Thread::Thread(QObject *parent)
     : QThread(parent)
     , m_shared(true)
-    , m_objectsMax(0)
-    , m_objectsCurrent(0)
 {
 
 }

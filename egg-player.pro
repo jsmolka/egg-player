@@ -13,6 +13,7 @@ INCLUDEPATH += \
     lib/taglib-1.11.1/include \
     src/core \
     src/threading \
+    src/threading2 \
     src/widgets \
     src/widgets/components
 

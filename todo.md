@@ -1,5 +1,8 @@
 # Things to do
 
+## General
+- no downcasts in barwidget
+
 ## Threading
 - possibly rewrite threading
 - create a threadpool to recycle threads
