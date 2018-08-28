@@ -98,7 +98,8 @@ HEADERS += \
     src/threading2/threadpool.hpp \
     src/threading2/runnable.hpp \
     src/threading2/callable.hpp \
-    src/threading2/controller.hpp
+    src/threading2/controller.hpp \
+    src/threading2/testcallable.hpp
 
 SOURCES += \
     src/main.cpp \
@@ -157,4 +158,5 @@ SOURCES += \
     src/threading2/threadpool.cpp \
     src/threading2/runnable.cpp \
     src/threading2/callable.cpp \
-    src/threading2/controller.cpp
+    src/threading2/controller.cpp \
+    src/threading2/testcallable.cpp

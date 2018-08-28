@@ -38,6 +38,8 @@ void setup(QApplication &app)
     Cache().createTables();
 }
 
+#include "testcallable.hpp"
+#include <QDebug>
 int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
@@ -45,6 +47,13 @@ int main(int argc, char *argv[])
 
     EggWidget egg;
     egg.showSavedPosition();
+
+    qDebug() << "main" << QThread::currentThread();
+
+    TestCallable *t1 = new TestCallable;
+    TestCallable *t2 = new TestCallable;
+    t1->doStuff();
+    t2->doStuff();
 
     return app.exec();
 }

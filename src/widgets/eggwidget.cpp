@@ -6,6 +6,7 @@
 #include "fileutil.hpp"
 #include "library.hpp"
 #include "player.hpp"
+#include "threadpool.hpp"
 #include "types.hpp"
 
 EggWidget::EggWidget(QWidget *parent)
@@ -27,6 +28,8 @@ void EggWidget::closeEvent(QCloseEvent *event)
     eLibrary->audioLoader().stopWorkerThreads();
     eLibrary->audioUpdater().stopWorkerThreads();
     eLibrary->coverLoader().stopWorkerThreads();
+
+    ThreadPool::instance()->interruptThreads();
 
     MainWindow::closeEvent(event);
 }
