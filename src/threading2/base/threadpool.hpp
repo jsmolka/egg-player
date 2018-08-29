@@ -20,6 +20,9 @@ public:
 public slots:
     void interruptThreads();
 
+private slots:
+    void onThreadDestroyed(QObject *object);
+
 private:
     Thread *createThread();
 

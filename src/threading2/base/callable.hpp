@@ -13,7 +13,8 @@ public:
     explicit Callable(QObject *parent = nullptr);
     ~Callable();
 
-public:
+    Thread *thread();
+
     void moveToThread(Thread *thread);
 
 protected:

@@ -13,7 +13,7 @@ INCLUDEPATH += \
     lib/taglib-1.11.1/include \
     src/core \
     src/threading \
-    src/threading2 \
+    src/threading2/base \
     src/widgets \
     src/widgets/components
 
@@ -93,13 +93,12 @@ HEADERS += \
     src/core/shortcut.hpp \
     src/widgets/components/volumebutton.hpp \
     src/widgets/components/playpausebutton.hpp \
-    src/threading2/thread.hpp \
-    src/threading2/threadedobject.hpp \
-    src/threading2/threadpool.hpp \
-    src/threading2/runnable.hpp \
-    src/threading2/callable.hpp \
-    src/threading2/controller.hpp \
-    src/threading2/testcallable.hpp
+    src/threading2/base/thread.hpp \
+    src/threading2/base/threadedobject.hpp \
+    src/threading2/base/threadpool.hpp \
+    src/threading2/base/runnable.hpp \
+    src/threading2/base/callable.hpp \
+    src/threading2/base/controller.hpp
 
 SOURCES += \
     src/main.cpp \
@@ -153,10 +152,9 @@ SOURCES += \
     src/core/shortcut.cpp \
     src/widgets/components/volumebutton.cpp \
     src/widgets/components/playpausebutton.cpp \
-    src/threading2/thread.cpp \
-    src/threading2/threadedobject.cpp \
-    src/threading2/threadpool.cpp \
-    src/threading2/runnable.cpp \
-    src/threading2/callable.cpp \
-    src/threading2/controller.cpp \
-    src/threading2/testcallable.cpp
+    src/threading2/base/thread.cpp \
+    src/threading2/base/threadedobject.cpp \
+    src/threading2/base/threadpool.cpp \
+    src/threading2/base/runnable.cpp \
+    src/threading2/base/callable.cpp \
+    src/threading2/base/controller.cpp

@@ -15,6 +15,11 @@ Callable::~Callable()
     m_thread->setObjectCount(m_thread->objectCount() - 1);
 }
 
+Thread *Callable::thread()
+{
+    return m_thread;
+}
+
 void Callable::moveToThread(Thread *thread)
 {
     m_thread = thread;
@@ -24,6 +29,9 @@ void Callable::moveToThread(Thread *thread)
 
     QObject::moveToThread(thread);
     thread->setObjectCount(thread->objectCount() + 1);
+
+    if (thread->maxObjectCount() == 0)
+        thread->setMaxObjectCount(objectsPerThread());
 
     if (!thread->isRunning())
         thread->start();

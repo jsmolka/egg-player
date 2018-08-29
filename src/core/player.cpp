@@ -56,7 +56,7 @@ void Player::createPlaylist(Audios *audios, int index)
     m_playlist.setIndex(index);
     m_playlist.create(audios);
 
-    setAudio(m_playlist.audioAt(index));
+    setAudio(m_playlist.currentAudio());
 }
 
 void Player::setVolume(int volume)

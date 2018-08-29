@@ -1,0 +1,33 @@
+#ifndef RUNNABLE_HPP
+#define RUNNABLE_HPP
+
+#include "threadedobject.hpp"
+
+class Runnable : public ThreadedObject
+{
+    Q_OBJECT
+
+public:
+    explicit Runnable(QObject *parent = nullptr);
+    ~Runnable();
+
+    Thread *thread();
+
+    void moveToThread(Thread *thread);
+
+public slots:
+    void run();
+
+signals:
+    void finished();
+
+private slots:
+    virtual void work() = 0;
+
+private:
+    static constexpr int s_objectsPerThread = 1;
+
+    Thread *m_thread;
+};
+
+#endif // RUNNABLE_HPP
