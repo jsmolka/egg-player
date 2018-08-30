@@ -5,10 +5,10 @@
 
 #include "audio.hpp"
 #include "audios.hpp"
-#include "audioloadercontroller.hpp"
 #include "audioupdatercontroller.hpp"
 #include "coverloadercontroller.hpp"
 #include "filesystem.hpp"
+#include "initialaudioloader.hpp"
 #include "types.hpp"
 
 #define eLibrary (Library::instance())
@@ -28,7 +28,6 @@ public:
 
     Audios *audios();
 
-    AudioLoaderController &audioLoader();
     AudioUpdaterController &audioUpdater();
     CoverLoaderController &coverLoader();
 
@@ -54,7 +53,7 @@ private:
     bool m_sorted;
     Audios m_audios;
     FileSystem m_fileSystem;
-    AudioLoaderController m_audioLoader;
+    InitialAudioLoader m_audioLoader;
     AudioUpdaterController m_audioUpdater;
     CoverLoaderController m_coverLoader;
 };

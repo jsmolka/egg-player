@@ -7,14 +7,16 @@ Controller::Controller(QObject *parent)
 
 }
 
-void Controller::setRunning(int running)
-{
-    m_running = running;
-}
-
 int Controller::running() const
 {
     return m_running;
+}
+
+void Controller::runWorker(Runnable *runnable)
+{
+    connect(runnable, &Runnable::finished, this, &Controller::onWorkerFinished);
+    ++m_running;
+    runnable->run();
 }
 
 void Controller::onWorkerFinished()

@@ -13,6 +13,7 @@ INCLUDEPATH += \
     lib/taglib-1.11.1/include \
     src/core \
     src/threading \
+    src/threading2 \
     src/threading2/base \
     src/widgets \
     src/widgets/components
@@ -98,7 +99,9 @@ HEADERS += \
     src/threading2/base/threadpool.hpp \
     src/threading2/base/runnable.hpp \
     src/threading2/base/callable.hpp \
-    src/threading2/base/controller.hpp
+    src/threading2/base/controller.hpp \
+    src/threading2/initialaudioloaderworker.hpp \
+    src/threading2/initialaudioloader.hpp
 
 SOURCES += \
     src/main.cpp \
@@ -157,4 +160,6 @@ SOURCES += \
     src/threading2/base/threadpool.cpp \
     src/threading2/base/runnable.cpp \
     src/threading2/base/callable.cpp \
-    src/threading2/base/controller.cpp
+    src/threading2/base/controller.cpp \
+    src/threading2/initialaudioloaderworker.cpp \
+    src/threading2/initialaudioloader.cpp

@@ -14,6 +14,11 @@ ThreadPool *ThreadPool::instance()
     return pool;
 }
 
+QVector<Thread *> ThreadPool::threads() const
+{
+    return m_threads;
+}
+
 Thread *ThreadPool::getSuitibleThread(const ThreadedObject &object)
 {
     for (Thread *thread : qAsConst(m_threads))

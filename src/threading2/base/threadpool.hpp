@@ -14,6 +14,7 @@ public:
     explicit ThreadPool(QObject *parent = nullptr);
 
     static ThreadPool *instance();
+    QVector<Thread *> threads() const;
 
     Thread *getSuitibleThread(const ThreadedObject &object);
 

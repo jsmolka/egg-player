@@ -28,6 +28,7 @@ signals:
     void interrupted();
 
 private slots:
+    void onStarted();
     void onTimeout();
 
 private:

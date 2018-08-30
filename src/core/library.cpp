@@ -17,8 +17,8 @@ Library::Library(bool sorted, QObject *parent)
     , m_audioUpdater(this)
     , m_coverLoader(this)
 {
-    connect(&m_audioLoader, &AudioLoaderController::loaded, this, &Library::insert);
-    connect(&m_audioLoader, &AudioLoaderController::finished,this, &Library::onAudioLoaderFinished);
+    connect(&m_audioLoader, &InitialAudioLoader::loaded, this, &Library::insert);
+    connect(&m_audioLoader, &InitialAudioLoader::finished,this, &Library::onAudioLoaderFinished);
 
     connect(&m_fileSystem, &FileSystem::modified, this, &Library::onFileSystemModified);
     connect(&m_fileSystem, &FileSystem::renamed, this, &Library::onFileSystemRenamed);
@@ -45,11 +45,6 @@ bool Library::isSorted() const
 Audios *Library::audios()
 {
     return &m_audios;
-}
-
-AudioLoaderController &Library::audioLoader()
-{
-    return m_audioLoader;
 }
 
 AudioUpdaterController &Library::audioUpdater()

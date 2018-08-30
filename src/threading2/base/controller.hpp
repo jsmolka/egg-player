@@ -13,8 +13,9 @@ class Controller : public QObject
 public:
     explicit Controller(QObject *parent = nullptr);
 
-    void setRunning(int running);
     int running() const;
+
+    void runWorker(Runnable *runnable);
 
 public slots:
     virtual void start() = 0;

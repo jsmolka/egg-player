@@ -4,12 +4,12 @@
 
 Thread::Thread(QObject *parent)
     : QThread(parent)
-    , m_timeout(this)
     , m_objectCount(0)
     , m_maxObjectCount(0)
 {
     m_timeout.setSingleShot(true);
 
+    connect(this, &Thread::started, this, &Thread::onStarted);
     connect(&m_timeout, &QTimer::timeout, this, &Thread::onTimeout);
 }
 
@@ -65,8 +65,16 @@ void Thread::waitToQuit()
     }
 }
 
+void Thread::onStarted()
+{
+    m_timeout.moveToThread(this);
+}
+
 void Thread::onTimeout()
 {
     if (m_objectCount == 0)
+    {
+        waitToQuit();
         deleteLater();
+    }
 }
