@@ -1,10 +1,10 @@
 #ifndef COVERLOADERWORKER_HPP
 #define COVERLOADERWORKER_HPP
 
-#include "abstractworker.hpp"
 #include "audio.hpp"
+#include "runnable.hpp"
 
-class CoverLoaderWorker : public AbstractWorker
+class CoverLoaderWorker : public Runnable
 {
     Q_OBJECT
 
@@ -15,8 +15,8 @@ public:
     void setAudios(const Audio::vector &audios);
     Audio::vector audios() const;
 
-public slots:
-    void work() override;
+private slots:
+    void work();
 
 private:
     Audio::vector m_audios;

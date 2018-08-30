@@ -25,9 +25,6 @@ EggWidget::EggWidget(QWidget *parent)
 
 void EggWidget::closeEvent(QCloseEvent *event)
 {
-    eLibrary->audioUpdater().stopWorkerThreads();
-    eLibrary->coverLoader().stopWorkerThreads();
-
     ThreadPool::instance()->interruptThreads();
 
     MainWindow::closeEvent(event);

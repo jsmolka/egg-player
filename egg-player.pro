@@ -13,8 +13,7 @@ INCLUDEPATH += \
     lib/taglib-1.11.1/include \
     src/core \
     src/threading \
-    src/threading2 \
-    src/threading2/base \
+    src/threading/base \
     src/widgets \
     src/widgets/components
 
@@ -72,19 +71,12 @@ HEADERS += \
     src/widgets/components/slider.hpp \
     src/widgets/components/smoothtablewidget.hpp \
     src/widgets/components/tablewidget.hpp \
-    src/threading/audioloaderworker.hpp \
     src/threading/coverloaderworker.hpp \
     src/core/types.hpp \
-    src/threading/abstractworker.hpp \
-    src/threading/abstractcontroller.hpp \
-    src/threading/coverloadercontroller.hpp \
-    src/threading/audioloadercontroller.hpp \
     src/core/duration.hpp \
     src/core/cover.hpp \
     src/core/playlist.hpp \
     src/core/audios.hpp \
-    src/threading/audioupdatercontroller.hpp \
-    src/threading/audioupdaterworker.hpp \
     src/core/filesystemwatcher.hpp \
     src/core/directory.hpp \
     src/core/filesystem.hpp \
@@ -94,14 +86,17 @@ HEADERS += \
     src/core/shortcut.hpp \
     src/widgets/components/volumebutton.hpp \
     src/widgets/components/playpausebutton.hpp \
-    src/threading2/base/thread.hpp \
-    src/threading2/base/threadedobject.hpp \
-    src/threading2/base/threadpool.hpp \
-    src/threading2/base/runnable.hpp \
-    src/threading2/base/callable.hpp \
-    src/threading2/base/controller.hpp \
-    src/threading2/initialaudioloaderworker.hpp \
-    src/threading2/initialaudioloader.hpp
+    src/threading/base/thread.hpp \
+    src/threading/base/threadedobject.hpp \
+    src/threading/base/threadpool.hpp \
+    src/threading/base/runnable.hpp \
+    src/threading/base/callable.hpp \
+    src/threading/base/controller.hpp \
+    src/threading/initialloaderworker.hpp \
+    src/threading/initialloader.hpp \
+    src/threading/coverloader.hpp \
+    src/threading/audioupdater.hpp \
+    src/threading/audioloader.hpp
 
 SOURCES += \
     src/main.cpp \
@@ -134,19 +129,12 @@ SOURCES += \
     src/widgets/components/slider.cpp \
     src/widgets/components/smoothtablewidget.cpp \
     src/widgets/components/tablewidget.cpp \
-    src/threading/audioloaderworker.cpp \
     src/threading/coverloaderworker.cpp \
-    src/threading/abstractworker.cpp \
-    src/threading/abstractcontroller.cpp \
-    src/threading/coverloadercontroller.cpp \
-    src/threading/audioloadercontroller.cpp \
     src/core/duration.cpp \
     src/core/cover.cpp \
     src/core/fileutil.cpp \
     src/core/playlist.cpp \
     src/core/audios.cpp \
-    src/threading/audioupdatercontroller.cpp \
-    src/threading/audioupdaterworker.cpp \
     src/core/filesystemwatcher.cpp \
     src/core/directory.cpp \
     src/core/filesystem.cpp \
@@ -155,11 +143,14 @@ SOURCES += \
     src/core/shortcut.cpp \
     src/widgets/components/volumebutton.cpp \
     src/widgets/components/playpausebutton.cpp \
-    src/threading2/base/thread.cpp \
-    src/threading2/base/threadedobject.cpp \
-    src/threading2/base/threadpool.cpp \
-    src/threading2/base/runnable.cpp \
-    src/threading2/base/callable.cpp \
-    src/threading2/base/controller.cpp \
-    src/threading2/initialaudioloaderworker.cpp \
-    src/threading2/initialaudioloader.cpp
+    src/threading/base/thread.cpp \
+    src/threading/base/threadedobject.cpp \
+    src/threading/base/threadpool.cpp \
+    src/threading/base/runnable.cpp \
+    src/threading/base/callable.cpp \
+    src/threading/base/controller.cpp \
+    src/threading/initialloaderworker.cpp \
+    src/threading/initialloader.cpp \
+    src/threading/coverloader.cpp \
+    src/threading/audioupdater.cpp \
+    src/threading/audioloader.cpp

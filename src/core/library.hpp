@@ -5,10 +5,11 @@
 
 #include "audio.hpp"
 #include "audios.hpp"
-#include "audioupdatercontroller.hpp"
-#include "coverloadercontroller.hpp"
+#include "audioupdater.hpp"
+#include "audioloader.hpp"
+#include "coverloader.hpp"
 #include "filesystem.hpp"
-#include "initialaudioloader.hpp"
+#include "initialloader.hpp"
 #include "types.hpp"
 
 #define eLibrary (Library::instance())
@@ -28,9 +29,6 @@ public:
 
     Audios *audios();
 
-    AudioUpdaterController &audioUpdater();
-    CoverLoaderController &coverLoader();
-
     void load(const Paths &paths);
 
 public slots:
@@ -42,9 +40,7 @@ signals:
 private slots:
     void onAudioLoaderFinished();
 
-    void onFileSystemModified(Audio *audio);
     void onFileSystemRenamed(Audio *audio, const File &to);
-    void onFileSystemAdded(const File &file);
     void onFileSystemRemoved(Audio *audio);
 
 private:
@@ -53,9 +49,10 @@ private:
     bool m_sorted;
     Audios m_audios;
     FileSystem m_fileSystem;
-    InitialAudioLoader m_audioLoader;
-    AudioUpdaterController m_audioUpdater;
-    CoverLoaderController m_coverLoader;
+    InitialLoader m_initialLoader;
+    AudioUpdater m_audioUpdater;
+    CoverLoader m_coverLoader;
+    AudioLoader m_audioLoader;
 };
 
 #endif // LIBRARY_HPP

@@ -1,6 +1,7 @@
 #ifndef THREADPOOL_HPP
 #define THREADPOOL_HPP
 
+#include <QTimer>
 #include <QVector>
 
 #include "thread.hpp"
@@ -22,12 +23,15 @@ public slots:
     void interruptThreads();
 
 private slots:
-    void onThreadDestroyed(QObject *object);
+    void onTimeout();
 
 private:
     Thread *createThread();
 
+    static constexpr int s_timeout = 60000;
+
     QVector<Thread *> m_threads;
+    QTimer m_timer;
 };
 
 #endif // THREADPOOL_HPP

@@ -12,7 +12,7 @@ CoverLoaderWorker::CoverLoaderWorker(QObject *parent)
 }
 
 CoverLoaderWorker::CoverLoaderWorker(const Audio::vector &audios, QObject *parent)
-    : AbstractWorker(parent)
+    : Runnable(parent)
     , m_audios(audios)
 {
 

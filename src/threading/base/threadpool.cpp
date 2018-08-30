@@ -4,8 +4,11 @@
 
 ThreadPool::ThreadPool(QObject *parent)
     : QObject(parent)
+    , m_timer(this)
 {
+    connect(&m_timer, &QTimer::timeout, this, &ThreadPool::onTimeout);
 
+    m_timer.start(s_timeout);
 }
 
 ThreadPool *ThreadPool::instance()
@@ -41,14 +44,21 @@ void ThreadPool::interruptThreads()
         thread->waitToQuit();
 }
 
-void ThreadPool::onThreadDestroyed(QObject *object)
+void ThreadPool::onTimeout()
 {
-    for (auto iter = m_threads.begin(); iter != m_threads.end(); ++iter)
+    auto iter = m_threads.begin();
+    while (iter != m_threads.end())
     {
-        if (*iter == object)
+        Thread *thread = *iter;
+        if (thread->isEmpty())
         {
-            m_threads.erase(iter);
-            return;
+            thread->waitToQuit();
+            thread->deleteLater();
+            iter = m_threads.erase(iter);
+        }
+        else
+        {
+            ++iter;
         }
     }
 }
@@ -56,7 +66,6 @@ void ThreadPool::onThreadDestroyed(QObject *object)
 Thread *ThreadPool::createThread()
 {
     Thread *thread = new Thread;
-    connect(thread, &Thread::destroyed, this, &ThreadPool::onThreadDestroyed);
     m_threads << thread;
     return thread;
 }

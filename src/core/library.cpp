@@ -12,17 +12,16 @@ Library::Library(bool sorted, QObject *parent)
     : QObject(parent)
     , m_sorted(sorted)
     , m_audios(this)
-    , m_fileSystem(this)
-    , m_audioLoader(this)
-    , m_audioUpdater(this)
+    , m_initialLoader(this)
     , m_coverLoader(this)
 {
-    connect(&m_audioLoader, &InitialAudioLoader::loaded, this, &Library::insert);
-    connect(&m_audioLoader, &InitialAudioLoader::finished,this, &Library::onAudioLoaderFinished);
+    connect(&m_initialLoader, &InitialLoader::loaded, this, &Library::insert);
+    connect(&m_initialLoader, &InitialLoader::finished,this, &Library::onAudioLoaderFinished);
 
-    connect(&m_fileSystem, &FileSystem::modified, this, &Library::onFileSystemModified);
+    connect(&m_fileSystem, &FileSystem::modified, &m_audioUpdater, &AudioUpdater::update);
     connect(&m_fileSystem, &FileSystem::renamed, this, &Library::onFileSystemRenamed);
-    connect(&m_fileSystem, &FileSystem::added, this, &Library::onFileSystemAdded);
+    connect(&m_fileSystem, &FileSystem::added, &m_audioLoader, &AudioLoader::load);
+    connect(&m_audioLoader, &AudioLoader::loaded, this, &Library::insert);
     connect(&m_fileSystem, &FileSystem::removed, this, &Library::onFileSystemRemoved);
 }
 
@@ -47,23 +46,13 @@ Audios *Library::audios()
     return &m_audios;
 }
 
-AudioUpdaterController &Library::audioUpdater()
-{
-    return m_audioUpdater;
-}
-
-CoverLoaderController &Library::coverLoader()
-{
-    return m_coverLoader;
-}
-
 void Library::load(const Paths &paths)
 {
     for (const Path &path : paths)
         m_fileSystem.addPath(path);
 
-    m_audioLoader.setFiles(m_fileSystem.globAudios());
-    m_audioLoader.start();
+    m_initialLoader.setFiles(m_fileSystem.globAudios());
+    m_initialLoader.start();
 }
 
 void Library::insert(Audio *audio)
@@ -83,21 +72,9 @@ void Library::onAudioLoaderFinished()
     m_coverLoader.start();
 }
 
-void Library::onFileSystemModified(Audio *audio)
-{
-    m_audioUpdater.setAudio(audio);
-    m_audioUpdater.start();
-}
-
 void Library::onFileSystemRenamed(Audio *audio, const File &to)
 {
     audio->setFile(to);
-}
-
-void Library::onFileSystemAdded(const File &file)
-{
-    m_audioLoader.setFiles(Files() << file);
-    m_audioLoader.start();
 }
 
 void Library::onFileSystemRemoved(Audio *audio)

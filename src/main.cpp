@@ -8,6 +8,7 @@
 #include "eggwidget.hpp"
 #include "library.hpp"
 #include "player.hpp"
+#include "types.hpp"
 
 QFont font(double size)
 {
@@ -36,6 +37,9 @@ void setup(QApplication &app)
     ePlayer->playlist().setShuffle(cfgPlayer.shuffle());
 
     Cache().createTables();
+
+    qRegisterMetaType<File>("File");
+    qRegisterMetaType<Path>("Path");
 }
 
 int main(int argc, char *argv[])

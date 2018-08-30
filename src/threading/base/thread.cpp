@@ -7,10 +7,7 @@ Thread::Thread(QObject *parent)
     , m_objectCount(0)
     , m_maxObjectCount(0)
 {
-    m_timeout.setSingleShot(true);
 
-    connect(this, &Thread::started, this, &Thread::onStarted);
-    connect(&m_timeout, &QTimer::timeout, this, &Thread::onTimeout);
 }
 
 void Thread::setObjectCount(int count)
@@ -19,8 +16,8 @@ void Thread::setObjectCount(int count)
 
     if (count == 0)
     {
+        quit();
         setMaxObjectCount(0);
-        m_timeout.start(s_threadTimeout);
     }
 }
 
@@ -57,24 +54,10 @@ void Thread::interrupt()
 void Thread::waitToQuit()
 {
     quit();
-    if (!wait(s_waitTimeout))
+    if (!wait(s_timeout))
     {
-        LOG("Could not stop thread within %1 ms", s_waitTimeout);
+        LOG("Could not stop thread within %1 ms", s_timeout);
         terminate();
         wait();
-    }
-}
-
-void Thread::onStarted()
-{
-    m_timeout.moveToThread(this);
-}
-
-void Thread::onTimeout()
-{
-    if (m_objectCount == 0)
-    {
-        waitToQuit();
-        deleteLater();
     }
 }

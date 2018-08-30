@@ -2,6 +2,7 @@
 #define TYPES_HPP
 
 #include <QString>
+#include <QMetaType>
 #include <QVector>
 
 using File = QString;

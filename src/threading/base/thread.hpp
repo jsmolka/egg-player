@@ -27,15 +27,9 @@ public slots:
 signals:
     void interrupted();
 
-private slots:
-    void onStarted();
-    void onTimeout();
-
 private:
-    static constexpr int s_waitTimeout = 2500;
-    static constexpr int s_threadTimeout = 30000;
+    static constexpr int s_timeout = 2500;
 
-    QTimer m_timeout;
     int m_objectCount;
     int m_maxObjectCount;
 };
