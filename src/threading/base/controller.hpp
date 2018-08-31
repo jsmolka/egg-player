@@ -12,6 +12,7 @@ class Controller : public QObject
 
 public:
     explicit Controller(QObject *parent = nullptr);
+    virtual ~Controller() = default;
 
     int running() const;
 

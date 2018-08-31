@@ -24,7 +24,7 @@ public:
 private:
     void setup();
 
-    int m_duration;
+    int m_duration{250};
 };
 
 #endif // COLORTRANSITIONWIDGET_HPP

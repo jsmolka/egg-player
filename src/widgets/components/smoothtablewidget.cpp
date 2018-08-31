@@ -7,11 +7,6 @@
 
 SmoothTableWidget::SmoothTableWidget(QWidget *parent)
     : QTableWidget(parent)
-    , m_fps(144)
-    , m_duration(145)
-    , m_acceleration(0.1)
-    , m_smallStepRatio(0.33)
-    , m_bigStepRatio(3.0)
     , m_smallStepModifier(Qt::ControlModifier)
     , m_bigStepModifier(Qt::ShiftModifier)
     , m_totalSteps(0)

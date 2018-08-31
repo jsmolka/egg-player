@@ -11,6 +11,7 @@ class ThreadedObject : public QObject
 
 public:
     explicit ThreadedObject(QObject *parent = nullptr);
+    virtual ~ThreadedObject() = default;
 
     void setObjectsPerThread(int objects);
     int objectsPerThread() const;

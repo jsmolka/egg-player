@@ -10,9 +10,3 @@ A Groove Music like music player.
 - [x] proper multithreading
 - [x] global shortcuts
 - [x] reactive cache
-
-## Changes since lastest release
-- add reactive cache
-- significantly improve audio caching
-- significantly improve cover caching 
-- change icon hover style

@@ -20,7 +20,7 @@ signals:
     void loaded(Audio *audio);
 
 private slots:
-    void work();
+    void work() override;
 
 private:
     Files m_files;

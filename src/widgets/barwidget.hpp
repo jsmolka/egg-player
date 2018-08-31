@@ -23,12 +23,12 @@ public:
     QLabel &currentTimeLabel();
     QLabel &totalTimeLabel();
 
-    IconButton &playPauseButton();
+    PlayPauseButton &playPauseButton();
     IconButton &nextButton();
     IconButton &previousButton();
     IconButton &shuffleButton();
     IconButton &loopButton();
-    IconButton &volumeButton();
+    VolumeButton &volumeButton();
 
     Slider &lengthSlider();
     Slider &volumeSlider();

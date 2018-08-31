@@ -1,6 +1,8 @@
 #ifndef EGGWIDGET_HPP
 #define EGGWIDGET_HPP
 
+#include <QDropEvent>
+
 #include "barwidget.hpp"
 #include "librarywidget.hpp"
 #include "mainwindow.hpp"

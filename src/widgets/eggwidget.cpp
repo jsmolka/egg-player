@@ -20,7 +20,7 @@ EggWidget::EggWidget(QWidget *parent)
     connect(&m_library, &LibraryWidget::doubleClicked, this, &EggWidget::onLibraryDoubleClicked);
 
     m_library.setAudios(eLibrary->audios());
-    eLibrary->load(cfgLibrary.paths());
+    eLibrary->initialLoad(cfgLibrary.paths());
 }
 
 void EggWidget::closeEvent(QCloseEvent *event)

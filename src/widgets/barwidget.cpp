@@ -77,7 +77,7 @@ QLabel &BarWidget::totalTimeLabel()
     return m_totalTimeLabel;
 }
 
-IconButton &BarWidget::playPauseButton()
+PlayPauseButton &BarWidget::playPauseButton()
 {
     return m_playPauseButton;
 }
@@ -102,7 +102,7 @@ IconButton &BarWidget::loopButton()
     return m_loopButton;
 }
 
-IconButton &BarWidget::volumeButton()
+VolumeButton &BarWidget::volumeButton()
 {
     return m_volumeButton;
 }

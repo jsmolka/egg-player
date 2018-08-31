@@ -36,6 +36,20 @@ void AudioLoader::load(const File &file)
         audio->cover().setId(0);
         m_cache.updateAudio(audio);
     }
+    if (!audio->cover().isValid())
+    {
+        if (isInterrupted())
+            return;
+
+        const QPixmap cover = Cover::loadFromFile(audio->wideFile());
+
+        static QMutex mutex;
+        const QMutexLocker locker(&mutex);
+
+        const int id = m_cache.insertCover(cover);
+        if (id > 0)
+            m_cache.setAudioCoverId(audio, id);
+    }
     audio->moveToThread(qApp->thread());
     emit loaded(audio);
 }

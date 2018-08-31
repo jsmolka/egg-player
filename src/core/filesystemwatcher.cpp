@@ -1,17 +1,14 @@
 #include "filesystemwatcher.hpp"
 
-#include <QtGlobal>
-
 FileSystemWatcher::FileSystemWatcher(QObject *parent)
     : QObject(parent)
     , m_watcher(this)
     , m_timer(this)
-    , m_bufferDuration(200)
 {
     connect(&m_watcher, &QFileSystemWatcher::fileChanged, this, &FileSystemWatcher::fileChanged);
     connect(&m_watcher, &QFileSystemWatcher::directoryChanged, this, &FileSystemWatcher::onDirectoryChanged);
-
     connect(&m_timer, &QTimer::timeout, this, &FileSystemWatcher::onTimeout);
+
     m_timer.setSingleShot(true);
 }
 

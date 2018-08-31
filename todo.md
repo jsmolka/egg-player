@@ -1,15 +1,7 @@
 # Things to do
-
-## General
-- no downcasts in barwidget
-
-## Threading
-- possibly rewrite threading
-- create a threadpool to recycle threads
-- try using multiple workers per thread
-- create an easy abstract class to run objects in threads
   
 ## User interface
+- scale screen by device pixel ratio
 - do not show certain info at low size
 - fuzzy library searching
 - [expand scrollbar](https://stackoverflow.com/a/23677355/7057528)

@@ -11,11 +11,11 @@ class Callable : public ThreadedObject
 
 public:
     explicit Callable(QObject *parent = nullptr);
-    ~Callable();
+    ~Callable() override;
 
     Thread *thread();
 
-    void moveToThread(Thread *thread);
+    void moveToThread(Thread *thread) override;
 
 protected:
     void invoke(QObject *object, const char *method, QGenericArgument arg = QGenericArgument(nullptr));

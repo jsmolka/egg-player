@@ -9,11 +9,11 @@ class Runnable : public ThreadedObject
 
 public:
     explicit Runnable(QObject *parent = nullptr);
-    ~Runnable();
+    ~Runnable() override;
 
     Thread *thread();
 
-    void moveToThread(Thread *thread);
+    void moveToThread(Thread *thread) override;
 
 public slots:
     void run();

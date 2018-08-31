@@ -5,7 +5,6 @@
 
 ColorTransitionWidget::ColorTransitionWidget(QWidget *parent)
     : QWidget(parent)
-    , m_duration(250)
 {
     setup();
 }

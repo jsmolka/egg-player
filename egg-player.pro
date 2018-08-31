@@ -12,6 +12,8 @@ INCLUDEPATH += \
     lib/bass-2.4/include \
     lib/taglib-1.11.1/include \
     src/core \
+    src/core/bass \
+    src/core/config \
     src/threading \
     src/threading/base \
     src/widgets \
@@ -42,17 +44,17 @@ DEFINES *= QT_USE_QSTRINGBUILDER
 
 HEADERS += \
     src/core/audio.hpp \
-    src/core/bass.hpp \
-    src/core/basserror.hpp \
-    src/core/bassstream.hpp \
+    src/core/bass/bass.hpp \
+    src/core/bass/basserror.hpp \
+    src/core/bass/bassstream.hpp \
     src/core/cache.hpp \
     src/core/constants.hpp \
-    src/core/config.hpp \
-    src/core/configapp.hpp \
-    src/core/configbar.hpp \
-    src/core/configlibrary.hpp \
-    src/core/configplayer.hpp \
-    src/core/configshortcut.hpp \
+    src/core/config/config.hpp \
+    src/core/config/configapp.hpp \
+    src/core/config/configbar.hpp \
+    src/core/config/configlibrary.hpp \
+    src/core/config/configplayer.hpp \
+    src/core/config/configshortcut.hpp \
     src/core/library.hpp \
     src/core/logger.hpp \
     src/core/player.hpp \
@@ -82,7 +84,7 @@ HEADERS += \
     src/core/filesystem.hpp \
     src/core/bimap.hpp \
     src/core/uniquefileinfo.hpp \
-    src/core/configitem.hpp \
+    src/core/config/configitem.hpp \
     src/core/shortcut.hpp \
     src/widgets/components/volumebutton.hpp \
     src/widgets/components/playpausebutton.hpp \
@@ -96,22 +98,23 @@ HEADERS += \
     src/threading/initialloader.hpp \
     src/threading/coverloader.hpp \
     src/threading/audioupdater.hpp \
-    src/threading/audioloader.hpp
+    src/threading/audioloader.hpp \
+    src/threading/base/expiringthread.hpp
 
 SOURCES += \
     src/main.cpp \
     src/core/audio.cpp \
-    src/core/bass.cpp \
-    src/core/basserror.cpp \
-    src/core/bassstream.cpp \
+    src/core/bass/bass.cpp \
+    src/core/bass/basserror.cpp \
+    src/core/bass/bassstream.cpp \
     src/core/cache.cpp \
     src/core/constants.cpp \
-    src/core/config.cpp \
-    src/core/configapp.cpp \
-    src/core/configbar.cpp \
-    src/core/configlibrary.cpp \
-    src/core/configplayer.cpp \
-    src/core/configshortcut.cpp \
+    src/core/config/config.cpp \
+    src/core/config/configapp.cpp \
+    src/core/config/configbar.cpp \
+    src/core/config/configlibrary.cpp \
+    src/core/config/configplayer.cpp \
+    src/core/config/configshortcut.cpp \
     src/core/library.cpp \
     src/core/logger.cpp \
     src/core/player.cpp \
@@ -139,7 +142,7 @@ SOURCES += \
     src/core/directory.cpp \
     src/core/filesystem.cpp \
     src/core/uniquefileinfo.cpp \
-    src/core/configitem.cpp \
+    src/core/config/configitem.cpp \
     src/core/shortcut.cpp \
     src/widgets/components/volumebutton.cpp \
     src/widgets/components/playpausebutton.cpp \
@@ -153,4 +156,5 @@ SOURCES += \
     src/threading/initialloader.cpp \
     src/threading/coverloader.cpp \
     src/threading/audioupdater.cpp \
-    src/threading/audioloader.cpp
+    src/threading/audioloader.cpp \
+    src/threading/base/expiringthread.cpp

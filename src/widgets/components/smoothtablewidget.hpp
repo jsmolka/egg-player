@@ -47,11 +47,11 @@ private:
 
     double subDelta(double delta, int stepsLeft) const;
 
-    int m_fps;
-    int m_duration;
-    double m_acceleration;
-    double m_smallStepRatio;
-    double m_bigStepRatio;
+    int m_fps{144};
+    int m_duration{145};
+    double m_acceleration{0.1};
+    double m_smallStepRatio{0.33};
+    double m_bigStepRatio{3.33};
 
     Qt::KeyboardModifier m_smallStepModifier;
     Qt::KeyboardModifier m_bigStepModifier;

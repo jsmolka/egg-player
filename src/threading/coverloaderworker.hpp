@@ -16,7 +16,7 @@ public:
     Audio::vector audios() const;
 
 private slots:
-    void work();
+    void work() override;
 
 private:
     Audio::vector m_audios;

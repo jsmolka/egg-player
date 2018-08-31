@@ -38,7 +38,7 @@ private:
     QSet<Path> m_buffer;
     QTimer m_timer;
 
-    int m_bufferDuration;
+    int m_bufferDuration{1000};
 };
 
 #endif // FILESYSTEMWATCHER_HPP

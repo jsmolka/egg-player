@@ -1,10 +1,9 @@
 #ifndef THREADPOOL_HPP
 #define THREADPOOL_HPP
 
-#include <QTimer>
 #include <QVector>
 
-#include "thread.hpp"
+#include "expiringthread.hpp"
 #include "threadedobject.hpp"
 
 class ThreadPool : public QObject
@@ -15,7 +14,6 @@ public:
     explicit ThreadPool(QObject *parent = nullptr);
 
     static ThreadPool *instance();
-    QVector<Thread *> threads() const;
 
     Thread *getSuitibleThread(const ThreadedObject &object);
 
@@ -23,15 +21,12 @@ public slots:
     void interruptThreads();
 
 private slots:
-    void onTimeout();
+    void onThreadExpired(ExpiringThread *thread);
 
 private:
-    Thread *createThread();
+    ExpiringThread *createThread();
 
-    static constexpr int s_timeout = 60000;
-
-    QVector<Thread *> m_threads;
-    QTimer m_timer;
+    QVector<ExpiringThread *> m_threads;
 };
 
 #endif // THREADPOOL_HPP

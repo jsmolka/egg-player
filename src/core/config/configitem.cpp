@@ -42,7 +42,7 @@ void ConfigItem::setDefault(const QString &key, const QJsonValue &value)
 
 float ConfigItem::scale(float value)
 {
-    const static float factor = static_cast<float>(GetScaleFactorForDevice(DEVICE_PRIMARY)) / 100.0;
+    const static float factor = static_cast<float>(GetScaleFactorForDevice(DEVICE_PRIMARY)) / 100.0f;
     return factor * value;
 }
 

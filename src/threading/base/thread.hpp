@@ -2,7 +2,6 @@
 #define THREAD_HPP
 
 #include <QThread>
-#include <QTimer>
 
 class Thread : public QThread
 {
@@ -26,6 +25,7 @@ public slots:
 
 signals:
     void interrupted();
+    void emptied();
 
 private:
     static constexpr int s_timeout = 2500;

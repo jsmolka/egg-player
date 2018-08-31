@@ -71,9 +71,9 @@ void UniqueFileInfo::readInfo(const File &file)
         return;
     }
 
-    m_volume = info.dwVolumeSerialNumber;
     m_low = info.nFileIndexLow;
     m_high = info.nFileIndexHigh;
+    m_volume = info.dwVolumeSerialNumber;
 
     if (!CloseHandle(handle))
         LOG("Cannot close handle %1", file);

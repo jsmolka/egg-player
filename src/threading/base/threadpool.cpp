@@ -4,11 +4,8 @@
 
 ThreadPool::ThreadPool(QObject *parent)
     : QObject(parent)
-    , m_timer(this)
 {
-    connect(&m_timer, &QTimer::timeout, this, &ThreadPool::onTimeout);
 
-    m_timer.start(s_timeout);
 }
 
 ThreadPool *ThreadPool::instance()
@@ -17,55 +14,45 @@ ThreadPool *ThreadPool::instance()
     return pool;
 }
 
-QVector<Thread *> ThreadPool::threads() const
-{
-    return m_threads;
-}
-
 Thread *ThreadPool::getSuitibleThread(const ThreadedObject &object)
 {
-    for (Thread *thread : qAsConst(m_threads))
+    for (ExpiringThread *thread : qAsConst(m_threads))
     {
-        if (thread->isEmpty())
-            return thread;
+        if (thread->thread()->isEmpty())
+            return thread->thread();
 
-        if (thread->maxObjectCount() == object.objectsPerThread() && !thread->isFull())
-            return thread;
+        if (thread->thread()->maxObjectCount() == object.objectsPerThread()
+                && !thread->thread()->isFull())
+            return thread->thread();
     }
-    return createThread();
+    return createThread()->thread();
 }
 
 void ThreadPool::interruptThreads()
 {
-    for (Thread *thread : qAsConst(m_threads))
-        thread->interrupt();
+    for (ExpiringThread *thread : qAsConst(m_threads))
+        thread->thread()->interrupt();
 
-    for (Thread *thread : qAsConst(m_threads))
-        thread->waitToQuit();
+    for (ExpiringThread *thread : qAsConst(m_threads))
+        thread->thread()->waitToQuit();
 }
 
-void ThreadPool::onTimeout()
+void ThreadPool::onThreadExpired(ExpiringThread *thread)
 {
-    auto iter = m_threads.begin();
-    while (iter != m_threads.end())
+    for (auto iter = m_threads.begin(); iter != m_threads.end(); ++iter)
     {
-        Thread *thread = *iter;
-        if (thread->isEmpty())
+        if (*iter == thread)
         {
-            thread->waitToQuit();
-            thread->deleteLater();
-            iter = m_threads.erase(iter);
-        }
-        else
-        {
-            ++iter;
+            m_threads.erase(iter);
+            break;
         }
     }
 }
 
-Thread *ThreadPool::createThread()
+ExpiringThread *ThreadPool::createThread()
 {
-    Thread *thread = new Thread;
+    ExpiringThread *thread = new ExpiringThread(this);
+    connect(thread, &ExpiringThread::expired, this, &ThreadPool::onThreadExpired);
     m_threads << thread;
     return thread;
 }

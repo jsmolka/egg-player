@@ -17,7 +17,7 @@ public:
     Files files() const;
 
 public slots:
-    void start();
+    void start() override;
 
 signals:
     void loaded(Audio *audio);

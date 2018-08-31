@@ -29,7 +29,7 @@ public:
 
     Audios *audios();
 
-    void load(const Paths &paths);
+    void initialLoad(const Paths &paths);
 
 public slots:
     void insert(Audio *audio);

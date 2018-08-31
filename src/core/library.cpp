@@ -46,7 +46,7 @@ Audios *Library::audios()
     return &m_audios;
 }
 
-void Library::load(const Paths &paths)
+void Library::initialLoad(const Paths &paths)
 {
     for (const Path &path : paths)
         m_fileSystem.addPath(path);
