@@ -53,8 +53,8 @@ private:
     double m_smallStepRatio{0.33};
     double m_bigStepRatio{3.33};
 
-    Qt::KeyboardModifier m_smallStepModifier{Qt::ShiftModifier};
-    Qt::KeyboardModifier m_bigStepModifier{Qt::ControlModifier};
+    Qt::KeyboardModifier m_smallStepModifier{Qt::ControlModifier};
+    Qt::KeyboardModifier m_bigStepModifier{Qt::ShiftModifier};
 
     int m_totalSteps;
     QVector<QPair<double, int>> m_stepsLeft;
