@@ -1,5 +1,7 @@
 #include "cache.hpp"
 
+#include <QMutex>
+#include <QMutexLocker>
 #include <QSqlError>
 #include <QThread>
 #include <QVariant>
@@ -173,6 +175,13 @@ void Cache::setAudioCoverId(Audio *audio, int id)
     audio->cover().setId(id);
 }
 
+void Cache::updateAudioCover(Audio *audio, const QPixmap &cover)
+{
+    const int id = insertCover(cover);
+    if (id > 0)
+        setAudioCoverId(audio, id);
+}
+
 QPixmap Cache::coverById(int id)
 {
     m_query.prepare(
@@ -291,6 +300,9 @@ void Cache::insertDefaultCover()
 
 int Cache::insertByteCover(const QByteArray &bytes)
 {
+    static QMutex mutex;
+    const QMutexLocker locker(&mutex);
+
     const int id = lastCoverId() + 1;
 
     m_query.prepare(

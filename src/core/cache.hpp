@@ -26,6 +26,7 @@ public:
     int insertCover(const QPixmap &cover);
     void updateCover(const QPixmap &cover);
     void setAudioCoverId(Audio *audio, int id);
+    void updateAudioCover(Audio *audio, const QPixmap &cover);
 
     QPixmap coverById(int id);
 

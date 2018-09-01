@@ -1,8 +1,6 @@
 #include "initialloaderworker.hpp"
 
 #include <QApplication>
-#include <QMutex>
-#include <QMutexLocker>
 
 #include "cache.hpp"
 
@@ -51,8 +49,6 @@ void InitialLoaderWorker::work()
             if (isInterrupted())
                 return;
 
-            static QMutex mutex;
-            const QMutexLocker locker(&mutex);
             cache.insertAudio(audio);
         }
         if (audio->isOutdated())

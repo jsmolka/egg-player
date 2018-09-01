@@ -7,8 +7,6 @@
 
 SmoothTableWidget::SmoothTableWidget(QWidget *parent)
     : QTableWidget(parent)
-    , m_smallStepModifier(Qt::ControlModifier)
-    , m_bigStepModifier(Qt::ShiftModifier)
     , m_totalSteps(0)
     , m_stepsLeft(0)
     , m_smoothTimer(this)

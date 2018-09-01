@@ -1,8 +1,6 @@
 #include "audioloader.hpp"
 
 #include <QApplication>
-#include <QMutex>
-#include <QMutexLocker>
 
 AudioLoader::AudioLoader(QObject *parent)
     : Callable(parent)
@@ -23,8 +21,6 @@ void AudioLoader::load(const File &file)
         if (isInterrupted())
             return;
 
-        static QMutex mutex;
-        const QMutexLocker locker(&mutex);
         m_cache.insertAudio(audio);
     }
     if (audio->isOutdated())
@@ -42,13 +38,7 @@ void AudioLoader::load(const File &file)
             return;
 
         const QPixmap cover = Cover::loadFromFile(audio->wideFile());
-
-        static QMutex mutex;
-        const QMutexLocker locker(&mutex);
-
-        const int id = m_cache.insertCover(cover);
-        if (id > 0)
-            m_cache.setAudioCoverId(audio, id);
+        m_cache.updateAudioCover(audio, cover);
     }
     audio->moveToThread(qApp->thread());
     emit loaded(audio);

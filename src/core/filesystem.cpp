@@ -1,7 +1,5 @@
 #include "filesystem.hpp"
 
-#include <QHashIterator>
-
 FileSystem::FileSystem(QObject *parent)
     : QObject(parent)
     , m_watcher(this)

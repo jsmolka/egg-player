@@ -2,8 +2,6 @@
 
 #include <QApplication>
 
-#include <QDebug>
-
 ExpiringThread::ExpiringThread(QObject *parent)
     : QObject(parent)
     , m_thread(new Thread)

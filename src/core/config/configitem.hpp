@@ -9,7 +9,7 @@ class ConfigItem
 public:
     ConfigItem();
     explicit ConfigItem(const QJsonObject &object);
-    virtual ~ConfigItem();
+    virtual ~ConfigItem() = default;
 
     QJsonObject object() const;
 

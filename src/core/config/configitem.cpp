@@ -14,11 +14,6 @@ ConfigItem::ConfigItem(const QJsonObject &object)
 
 }
 
-ConfigItem::~ConfigItem()
-{
-
-}
-
 QJsonObject ConfigItem::object() const
 {
     return m_object;

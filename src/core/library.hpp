@@ -50,8 +50,8 @@ private:
     Audios m_audios;
     FileSystem m_fileSystem;
     InitialLoader m_initialLoader;
-    AudioUpdater m_audioUpdater;
     CoverLoader m_coverLoader;
+    AudioUpdater m_audioUpdater;
     AudioLoader m_audioLoader;
 };
 
