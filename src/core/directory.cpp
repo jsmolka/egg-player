@@ -1,7 +1,6 @@
 #include "directory.hpp"
 
 #include <QDirIterator>
-#include <QtGlobal>
 
 Directory::Directory(QObject *parent)
     : Directory(Path(), parent)

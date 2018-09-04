@@ -1,5 +1,8 @@
 # Things to do
   
+## General
+- make FileSystem more robust
+  
 ## User interface
 - scale screen by device pixel ratio
 - do not show certain info at low size
