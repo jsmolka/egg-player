@@ -122,7 +122,7 @@ void BarWidget::onPlayerAudioChanged(Audio *audio)
     m_lengthSlider.setEnabled(true);
     m_lengthSlider.setRange(0, audio->duration().secs());
 
-    m_coverLabel.setPixmap(audio->cover().picture(cfgBar.coverSize()));
+    m_coverLabel.setPixmap(audio->cover().pixmap(cfgBar.coverSize()));
     m_trackLabel.setText(QString("%1\n%2").arg(audio->title(), audio->artist()));
 
     m_currentTimeLabel.setText(Duration(0).toString());
@@ -133,7 +133,9 @@ void BarWidget::onPlayerAudioChanged(Audio *audio)
 
 void BarWidget::onPlayerPositionChanged(int position)
 {
-    if (m_lengthSlider.isPressed() || m_lengthSlider.maximum() < position)
+    if (ePlayer->playlist().isEmpty()
+            || m_lengthSlider.isPressed()
+            || m_lengthSlider.maximum() < position)
         return;
 
     m_lengthSlider.setValue(position);
@@ -143,7 +145,6 @@ void BarWidget::onPlayerPositionChanged(int position)
 void BarWidget::onVolumeButtonPressed()
 {
     const bool visible = m_volumeSlider.isVisible();
-
     m_volumeSlider.setVisible(!visible);
     m_previousButton.setVisible(visible);
     m_playPauseButton.setVisible(visible);
@@ -177,7 +178,7 @@ void BarWidget::setupCss()
 
 void BarWidget::setupUi()
 {
-    m_coverLabel.setPixmap(Cover::defaultCover().picture(cfgBar.coverSize()));
+    m_coverLabel.setPixmap(Cover::defaultCover().pixmap(cfgBar.coverSize()));
     m_coverLabel.setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
     m_trackLabel.setFixedWidth(cfgBar.trackWidth());
     m_trackLabel.setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);

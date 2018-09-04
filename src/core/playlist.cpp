@@ -76,7 +76,7 @@ void Playlist::setShuffle(bool shuffle)
     m_shuffle = shuffle;
     cfgPlayer.setShuffle(shuffle);
 
-    if (m_indices.isEmpty())
+    if (isEmpty())
         return;
 
     if (shuffle)

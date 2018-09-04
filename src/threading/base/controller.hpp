@@ -28,7 +28,7 @@ protected:
     template <typename T>
     static inline QVector<QVector<T>> chunk(const QVector<T> &vector, int n);
 
-private:
+private slots:
     void onWorkerFinished();
 
 private:

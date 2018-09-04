@@ -48,7 +48,7 @@ bool Bass::setVolume(float volume)
 
 float Bass::volume()
 {
-    if (BASS_GetVolume() == -1)
+    if (qFuzzyCompare(BASS_GetVolume(), -1))
         error();
 
     return BASS_GetVolume();

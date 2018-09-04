@@ -8,8 +8,8 @@ AudioUpdater::AudioUpdater(QObject *parent)
 
 void AudioUpdater::update(Audio *audio)
 {
-    audio->cover().setId(0);
     audio->update();
+    audio->cover().invalidate();
     m_cache.updateAudio(audio);
 
     if (isInterrupted())

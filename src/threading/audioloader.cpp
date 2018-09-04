@@ -29,7 +29,7 @@ void AudioLoader::load(const File &file)
             return;
 
         audio->update();
-        audio->cover().setId(0);
+        audio->cover().invalidate();
         m_cache.updateAudio(audio);
     }
     if (!audio->cover().isValid())

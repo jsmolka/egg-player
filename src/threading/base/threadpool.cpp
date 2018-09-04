@@ -16,14 +16,15 @@ ThreadPool *ThreadPool::instance()
 
 Thread *ThreadPool::getSuitibleThread(const ThreadedObject &object)
 {
-    for (ExpiringThread *thread : qAsConst(m_threads))
+    for (ExpiringThread *expiring : qAsConst(m_threads))
     {
-        if (thread->thread()->isEmpty())
-            return thread->thread();
+        Thread *thread = expiring->thread();
+        if (thread->isEmpty())
+            return thread;
 
-        if (thread->thread()->maxObjectCount() == object.objectsPerThread()
-                && !thread->thread()->isFull())
-            return thread->thread();
+        if (thread->maxObjectCount() == object.objectsPerThread()
+                && !thread->isFull())
+            return thread;
     }
     return createThread()->thread();
 }
@@ -44,7 +45,7 @@ void ThreadPool::onThreadExpired(ExpiringThread *thread)
         if (*iter == thread)
         {
             m_threads.erase(iter);
-            break;
+            return;
         }
     }
 }

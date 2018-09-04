@@ -57,7 +57,7 @@ void InitialLoaderWorker::work()
                 return;
 
             audio->update();
-            audio->cover().setId(0);
+            audio->cover().invalidate();
             cache.updateAudio(audio);
         }
         audio->moveToThread(qApp->thread());

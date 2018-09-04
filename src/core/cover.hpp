@@ -15,12 +15,13 @@ public:
     static QPixmap loadFromFile(const wchar_t *file);
     static QPixmap scale(const QPixmap &pixmap, int size, bool fast = false);
 
+    void invalidate();
     bool isValid() const;
 
     void setId(int id);
     int id() const;
 
-    QPixmap picture(int size = -1);
+    QPixmap pixmap(int size = -1);
     QColor dominantColor();
 
 private:

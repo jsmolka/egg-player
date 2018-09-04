@@ -136,7 +136,7 @@ void Player::onPlaylistIndexChanged(int index)
 
 void Player::update()
 {
-    if (!m_bass.stream().isValid() || !m_playing)
+    if (!m_playing || !m_bass.stream().isValid())
         return;
 
     const int position = this->position();

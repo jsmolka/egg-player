@@ -45,6 +45,11 @@ QPixmap Cover::scale(const QPixmap &pixmap, int size, bool fast)
     return pixmap.scaled(size, size, Qt::KeepAspectRatio, fast ? Qt::FastTransformation : Qt::SmoothTransformation);
 }
 
+void Cover::invalidate()
+{
+    m_id = 0;
+}
+
 bool Cover::isValid() const
 {
     return m_id > 0;
@@ -60,7 +65,7 @@ int Cover::id() const
     return m_id;
 }
 
-QPixmap Cover::picture(int size)
+QPixmap Cover::pixmap(int size)
 {
     const int id = qMax(1, m_id);
     static QHash<int, QPixmap> cache;
@@ -77,7 +82,7 @@ QColor Cover::dominantColor()
     static QHash<int, QColor> cache;
     if (!cache.contains(id))
     {
-        const QColor raw = rawDominantColor(scale(picture(), s_dominantSize, true).toImage());
+        const QColor raw = rawDominantColor(scale(pixmap(), s_dominantSize, true).toImage());
         cache.insert(id, adjustDominantColor(raw).toRgb());
     }
     return cache.value(id);
@@ -162,7 +167,7 @@ QColor Cover::rawDominantColor(const QImage &image)
         }
     }
 
-    const static auto dominantColor = [&range](std::array<HsvRange, range> hsvs) -> QColor
+    const static auto dominantColor = [](std::array<HsvRange, range> hsvs) -> QColor
     {
         int max = 0;
         HsvRange most = hsvs[0];

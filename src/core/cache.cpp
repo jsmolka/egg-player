@@ -135,8 +135,6 @@ void Cache::updateAudio(Audio *audio, const QString &newPath)
 
     if (!m_query.exec())
         error();
-
-    audio->setCached(true);
 }
 
 int Cache::insertCover(const QPixmap &cover)
@@ -196,7 +194,7 @@ QPixmap Cache::coverById(int id)
     QPixmap cover;
     if (m_query.first())
     {
-        QByteArray bytes = m_query.value(0).toByteArray();
+        const QByteArray bytes = m_query.value(0).toByteArray();
         cover.loadFromData(bytes);
     }
     return cover;
@@ -341,7 +339,6 @@ void Cache::updateByteCover(int id, const QByteArray &bytes)
 int Cache::coverId(const QByteArray &bytes)
 {
     int id = coverIdBySize(bytes.size());
-
     if (id == 0)
         id = coverIdByBlob(bytes);
 
