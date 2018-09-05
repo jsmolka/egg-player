@@ -35,7 +35,7 @@ def main():
 
     tree = {
         deploy: [
-            join(getcwd(), "bin/release/egg-player.exe"),  # Relase application location
+            join(getcwd(), "bin/release/egg-player.exe"),  # Release exe location
             join(getcwd(), "lib/bass-2.4/bin/bass.dll"),  # Bass dll location
             join(getcwd(), "lib/taglib-1.11.1/bin/tag.dll"),  # TagLib dll location
             join(qt, "bin/Qt5Core.dll"),
