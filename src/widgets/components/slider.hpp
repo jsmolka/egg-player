@@ -3,6 +3,8 @@
 
 #include <QSlider>
 
+#include "clickablestyle.hpp"
+
 class Slider : public QSlider
 {
     Q_OBJECT
@@ -26,6 +28,7 @@ private:
     void setup();
 
     bool m_pressed;
+    ClickableStyle m_style;
 };
 
 #endif // SLIDER_HPP

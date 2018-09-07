@@ -1,6 +1,7 @@
 #ifndef TABLEWIDGET_HPP
 #define TABLEWIDGET_HPP
 
+#include "clickablestyle.hpp"
 #include "rowhoverdelegate.hpp"
 #include "smoothtablewidget.hpp"
 
@@ -25,7 +26,8 @@ private slots:
 private:
     void setup();
 
-    RowHoverDelegate *m_delegate;
+    RowHoverDelegate m_delegate;
+    ClickableStyle m_style;
 };
 
 #endif // TABLEWIDGET_HPP

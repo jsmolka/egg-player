@@ -3,18 +3,16 @@
 #include <QHeaderView>
 #include <QScrollBar>
 
-#include "clickablestyle.hpp"
-
 TableWidget::TableWidget(QWidget *parent)
     : SmoothTableWidget(parent)
-    , m_delegate(new RowHoverDelegate(this))
+    , m_delegate(this)
 {
     setup();
 
     connect(this, &TableWidget::entered, this, &TableWidget::onEntered);
     connect(this, &TableWidget::hoverRowChanged, this, &TableWidget::onHoverRowChanged);
 
-    connect(this, &TableWidget::hoverRowChanged, m_delegate, &RowHoverDelegate::setHoverRow);
+    connect(this, &TableWidget::hoverRowChanged, &m_delegate, &RowHoverDelegate::setHoverRow);
 }
 
 void TableWidget::leaveEvent(QEvent *event)
@@ -50,7 +48,7 @@ void TableWidget::setup()
     setFocusPolicy(Qt::NoFocus);
     setFrameStyle(QFrame::NoFrame);
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    setItemDelegate(m_delegate);
+    setItemDelegate(&m_delegate);
     setMouseTracking(true);
     setSelectionMode(QAbstractItemView::NoSelection);
     setShowGrid(false);
@@ -59,5 +57,5 @@ void TableWidget::setup()
     horizontalHeader()->hide();
     verticalHeader()->hide();
 
-    verticalScrollBar()->setStyle(new ClickableStyle);
+    verticalScrollBar()->setStyle(&m_style);
 }

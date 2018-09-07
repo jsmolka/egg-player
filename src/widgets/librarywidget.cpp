@@ -57,8 +57,6 @@ void LibraryWidget::onAudiosRemoved(int index)
 
 void LibraryWidget::insert(Audio *audio, int row)
 {
-    setUpdatesEnabled(false);
-
     insertRow(row);
     for (int i = 0; i < m_columns.size(); ++i)
     {
@@ -66,8 +64,6 @@ void LibraryWidget::insert(Audio *audio, int row)
         item->setTextAlignment(m_columns[i].alignment);
         setItem(row, i, item);
     }
-
-    setUpdatesEnabled(true);
 }
 
 void LibraryWidget::setup()

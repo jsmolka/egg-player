@@ -13,7 +13,7 @@ public:
     int hoverRow() const;
 
 public slots:
-    void setHoverRow(int hoverRow);
+    void setHoverRow(int row);
 
 protected:
     void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const;

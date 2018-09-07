@@ -1,7 +1,5 @@
 #include "slider.hpp"
 
-#include "clickablestyle.hpp"
-
 Slider::Slider(QWidget *parent)
     : QSlider(parent)
     , m_pressed(false)
@@ -38,5 +36,5 @@ void Slider::setup()
 {
     setFocusPolicy(Qt::NoFocus);
     setOrientation(Qt::Horizontal);
-    setStyle(new ClickableStyle);
+    setStyle(&m_style);
 }

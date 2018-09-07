@@ -12,9 +12,9 @@ int RowHoverDelegate::hoverRow() const
     return m_hoverRow;
 }
 
-void RowHoverDelegate::setHoverRow(int hoverRow)
+void RowHoverDelegate::setHoverRow(int row)
 {
-    m_hoverRow = hoverRow;
+    m_hoverRow = row;
 }
 
 void RowHoverDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
