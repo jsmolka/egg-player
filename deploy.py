@@ -9,8 +9,8 @@ from shutil import copyfile
 
 def copy(src, dst):
     """
-    Copies a file from src to dst. Creates the dst dir it does not 
-    exist already.
+    Copies a file from src to dst. Creates the dst directory it does 
+    not exist already.
 
     :param src: source file
     :param dst: destination file
@@ -58,10 +58,10 @@ def main():
     }
 
     for path, files in tree.items():
-        for f in files:
-            new = join(path, basename(f))
-            print(f, ">", new)
-            copy(f, new)
+        for src in files:
+            dst = join(path, basename(src))
+            print(src, ">", dst)
+            copy(src, dst)
 
 
 if __name__ == "__main__":
