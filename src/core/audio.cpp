@@ -10,8 +10,9 @@ Audio::Audio(QObject *parent)
     , m_cached(false)
     , m_outdated(false)
     , m_modified(0)
+    , m_tag(this)
 {
-
+    connect(&m_tag, &Tag::updated, this, &Audio::onTagUpdated);
 }
 
 Audio::Audio(const File &file, QObject *parent)
@@ -20,8 +21,6 @@ Audio::Audio(const File &file, QObject *parent)
     setFile(file);
 
     update();
-
-    connect(&m_tag, &Tag::updated, this, &Audio::onTagUpdated);
 }
 
 void Audio::setFile(const File &file)
@@ -80,9 +79,19 @@ Tag &Audio::tag()
     return m_tag;
 }
 
+Tag &Audio::tag() const
+{
+    return const_cast<Tag &>(m_tag);
+}
+
 Cover &Audio::cover()
 {
     return m_cover;
+}
+
+Cover &Audio::cover() const
+{
+    return const_cast<Cover &>(m_cover);
 }
 
 void Audio::update()
@@ -96,22 +105,22 @@ void Audio::update()
     m_tag.blockSignals(false);
 }
 
-bool Audio::operator<(Audio &other) const
+bool Audio::operator<(const Audio &other) const
 {
     return m_tag.title().compare(other.tag().title(), Qt::CaseInsensitive) < 0;
 }
 
-bool Audio::operator>(Audio &other) const
+bool Audio::operator>(const Audio &other) const
 {
-    return other.tag().title().compare(m_tag.title(), Qt::CaseInsensitive) < 0;
+    return other < *this;
 }
 
-bool Audio::operator<=(Audio &other) const
+bool Audio::operator<=(const Audio &other) const
 {
     return !(*this > other);
 }
 
-bool Audio::operator>=(Audio &other) const
+bool Audio::operator>=(const Audio &other) const
 {
     return !(*this < other);
 }
@@ -121,7 +130,7 @@ bool Audio::operator==(const QString &other) const
     return m_file == other;
 }
 
-bool Audio::operator==(Audio &other) const
+bool Audio::operator==(const Audio &other) const
 {
     return *this == other.file();
 }
@@ -131,7 +140,7 @@ bool Audio::operator!=(const QString &other) const
     return !(*this == other);
 }
 
-bool Audio::operator!=(Audio &other) const
+bool Audio::operator!=(const Audio &other) const
 {
     return !(*this == other);
 }

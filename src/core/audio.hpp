@@ -36,19 +36,22 @@ public:
     qint64 modified() const;
 
     Tag &tag();
+    Tag &tag() const;
+
     Cover &cover();
+    Cover &cover() const;
 
     void update();
 
-    bool operator<(Audio &other) const;
-    bool operator>(Audio &other) const;
-    bool operator<=(Audio &other) const;
-    bool operator>=(Audio &other) const;
+    bool operator<(const Audio &other) const;
+    bool operator>(const Audio &other) const;
+    bool operator<=(const Audio &other) const;
+    bool operator>=(const Audio &other) const;
 
     bool operator==(const QString &other) const;
-    bool operator==(Audio &other) const;
+    bool operator==(const Audio &other) const;
     bool operator!=(const QString &other) const;
-    bool operator!=(Audio &other) const;
+    bool operator!=(const Audio &other) const;
 
 signals:
     void updated(Audio *audio);

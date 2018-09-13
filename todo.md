@@ -2,6 +2,7 @@
   
 ## General
 - make FileSystem more robust
+- create GenericVector class and subclass Audios
   
 ## User interface
 - scale screen by device pixel ratio
@@ -11,6 +12,5 @@
 - [scrollable text](https://stackoverflow.com/a/10655396/7057528)
 
 ## Possible future changes
-- do not cache loaded covers, calculate dominant color right after first load and store for id
 - test jpg instead of png for cover caching
 - QSet vs QVector for files in Directory
