@@ -99,7 +99,8 @@ HEADERS += \
     src/threading/coverloader.hpp \
     src/threading/audioupdater.hpp \
     src/threading/audioloader.hpp \
-    src/threading/base/expiringthread.hpp
+    src/threading/base/expiringthread.hpp \
+    src/core/utils.hpp
 
 SOURCES += \
     src/main.cpp \

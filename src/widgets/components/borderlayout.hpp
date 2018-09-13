@@ -25,6 +25,9 @@ public:
     void add(QLayoutItem *item, Position position);
 
 private:
+    enum SizeType {MinimumSize, SizeHint};
+    QSize calculateSize(SizeType sizeType) const;
+
     struct ItemWrapper
     {
         ItemWrapper(QLayoutItem *item, Position position) :
@@ -33,11 +36,6 @@ private:
         QLayoutItem *item;
         Position position;
     };
-
-    enum SizeType {MinimumSize, SizeHint};
-
-    QSize calculateSize(SizeType sizeType) const;
-
     QVector<ItemWrapper *> m_items;
 };
 

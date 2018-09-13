@@ -1,15 +1,19 @@
 #include "tag.hpp"
 
+#include <QFileInfo>
+
 #include <taglib/attachedpictureframe.h>
+#include <taglib/fileref.h>
 #include <taglib/id3v2tag.h>
 #include <taglib/id3v2frame.h>
 #include <taglib/mpegfile.h>
 #include <taglib/tag.h>
 
 #include "logger.hpp"
+#include "utils.hpp"
 
 Tag::Tag(QObject *parent)
-    : QObject(parent)
+    : Tag(QString(), parent)
 {
 
 }
@@ -17,6 +21,9 @@ Tag::Tag(QObject *parent)
 Tag::Tag(const File &file, QObject *parent)
     : QObject(parent)
     , m_file(file)
+    , m_year(0)
+    , m_track(0)
+    , m_duration(0)
 {
 
 }
@@ -26,7 +33,12 @@ bool Tag::readTag()
     const TagLib::MPEG::File file(toWString(m_file));
 
     if (!file.isValid() || !file.audioProperties())
+    {
+        LOG(QFileInfo::exists(m_file)
+            ? "Cannot read tags %1"
+            : "File does not exist %1", m_file);
         return false;
+    }
 
     m_duration.setSecs(file.audioProperties()->lengthInSeconds());
 
@@ -40,6 +52,10 @@ bool Tag::readTag()
         m_year = static_cast<int>(tag->year());
         m_track = static_cast<int>(tag->track());
     }
+
+    if (m_title.isEmpty())
+        m_title = QFileInfo(m_file).baseName();
+
     return true;
 }
 
@@ -59,7 +75,7 @@ QPixmap Tag::readCover()
     }
 
     if (cover.isNull())
-        LOG("Cannot read cover %1", toQString(file.name()));
+        LOG("Cannot read cover %1", m_file);
 
     return cover;
 }
@@ -163,19 +179,4 @@ void Tag::setDuration(const Duration &duration)
 Duration Tag::duration() const
 {
     return m_duration;
-}
-
-const wchar_t *Tag::toWString(const QString &string)
-{
-    return reinterpret_cast<const wchar_t *>(string.constData());
-}
-
-QString Tag::toQString(const TagLib::String &string)
-{
-    return QString::fromWCharArray(string.toCWString(), static_cast<int>(string.size()));
-}
-
-QString Tag::toQString(const TagLib::FileName &string)
-{
-    return QString::fromWCharArray(static_cast<const wchar_t *>(string));
 }

@@ -1,6 +1,7 @@
 #ifndef AUDIO_HPP
 #define AUDIO_HPP
 
+#include <QDateTime>
 #include <QFileInfo>
 #include <QObject>
 #include <QVector>
@@ -17,18 +18,10 @@ public:
     using vector = QVector<Audio *>;
 
     explicit Audio(QObject *parent = nullptr);
-    Audio(const QString &file, QObject *parent = nullptr);
-    Audio(const QString &file,
-          const QString &title,
-          const QString &artist,
-          const QString &album,
-          const QString &genre,
-          int year,
-          int track,
-          int duration,
-          int coverId,
-          qint64 modified,
-          QObject *parent = nullptr);
+    explicit Audio(const File &file, QObject *parent = nullptr);
+
+    void setFile(const File &file);
+    File file() const;
 
     void setValid(bool valid);
     bool isValid() const;
@@ -39,18 +32,13 @@ public:
     void setOutdated(bool outdated);
     bool isOutdated() const;
 
-    void setFile(const File &file);
-    File file() const;
+    void setModified(qint64 modified);
+    qint64 modified() const;
 
     Tag &tag();
     Cover &cover();
 
-    qint64 modified() const;
-    QFileInfo info() const;
-
     void update();
-
-    const wchar_t * wideFile() const;
 
     bool operator<(Audio &other) const;
     bool operator>(Audio &other) const;
@@ -69,15 +57,13 @@ private slots:
     void onTagUpdated();
 
 private:
+    File m_file;
     bool m_valid;
     bool m_cached;
     bool m_outdated;
-
-    QString m_file;
+    qint64 m_modified;
     Tag m_tag;
     Cover m_cover;
-
-    qint64 m_modified;
 };
 
 #endif // AUDIO_HPP

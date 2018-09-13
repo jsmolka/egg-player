@@ -1,5 +1,7 @@
 #include "bassstream.hpp"
 
+#include "utils.hpp"
+
 BassStream::BassStream()
     : m_handle(0)
     , m_sync(0)
@@ -71,7 +73,7 @@ bool BassStream::create(Audio *audio)
     if (!free())
         return false;
 
-    m_handle = BASS_StreamCreateFile(false, audio->wideFile(), 0, 0, BASS_ASYNCFILE);
+    m_handle = BASS_StreamCreateFile(false, toWString(audio->file()), 0, 0, BASS_ASYNCFILE);
 
     return isValid();
 }

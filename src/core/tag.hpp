@@ -4,8 +4,6 @@
 #include <QString>
 #include <QPixmap>
 
-#include <taglib/fileref.h>
-
 #include "duration.hpp"
 #include "types.hpp"
 
@@ -47,11 +45,6 @@ public:
 
 signals:
     void updated();
-
-private:
-    static const wchar_t *toWString(const QString &string);
-    static QString toQString(const TagLib::String &string);
-    static QString toQString(const TagLib::FileName &string);
 
 private:
     File m_file;

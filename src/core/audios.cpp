@@ -100,7 +100,7 @@ Audio::vector::iterator Audios::insert(Audio::vector::iterator before, Audio *au
 {
     connect(audio, &Audio::updated, this, &Audios::onAudioUpdated);
     auto position = m_vector.insert(before, audio);
-    emit inserted(position - begin());
+    emit inserted(static_cast<int>(position - begin()));
     return position;
 }
 
@@ -108,7 +108,7 @@ Audio::vector::iterator Audios::erase(Audio::vector::iterator position)
 {
     disconnect(*position, &Audio::updated, this, &Audios::onAudioUpdated);
     auto next = m_vector.erase(position);
-    emit removed(position - begin());
+    emit removed(static_cast<int>(position - begin()));
     return next;
 }
 

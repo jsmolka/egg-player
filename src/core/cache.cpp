@@ -56,18 +56,20 @@ Audio *Cache::loadAudio(const QString &path)
 
     if (m_query.first())
     {
-        audio = new Audio(
-            m_query.value(0).toString(),
-            m_query.value(1).toString(),
-            m_query.value(2).toString(),
-            m_query.value(3).toString(),
-            m_query.value(4).toString(),
-            m_query.value(5).toInt(),
-            m_query.value(6).toInt(),
-            m_query.value(7).toInt(),
-            m_query.value(8).toInt(),
-            m_query.value(9).toInt()
-        );
+        audio = new Audio;
+        audio->setValid(true);
+        audio->setCached(true);
+        audio->setFile(m_query.value(0).toString());
+        audio->tag().setTitle(m_query.value(1).toString());
+        audio->tag().setArtist(m_query.value(2).toString());
+        audio->tag().setAlbum(m_query.value(3).toString());
+        audio->tag().setGenre(m_query.value(4).toString());
+        audio->tag().setYear(m_query.value(5).toInt());
+        audio->tag().setTrack(m_query.value(6).toInt());
+        audio->tag().setDuration(m_query.value(7).toInt());
+        audio->cover().setId(m_query.value(8).toInt());
+        audio->setModified(m_query.value(9).toInt());
+        audio->setOutdated(audio->modified() != QFileInfo(audio->tag().file()).lastModified().toSecsSinceEpoch());
     }
     return audio;
 }
@@ -88,7 +90,7 @@ void Cache::insertAudio(Audio *audio)
         " :modified"
         ")"
     );
-    m_query.bindValue(":path", audio->file());
+    m_query.bindValue(":path", audio->tag().file());
     m_query.bindValue(":title", audio->tag().title());
     m_query.bindValue(":artist", audio->tag().artist());
     m_query.bindValue(":album", audio->tag().album());
@@ -121,7 +123,7 @@ void Cache::updateAudio(Audio *audio, const QString &newPath)
         " modified = :modified "
         "WHERE path = :path"
     );
-    m_query.bindValue(":newpath", newPath.isNull() ? audio->file() : newPath);
+    m_query.bindValue(":newpath", newPath.isNull() ? audio->tag().file() : newPath);
     m_query.bindValue(":title", audio->tag().title());
     m_query.bindValue(":artist", audio->tag().artist());
     m_query.bindValue(":album", audio->tag().album());
@@ -131,7 +133,7 @@ void Cache::updateAudio(Audio *audio, const QString &newPath)
     m_query.bindValue(":duration", audio->tag().duration().secs());
     m_query.bindValue(":coverid", audio->cover().id());
     m_query.bindValue(":modified", audio->modified());
-    m_query.bindValue(":path", audio->file());
+    m_query.bindValue(":path", audio->tag().file());
 
     if (!m_query.exec())
         error();
@@ -164,7 +166,7 @@ void Cache::setAudioCoverId(Audio *audio, int id)
         " coverid = :coverid "
         "WHERE path = :path"
     );
-    m_query.bindValue(":path", audio->file());
+    m_query.bindValue(":path", audio->tag().file());
     m_query.bindValue(":coverid", id);
 
     if (!m_query.exec())
