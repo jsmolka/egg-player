@@ -88,19 +88,23 @@ QString LibraryWidget::audioText(Audio *audio, int column) const
     switch(m_columns[column].info)
     {
         case AudioInfo::Title:
-            return audio->title();
+            return audio->tag().title();
         case AudioInfo::Artist:
-            return audio->artist();
+            return audio->tag().artist();
         case AudioInfo::Album:
-            return audio->album();
+            return audio->tag().album();
         case AudioInfo::Track:
-            return audio->track() == 0 ? QString() : QString::number(audio->track());
+            return audio->tag().track() == 0
+                ? QString()
+                : QString::number(audio->tag().track());
         case AudioInfo::Year:
-            return audio->year() == 0 ? QString() : QString::number(audio->year());
+            return audio->tag().year() == 0
+                ? QString()
+                : QString::number(audio->tag().year());
         case AudioInfo::Genre:
-            return audio->genre();
+            return audio->tag().genre();
         case AudioInfo::Duration:
-            return audio->duration().toString();
+            return audio->tag().duration().toString();
     }
     return QString();
 }

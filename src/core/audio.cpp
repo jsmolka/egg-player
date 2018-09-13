@@ -20,8 +20,11 @@ Audio::Audio(const QString &path, QObject *parent)
     : Audio(parent)
 {
     m_file = path;
+    m_tag.setFile(path);
 
     update();
+
+    connect(&m_tag, &Tag::updated, this, &Audio::onTagUpdated);
 }
 
 Audio::Audio(const QString &path,
@@ -83,6 +86,17 @@ bool Audio::isOutdated() const
     return m_outdated;
 }
 
+void Audio::setFile(const File &file)
+{
+    m_file = file;
+    m_tag.setFile(file);
+}
+
+File Audio::file() const
+{
+    return m_file;
+}
+
 Tag &Audio::tag()
 {
     return m_tag;
@@ -105,6 +119,7 @@ QFileInfo Audio::info() const
 
 void Audio::update()
 {
+    m_tag.blockSignals(true);
     if (!(m_valid = m_tag.readTag()))
     {
         if (QFileInfo::exists(m_file))
@@ -115,6 +130,7 @@ void Audio::update()
     m_modified = info().lastModified().toSecsSinceEpoch();
 
     emit updated(this);
+    m_tag.blockSignals(false);
 }
 
 const wchar_t * Audio::wideFile() const
@@ -127,17 +143,17 @@ bool Audio::operator<(Audio &other) const
     return m_tag.title().compare(other.tag().title(), Qt::CaseInsensitive) < 0;
 }
 
-bool Audio::operator>(const Audio &other) const
+bool Audio::operator>(Audio &other) const
 {
-    return other < *this;
+    return other.tag().title().compare(m_tag.title(), Qt::CaseInsensitive) < 0;
 }
 
-bool Audio::operator<=(const Audio &other) const
+bool Audio::operator<=(Audio &other) const
 {
     return !(*this > other);
 }
 
-bool Audio::operator>=(const Audio &other) const
+bool Audio::operator>=(Audio &other) const
 {
     return !(*this < other);
 }
@@ -147,7 +163,7 @@ bool Audio::operator==(const QString &other) const
     return m_file == other;
 }
 
-bool Audio::operator==(const Audio &other) const
+bool Audio::operator==(Audio &other) const
 {
     return *this == other.file();
 }
@@ -157,32 +173,12 @@ bool Audio::operator!=(const QString &other) const
     return !(*this == other);
 }
 
-bool Audio::operator!=(const Audio &other) const
+bool Audio::operator!=(Audio &other) const
 {
     return !(*this == other);
 }
 
-bool Audio::readTags()
+void Audio::onTagUpdated()
 {
-    const Tag tag(wideFile());
-
-    if (!tag.isValid() || !tag.isAudioValid())
-        return false;
-
-    m_duration.setSecs(tag.duration());
-
-    if (tag.isTagValid())
-    {
-        m_title = tag.title();
-        m_artist = tag.artist();
-        m_album = tag.album();
-        m_genre = tag.genre();
-        m_year = tag.year();
-        m_track = tag.track();
-    }
-
-    if (m_title.isEmpty())
-        m_title = info().baseName();
-
-    return true;
+    emit updated(this);
 }

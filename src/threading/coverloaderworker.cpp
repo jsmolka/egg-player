@@ -35,7 +35,7 @@ void CoverLoaderWorker::work()
 
         if (!audio->cover().isValid())
         {
-            const QPixmap cover = Cover::loadFromFile(audio->wideFile());
+            const QPixmap cover = Cover::loadFromFile(audio->file());
             cache.updateAudioCover(audio, cover);
         }
     }

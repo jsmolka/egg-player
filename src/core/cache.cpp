@@ -89,13 +89,13 @@ void Cache::insertAudio(Audio *audio)
         ")"
     );
     m_query.bindValue(":path", audio->file());
-    m_query.bindValue(":title", audio->title());
-    m_query.bindValue(":artist", audio->artist());
-    m_query.bindValue(":album", audio->album());
-    m_query.bindValue(":genre", audio->genre());
-    m_query.bindValue(":year", audio->year());
-    m_query.bindValue(":track", audio->track());
-    m_query.bindValue(":duration", audio->duration().secs());
+    m_query.bindValue(":title", audio->tag().title());
+    m_query.bindValue(":artist", audio->tag().artist());
+    m_query.bindValue(":album", audio->tag().album());
+    m_query.bindValue(":genre", audio->tag().genre());
+    m_query.bindValue(":year", audio->tag().year());
+    m_query.bindValue(":track", audio->tag().track());
+    m_query.bindValue(":duration", audio->tag().duration().secs());
     m_query.bindValue(":coverid", audio->cover().id());
     m_query.bindValue(":modified", audio->modified());
 
@@ -122,13 +122,13 @@ void Cache::updateAudio(Audio *audio, const QString &newPath)
         "WHERE path = :path"
     );
     m_query.bindValue(":newpath", newPath.isNull() ? audio->file() : newPath);
-    m_query.bindValue(":title", audio->title());
-    m_query.bindValue(":artist", audio->artist());
-    m_query.bindValue(":album", audio->album());
-    m_query.bindValue(":genre", audio->genre());
-    m_query.bindValue(":year", audio->year());
-    m_query.bindValue(":track", audio->track());
-    m_query.bindValue(":duration", audio->duration().secs());
+    m_query.bindValue(":title", audio->tag().title());
+    m_query.bindValue(":artist", audio->tag().artist());
+    m_query.bindValue(":album", audio->tag().album());
+    m_query.bindValue(":genre", audio->tag().genre());
+    m_query.bindValue(":year", audio->tag().year());
+    m_query.bindValue(":track", audio->tag().track());
+    m_query.bindValue(":duration", audio->tag().duration().secs());
     m_query.bindValue(":coverid", audio->cover().id());
     m_query.bindValue(":modified", audio->modified());
     m_query.bindValue(":path", audio->file());

@@ -52,21 +52,21 @@ public:
 
     const wchar_t * wideFile() const;
 
-    bool operator<(const Audio &other) const;
-    bool operator>(const Audio &other) const;
-    bool operator<=(const Audio &other) const;
-    bool operator>=(const Audio &other) const;
+    bool operator<(Audio &other) const;
+    bool operator>(Audio &other) const;
+    bool operator<=(Audio &other) const;
+    bool operator>=(Audio &other) const;
 
     bool operator==(const QString &other) const;
-    bool operator==(const Audio &other) const;
+    bool operator==(Audio &other) const;
     bool operator!=(const QString &other) const;
-    bool operator!=(const Audio &other) const;
+    bool operator!=(Audio &other) const;
 
 signals:
     void updated(Audio *audio);
 
-private:
-    bool readTags();
+private slots:
+    void onTagUpdated();
 
 private:
     bool m_valid;

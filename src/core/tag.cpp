@@ -46,7 +46,7 @@ bool Tag::readTag()
 QPixmap Tag::readCover()
 {
     QPixmap cover;
-    const TagLib::MPEG::File file(toWString(m_file));
+    TagLib::MPEG::File file(toWString(m_file));
     if (file.hasID3v2Tag())
     {
         const TagLib::ID3v2::Tag *tag = file.ID3v2Tag();

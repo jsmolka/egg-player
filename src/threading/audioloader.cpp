@@ -37,7 +37,7 @@ void AudioLoader::load(const File &file)
         if (isInterrupted())
             return;
 
-        const QPixmap cover = Cover::loadFromFile(audio->wideFile());
+        const QPixmap cover = Cover::loadFromFile(audio->file());
         m_cache.updateAudioCover(audio, cover);
     }
     audio->moveToThread(qApp->thread());

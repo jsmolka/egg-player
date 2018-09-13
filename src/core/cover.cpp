@@ -31,9 +31,9 @@ Cover Cover::defaultCover()
     return Cover(s_defaultId);
 }
 
-QPixmap Cover::loadFromFile(const wchar_t *file)
+QPixmap Cover::loadFromFile(const File &file)
 {
-    QPixmap cover = Tag(file).cover();
+    QPixmap cover = Tag(file).readCover();
     if (cover.isNull())
         cover = loadFromCache(s_defaultId);
 

@@ -120,13 +120,13 @@ Slider &BarWidget::volumeSlider()
 void BarWidget::onPlayerAudioChanged(Audio *audio)
 {
     m_lengthSlider.setEnabled(true);
-    m_lengthSlider.setRange(0, audio->duration().secs());
+    m_lengthSlider.setRange(0, audio->tag().duration().secs());
 
     m_coverLabel.setPixmap(audio->cover().pixmap(cfgBar.coverSize()));
-    m_trackLabel.setText(QString("%1\n%2").arg(audio->title(), audio->artist()));
+    m_trackLabel.setText(QString("%1\n%2").arg(audio->tag().title(), audio->tag().artist()));
 
     m_currentTimeLabel.setText(Duration(0).toString());
-    m_totalTimeLabel.setText(audio->duration().toString());
+    m_totalTimeLabel.setText(audio->tag().duration().toString());
 
     colorTransition(audio->cover().dominantColor());
 }
