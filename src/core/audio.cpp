@@ -10,11 +10,10 @@ Audio::Audio(QObject *parent)
     , m_valid(false)
     , m_cached(false)
     , m_outdated(false)
-    , m_year(0)
-    , m_track(0)
     , m_modified(0)
 {
-
+    m_tag.setYear(0);
+    m_tag.setTrack(0);
 }
 
 Audio::Audio(const QString &path, QObject *parent)
@@ -32,7 +31,7 @@ Audio::Audio(const QString &path,
              const QString &genre,
              int year,
              int track,
-             int length,
+             int duration,
              int coverId,
              qint64 modified,
              QObject *parent)
@@ -40,16 +39,17 @@ Audio::Audio(const QString &path,
     , m_valid(true)
     , m_cached(true)
     , m_file(path)
-    , m_title(title)
-    , m_artist(artist)
-    , m_album(album)
-    , m_genre(genre)
-    , m_year(year)
-    , m_track(track)
-    , m_duration(length)
     , m_cover(coverId)
     , m_modified(modified)
 {
+    m_tag.setTitle(title);
+    m_tag.setArtist(artist);
+    m_tag.setAlbum(album);
+    m_tag.setGenre(genre);
+    m_tag.setYear(year);
+    m_tag.setTrack(track);
+    m_tag.setDuration(duration);
+
     m_outdated = modified != info().lastModified().toSecsSinceEpoch();
 }
 
@@ -83,91 +83,9 @@ bool Audio::isOutdated() const
     return m_outdated;
 }
 
-void Audio::setFile(const File &file)
+Tag &Audio::tag()
 {
-    m_file = file;
-}
-
-File Audio::file() const
-{
-    return m_file;
-}
-
-void Audio::setTitle(const QString &title)
-{
-    m_title = title;
-
-    emit updated(this);
-}
-
-QString Audio::title() const
-{
-    return m_title;
-}
-
-void Audio::setArtist(const QString &artist)
-{
-    m_artist = artist;
-
-    emit updated(this);
-}
-
-QString Audio::artist() const
-{
-    return m_artist;
-}
-
-void Audio::setAlbum(const QString &album)
-{
-    m_album = album;
-
-    emit updated(this);
-}
-
-QString Audio::album() const
-{
-    return m_album;
-}
-
-void Audio::setGenre(const QString &genre)
-{
-    m_genre = genre;
-
-    emit updated(this);
-}
-
-QString Audio::genre() const
-{
-    return m_genre;
-}
-
-void Audio::setYear(int year)
-{
-    m_year = year;
-
-    emit updated(this);
-}
-
-int Audio::year() const
-{
-    return m_year;
-}
-
-void Audio::setTrack(int track)
-{
-    m_track = track;
-
-    emit updated(this);
-}
-
-int Audio::track() const
-{
-    return m_track;
-}
-
-Duration &Audio::duration()
-{
-    return m_duration;
+    return m_tag;
 }
 
 Cover &Audio::cover()
@@ -187,7 +105,7 @@ QFileInfo Audio::info() const
 
 void Audio::update()
 {
-    if (!(m_valid = readTags()))
+    if (!(m_valid = m_tag.readTag()))
     {
         if (QFileInfo::exists(m_file))
             LOG("Cannot read tags %1", m_file);
@@ -204,9 +122,9 @@ const wchar_t * Audio::wideFile() const
     return reinterpret_cast<const wchar_t *>(m_file.constData());
 }
 
-bool Audio::operator<(const Audio &other) const
+bool Audio::operator<(Audio &other) const
 {
-    return m_title.compare(other.title(), Qt::CaseInsensitive) < 0;
+    return m_tag.title().compare(other.tag().title(), Qt::CaseInsensitive) < 0;
 }
 
 bool Audio::operator>(const Audio &other) const

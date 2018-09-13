@@ -4,33 +4,64 @@
 #include <QString>
 #include <QPixmap>
 
-#include <taglib/mpegfile.h>
+#include <taglib/fileref.h>
 
-class Tag
+#include "duration.hpp"
+#include "types.hpp"
+
+class Tag : public QObject
 {
-public:
-    explicit Tag(const wchar_t *file);
+    Q_OBJECT
 
-    bool isValid() const;
-    bool isAudioValid() const;
-    bool isTagValid() const;
+public:    
+    explicit Tag(QObject *parent = nullptr);
+    explicit Tag(const File &file, QObject *parent = nullptr);
 
+    bool readTag();
+    QPixmap readCover();
+
+    void setFile(const File &file);
+    File file() const;
+
+    void setTitle(const QString &title);
     QString title() const;
+
+    void setArtist(const QString &artist);
     QString artist() const;
+
+    void setAlbum(const QString &album);
     QString album() const;
+
+    void setGenre(const QString &genre);
     QString genre() const;
 
+    void setYear(int year);
     int year() const;
-    int track() const;
-    int duration() const;
 
-    QPixmap cover();
+    void setTrack(int track);
+    int track() const;
+
+    void setDuration(int secs);
+    void setDuration(const Duration &duration);
+    Duration duration() const;
+
+signals:
+    void updated();
 
 private:
+    static const wchar_t *toWString(const QString &string);
     static QString toQString(const TagLib::String &string);
     static QString toQString(const TagLib::FileName &string);
 
-    TagLib::MPEG::File m_file;
+private:
+    File m_file;
+    QString m_title;
+    QString m_artist;
+    QString m_album;
+    QString m_genre;
+    int m_year;
+    int m_track;
+    Duration m_duration;
 };
 
 #endif // TAG_HPP

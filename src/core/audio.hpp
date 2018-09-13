@@ -6,7 +6,7 @@
 #include <QVector>
 
 #include "cover.hpp"
-#include "duration.hpp"
+#include "tag.hpp"
 #include "types.hpp"
 
 class Audio : public QObject
@@ -42,25 +42,7 @@ public:
     void setFile(const File &file);
     File file() const;
 
-    void setTitle(const QString &title);
-    QString title() const;
-
-    void setArtist(const QString &artist);
-    QString artist() const;
-
-    void setAlbum(const QString &album);
-    QString album() const;
-
-    void setGenre(const QString &genre);
-    QString genre() const;
-
-    void setYear(int year);
-    int year() const;
-
-    void setTrack(int track);
-    int track() const;
-
-    Duration &duration();
+    Tag &tag();
     Cover &cover();
 
     qint64 modified() const;
@@ -86,20 +68,13 @@ signals:
 private:
     bool readTags();
 
+private:
     bool m_valid;
     bool m_cached;
     bool m_outdated;
 
     QString m_file;
-    QString m_title;
-    QString m_artist;
-    QString m_album;
-    QString m_genre;
-
-    int m_year;
-    int m_track;
-
-    Duration m_duration;
+    Tag m_tag;
     Cover m_cover;
 
     qint64 m_modified;
