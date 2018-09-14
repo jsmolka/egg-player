@@ -8,84 +8,29 @@ Audios::Audios(QObject *parent)
 
 Audios::Audios(const Audio::vector &vector, QObject *parent)
     : QObject(parent)
-    , m_vector(vector)
+    , GenericVector(vector)
 {
 
-}
-
-void Audios::setVector(const Audio::vector &vector)
-{
-    m_vector = vector;
-}
-
-Audio::vector Audios::vector() const
-{
-    return m_vector;
-}
-
-Audio *Audios::at(int index)
-{
-    return m_vector[index];
-}
-
-Audio *Audios::first()
-{
-    return m_vector.first();
-}
-
-Audio *Audios::last()
-{
-    return m_vector.last();
-}
-
-bool Audios::isEmpty() const
-{
-    return m_vector.isEmpty();
-}
-
-int Audios::size() const
-{
-    return m_vector.size();
-}
-
-int Audios::indexOf(Audio *audio) const
-{
-    return m_vector.indexOf(audio);
-}
-
-void Audios::clear()
-{
-    m_vector.clear();
-}
-
-void Audios::reserve(int size)
-{
-    m_vector.reserve(size);
-}
-
-void Audios::move(int from, int to)
-{
-    m_vector.move(from, to);
 }
 
 void Audios::insert(int index, Audio *audio)
 {
     connect(audio, &Audio::updated, this, &Audios::onAudioUpdated);
-    m_vector.insert(index, audio);
+    GenericVector::insert(index, audio);
     emit inserted(index);
 }
 
 void Audios::append(Audio *audio)
 {
     connect(audio, &Audio::updated, this, &Audios::onAudioUpdated);
-    m_vector.append(audio);
+    GenericVector::append(audio);
     emit inserted(size() - 1);
 }
 
 void Audios::remove(int index)
 {
     disconnect(at(index), &Audio::updated, this, &Audios::onAudioUpdated);
-    m_vector.remove(index);
+    GenericVector::remove(index);
     emit removed(index);
 }
 
@@ -96,40 +41,20 @@ void Audios::remove(Audio *audio)
         remove(index);
 }
 
-Audio::vector::iterator Audios::insert(Audio::vector::iterator before, Audio *audio)
+Audios::iterator Audios::insert(iterator before, Audio *audio)
 {
     connect(audio, &Audio::updated, this, &Audios::onAudioUpdated);
-    auto position = m_vector.insert(before, audio);
+    auto position = GenericVector::insert(before, audio);
     emit inserted(static_cast<int>(position - begin()));
     return position;
 }
 
-Audio::vector::iterator Audios::erase(Audio::vector::iterator position)
+Audios::iterator Audios::erase(iterator position)
 {
     disconnect(*position, &Audio::updated, this, &Audios::onAudioUpdated);
-    auto next = m_vector.erase(position);
+    auto next = GenericVector::erase(position);
     emit removed(static_cast<int>(position - begin()));
     return next;
-}
-
-Audio::vector::iterator Audios::begin()
-{
-    return m_vector.begin();
-}
-
-Audio::vector::iterator Audios::end()
-{
-    return m_vector.end();
-}
-
-Audio::vector::const_iterator Audios::cbegin() const
-{
-    return m_vector.cbegin();
-}
-
-Audio::vector::const_iterator Audios::cend() const
-{
-    return m_vector.cend();
 }
 
 Audios &Audios::operator<<(Audio *audio)

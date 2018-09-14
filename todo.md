@@ -2,7 +2,8 @@
   
 ## General
 - make FileSystem more robust
-- create GenericVector class and subclass Audios
+- function in Audio for updating tag and cover
+- consider using cover in tag / better separation
   
 ## User interface
 - scale screen by device pixel ratio

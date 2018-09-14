@@ -100,7 +100,8 @@ HEADERS += \
     src/threading/audioupdater.hpp \
     src/threading/audioloader.hpp \
     src/threading/base/expiringthread.hpp \
-    src/core/utils.hpp
+    src/core/utils.hpp \
+    src/core/genericvector.hpp
 
 SOURCES += \
     src/main.cpp \

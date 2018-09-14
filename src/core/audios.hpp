@@ -2,47 +2,28 @@
 #define AUDIOS_HPP
 
 #include <QObject>
-#include <QVector>
 
 #include "audio.hpp"
+#include "genericvector.hpp"
 
-class Audios : public QObject
+class Audios : public QObject, public GenericVector<Audio *>
 {
     Q_OBJECT
 
 public:
+    using iterator = GenericVector::iterator;
+    using const_iterator = GenericVector::const_iterator;
+
     explicit Audios(QObject *parent = nullptr);
     explicit Audios(const Audio::vector &vector, QObject *parent = nullptr);
 
-    void setVector(const Audio::vector &vector);
-    Audio::vector vector() const;
-
-    Audio *at(int index);
-    Audio *first();
-    Audio *last();
-
-    bool isEmpty() const;
-
-    int size() const;
-    int indexOf(Audio *audio) const;
-
-    void clear();
-    void reserve(int size);
-
-    void move(int from, int to);
     void insert(int index, Audio *audio);
     void append(Audio *audio);
     void remove(int index);
     void remove(Audio *audio);
 
-    Audio::vector::iterator insert(Audio::vector::iterator before, Audio *audio);
-    Audio::vector::iterator erase(Audio::vector::iterator position);
-
-    Audio::vector::iterator begin();
-    Audio::vector::iterator end();
-
-    Audio::vector::const_iterator cbegin() const;
-    Audio::vector::const_iterator cend() const;
+    iterator insert(iterator before, Audio *audio);
+    iterator erase(iterator position);
 
     Audios &operator<<(Audio *audio);
 
