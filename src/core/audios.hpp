@@ -4,16 +4,13 @@
 #include <QObject>
 
 #include "audio.hpp"
-#include "genericvector.hpp"
+#include "vector.hpp"
 
-class Audios : public QObject, public GenericVector<Audio *>
+class Audios : public QObject, public Vector<Audio *>
 {
     Q_OBJECT
 
 public:
-    using iterator = GenericVector::iterator;
-    using const_iterator = GenericVector::const_iterator;
-
     explicit Audios(QObject *parent = nullptr);
     explicit Audios(const Audio::vector &vector, QObject *parent = nullptr);
 
@@ -22,8 +19,8 @@ public:
     void remove(int index);
     void remove(Audio *audio);
 
-    iterator insert(iterator before, Audio *audio);
-    iterator erase(iterator position);
+    Audios::iterator insert(Audios::iterator before, Audio *audio);
+    Audios::iterator erase(Audios::iterator position);
 
     Audios &operator<<(Audio *audio);
 

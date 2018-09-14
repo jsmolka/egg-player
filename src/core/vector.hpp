@@ -4,13 +4,14 @@
 #include <QVector>
 
 template <typename T>
-class GenericVector
+class Vector
 {
 public:
     using iterator = typename QVector<T>::iterator;
     using const_iterator = typename QVector<T>::const_iterator;
 
-    GenericVector(const QVector<T> &vector);
+    Vector(const QVector<T> &vector);
+    virtual ~Vector() = default;
 
     void setVector(const QVector<T> &vector);
     QVector<T> vector() const;
@@ -28,7 +29,6 @@ public:
     void clear();
     void reserve(int size);
 
-    void move(int from, int to);
     void insert(int index, const T &value);
     void append(const T &value);
     void remove(int index);
@@ -42,150 +42,158 @@ public:
     const_iterator cbegin() const;
     const_iterator cend() const;
 
-    GenericVector<T> &operator<<(const T &value);
+    Vector<T> &operator<<(const T &value);
+    T &operator[](int index);
+    const T &operator[](int index) const;
 
 private:
     QVector<T> m_vector;
 };
 
 template <typename T>
-inline GenericVector<T>::GenericVector(const QVector<T> &vector)
+inline Vector<T>::Vector(const QVector<T> &vector)
     : m_vector(vector)
 {
 
 }
 
 template <typename T>
-inline void GenericVector<T>::setVector(const QVector<T> &vector)
+inline void Vector<T>::setVector(const QVector<T> &vector)
 {
     m_vector = vector;
 }
 
 template <typename T>
-inline QVector<T> GenericVector<T>::vector() const
+inline QVector<T> Vector<T>::vector() const
 {
     return m_vector;
 }
 
 template <typename T>
-inline T &GenericVector<T>::at(int index)
+inline T &Vector<T>::at(int index)
 {
     return m_vector[index];
 }
 
 template <typename T>
-inline const T &GenericVector<T>::at(int index) const
+inline const T &Vector<T>::at(int index) const
 {
     return m_vector.at(index);
 }
 
 template <typename T>
-inline const T &GenericVector<T>::first() const
+inline const T &Vector<T>::first() const
 {
     return m_vector.first();
 }
 
 template <typename T>
-inline const T &GenericVector<T>::last() const
+inline const T &Vector<T>::last() const
 {
     return m_vector.last();
 }
 
 template <typename T>
-inline bool GenericVector<T>::isEmpty() const
+inline bool Vector<T>::isEmpty() const
 {
     return m_vector.isEmpty();
 }
 
 template <typename T>
-inline int GenericVector<T>::size() const
+inline int Vector<T>::size() const
 {
     return m_vector.size();
 }
 
 template <typename T>
-inline int GenericVector<T>::indexOf(const T &value, int from) const
+inline int Vector<T>::indexOf(const T &value, int from) const
 {
     return m_vector.indexOf(value, from);
 }
 
 template <typename T>
-inline void GenericVector<T>::clear()
+inline void Vector<T>::clear()
 {
     m_vector.clear();
 }
 
 template <typename T>
-inline void GenericVector<T>::reserve(int size)
+inline void Vector<T>::reserve(int size)
 {
     m_vector.reserve(size);
 }
 
 template <typename T>
-inline void GenericVector<T>::move(int from, int to)
-{
-    m_vector.move(from, to);
-}
-
-template <typename T>
-inline void GenericVector<T>::insert(int index, const T &value)
+inline void Vector<T>::insert(int index, const T &value)
 {
     m_vector.insert(index, value);
 }
 
 template <typename T>
-inline void GenericVector<T>::append(const T &value)
+inline void Vector<T>::append(const T &value)
 {
     m_vector.append(value);
 }
 
 template <typename T>
-inline void GenericVector<T>::remove(int index)
+inline void Vector<T>::remove(int index)
 {
     m_vector.remove(index);
 }
 
 template <typename T>
-inline typename GenericVector<T>::iterator GenericVector<T>::insert(iterator before, const T &value)
+inline typename Vector<T>::iterator Vector<T>::insert(iterator before, const T &value)
 {
     return m_vector.insert(before, value);
 }
 
 template <typename T>
-inline typename GenericVector<T>::iterator GenericVector<T>::erase(iterator position)
+inline typename Vector<T>::iterator Vector<T>::erase(iterator position)
 {
     return m_vector.erase(position);
 }
 
 template <typename T>
-inline typename GenericVector<T>::iterator GenericVector<T>::begin()
+inline typename Vector<T>::iterator Vector<T>::begin()
 {
     return m_vector.begin();
 }
 
 template <typename T>
-inline typename GenericVector<T>::iterator GenericVector<T>::end()
+inline typename Vector<T>::iterator Vector<T>::end()
 {
     return m_vector.end();
 }
 
 template <typename T>
-inline typename GenericVector<T>::const_iterator GenericVector<T>::cbegin() const
+inline typename Vector<T>::const_iterator Vector<T>::cbegin() const
 {
     return m_vector.cbegin();
 }
 
 template <typename T>
-inline typename GenericVector<T>::const_iterator GenericVector<T>::cend() const
+inline typename Vector<T>::const_iterator Vector<T>::cend() const
 {
     return m_vector.cend();
 }
 
 template <typename T>
-inline GenericVector<T> &GenericVector<T>::operator<<(const T &value)
+inline Vector<T> &Vector<T>::operator<<(const T &value)
 {
     m_vector << value;
     return *this;
+}
+
+template <typename T>
+inline T &Vector<T>::operator[](int index)
+{
+    return m_vector[index];
+}
+
+template <typename T>
+inline const T &Vector<T>::operator[](int index) const
+{
+    return m_vector[index];
 }
 
 #endif // GENERICVECTOR_HPP

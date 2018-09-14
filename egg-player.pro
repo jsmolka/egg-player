@@ -101,7 +101,7 @@ HEADERS += \
     src/threading/audioloader.hpp \
     src/threading/base/expiringthread.hpp \
     src/core/utils.hpp \
-    src/core/genericvector.hpp
+    src/core/vector.hpp
 
 SOURCES += \
     src/main.cpp \

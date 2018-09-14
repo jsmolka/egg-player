@@ -8,7 +8,7 @@ Audios::Audios(QObject *parent)
 
 Audios::Audios(const Audio::vector &vector, QObject *parent)
     : QObject(parent)
-    , GenericVector(vector)
+    , Vector(vector)
 {
 
 }
@@ -16,21 +16,21 @@ Audios::Audios(const Audio::vector &vector, QObject *parent)
 void Audios::insert(int index, Audio *audio)
 {
     connect(audio, &Audio::updated, this, &Audios::onAudioUpdated);
-    GenericVector::insert(index, audio);
+    Vector::insert(index, audio);
     emit inserted(index);
 }
 
 void Audios::append(Audio *audio)
 {
     connect(audio, &Audio::updated, this, &Audios::onAudioUpdated);
-    GenericVector::append(audio);
+    Vector::append(audio);
     emit inserted(size() - 1);
 }
 
 void Audios::remove(int index)
 {
     disconnect(at(index), &Audio::updated, this, &Audios::onAudioUpdated);
-    GenericVector::remove(index);
+    Vector::remove(index);
     emit removed(index);
 }
 
@@ -41,18 +41,18 @@ void Audios::remove(Audio *audio)
         remove(index);
 }
 
-Audios::iterator Audios::insert(iterator before, Audio *audio)
+Audios::iterator Audios::insert(Audios::iterator before, Audio *audio)
 {
     connect(audio, &Audio::updated, this, &Audios::onAudioUpdated);
-    auto position = GenericVector::insert(before, audio);
+    auto position = Vector::insert(before, audio);
     emit inserted(static_cast<int>(position - begin()));
     return position;
 }
 
-Audios::iterator Audios::erase(iterator position)
+Audios::iterator Audios::erase(Audios::iterator position)
 {
     disconnect(*position, &Audio::updated, this, &Audios::onAudioUpdated);
-    auto next = GenericVector::erase(position);
+    auto next = Vector::erase(position);
     emit removed(static_cast<int>(position - begin()));
     return next;
 }
