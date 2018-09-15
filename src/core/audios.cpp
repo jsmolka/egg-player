@@ -18,7 +18,7 @@ Audio::vector Audios::vector() const
     return static_cast<Audio::vector>(*this);
 }
 
-Audio *Audios::at(int index)
+Audio *Audios::at(int index) const
 {
     return Audio::vector::at(index);
 }
@@ -81,9 +81,7 @@ void Audios::remove(int index)
 
 void Audios::remove(Audio *audio)
 {
-    const int index = indexOf(audio);
-    if (index != -1)
-        remove(index);
+    remove(indexOf(audio));
 }
 
 Audios::iterator Audios::insert(Audios::iterator before, Audio *audio)

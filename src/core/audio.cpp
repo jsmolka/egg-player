@@ -1,8 +1,7 @@
 #include "audio.hpp"
 
-#include "logger.hpp"
-#include "tag.hpp"
-#include "utils.hpp"
+#include <QDateTime>
+#include <QFileInfo>
 
 Audio::Audio(QObject *parent)
     : QObject(parent)
@@ -98,7 +97,7 @@ void Audio::update()
 {
     m_tag.blockSignals(true);
 
-    m_valid = m_tag.readTag();
+    m_valid = m_tag.read();
     m_modified = QFileInfo(m_file).lastModified().toSecsSinceEpoch();
     emit updated(this);
 

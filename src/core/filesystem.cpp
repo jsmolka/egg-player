@@ -1,5 +1,7 @@
 #include "filesystem.hpp"
 
+#include <QFileInfo>
+
 FileSystem::FileSystem(QObject *parent)
     : QObject(parent)
     , m_watcher(this)

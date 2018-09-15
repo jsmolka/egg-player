@@ -28,7 +28,7 @@ Tag::Tag(const File &file, QObject *parent)
 
 }
 
-bool Tag::readTag()
+bool Tag::read()
 {
     const TagLib::MPEG::File file(toWString(m_file));
 

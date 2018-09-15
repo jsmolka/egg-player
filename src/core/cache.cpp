@@ -1,5 +1,7 @@
 #include "cache.hpp"
 
+#include <QDateTime>
+#include <QFileInfo>
 #include <QMutex>
 #include <QMutexLocker>
 #include <QSqlError>

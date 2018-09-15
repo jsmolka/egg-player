@@ -1,8 +1,6 @@
 #ifndef AUDIO_HPP
 #define AUDIO_HPP
 
-#include <QDateTime>
-#include <QFileInfo>
 #include <QObject>
 #include <QVector>
 

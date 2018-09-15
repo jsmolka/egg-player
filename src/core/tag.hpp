@@ -15,7 +15,7 @@ public:
     explicit Tag(QObject *parent = nullptr);
     explicit Tag(const File &file, QObject *parent = nullptr);
 
-    bool readTag();
+    bool read();
     QPixmap readCover();
 
     void setFile(const File &file);

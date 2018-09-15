@@ -12,10 +12,14 @@ void AudioLoader::load(const File &file)
 {
     Audio *audio = m_cache.loadAudio(file);
     if (!audio)
+    {
         audio = new Audio(file);
-
-    if (!audio->isValid())
-        delete audio;
+        if (!audio->isValid())
+        {
+            delete audio;
+            return;
+        }
+    }
     if (!audio->isCached())
     {
         if (isInterrupted())
