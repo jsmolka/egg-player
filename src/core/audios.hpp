@@ -4,15 +4,28 @@
 #include <QObject>
 
 #include "audio.hpp"
-#include "vector.hpp"
 
-class Audios : public QObject, public Vector<Audio *>
+class Audios : public QObject, private Audio::vector
 {
     Q_OBJECT
 
 public:
     explicit Audios(QObject *parent = nullptr);
     explicit Audios(const Audio::vector &vector, QObject *parent = nullptr);
+
+    Audio::vector vector() const;
+
+    Audio *at(int index);
+    Audio *first() const;
+    Audio *last() const;
+
+    bool isEmpty() const;
+
+    int size() const;
+    int indexOf(Audio *audio, int from = 0) const;
+
+    void clear();
+    void reserve(int size);
 
     void insert(int index, Audio *audio);
     void append(Audio *audio);
@@ -22,18 +35,22 @@ public:
     Audios::iterator insert(Audios::iterator before, Audio *audio);
     Audios::iterator erase(Audios::iterator position);
 
-    Audios &operator<<(Audio *audio);
+    Audios::iterator begin();
+    Audios::iterator end();
 
-private slots:
-    void onAudioUpdated(Audio *audio);
+    Audios::const_iterator cbegin() const;
+    Audios::const_iterator cend() const;
+
+    Audios &operator<<(Audio *audio);
+    Audio *operator[](int index);
 
 signals:
     void inserted(int index);
     void removed(int index);
     void updated(int index);
 
-private:
-    Audio::vector m_vector;
+private slots:
+    void onAudioUpdated(Audio *audio);
 };
 
 #endif // AUDIOS_HPP
