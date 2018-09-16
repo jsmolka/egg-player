@@ -45,14 +45,14 @@ void Playlist::changeIndex(int index)
     emit indexChanged(index);
 }
 
-Audio * Playlist::audioAt(int index)
+Audio *Playlist::audioAt(int index)
 {
     return isValidIndex(index)
         ? m_audios->at(m_indices.at(index))
         : nullptr;
 }
 
-Audio * Playlist::currentAudio()
+Audio *Playlist::currentAudio()
 {
     return audioAt(m_index);
 }

@@ -7,7 +7,6 @@
 #include "library.hpp"
 #include "player.hpp"
 #include "threadpool.hpp"
-#include "types.hpp"
 
 EggWidget::EggWidget(QWidget *parent)
     : MainWindow(parent)

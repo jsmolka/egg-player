@@ -28,7 +28,7 @@ signals:
     void emptied();
 
 private:
-    static constexpr int s_timeout = 2500;
+    static constexpr int s_timeout{2500};
 
     int m_objectCount;
     int m_maxObjectCount;

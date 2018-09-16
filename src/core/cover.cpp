@@ -1,13 +1,18 @@
 #include "cover.hpp"
 
-#include <array>
-
 #include <QHash>
 #include <QPainter>
+#include <QVector>
+
+#include <taglib/attachedpictureframe.h>
+#include <taglib/id3v2tag.h>
+#include <taglib/id3v2frame.h>
+#include <taglib/mpegfile.h>
 
 #include "cache.hpp"
 #include "logger.hpp"
 #include "tag.hpp"
+#include "utils.hpp"
 
 Cover::Cover()
     : Cover(0)
@@ -33,10 +38,23 @@ Cover Cover::defaultCover()
 
 QPixmap Cover::loadFromFile(const File &file)
 {
-    QPixmap cover = Tag(file).readCover();
+    QPixmap cover;
+    TagLib::MPEG::File mFile(toWString(file));
+    if (mFile.hasID3v2Tag())
+    {
+        const TagLib::ID3v2::Tag *tag = mFile.ID3v2Tag();
+        const TagLib::ID3v2::FrameList frameList = tag->frameList("APIC");
+        if (!frameList.isEmpty())
+        {
+            const TagLib::ID3v2::AttachedPictureFrame *frame = static_cast<TagLib::ID3v2::AttachedPictureFrame *>(frameList.front());
+            cover.loadFromData(reinterpret_cast<const uchar *>(frame->picture().data()), frame->picture().size());
+        }
+    }
     if (cover.isNull())
+    {
+        LOG("Cannot read cover %1", file);
         cover = loadFromCache(s_defaultId);
-
+    }
     return scale(coverify(cover), s_size);
 }
 
@@ -131,8 +149,8 @@ QColor Cover::rawDominantColor(const QImage &image)
         int c;
     };
 
-    std::array<HsvRange, range> colorful = {};
-    std::array<HsvRange, range> grey = {};
+    QVector<HsvRange> colorful(range);
+    QVector<HsvRange> grey(range);
 
     bool isColorful = false;
     QRgb *pixels = (QRgb *)image.bits();
@@ -149,7 +167,6 @@ QColor Cover::rawDominantColor(const QImage &image)
         const int v = hsv.value();
 
         const int index = h / (360 / range);
-
         if (qAbs(r - g) > limit || qAbs(g - b) > limit || qAbs(b - r) > limit)
         {
             isColorful = true;
@@ -167,7 +184,7 @@ QColor Cover::rawDominantColor(const QImage &image)
         }
     }
 
-    const static auto dominantColor = [](std::array<HsvRange, range> hsvs) -> QColor
+    constexpr static auto dominantColor = [](const QVector<HsvRange> &hsvs) -> QColor
     {
         int max = 0;
         HsvRange most = hsvs[0];
@@ -182,9 +199,9 @@ QColor Cover::rawDominantColor(const QImage &image)
         }
 
         const float c = static_cast<float>(most.c);
-        const int h = static_cast<float>(most.h) / c;
-        const int s = static_cast<float>(most.s) / c;
-        const int v = static_cast<float>(most.v) / c;
+        const int h = qRound(static_cast<float>(most.h) / c);
+        const int s = qRound(static_cast<float>(most.s) / c);
+        const int v = qRound(static_cast<float>(most.v) / c);
 
         return QColor::fromHsv(h, s, v);
     };

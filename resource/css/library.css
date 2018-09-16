@@ -9,7 +9,7 @@
 LibraryWidget {
 	color: white;
 	background: black;
-	alternate-background-color: rgb(38, 38, 38);
+	alternate-background-color: rgb(28, 28, 28);
 }
 
 LibraryWidget:item {
@@ -18,7 +18,7 @@ LibraryWidget:item {
 }
 
 LibraryWidget::item:hover {
-	background: rgb(64, 64, 64);
+	background: rgb(50, 50, 50);
 }
 
 QScrollBar:horizontal {

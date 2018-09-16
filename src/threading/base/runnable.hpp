@@ -25,7 +25,7 @@ private slots:
     virtual void work() = 0;
 
 private:
-    static constexpr int s_objectsPerThread = 1;
+    static constexpr int s_objectsPerThread{1};
 
     Thread *m_thread;
 };

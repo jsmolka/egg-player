@@ -32,7 +32,7 @@ public:
     IconButton &loopButton();
     VolumeButton &volumeButton();
 
-    Slider &lengthSlider();
+    Slider &durationSlider();
     Slider &volumeSlider();
 
     void setDuration(int duration);
@@ -41,11 +41,12 @@ public:
     void setColor(const QColor &color);
     QColor color() const;
 
-    void colorTransition(const QColor &color);
+    void startTransition(const QColor &color);
 
 private slots:
     void onPlayerAudioChanged(Audio *audio);
     void onPlayerPositionChanged(int position);
+    void onPlayerPrevious();
     void onVolumeButtonPressed();
     void onLengthSliderMoved(int value);
 
@@ -66,7 +67,7 @@ private:
     IconButton m_loopButton;
     VolumeButton m_volumeButton;
 
-    Slider m_lengthSlider;
+    Slider m_durationSlider;
     Slider m_volumeSlider;
 
     Shortcut m_scPlayPause;

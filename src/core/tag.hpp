@@ -15,7 +15,6 @@ public:
     explicit Tag(const File &file, QObject *parent = nullptr);
 
     bool read();
-    QPixmap readCover();
 
     void setFile(const File &file);
     File file() const;

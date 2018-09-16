@@ -38,14 +38,14 @@ private:
     bool registerShortcut(UINT modifier, UINT vk);
     bool unregisterShortcut();
 
+    static QAtomicInt s_id;
+    static const QHash<QString, UINT> s_keys;
+    static const QHash<QString, UINT> s_modifiers;
+
     int m_id;
     bool m_repeat;
     bool m_registered;
     QString m_shortcut;
-
-    static QAtomicInt s_id;
-    static const QHash<QString, UINT> s_keys;
-    static const QHash<QString, UINT> s_modifiers;
 };
 
 #endif // SHORTCUT_HPP

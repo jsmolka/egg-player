@@ -37,12 +37,13 @@ void InitialLoaderWorker::work()
 
         Audio *audio = cache.loadAudio(file);
         if (!audio)
-            audio = new Audio(file);
-
-        if (!audio->isValid())
         {
-            delete audio;
-            continue;
+            audio = new Audio(file);
+            if (!audio->isValid())
+            {
+                delete audio;
+                continue;
+            }
         }
         if (!audio->isCached())
         {

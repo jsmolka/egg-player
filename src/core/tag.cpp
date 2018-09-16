@@ -2,10 +2,7 @@
 
 #include <QFileInfo>
 
-#include <taglib/attachedpictureframe.h>
 #include <taglib/fileref.h>
-#include <taglib/id3v2tag.h>
-#include <taglib/id3v2frame.h>
 #include <taglib/mpegfile.h>
 #include <taglib/tag.h>
 
@@ -57,27 +54,6 @@ bool Tag::read()
         m_title = QFileInfo(m_file).baseName();
 
     return true;
-}
-
-QPixmap Tag::readCover()
-{
-    QPixmap cover;
-    TagLib::MPEG::File file(toWString(m_file));
-    if (file.hasID3v2Tag())
-    {
-        const TagLib::ID3v2::Tag *tag = file.ID3v2Tag();
-        const TagLib::ID3v2::FrameList frameList = tag->frameList("APIC");
-        if (!frameList.isEmpty())
-        {
-            const TagLib::ID3v2::AttachedPictureFrame *frame = static_cast<TagLib::ID3v2::AttachedPictureFrame *>(frameList.front());
-            cover.loadFromData(reinterpret_cast<const uchar *>(frame->picture().data()), frame->picture().size());
-        }
-    }
-
-    if (cover.isNull())
-        LOG("Cannot read cover %1", m_file);
-
-    return cover;
 }
 
 void Tag::setFile(const File &file)

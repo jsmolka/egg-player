@@ -32,9 +32,9 @@ private:
     static QColor rawDominantColor(const QImage &image);
     static QColor adjustDominantColor(const QColor &color);
 
-    static constexpr int s_size = 200;
-    static constexpr int s_defaultId = 1;
-    static constexpr int s_dominantSize = 30;
+    static constexpr int s_size{200};
+    static constexpr int s_defaultId{1};
+    static constexpr int s_dominantSize{30};
 
     int m_id;
 };

@@ -71,7 +71,7 @@ Audio *Cache::loadAudio(const QString &path)
         audio->duration().setSecs(m_query.value(7).toInt());
         audio->cover().setId(m_query.value(8).toInt());
         audio->setModified(m_query.value(9).toInt());
-        audio->setOutdated(audio->modified() != QFileInfo(audio->tag().file()).lastModified().toSecsSinceEpoch());
+        audio->setOutdated(audio->modified() != QFileInfo(audio->file()).lastModified().toSecsSinceEpoch());
     }
     return audio;
 }
@@ -303,7 +303,6 @@ int Cache::insertByteCover(const QByteArray &bytes)
 {
     static QMutex mutex;
     const QMutexLocker locker(&mutex);
-
     const int id = lastCoverId() + 1;
 
     m_query.prepare(
@@ -376,7 +375,6 @@ int Cache::coverIdBySize(int size)
     int id = 0;
     if (m_query.first())
         id = m_query.value(0).toInt();
-
     if (m_query.next())
         id = 0;
 

@@ -23,7 +23,7 @@ private slots:
     void onAppQuitting();
 
 private:
-    static constexpr int s_timeout = 30000;
+    static constexpr int s_timeout{30000};
 
     Thread *m_thread;
     QTimer m_timer;

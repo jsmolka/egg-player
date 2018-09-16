@@ -21,7 +21,7 @@ protected:
     void invoke(QObject *object, const char *method, QGenericArgument arg = QGenericArgument(nullptr));
 
 private:
-    static constexpr int s_objectsPerThread = 8;
+    static constexpr int s_objectsPerThread{8};
 
     Thread *m_thread;
 };

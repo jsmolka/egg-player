@@ -152,6 +152,5 @@ double SmoothTableWidget::subDelta(double delta, int stepsLeft) const
 {
     const double m = m_totalSteps / 2.0;
     const double x = abs(m_totalSteps - stepsLeft - m);
-
     return (cos(x * M_PI / m) + 1.0) / (2.0 * m) * delta;
 }

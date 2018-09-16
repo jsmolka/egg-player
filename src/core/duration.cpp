@@ -35,5 +35,6 @@ QString Duration::toString() const
         return time.toString("mm:ss");
     if (m_secs < 36000)
         return time.toString("h:mm:ss");
+
     return time.toString("hh:mm:ss");
 }

@@ -24,8 +24,8 @@ public:
 
     void changeIndex(int index);
 
-    Audio * audioAt(int index);
-    Audio * currentAudio();
+    Audio *audioAt(int index);
+    Audio *currentAudio();
 
     void create(Audios *audios);
 

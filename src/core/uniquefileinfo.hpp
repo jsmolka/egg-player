@@ -39,7 +39,7 @@ inline bool operator==(const UniqueFileInfo &info1, const UniqueFileInfo &info2)
 
 inline uint qHash(const UniqueFileInfo &key, uint seed)
 {
-    return qHash(key.volume() ^ key.low() ^ key.high(), seed);
+    return qHash(key.low() ^ key.high() ^ key.volume(), seed);
 }
 
 #endif // UNIQUEFILEINFO_HPP
