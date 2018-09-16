@@ -104,7 +104,7 @@ QString LibraryWidget::audioText(Audio *audio, int column) const
         case AudioInfo::Genre:
             return audio->tag().genre();
         case AudioInfo::Duration:
-            return audio->tag().duration().toString();
+            return audio->duration().toString();
     }
     return QString();
 }

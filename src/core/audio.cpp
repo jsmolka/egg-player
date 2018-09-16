@@ -83,6 +83,16 @@ Tag &Audio::tag() const
     return const_cast<Tag &>(m_tag);
 }
 
+Duration &Audio::duration()
+{
+    return m_duration;
+}
+
+Duration &Audio::duration() const
+{
+    return const_cast<Duration &>(m_duration);
+}
+
 Cover &Audio::cover()
 {
     return m_cover;
@@ -98,6 +108,7 @@ void Audio::update()
     m_tag.blockSignals(true);
 
     m_valid = m_tag.read();
+    m_duration.setSecs(m_tag.duration());
     m_modified = QFileInfo(m_file).lastModified().toSecsSinceEpoch();
     emit updated(this);
 

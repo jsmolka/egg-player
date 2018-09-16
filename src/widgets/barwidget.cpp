@@ -1,7 +1,9 @@
 #include "barwidget.hpp"
 
 #include <QGridLayout>
+#include <QPalette>
 #include <QPainter>
+#include <QPropertyAnimation>
 #include <QStyleOption>
 
 #include "cache.hpp"
@@ -13,7 +15,7 @@
 #include "player.hpp"
 
 BarWidget::BarWidget(QWidget *parent)
-    : ColorTransitionWidget(parent)
+    : QWidget(parent)
     , m_coverLabel(this)
     , m_trackLabel(this)
     , m_currentTimeLabel(this)
@@ -117,16 +119,47 @@ Slider &BarWidget::volumeSlider()
     return m_volumeSlider;
 }
 
+void BarWidget::setDuration(int duration)
+{
+    m_duration = duration;
+}
+
+int BarWidget::duration() const
+{
+    return m_duration;
+}
+
+void BarWidget::setColor(const QColor &color)
+{
+    QPalette palette;
+    palette.setColor(QPalette::Background, color);
+    setPalette(palette);
+}
+
+QColor BarWidget::color() const
+{
+    return palette().color(QPalette::Background);
+}
+
+void BarWidget::colorTransition(const QColor &color)
+{
+    QPropertyAnimation *animation = new QPropertyAnimation(this, "color", this);
+    animation->setStartValue(this->color());
+    animation->setEndValue(color);
+    animation->setDuration(m_duration);
+    animation->start(QPropertyAnimation::DeleteWhenStopped);
+}
+
 void BarWidget::onPlayerAudioChanged(Audio *audio)
 {
     m_lengthSlider.setEnabled(true);
-    m_lengthSlider.setRange(0, audio->tag().duration().secs());
+    m_lengthSlider.setRange(0, audio->duration().secs());
 
     m_coverLabel.setPixmap(audio->cover().pixmap(cfgBar.coverSize()));
     m_trackLabel.setText(QString("%1\n%2").arg(audio->tag().title(), audio->tag().artist()));
 
     m_currentTimeLabel.setText(Duration(0).toString());
-    m_totalTimeLabel.setText(audio->tag().duration().toString());
+    m_totalTimeLabel.setText(audio->duration().toString());
 
     colorTransition(audio->cover().dominantColor());
 }
@@ -160,6 +193,7 @@ void BarWidget::onLengthSliderMoved(int value)
 
 void BarWidget::setup()
 {
+    setAutoFillBackground(true);
     setColor(Cover::defaultCover().dominantColor());
     setFixedHeight(cfgBar.height());
 

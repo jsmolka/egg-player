@@ -65,7 +65,6 @@ HEADERS += \
     src/widgets/librarywidget.hpp \
     src/widgets/components/borderlayout.hpp \
     src/widgets/components/clickablestyle.hpp \
-    src/widgets/components/colortransitionwidget.hpp \
     src/widgets/components/iconbutton.hpp \
     src/widgets/components/iconfactory.hpp \
     src/widgets/components/mainwindow.hpp \
@@ -125,7 +124,6 @@ SOURCES += \
     src/widgets/librarywidget.cpp \
     src/widgets/components/borderlayout.cpp \
     src/widgets/components/clickablestyle.cpp \
-    src/widgets/components/colortransitionwidget.cpp \
     src/widgets/components/iconbutton.cpp \
     src/widgets/components/iconfactory.cpp \
     src/widgets/components/mainwindow.cpp \

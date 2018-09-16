@@ -45,8 +45,6 @@ void Cache::createTables()
 
 Audio *Cache::loadAudio(const QString &path)
 {
-    Audio *audio = nullptr;
-
     m_query.prepare(
         "SELECT * FROM audios "
         "WHERE path = :path"
@@ -56,6 +54,7 @@ Audio *Cache::loadAudio(const QString &path)
     if (!m_query.exec())
         error();
 
+    Audio *audio = nullptr;
     if (m_query.first())
     {
         audio = new Audio;
@@ -69,6 +68,7 @@ Audio *Cache::loadAudio(const QString &path)
         audio->tag().setYear(m_query.value(5).toInt());
         audio->tag().setTrack(m_query.value(6).toInt());
         audio->tag().setDuration(m_query.value(7).toInt());
+        audio->duration().setSecs(m_query.value(7).toInt());
         audio->cover().setId(m_query.value(8).toInt());
         audio->setModified(m_query.value(9).toInt());
         audio->setOutdated(audio->modified() != QFileInfo(audio->tag().file()).lastModified().toSecsSinceEpoch());
@@ -99,7 +99,7 @@ void Cache::insertAudio(Audio *audio)
     m_query.bindValue(":genre", audio->tag().genre());
     m_query.bindValue(":year", audio->tag().year());
     m_query.bindValue(":track", audio->tag().track());
-    m_query.bindValue(":duration", audio->tag().duration().secs());
+    m_query.bindValue(":duration", audio->duration().secs());
     m_query.bindValue(":coverid", audio->cover().id());
     m_query.bindValue(":modified", audio->modified());
 
@@ -132,7 +132,7 @@ void Cache::updateAudio(Audio *audio, const QString &newPath)
     m_query.bindValue(":genre", audio->tag().genre());
     m_query.bindValue(":year", audio->tag().year());
     m_query.bindValue(":track", audio->tag().track());
-    m_query.bindValue(":duration", audio->tag().duration().secs());
+    m_query.bindValue(":duration", audio->duration().secs());
     m_query.bindValue(":coverid", audio->cover().id());
     m_query.bindValue(":modified", audio->modified());
     m_query.bindValue(":path", audio->tag().file());
@@ -221,7 +221,6 @@ QSqlDatabase Cache::db()
 QByteArray Cache::coverToBytes(const QPixmap &cover)
 {
     QByteArray bytes;
-
     QBuffer buffer(&bytes);
     buffer.open(QIODevice::WriteOnly);
     cover.save(&buffer, "PNG");
@@ -351,13 +350,12 @@ int Cache::coverId(const QByteArray &bytes)
 
 int Cache::lastCoverId()
 {
-    int id = 1;
-
     m_query.prepare("SELECT max(id) FROM covers");
 
     if (!m_query.exec())
         error();
 
+    int id = 1;
     if (m_query.first())
         id = m_query.value(0).toInt();
 
@@ -366,8 +364,6 @@ int Cache::lastCoverId()
 
 int Cache::coverIdBySize(int size)
 {
-    int id = 0;
-
     m_query.prepare(
         "SELECT id FROM covers "
         "WHERE size = :size"
@@ -377,6 +373,7 @@ int Cache::coverIdBySize(int size)
     if (!m_query.exec())
         error();
 
+    int id = 0;
     if (m_query.first())
         id = m_query.value(0).toInt();
 
@@ -388,8 +385,6 @@ int Cache::coverIdBySize(int size)
 
 int Cache::coverIdByBlob(const QByteArray &bytes)
 {
-    int id = 0;
-
     m_query.prepare(
         "SELECT id FROM covers "
         "WHERE cover = :cover"
@@ -399,6 +394,7 @@ int Cache::coverIdByBlob(const QByteArray &bytes)
     if (!m_query.exec())
         error();
 
+    int id = 0;
     if (m_query.first())
         id = m_query.value(0).toInt();
 

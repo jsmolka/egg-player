@@ -15,6 +15,7 @@ public:
 
     Audio::vector vector() const;
 
+    Audio *at(int index);
     Audio *at(int index) const;
     Audio *first() const;
     Audio *last() const;

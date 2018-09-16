@@ -5,6 +5,7 @@
 #include <QVector>
 
 #include "cover.hpp"
+#include "duration.hpp"
 #include "tag.hpp"
 #include "types.hpp"
 
@@ -36,6 +37,9 @@ public:
     Tag &tag();
     Tag &tag() const;
 
+    Duration &duration();
+    Duration &duration() const;
+
     Cover &cover();
     Cover &cover() const;
 
@@ -64,6 +68,7 @@ private:
     bool m_outdated;
     qint64 m_modified;
     Tag m_tag;
+    Duration m_duration;
     Cover m_cover;
 };
 

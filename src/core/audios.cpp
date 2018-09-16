@@ -18,6 +18,11 @@ Audio::vector Audios::vector() const
     return static_cast<Audio::vector>(*this);
 }
 
+Audio *Audios::at(int index)
+{
+    return (*this)[index];
+}
+
 Audio *Audios::at(int index) const
 {
     return Audio::vector::at(index);

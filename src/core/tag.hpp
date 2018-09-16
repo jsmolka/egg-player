@@ -4,7 +4,6 @@
 #include <QString>
 #include <QPixmap>
 
-#include "duration.hpp"
 #include "types.hpp"
 
 class Tag : public QObject
@@ -39,9 +38,8 @@ public:
     void setTrack(int track);
     int track() const;
 
-    void setDuration(int secs);
-    void setDuration(const Duration &duration);
-    Duration duration() const;
+    void setDuration(int duration);
+    int duration() const;
 
 signals:
     void updated();
@@ -54,7 +52,7 @@ private:
     QString m_genre;
     int m_year;
     int m_track;
-    Duration m_duration;
+    int m_duration;
 };
 
 #endif // TAG_HPP

@@ -2,18 +2,20 @@
 #define BARWIDGET_HPP
 
 #include <QLabel>
+#include <QWidget>
 
 #include "audio.hpp"
-#include "colortransitionwidget.hpp"
 #include "iconbutton.hpp"
 #include "playpausebutton.hpp"
 #include "slider.hpp"
 #include "shortcut.hpp"
 #include "volumebutton.hpp"
 
-class BarWidget : public ColorTransitionWidget
+class BarWidget : public QWidget
 {
     Q_OBJECT
+
+    Q_PROPERTY(QColor color READ color WRITE setColor)
 
 public:
     explicit BarWidget(QWidget *parent = nullptr);
@@ -32,6 +34,14 @@ public:
 
     Slider &lengthSlider();
     Slider &volumeSlider();
+
+    void setDuration(int duration);
+    int duration() const;
+
+    void setColor(const QColor &color);
+    QColor color() const;
+
+    void colorTransition(const QColor &color);
 
 private slots:
     void onPlayerAudioChanged(Audio *audio);
@@ -64,6 +74,8 @@ private:
     Shortcut m_scPrevious;
     Shortcut m_scVolumeUp;
     Shortcut m_scVolumeDown;
+
+    int m_duration{250};
 };
 
 #endif // BARWIDGET_HPP

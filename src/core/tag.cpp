@@ -40,7 +40,7 @@ bool Tag::read()
         return false;
     }
 
-    m_duration.setSecs(file.audioProperties()->lengthInSeconds());
+    m_duration = file.audioProperties()->lengthInSeconds();
 
     if (file.tag())
     {
@@ -162,21 +162,14 @@ int Tag::track() const
     return m_track;
 }
 
-void Tag::setDuration(int secs)
-{
-    m_duration.setSecs(secs);
-
-    emit updated();
-}
-
-void Tag::setDuration(const Duration &duration)
+void Tag::setDuration(int duration)
 {
     m_duration = duration;
 
     emit updated();
 }
 
-Duration Tag::duration() const
+int Tag::duration() const
 {
     return m_duration;
 }
