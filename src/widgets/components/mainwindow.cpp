@@ -1,6 +1,7 @@
 #include "mainwindow.hpp"
 
 #include <QSettings>
+#include <QResizeEvent>
 
 MainWindow::MainWindow(QWidget *parent)
     : QWidget(parent)
@@ -8,12 +9,15 @@ MainWindow::MainWindow(QWidget *parent)
 
 }
 
-void MainWindow::showSavedPosition()
+void MainWindow::showSavedState()
 {
     QSettings settings;
+
     restoreGeometry(settings.value("geometry", saveGeometry()).toByteArray());
     move(settings.value("pos", pos()).toPoint());
-    resize(settings.value("size", size()).toSize());
+    m_size = settings.value("size", size()).toSize();
+    resize(m_size);
+
     if (settings.value("maximized", isMaximized()).toBool())
         showMaximized();
     else
@@ -22,16 +26,22 @@ void MainWindow::showSavedPosition()
 
 void MainWindow::closeEvent(QCloseEvent *event)
 {
-    savePosition();
+    saveState();
 
     QWidget::closeEvent(event);
 }
 
-void MainWindow::savePosition()
+void MainWindow::resizeEvent(QResizeEvent *event)
+{
+    m_size = event->oldSize();
+    QWidget::resizeEvent(event);
+}
+
+void MainWindow::saveState()
 {
     QSettings settings;
     settings.setValue("geometry", saveGeometry());
-    settings.setValue("maximized", isMaximized());
     settings.setValue("pos", pos());
-    settings.setValue("size", size());
+    settings.setValue("size", isMaximized() ? m_size : size());
+    settings.setValue("maximized", isMaximized());
 }

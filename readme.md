@@ -1,6 +1,9 @@
 # egg-player
 A Groove Music like music player.
 
+## Changes since latest release
+- improve window state restoring
+
 ## Roadmap
 - [ ] documentation
 - [ ] playlist support
