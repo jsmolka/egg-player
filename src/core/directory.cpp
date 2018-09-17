@@ -65,6 +65,18 @@ void Directory::parse()
     emit parsed(this);
 }
 
+Files Directory::globAudios() const
+{
+    Files files;
+    for (const File &file : m_files)
+        files << file;
+
+    for (auto iter = m_dirs.cbegin(); iter != m_dirs.cend(); ++iter)
+        files << iter.value()->globAudios();
+
+    return files;
+}
+
 Files Directory::processChanges()
 {
     Files changes;

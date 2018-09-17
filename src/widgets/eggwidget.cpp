@@ -1,8 +1,14 @@
 #include "eggwidget.hpp"
 
+#include <QDragEnterEvent>
+#include <QDropEvent>
+#include <QFileInfo>
+#include <QMimeData>
+
 #include "borderlayout.hpp"
 #include "config.hpp"
 #include "constants.hpp"
+#include "directory.hpp"
 #include "fileutil.hpp"
 #include "library.hpp"
 #include "player.hpp"
@@ -29,6 +35,35 @@ void EggWidget::closeEvent(QCloseEvent *event)
     MainWindow::closeEvent(event);
 }
 
+void EggWidget::dragEnterEvent(QDragEnterEvent *event)
+{
+    event->acceptProposedAction();
+}
+
+void EggWidget::dropEvent(QDropEvent *event)
+{
+    const QMimeData *mimeData = event->mimeData();
+    Files files;
+    if (mimeData->hasUrls())
+    {
+        for (const QUrl &url : mimeData->urls())
+        {
+            const Path path = url.toLocalFile();
+            if (QFileInfo(path).isDir())
+            {
+                Directory dir(path);
+                dir.parse();
+                files << dir.globAudios();
+            }
+            else
+            {
+                files << url.toLocalFile();
+            }
+        }
+    }
+    eLibrary->tryLoadFiles(files);
+}
+
 void EggWidget::onLibraryDoubleClicked(const QModelIndex &index)
 {
     ePlayer->createPlaylist(eLibrary->audios(), index.row());
@@ -37,6 +72,8 @@ void EggWidget::onLibraryDoubleClicked(const QModelIndex &index)
 
 void EggWidget::setup()
 {
+    setAcceptDrops(true);
+
     setupCss();
 }
 

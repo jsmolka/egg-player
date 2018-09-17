@@ -19,6 +19,7 @@ public:
     explicit FileSystem(QObject *parent = nullptr);
 
     QHash<Path, Directory *> dirs() const;
+    QHash<File, Audio *> audios() const;
 
     void addPath(const Path &path);
 

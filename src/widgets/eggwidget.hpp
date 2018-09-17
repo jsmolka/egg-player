@@ -1,8 +1,6 @@
 #ifndef EGGWIDGET_HPP
 #define EGGWIDGET_HPP
 
-#include <QDropEvent>
-
 #include "barwidget.hpp"
 #include "librarywidget.hpp"
 #include "mainwindow.hpp"
@@ -16,6 +14,8 @@ public:
 
 protected:
     void closeEvent(QCloseEvent *event);
+    void dragEnterEvent(QDragEnterEvent *event);
+    void dropEvent(QDropEvent *event);
 
 private slots:
     void onLibraryDoubleClicked(const QModelIndex &index);

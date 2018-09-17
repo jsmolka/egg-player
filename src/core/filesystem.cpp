@@ -15,6 +15,11 @@ QHash<Path, Directory *> FileSystem::dirs() const
     return m_dirs;
 }
 
+QHash<File, Audio *> FileSystem::audios() const
+{
+    return m_audios;
+}
+
 void FileSystem::addPath(const Path &path)
 {
     if (m_dirs.contains(path))

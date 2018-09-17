@@ -25,6 +25,7 @@ public:
 
     void parse();
 
+    Files globAudios() const;
     Files processChanges();
 
 signals:

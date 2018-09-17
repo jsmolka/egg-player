@@ -46,6 +46,11 @@ Audios *Library::audios()
     return &m_audios;
 }
 
+FileSystem &Library::fileSystem() const
+{
+    return const_cast<FileSystem &>(m_fileSystem);
+}
+
 void Library::initialLoad(const Paths &paths)
 {
     for (const Path &path : paths)
@@ -53,6 +58,18 @@ void Library::initialLoad(const Paths &paths)
 
     m_initialLoader.setFiles(m_fileSystem.globAudios());
     m_initialLoader.start();
+}
+
+void Library::tryLoadFiles(const Files &files)
+{
+    for (const File &file : files)
+    {
+        if (file.endsWith(QLatin1String(".mp3"), Qt::CaseInsensitive))
+        {
+            if (!m_fileSystem.audios().contains(file))
+                m_audioLoader.load(file);
+        }
+    }
 }
 
 void Library::insert(Audio *audio)

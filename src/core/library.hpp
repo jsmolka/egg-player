@@ -28,8 +28,10 @@ public:
     bool isSorted() const;
 
     Audios *audios();
+    FileSystem &fileSystem() const;
 
     void initialLoad(const Paths &paths);
+    void tryLoadFiles(const Files &files);
 
 public slots:
     void insert(Audio *audio);
