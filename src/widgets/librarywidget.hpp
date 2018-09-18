@@ -38,11 +38,10 @@ private:
         AudioInfo info;
         Qt::Alignment alignment;
     };
+    QString audioText(Audio *audio, int column) const;
 
     void setup();
     void setupCss();
-
-    QString audioText(Audio *audio, int column) const;
 
     Audios *m_audios;
     QVector<Column> m_columns;

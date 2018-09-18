@@ -1,15 +1,28 @@
 #include "filesystemwatcher.hpp"
 
+#include <QFileInfo>
+
 FileSystemWatcher::FileSystemWatcher(QObject *parent)
     : QObject(parent)
     , m_watcher(this)
     , m_timer(this)
+    , m_ignoreDir(false)
 {
-    connect(&m_watcher, &QFileSystemWatcher::fileChanged, this, &FileSystemWatcher::fileChanged);
+    connect(&m_watcher, &QFileSystemWatcher::fileChanged, this, &FileSystemWatcher::onFileChanged);
     connect(&m_watcher, &QFileSystemWatcher::directoryChanged, this, &FileSystemWatcher::onDirectoryChanged);
-    connect(&m_timer, &QTimer::timeout, this, &FileSystemWatcher::onTimeout);
+    connect(&m_timer, &QTimer::timeout, this, &FileSystemWatcher::onTimerTimeout);
 
     m_timer.setSingleShot(true);
+}
+
+void FileSystemWatcher::setBufferDuration(int duration)
+{
+    m_bufferDuration = duration;
+}
+
+int FileSystemWatcher::bufferDuration() const
+{
+    return m_bufferDuration;
 }
 
 void FileSystemWatcher::addPath(const Path &path)
@@ -32,43 +45,29 @@ void FileSystemWatcher::removePaths(const QStringList &paths)
     m_watcher.removePaths(paths);
 }
 
-void FileSystemWatcher::setBufferDuration(int duration)
+void FileSystemWatcher::onFileChanged(const File &file)
 {
-    m_bufferDuration = duration;
-}
+    if (QFileInfo::exists(file))
+    {
+        m_ignoreDir = true;
 
-int FileSystemWatcher::bufferDuration() const
-{
-    return m_bufferDuration;
+        emit fileChanged(file);
+    }
 }
 
 void FileSystemWatcher::onDirectoryChanged(const Path &dir)
 {
-    queueDirectory(dir);
+    if (m_bufferedDir.isNull() || m_bufferedDir.contains(dir))
+        m_bufferedDir = dir;
 
     m_timer.start(m_bufferDuration);
 }
 
-void FileSystemWatcher::onTimeout()
+void FileSystemWatcher::onTimerTimeout()
 {
-    for (const Path &path : qAsConst(m_buffer))
-        emit directoryChanged(path);
+    if (!m_ignoreDir)
+        emit directoryChanged(m_bufferedDir);
 
-    m_buffer.clear();
-}
-
-void FileSystemWatcher::queueDirectory(const Path &dir)
-{
-    auto iter = m_buffer.begin();
-    while (iter != m_buffer.end())
-    {
-        if (dir.contains(*iter))
-            return;
-
-        if ((*iter).contains(dir))
-            iter = m_buffer.erase(iter);
-        else
-            ++iter;
-    }
-    m_buffer << dir;
+    m_ignoreDir = false;
+    m_bufferedDir = Path();
 }

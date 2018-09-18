@@ -31,7 +31,7 @@ public:
     FileSystem &fileSystem() const;
 
     void initialLoad(const Paths &paths);
-    void tryLoadFiles(const Files &files);
+    void loadFiles(const Files &files);
 
 public slots:
     void insert(Audio *audio);

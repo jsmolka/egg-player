@@ -2,7 +2,6 @@
 #define FILESYSTEMWATCHER_HPP
 
 #include <QFileSystemWatcher>
-#include <QSet>
 #include <QTimer>
 
 #include "types.hpp"
@@ -28,17 +27,17 @@ signals:
     void directoryChanged(const Path &dir);
 
 private slots:
+    void onFileChanged(const File &file);
     void onDirectoryChanged(const Path &dir);
-    void onTimeout();
+    void onTimerTimeout();
 
 private:
-    void queueDirectory(const Path &dir);
-
     QFileSystemWatcher m_watcher;
-    QSet<Path> m_buffer;
     QTimer m_timer;
 
+    Path m_bufferedDir;
     int m_bufferDuration{1000};
+    bool m_ignoreDir;
 };
 
 #endif // FILESYSTEMWATCHER_HPP

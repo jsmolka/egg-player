@@ -3,7 +3,6 @@
 #include <QDragEnterEvent>
 #include <QDropEvent>
 #include <QFileInfo>
-#include <QMimeData>
 
 #include "borderlayout.hpp"
 #include "config.hpp"
@@ -20,7 +19,6 @@ EggWidget::EggWidget(QWidget *parent)
     , m_library(this)
 {
     setup();
-    setupUi();
 
     connect(&m_library, &LibraryWidget::doubleClicked, this, &EggWidget::onLibraryDoubleClicked);
 
@@ -42,26 +40,8 @@ void EggWidget::dragEnterEvent(QDragEnterEvent *event)
 
 void EggWidget::dropEvent(QDropEvent *event)
 {
-    const QMimeData *mimeData = event->mimeData();
-    Files files;
-    if (mimeData->hasUrls())
-    {
-        for (const QUrl &url : mimeData->urls())
-        {
-            const Path path = url.toLocalFile();
-            if (QFileInfo(path).isDir())
-            {
-                Directory dir(path);
-                dir.parse();
-                files << dir.globAudios();
-            }
-            else
-            {
-                files << url.toLocalFile();
-            }
-        }
-    }
-    eLibrary->tryLoadFiles(files);
+    if (event->mimeData()->hasUrls())
+        processDropEvent(event->mimeData());
 }
 
 void EggWidget::onLibraryDoubleClicked(const QModelIndex &index)
@@ -70,11 +50,35 @@ void EggWidget::onLibraryDoubleClicked(const QModelIndex &index)
     ePlayer->play();
 }
 
+void EggWidget::processDropEvent(const QMimeData *data)
+{
+    Files files;
+    for (const QUrl &url : data->urls())
+    {
+        const Path path = url.toLocalFile();
+        if (QFileInfo(path).isDir())
+        {
+            eLibrary->fileSystem().addPath(path);
+            files << eLibrary->fileSystem().dirs().value(path)->globAudios();
+        }
+        else
+        {
+            if (path.endsWith(QLatin1String(".mp3"), Qt::CaseInsensitive))
+            {
+                eLibrary->fileSystem().watcher().addPath(path);
+                files << path;
+            }
+        }
+    }
+    eLibrary->loadFiles(files);
+}
+
 void EggWidget::setup()
 {
     setAcceptDrops(true);
 
     setupCss();
+    setupUi();
 }
 
 void EggWidget::setupCss()

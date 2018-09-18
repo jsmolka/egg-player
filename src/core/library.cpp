@@ -17,11 +17,11 @@ Library::Library(bool sorted, QObject *parent)
 {
     connect(&m_initialLoader, &InitialLoader::loaded, this, &Library::insert);
     connect(&m_initialLoader, &InitialLoader::finished,this, &Library::onAudioLoaderFinished);
+    connect(&m_audioLoader, &AudioLoader::loaded, this, &Library::insert);
 
     connect(&m_fileSystem, &FileSystem::modified, &m_audioUpdater, &AudioUpdater::update);
     connect(&m_fileSystem, &FileSystem::renamed, this, &Library::onFileSystemRenamed);
     connect(&m_fileSystem, &FileSystem::added, &m_audioLoader, &AudioLoader::load);
-    connect(&m_audioLoader, &AudioLoader::loaded, this, &Library::insert);
     connect(&m_fileSystem, &FileSystem::removed, this, &Library::onFileSystemRemoved);
 }
 
@@ -60,15 +60,12 @@ void Library::initialLoad(const Paths &paths)
     m_initialLoader.start();
 }
 
-void Library::tryLoadFiles(const Files &files)
+void Library::loadFiles(const Files &files)
 {
     for (const File &file : files)
     {
-        if (file.endsWith(QLatin1String(".mp3"), Qt::CaseInsensitive))
-        {
-            if (!m_fileSystem.audios().contains(file))
-                m_audioLoader.load(file);
-        }
+        if (!m_fileSystem.audios().contains(file))
+            m_audioLoader.load(file);
     }
 }
 

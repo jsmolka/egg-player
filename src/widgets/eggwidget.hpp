@@ -1,6 +1,8 @@
 #ifndef EGGWIDGET_HPP
 #define EGGWIDGET_HPP
 
+#include <QMimeData>
+
 #include "barwidget.hpp"
 #include "librarywidget.hpp"
 #include "mainwindow.hpp"
@@ -21,6 +23,8 @@ private slots:
     void onLibraryDoubleClicked(const QModelIndex &index);
 
 private:
+    void processDropEvent(const QMimeData *data);
+
     void setup();
     void setupCss();
     void setupUi();

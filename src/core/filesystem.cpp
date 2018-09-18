@@ -10,6 +10,11 @@ FileSystem::FileSystem(QObject *parent)
     connect(&m_watcher, &FileSystemWatcher::directoryChanged, this, &FileSystem::onDirectoryChanged);
 }
 
+Bimap<File, UniqueFileInfo> FileSystem::uniqueInfo() const
+{
+    return m_unique;
+}
+
 QHash<Path, Directory *> FileSystem::dirs() const
 {
     return m_dirs;
@@ -18,6 +23,11 @@ QHash<Path, Directory *> FileSystem::dirs() const
 QHash<File, Audio *> FileSystem::audios() const
 {
     return m_audios;
+}
+
+FileSystemWatcher &FileSystem::watcher()
+{
+    return m_watcher;
 }
 
 void FileSystem::addPath(const Path &path)
@@ -35,11 +45,8 @@ void FileSystem::addPath(const Path &path)
 Files FileSystem::globAudios() const
 {
     Files result;
-    for (auto iter = m_dirs.cbegin(); iter != m_dirs.cend(); ++iter)
-    {
-        for (const File &file : iter.value()->files())
-            result << file;
-    }
+    for (Directory *dir : qAsConst(m_dirs))
+        result << dir->globAudios(false);
     return result;
 }
 
@@ -48,17 +55,21 @@ void FileSystem::watchAudio(Audio *audio)
     m_audios.insert(audio->file(), audio);
 }
 
+void FileSystem::unwatchAudio(Audio *audio)
+{
+    m_audios.remove(audio->file());
+}
+
 void FileSystem::onDirParsed(Directory *dir)
 {
     QStringList paths;
     paths.reserve(dir->files().size() + 1);
+    paths << dir->path();
     for (const File &file : dir->files())
     {
         paths << file;
         m_unique.insert(file, UniqueFileInfo(file));
     }
-    paths << dir->path();
-
     m_watcher.addPaths(paths);
     m_dirs.insert(dir->path(), dir);
 }
@@ -73,12 +84,12 @@ void FileSystem::onDirRemoved(Directory *dir)
 {
     m_watcher.removePath(dir->path());
     m_dirs.remove(dir->path());
+    dir->deleteLater();
 }
 
 void FileSystem::onFileChanged(const File &file)
 {
-    if (QFileInfo::exists(file))
-        eventModified(file);
+    eventModified(file);
 }
 
 void FileSystem::onDirectoryChanged(const Path &dir)
@@ -109,8 +120,8 @@ void FileSystem::onDirectoryChanged(const Path &dir)
         }
     }
 
-    for (auto iter = renamedTo.cbegin(); iter != renamedTo.cend(); ++iter)
-        eventAdded(iter.value());
+    for (const File &file : renamedTo)
+        eventAdded(file);
 }
 
 void FileSystem::eventModified(const File &file)
@@ -124,7 +135,7 @@ void FileSystem::eventRenamed(const File &from, const File &to)
     m_watcher.removePath(from);
     m_watcher.addPath(to);
 
-    const UniqueFileInfo &info = m_unique.value(from);
+    const UniqueFileInfo info = m_unique.value(from);
     m_unique.remove(from);
     m_unique.insert(to, info);
 

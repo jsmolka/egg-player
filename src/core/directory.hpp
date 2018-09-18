@@ -15,9 +15,7 @@ public:
     explicit Directory(QObject *parent = nullptr);
     explicit Directory(const Path &path, QObject *parent = nullptr);
 
-    void setPath(const Path &path);
     Path path() const;
-
     QSet<File> files() const;
     QHash<Path, Directory *> dirs() const;
 
@@ -25,7 +23,7 @@ public:
 
     void parse();
 
-    Files globAudios() const;
+    Files globAudios(bool recursive = true) const;
     Files processChanges();
 
 signals:
@@ -34,7 +32,8 @@ signals:
     void removed(Directory *dir);
 
 private:
-    void processDirChanges(Files &changes);
+    void processRemovedDirChanges(Files &changes);
+    void processExistingDirChanges(Files &changes);
     void processFileChanges(Files &changes);
 
     Path m_path;

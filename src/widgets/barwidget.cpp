@@ -35,7 +35,6 @@ BarWidget::BarWidget(QWidget *parent)
     , m_scVolumeDown(cfgShortcut.volumeDown(), true, this)
 {
     setup();
-    setupUi();
 
     connect(ePlayer, &Player::audioChanged, this, &BarWidget::onPlayerAudioChanged);
     connect(ePlayer, &Player::positionChanged, this, &BarWidget::onPlayerPositionChanged);
@@ -206,6 +205,7 @@ void BarWidget::setup()
     setFixedHeight(cfgBar.height());
 
     setupCss();
+    setupUi();
 }
 
 void BarWidget::setupCss()

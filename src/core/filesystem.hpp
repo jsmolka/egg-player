@@ -18,14 +18,17 @@ class FileSystem : public QObject
 public:
     explicit FileSystem(QObject *parent = nullptr);
 
+    Bimap<File, UniqueFileInfo> uniqueInfo() const;
     QHash<Path, Directory *> dirs() const;
     QHash<File, Audio *> audios() const;
+    FileSystemWatcher &watcher();
 
     void addPath(const Path &path);
 
     Files globAudios() const;
 
     void watchAudio(Audio *audio);
+    void unwatchAudio(Audio *audio);
 
 signals:
     void modified(Audio *audio);
