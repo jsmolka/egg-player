@@ -17,12 +17,12 @@ public:
 
 protected:
     void set(const QString &key, const QJsonValue &value);
-    QJsonValue get(const QString &key);
+    QJsonValue get(const QString &key) const;
 
     void setDefault(const QString &key, const QJsonValue &value);
 
-    float scale(float value);
-    int scale(int value);
+    float scale(float value) const;
+    int scale(int value) const;
 
 private:
     QJsonObject m_object;

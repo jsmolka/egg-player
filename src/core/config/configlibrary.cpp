@@ -18,7 +18,7 @@ void ConfigLibrary::setCellPadding(int padding)
     set("cellPadding", padding);
 }
 
-int ConfigLibrary::cellPadding()
+int ConfigLibrary::cellPadding() const
 {
     return scale(get("cellPadding").toInt());
 }
@@ -28,7 +28,7 @@ void ConfigLibrary::setItemHeight(int height)
     set("itemHeight", height);
 }
 
-int ConfigLibrary::itemHeight()
+int ConfigLibrary::itemHeight() const
 {
     return scale(get("itemHeight").toInt());
 }
@@ -42,7 +42,7 @@ void ConfigLibrary::setPaths(const Paths &paths)
     set("paths", QJsonValue(array));
 }
 
-Paths ConfigLibrary::paths()
+Paths ConfigLibrary::paths() const
 {
     Paths paths;
     const QJsonArray array = get("paths").toArray();
@@ -57,7 +57,7 @@ void ConfigLibrary::setScrollBarWidth(int width)
     set("scrollBarWidth", width);
 }
 
-int ConfigLibrary::scrollBarWidth()
+int ConfigLibrary::scrollBarWidth() const
 {
     return scale(get("scrollBarWidth").toInt());
 }

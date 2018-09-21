@@ -24,7 +24,7 @@ void ConfigItem::set(const QString &key, const QJsonValue &value)
     m_object.insert(key, value);
 }
 
-QJsonValue ConfigItem::get(const QString &key)
+QJsonValue ConfigItem::get(const QString &key) const
 {
     return m_object.value(key);
 }
@@ -35,13 +35,13 @@ void ConfigItem::setDefault(const QString &key, const QJsonValue &value)
          m_object.insert(key, value);
 }
 
-float ConfigItem::scale(float value)
+float ConfigItem::scale(float value) const
 {
     const static float factor = static_cast<float>(GetScaleFactorForDevice(DEVICE_PRIMARY)) / 100.0f;
     return factor * value;
 }
 
-int ConfigItem::scale(int value)
+int ConfigItem::scale(int value) const
 {
-    return scale(static_cast<float>(value));
+    return static_cast<int>(scale(static_cast<float>(value)));
 }

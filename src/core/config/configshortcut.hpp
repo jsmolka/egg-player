@@ -11,19 +11,19 @@ public:
     void setDefaults() override;
 
     void setNext(const QString &shortcut);
-    QString next();
+    QString next() const;
 
     void setPlayPause(const QString &shortcut);
-    QString playPause();
+    QString playPause() const;
 
     void setPrevious(const QString &shortcut);
-    QString previous();
+    QString previous() const;
 
     void setVolumeDown(const QString &shortcut);
-    QString volumeDown();
+    QString volumeDown() const;
 
     void setVolumeUp(const QString &shortcut);
-    QString volumeUp();
+    QString volumeUp() const;
 };
 
 #endif // CONFIGSHORTCUT_HPP

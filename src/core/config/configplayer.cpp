@@ -14,7 +14,7 @@ void ConfigPlayer::setLoop(bool loop)
     set("loop", loop);
 }
 
-bool ConfigPlayer::loop()
+bool ConfigPlayer::loop() const
 {
     return get("loop").toBool();
 }
@@ -24,7 +24,7 @@ void ConfigPlayer::setShuffle(bool shuffle)
     set("shuffle", shuffle);
 }
 
-bool ConfigPlayer::shuffle()
+bool ConfigPlayer::shuffle() const
 {
     return get("shuffle").toBool();
 }
@@ -34,7 +34,7 @@ void ConfigPlayer::setUpdateInterval(int interval)
     set("updateInterval", interval);
 }
 
-int ConfigPlayer::updateInterval()
+int ConfigPlayer::updateInterval() const
 {
     return get("updateInterval").toInt();
 }
@@ -44,7 +44,7 @@ void ConfigPlayer::setVolume(int volume)
     set("volume", volume);
 }
 
-int ConfigPlayer::volume()
+int ConfigPlayer::volume() const
 {
     return get("volume").toInt();
 }
@@ -54,7 +54,7 @@ void ConfigPlayer::setVolumeQuotient(int quotient)
     set("volumeQuotient", quotient);
 }
 
-int ConfigPlayer::volumeQuotient()
+int ConfigPlayer::volumeQuotient() const
 {
     return get("volumeQuotient").toInt();
 }

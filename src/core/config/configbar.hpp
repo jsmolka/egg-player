@@ -11,30 +11,30 @@ public:
     void setDefaults() override;
 
     void setGrooveHeight(int height);
-    int grooveHeight();
+    int grooveHeight() const;
 
     void setHandleSize(int size);
-    int handleSize();
+    int handleSize() const;
 
     void setHeight(int height);
-    int height();
+    int height() const;
 
     void setIconSize(int size);
-    int iconSize();
+    int iconSize() const;
 
     void setMargin(int margin);
-    int margin();
+    int margin() const;
 
     void setSpacing(int spacing);
-    int spacing();
+    int spacing() const;
 
     void setTimeWidth(int width);
-    int timeWidth();
+    int timeWidth() const;
 
     void setTrackWidth(int width);
-    int trackWidth();
+    int trackWidth() const;
 
-    int coverSize();
+    int coverSize() const;
 };
 
 #endif // CONFIGBAR_HPP
