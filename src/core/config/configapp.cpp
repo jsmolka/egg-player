@@ -35,7 +35,7 @@ void ConfigApp::setMinimalHeight(int height)
 
 int ConfigApp::minimalHeight() const
 {
-    return get("minimalHeight").toInt();
+    return scale(get("minimalHeight").toInt());
 }
 
 void ConfigApp::setMinimalWidth(int width)
@@ -45,5 +45,5 @@ void ConfigApp::setMinimalWidth(int width)
 
 int ConfigApp::minimalWidth() const
 {
-    return get("minimalWidth").toInt();
+    return scale(get("minimalWidth").toInt());
 }

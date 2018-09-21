@@ -1,5 +1,6 @@
 #include "barwidget.hpp"
 
+#include <QFontMetrics>
 #include <QGridLayout>
 #include <QPalette>
 #include <QPainter>
@@ -155,7 +156,7 @@ void BarWidget::onPlayerAudioChanged(Audio *audio)
     m_durationSlider.setRange(0, audio->duration().secs());
 
     m_coverLabel.setPixmap(audio->cover().pixmap(cfgBar.coverSize()));
-    m_trackLabel.setText(QString("%1\n%2").arg(audio->tag().title(), audio->tag().artist()));
+    m_trackLabel.setText(trackLabelText(audio));
 
     m_currentTimeLabel.setText(Duration(0).toString());
     m_totalTimeLabel.setText(audio->duration().toString());
@@ -196,6 +197,14 @@ void BarWidget::onVolumeButtonPressed()
 void BarWidget::onLengthSliderMoved(int value)
 {
     m_currentTimeLabel.setText(Duration(value).toString());
+}
+
+QString BarWidget::trackLabelText(Audio *audio) const
+{
+    const QFontMetrics metrics(font());
+    const QString title = metrics.elidedText(audio->tag().title(), Qt::ElideRight, m_trackLabel.width());
+    const QString artist = metrics.elidedText(audio->tag().artist(), Qt::ElideRight, m_trackLabel.width());
+    return QString("%1\n%2").arg(title, artist);
 }
 
 void BarWidget::setup()

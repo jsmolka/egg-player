@@ -51,6 +51,8 @@ private slots:
     void onLengthSliderMoved(int value);
 
 private:
+    QString trackLabelText(Audio *audio) const;
+
     void setup();
     void setupCss();
     void setupUi();
