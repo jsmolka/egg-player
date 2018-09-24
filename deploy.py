@@ -30,7 +30,7 @@ def main():
     into the specified deployment directory. The paths which might 
     need to be specified are marked by comments.
     """
-    qt = "C:/Qt/5.11.1/msvc2017_64"  # Qt install directory
+    qt = "C:/Qt/5.11.2/msvc2017_64"  # Qt install directory
     deploy = join(getcwd(), "egg-player")  # Deployment directory
 
     tree = {
