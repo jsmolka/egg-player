@@ -2,6 +2,10 @@
   
 ## General
 - keep audios sorted after modifying
+
+## Cache
+- store cache version and detect possible changes
+- create more common functions
   
 ## User interface
 - do not show certain info at low size

@@ -17,11 +17,11 @@ public:
     bool commit();
     bool rollback();
 
-    void createTables();
+    void initialize();
 
-    Audio *loadAudio(const QString &path);
+    Audio *loadAudio(const QString &file);
     void insertAudio(Audio *audio);
-    void updateAudio(Audio *audio, const QString &newPath = QString());
+    void updateAudio(Audio *audio, const QString &newFile = QString());
 
     int insertCover(const QPixmap &cover);
     void updateCover(const QPixmap &cover);

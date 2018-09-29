@@ -36,20 +36,20 @@ bool Cache::rollback()
     return m_db.rollback();
 }
 
-void Cache::createTables()
+void Cache::initialize()
 {
     createCovers();
     createAudios();
     insertDefaultCover();
 }
 
-Audio *Cache::loadAudio(const QString &path)
+Audio *Cache::loadAudio(const QString &file)
 {
     m_query.prepare(
         "SELECT * FROM audios "
-        "WHERE path = :path"
+        "WHERE file = :path"
     );
-    m_query.bindValue(":path", path);
+    m_query.bindValue(":file", file);
 
     if (!m_query.exec())
         error();
@@ -80,7 +80,7 @@ void Cache::insertAudio(Audio *audio)
 {
     m_query.prepare(
         "INSERT INTO audios VALUES ("
-        " :path,"
+        " :file,"
         " :title,"
         " :artist,"
         " :album,"
@@ -92,7 +92,7 @@ void Cache::insertAudio(Audio *audio)
         " :modified"
         ")"
     );
-    m_query.bindValue(":path", audio->tag().file());
+    m_query.bindValue(":file", audio->file());
     m_query.bindValue(":title", audio->tag().title());
     m_query.bindValue(":artist", audio->tag().artist());
     m_query.bindValue(":album", audio->tag().album());
@@ -109,11 +109,11 @@ void Cache::insertAudio(Audio *audio)
     audio->setCached(true);
 }
 
-void Cache::updateAudio(Audio *audio, const QString &newPath)
+void Cache::updateAudio(Audio *audio, const QString &newFile)
 {
     m_query.prepare(
         "UPDATE audios SET"
-        " path = :newpath,"
+        " file = :newFile,"
         " title = :title,"
         " artist = :artist,"
         " album = :album,"
@@ -123,9 +123,9 @@ void Cache::updateAudio(Audio *audio, const QString &newPath)
         " duration = :duration,"
         " coverid = :coverid,"
         " modified = :modified "
-        "WHERE path = :path"
+        "WHERE file = :file"
     );
-    m_query.bindValue(":newpath", newPath.isNull() ? audio->tag().file() : newPath);
+    m_query.bindValue(":newFile", newFile.isNull() ? audio->file() : newFile);
     m_query.bindValue(":title", audio->tag().title());
     m_query.bindValue(":artist", audio->tag().artist());
     m_query.bindValue(":album", audio->tag().album());
@@ -135,7 +135,7 @@ void Cache::updateAudio(Audio *audio, const QString &newPath)
     m_query.bindValue(":duration", audio->duration().secs());
     m_query.bindValue(":coverid", audio->cover().id());
     m_query.bindValue(":modified", audio->modified());
-    m_query.bindValue(":path", audio->tag().file());
+    m_query.bindValue(":file", audio->file());
 
     if (!m_query.exec())
         error();
@@ -166,9 +166,9 @@ void Cache::setAudioCoverId(Audio *audio, int id)
     m_query.prepare(
         "UPDATE audios SET"
         " coverid = :coverid "
-        "WHERE path = :path"
+        "WHERE file = :file"
     );
-    m_query.bindValue(":path", audio->tag().file());
+    m_query.bindValue(":file", audio->file());
     m_query.bindValue(":coverid", id);
 
     if (!m_query.exec())
@@ -246,7 +246,7 @@ void Cache::createAudios()
 {
     m_query.prepare(
         "CREATE TABLE IF NOT EXISTS audios("
-        " path TEXT PRIMARY KEY,"
+        " file TEXT PRIMARY KEY,"
         " title TEXT,"
         " artist TEXT,"
         " album TEXT,"

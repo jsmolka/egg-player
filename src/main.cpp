@@ -36,7 +36,7 @@ void setup(QApplication &app)
     ePlayer->playlist().setLoop(cfgPlayer.loop());
     ePlayer->playlist().setShuffle(cfgPlayer.shuffle());
 
-    Cache().createTables();
+    Cache().initialize();
 
     qRegisterMetaType<File>("File");
     qRegisterMetaType<Path>("Path");
