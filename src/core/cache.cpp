@@ -47,7 +47,7 @@ Audio *Cache::loadAudio(const QString &file)
 {
     m_query.prepare(
         "SELECT * FROM audios "
-        "WHERE file = :path"
+        "WHERE file = :file"
     );
     m_query.bindValue(":file", file);
 
