@@ -13,20 +13,18 @@ void Logger::log(const QString &message, const QString &func, const QVector<QVar
     if (!cfgApp.log())
         return;
 
-    QString final = message;
+    QString edited = message;
     for (const QVariant &arg : args)
-    {
-        if (!arg.isNull())
-            final = final.arg(arg.toString());
-    }
+         edited = edited.arg(arg.toString());
+
     const QString time = QDateTime::currentDateTime().toString("dd-MM-yy hh:mm");
-    final = QString("[%1] %2: %3").arg(time, func, final);
+    edited = QString("[%1] %2: %3").arg(time, func, edited);
 
     QFile file(LOG_PATH);
     if (file.open(QIODevice::Append))
     {
         QTextStream stream(&file);
-        stream << final << "\n";
+        stream << edited << "\n";
     }
-    qDebug().noquote() << final;
+    qDebug().noquote() << edited;
 }

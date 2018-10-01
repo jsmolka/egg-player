@@ -110,7 +110,6 @@ void Cache::updateAudio(Audio *audio, const File &newFile)
 int Cache::insertCover(const QPixmap &cover)
 {
     const QByteArray bytes = coverToBytes(cover);
-
     int id = coverId(bytes);
     if (id == 0)
         id = insertByteCover(bytes);

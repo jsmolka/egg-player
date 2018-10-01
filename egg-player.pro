@@ -13,7 +13,9 @@ INCLUDEPATH += \
     lib/taglib-1.11.1/include \
     src/core \
     src/core/bass \
+    src/core/cache \
     src/core/config \
+    src/core/filesystem \
     src/threading \
     src/threading/base \
     src/widgets \
@@ -47,7 +49,7 @@ HEADERS += \
     src/core/bass/bass.hpp \
     src/core/bass/basserror.hpp \
     src/core/bass/bassstream.hpp \
-    src/core/cache.hpp \
+    src/core/cache/cache.hpp \
     src/core/constants.hpp \
     src/core/config/config.hpp \
     src/core/config/configapp.hpp \
@@ -78,11 +80,11 @@ HEADERS += \
     src/core/cover.hpp \
     src/core/playlist.hpp \
     src/core/audios.hpp \
-    src/core/filesystemwatcher.hpp \
-    src/core/directory.hpp \
-    src/core/filesystem.hpp \
+    src/core/filesystem/filesystemwatcher.hpp \
+    src/core/filesystem/directory.hpp \
+    src/core/filesystem/filesystem.hpp \
     src/core/bimap.hpp \
-    src/core/uniquefileinfo.hpp \
+    src/core/filesystem/uniquefileinfo.hpp \
     src/core/config/configitem.hpp \
     src/core/shortcut.hpp \
     src/widgets/components/volumebutton.hpp \
@@ -100,8 +102,8 @@ HEADERS += \
     src/threading/audioloader.hpp \
     src/threading/base/expiringthread.hpp \
     src/core/utils.hpp \
-    src/core/sqlquery.hpp \
-    src/core/database.hpp
+    src/core/cache/sqlquery.hpp \
+    src/core/cache/database.hpp
 
 SOURCES += \
     src/main.cpp \
@@ -109,7 +111,7 @@ SOURCES += \
     src/core/bass/bass.cpp \
     src/core/bass/basserror.cpp \
     src/core/bass/bassstream.cpp \
-    src/core/cache.cpp \
+    src/core/cache/cache.cpp \
     src/core/constants.cpp \
     src/core/config/config.cpp \
     src/core/config/configapp.cpp \
@@ -139,10 +141,10 @@ SOURCES += \
     src/core/fileutil.cpp \
     src/core/playlist.cpp \
     src/core/audios.cpp \
-    src/core/filesystemwatcher.cpp \
-    src/core/directory.cpp \
-    src/core/filesystem.cpp \
-    src/core/uniquefileinfo.cpp \
+    src/core/filesystem/filesystemwatcher.cpp \
+    src/core/filesystem/directory.cpp \
+    src/core/filesystem/filesystem.cpp \
+    src/core/filesystem/uniquefileinfo.cpp \
     src/core/config/configitem.cpp \
     src/core/shortcut.cpp \
     src/widgets/components/volumebutton.cpp \
@@ -159,5 +161,5 @@ SOURCES += \
     src/threading/audioupdater.cpp \
     src/threading/audioloader.cpp \
     src/threading/base/expiringthread.cpp \
-    src/core/sqlquery.cpp \
-    src/core/database.cpp
+    src/core/cache/sqlquery.cpp \
+    src/core/cache/database.cpp

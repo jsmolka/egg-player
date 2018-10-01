@@ -2,11 +2,11 @@
   
 ## General
 - keep audios sorted after modifying
+- properly react to audios changes
+- make filesystem more robust
 
 ## Cache
 - store cache version and detect possible changes
-- create more common functions
-- separate database part from cache
   
 ## User interface
 - do not show certain info at low size
