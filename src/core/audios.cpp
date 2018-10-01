@@ -89,6 +89,12 @@ void Audios::remove(Audio *audio)
     remove(indexOf(audio));
 }
 
+void Audios::move(int from, int to)
+{
+    Audio::vector::move(from, to);
+    emit moved(from, to);
+}
+
 Audios::iterator Audios::insert(Audios::iterator before, Audio *audio)
 {
     connect(audio, &Audio::updated, this, &Audios::onAudioUpdated);

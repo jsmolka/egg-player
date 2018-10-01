@@ -104,7 +104,10 @@ int Library::lowerBound(Audio *audio)
     while (low < high)
     {
         const int mid = (low + high) / 2;
-        if (*audio < *m_audios.at(mid))
+        if (QString::compare(
+                audio->tag().title(),
+                m_audios.at(mid)->tag().title(),
+                Qt::CaseInsensitive) < 0)
             high = mid;
         else
             low = mid + 1;

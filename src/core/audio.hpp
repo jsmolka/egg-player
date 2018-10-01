@@ -45,16 +45,6 @@ public:
 
     void update();
 
-    bool operator<(const Audio &other) const;
-    bool operator>(const Audio &other) const;
-    bool operator<=(const Audio &other) const;
-    bool operator>=(const Audio &other) const;
-
-    bool operator==(const QString &other) const;
-    bool operator==(const Audio &other) const;
-    bool operator!=(const QString &other) const;
-    bool operator!=(const Audio &other) const;
-
 signals:
     void updated(Audio *audio);
 

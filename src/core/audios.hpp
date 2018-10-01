@@ -32,6 +32,7 @@ public:
     void append(Audio *audio);
     void remove(int index);
     void remove(Audio *audio);
+    void move(int from, int to);
 
     Audios::iterator insert(Audios::iterator before, Audio *audio);
     Audios::iterator erase(Audios::iterator position);
@@ -48,6 +49,7 @@ public:
 signals:
     void inserted(int index);
     void removed(int index);
+    void moved(int from, int to);
     void updated(int index);
 
 private slots:

@@ -3,6 +3,7 @@
 void ConfigPlayer::setDefaults()
 {
     setDefault("loop", false);
+    setDefault("previousLimit", 3);
     setDefault("shuffle", false);
     setDefault("updateInterval", 50);
     setDefault("volume", 25);
@@ -17,6 +18,16 @@ void ConfigPlayer::setLoop(bool loop)
 bool ConfigPlayer::loop() const
 {
     return get("loop").toBool();
+}
+
+void ConfigPlayer::setPreviousLimit(int limit)
+{
+    set("previousLimit", limit);
+}
+
+int ConfigPlayer::previousLimit() const
+{
+    return get("previousLimit").toInt();
 }
 
 void ConfigPlayer::setShuffle(bool shuffle)

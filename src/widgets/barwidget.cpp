@@ -177,7 +177,7 @@ void BarWidget::onPlayerPositionChanged(int position)
 
 void BarWidget::onPlayerPrevious()
 {
-    if (m_durationSlider.value() > 3)
+    if (m_durationSlider.value() > cfgPlayer.previousLimit())
         ePlayer->setPosition(0);
     else
         ePlayer->playlist().previous();

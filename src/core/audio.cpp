@@ -115,46 +115,6 @@ void Audio::update()
     m_tag.blockSignals(false);
 }
 
-bool Audio::operator<(const Audio &other) const
-{
-    return m_tag.title().compare(other.tag().title(), Qt::CaseInsensitive) < 0;
-}
-
-bool Audio::operator>(const Audio &other) const
-{
-    return other < *this;
-}
-
-bool Audio::operator<=(const Audio &other) const
-{
-    return !(*this > other);
-}
-
-bool Audio::operator>=(const Audio &other) const
-{
-    return !(*this < other);
-}
-
-bool Audio::operator==(const QString &other) const
-{
-    return m_file == other;
-}
-
-bool Audio::operator==(const Audio &other) const
-{
-    return *this == other.file();
-}
-
-bool Audio::operator!=(const QString &other) const
-{
-    return !(*this == other);
-}
-
-bool Audio::operator!=(const Audio &other) const
-{
-    return !(*this == other);
-}
-
 void Audio::onTagUpdated()
 {
     emit updated(this);

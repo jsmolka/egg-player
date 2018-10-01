@@ -13,6 +13,9 @@ public:
     void setLoop(bool loop);
     bool loop() const;
 
+    void setPreviousLimit(int limit);
+    int previousLimit() const;
+
     void setShuffle(bool shuffle);
     bool shuffle() const;
 
