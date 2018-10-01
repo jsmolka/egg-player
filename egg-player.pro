@@ -99,7 +99,9 @@ HEADERS += \
     src/threading/audioupdater.hpp \
     src/threading/audioloader.hpp \
     src/threading/base/expiringthread.hpp \
-    src/core/utils.hpp
+    src/core/utils.hpp \
+    src/core/sqlquery.hpp \
+    src/core/database.hpp
 
 SOURCES += \
     src/main.cpp \
@@ -156,4 +158,6 @@ SOURCES += \
     src/threading/coverloader.cpp \
     src/threading/audioupdater.cpp \
     src/threading/audioloader.cpp \
-    src/threading/base/expiringthread.cpp
+    src/threading/base/expiringthread.cpp \
+    src/core/sqlquery.cpp \
+    src/core/database.cpp

@@ -3,25 +3,18 @@
 
 #include <QBuffer>
 #include <QPixmap>
-#include <QSqlDatabase>
-#include <QSqlQuery>
 
 #include "audio.hpp"
+#include "database.hpp"
 
-class Cache
+class Cache : private Database
 {
 public:
-    Cache();
-
-    bool transaction();
-    bool commit();
-    bool rollback();
-
     void initialize();
 
-    Audio *loadAudio(const QString &file);
+    Audio *loadAudio(const File &file);
     void insertAudio(Audio *audio);
-    void updateAudio(Audio *audio, const QString &newFile = QString());
+    void updateAudio(Audio *audio, const File &newFile = File());
 
     int insertCover(const QPixmap &cover);
     void updateCover(const QPixmap &cover);
@@ -31,8 +24,6 @@ public:
     QPixmap coverById(int id);
 
 private:
-    static QString dbName();
-    static QSqlDatabase db();
     static QByteArray coverToBytes(const QPixmap &cover);
 
     void createCovers();
@@ -47,13 +38,6 @@ private:
     int lastCoverId();
     int coverIdBySize(int size);
     int coverIdByBlob(const QByteArray &bytes);
-
-    void error();
-
-    QString lastQuery();
-
-    QSqlDatabase m_db;
-    QSqlQuery m_query;
 };
 
 #endif // CACHE_HPP

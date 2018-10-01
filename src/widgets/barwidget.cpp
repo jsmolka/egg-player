@@ -202,9 +202,10 @@ void BarWidget::onLengthSliderMoved(int value)
 QString BarWidget::trackLabelText(Audio *audio) const
 {
     const QFontMetrics metrics(font());
-    const QString title = metrics.elidedText(audio->tag().title(), Qt::ElideRight, m_trackLabel.width());
-    const QString artist = metrics.elidedText(audio->tag().artist(), Qt::ElideRight, m_trackLabel.width());
-    return QString("%1\n%2").arg(title, artist);
+    return QString("%1\n%2").arg(
+        metrics.elidedText(audio->tag().title(), Qt::ElideRight, m_trackLabel.width()),
+        metrics.elidedText(audio->tag().artist(), Qt::ElideRight, m_trackLabel.width())
+    );
 }
 
 void BarWidget::setup()
