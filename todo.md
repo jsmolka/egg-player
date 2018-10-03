@@ -3,7 +3,21 @@
 ## General
 - keep audios sorted after modifying
 - properly react to audios changes
+
+## Filesystem
 - make filesystem more robust
+- prevent crashing when getting the file handle
+- properly load (and maybe convert) the information
+- get the highest possible directory which has been modified
+
+# UniqueFileInfo
+- use toWString in UniqueFileinfo
+- see [Qt](https://github.com/RSATom/Qt/blob/master/qtbase/src/corelib/io/qfilesystemmetadata_p.h) for low and high byte conversion
+- re-read [CreateFileW](https://docs.microsoft.com/en-us/windows/desktop/api/fileapi/nf-fileapi-createfilew)
+  - consider / test 0 as access right
+- re-read [GetFileInformationByHandle](https://docs.microsoft.com/en-us/windows/desktop/api/fileapi/nf-fileapi-getfileinformationbyhandle)
+- properly handle errors of API functions
+- if getting a handle failed, try again with certain timeout
 
 ## Cache
 - store cache version and detect possible changes
@@ -12,6 +26,7 @@
 - do not show certain info at low size
 - [expand scrollbar](https://stackoverflow.com/a/23677355/7057528)
 - base class to audios displaying and inherited library class
+- only show certain column based on the size
 
 ## Future
 - fuzzy library searching by typing
