@@ -1,10 +1,12 @@
 #include "uniquefileinfo.hpp"
 
+#include <Windows.h>
+
 #include "logger.hpp"
+#include "utils.hpp"
 
 UniqueFileInfo::UniqueFileInfo()
-    : m_low(0)
-    , m_high(0)
+    : m_index(0)
     , m_volume(0)
 {
 
@@ -16,32 +18,12 @@ UniqueFileInfo::UniqueFileInfo(const File &file)
     readInfo(file);
 }
 
-void UniqueFileInfo::setLow(DWORD low)
+quint64 UniqueFileInfo::index() const
 {
-    m_low = low;
+    return m_index;
 }
 
-DWORD UniqueFileInfo::low() const
-{
-    return m_low;
-}
-
-void UniqueFileInfo::setHigh(DWORD high)
-{
-    m_high = high;
-}
-
-DWORD UniqueFileInfo::high() const
-{
-    return m_high;
-}
-
-void UniqueFileInfo::setVolume(DWORD volume)
-{
-    m_volume = volume;
-}
-
-DWORD UniqueFileInfo::volume() const
+quint64 UniqueFileInfo::volume() const
 {
     return m_volume;
 }
@@ -49,9 +31,9 @@ DWORD UniqueFileInfo::volume() const
 void UniqueFileInfo::readInfo(const File &file)
 {
     HANDLE handle = CreateFileW(
-        reinterpret_cast<const wchar_t *>(file.constData()),
-        GENERIC_READ,
-        FILE_SHARE_DELETE | FILE_SHARE_READ | FILE_SHARE_WRITE,
+        toWString(file),
+        0,
+        FILE_SHARE_READ | FILE_SHARE_WRITE,
         nullptr,
         OPEN_EXISTING,
         FILE_ATTRIBUTE_NORMAL,
@@ -60,7 +42,7 @@ void UniqueFileInfo::readInfo(const File &file)
 
     if (handle == INVALID_HANDLE_VALUE)
     {
-        LOG("Cannot open file %1", file);
+        LOG("Cannot get file handle %1", file);
         return;
     }
 
@@ -71,10 +53,11 @@ void UniqueFileInfo::readInfo(const File &file)
         return;
     }
 
-    m_low = info.nFileIndexLow;
-    m_high = info.nFileIndexHigh;
+    m_index = info.nFileIndexHigh;
+    m_index <<= 32;
+    m_index += info.nFileIndexLow;
     m_volume = info.dwVolumeSerialNumber;
 
     if (!CloseHandle(handle))
-        LOG("Cannot close handle %1", file);
+        LOG("Cannot close file handle %1", file);
 }

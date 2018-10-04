@@ -1,8 +1,6 @@
 #ifndef UNIQUEFILEINFO_HPP
 #define UNIQUEFILEINFO_HPP
 
-#include <Windows.h>
-
 #include <QHashFunctions>
 
 #include "types.hpp"
@@ -13,33 +11,24 @@ public:
     UniqueFileInfo();
     explicit UniqueFileInfo(const File &file);
 
-    void setLow(DWORD low);
-    DWORD low() const;
-
-    void setHigh(DWORD high);
-    DWORD high() const;
-
-    void setVolume(DWORD volume);
-    DWORD volume() const;
+    quint64 index() const;
+    quint64 volume() const;
 
 private:
     void readInfo(const File &file);
 
-    DWORD m_low;
-    DWORD m_high;
-    DWORD m_volume;
+    quint64 m_index;
+    quint64 m_volume;
 };
 
 inline bool operator==(const UniqueFileInfo &info1, const UniqueFileInfo &info2)
 {
-    return info1.low() == info2.low()
-            && info1.high() == info2.high()
-            && info1.volume() == info2.volume();
+    return info1.index() == info2.index() && info1.volume() == info2.volume();
 }
 
 inline uint qHash(const UniqueFileInfo &key, uint seed)
 {
-    return qHash(key.low() ^ key.high() ^ key.volume(), seed);
+    return qHash(key.index() ^ key.volume(), seed);
 }
 
 #endif // UNIQUEFILEINFO_HPP
