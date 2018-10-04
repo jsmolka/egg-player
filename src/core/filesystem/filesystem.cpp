@@ -47,6 +47,7 @@ Files FileSystem::globAudios() const
     Files result;
     for (Directory *dir : qAsConst(m_dirs))
         result << dir->globAudios(false);
+
     return result;
 }
 
@@ -120,8 +121,8 @@ void FileSystem::onDirectoryChanged(const Path &dir)
         }
     }
 
-    for (const File &file : renamedTo)
-        eventAdded(file);
+    for (auto iter = renamedTo.cbegin(); iter != renamedTo.cend(); ++iter)
+        eventAdded(iter.value(), iter.key());
 }
 
 void FileSystem::eventModified(const File &file)
@@ -148,10 +149,10 @@ void FileSystem::eventRenamed(const File &from, const File &to)
     }
 }
 
-void FileSystem::eventAdded(const File &file)
+void FileSystem::eventAdded(const File &file, const UniqueFileInfo &info)
 {
     m_watcher.addPath(file);
-    m_unique.insert(file, UniqueFileInfo(file));
+    m_unique.insert(file, info);
     emit added(file);
 }
 

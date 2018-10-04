@@ -41,21 +41,19 @@ void Directory::parse()
     while (dirIter.hasNext())
     {
         dirIter.next();
-        if (dirIter.fileInfo().isDir())
+        if (dirIter.fileInfo().isFile())
         {
-            const Path path = dirIter.filePath();
-            Directory *dir = new Directory(path, this);
+            if (dirIter.filePath().endsWith(QLatin1String(".mp3"), Qt::CaseInsensitive))
+                m_files << dirIter.filePath();
+        }
+        else
+        {
+            Directory *dir = new Directory(dirIter.filePath(), this);
             connect(dir, &Directory::parsed, this, &Directory::parsed);
             connect(dir, &Directory::created, this, &Directory::created);
             connect(dir, &Directory::removed, this, &Directory::removed);
             dir->parse();
-            m_dirs.insert(path, dir);
-        }
-        else
-        {
-            const File file = dirIter.filePath();
-            if (file.endsWith(QLatin1String(".mp3"), Qt::CaseInsensitive))
-                m_files << file;
+            m_dirs.insert(dir->path(), dir);
         }
     }
     emit parsed(this);
@@ -88,13 +86,19 @@ Files Directory::processChanges()
 
 void Directory::processRemovedDirChanges(Files &changes)
 {
-    for (Directory *dir : qAsConst(m_dirs))
+    auto iter = m_dirs.begin();
+    while (iter != m_dirs.end())
     {
+        Directory *dir = iter.value();
         if (!dir->exists())
         {
             changes << dir->globAudios(false);
-            m_dirs.remove(dir->path());
+            iter = m_dirs.erase(iter);
             emit removed(dir);
+        }
+        else
+        {
+            ++iter;
         }
     }
 }
@@ -105,14 +109,13 @@ void Directory::processExistingDirChanges(Files &changes)
     while (dirIter.hasNext())
     {
         dirIter.next();
-        const Path path = dirIter.filePath();
-        Directory *dir = m_dirs.value(path, nullptr);
+        Directory *dir = m_dirs.value(dirIter.filePath(), nullptr);
         if (!dir)
         {
-            dir = new Directory(path, this);
+            dir = new Directory(dirIter.filePath(), this);
             connect(dir, &Directory::created, this, &Directory::created);
             connect(dir, &Directory::removed, this, &Directory::removed);
-            m_dirs.insert(path, dir);
+            m_dirs.insert(dir->path(), dir);
             emit created(dir);
         }
         changes << dir->processChanges();

@@ -4,12 +4,6 @@
 - keep audios sorted after modifying
 - properly react to audios changes
 
-## Filesystem
-- make filesystem more robust
-- prevent crashing when getting the file handle
-- properly load (and maybe convert) the information
-- get the highest possible directory which has been modified
-
 ## Cache
 - store cache version and detect possible changes
   

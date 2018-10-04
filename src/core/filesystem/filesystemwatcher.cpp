@@ -68,6 +68,6 @@ void FileSystemWatcher::onTimerTimeout()
     if (!m_ignoreDir)
         emit directoryChanged(m_bufferedDir);
 
-    m_ignoreDir = false;
     m_bufferedDir = Path();
+    m_ignoreDir = false;
 }

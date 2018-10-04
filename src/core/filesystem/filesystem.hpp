@@ -47,7 +47,7 @@ private slots:
 private:
     void eventModified(const File &file);
     void eventRenamed(const File &from, const File &to);
-    void eventAdded(const File &file);
+    void eventAdded(const File &file, const UniqueFileInfo &info);
     void eventRemoved(const File &file);
 
     Bimap<File, UniqueFileInfo> m_unique;

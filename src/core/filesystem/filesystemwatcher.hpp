@@ -35,8 +35,8 @@ private:
     QFileSystemWatcher m_watcher;
     QTimer m_timer;
 
-    Path m_bufferedDir;
     int m_bufferDuration{1000};
+    Path m_bufferedDir;
     bool m_ignoreDir;
 };
 
