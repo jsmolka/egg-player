@@ -46,14 +46,18 @@ public:
     Audios &operator<<(Audio *audio);
     Audio *operator[](int index);
 
+    Audios *currentState();
+
 signals:
     void inserted(int index);
     void removed(int index);
+    void removedAudio(Audio *audio);
     void moved(int from, int to);
     void updated(int index);
 
 private slots:
     void onAudioUpdated(Audio *audio);
+    void onParentAudioRemoved(Audio *audio);
 };
 
 #endif // AUDIOS_HPP

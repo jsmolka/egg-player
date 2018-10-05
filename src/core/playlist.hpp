@@ -40,7 +40,6 @@ signals:
     void indexChanged(int index);
 
 private slots:
-    void onAudiosInserted(int index);
     void onAudiosRemoved(int index);
 
 private:

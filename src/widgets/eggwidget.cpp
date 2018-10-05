@@ -46,7 +46,7 @@ void EggWidget::dropEvent(QDropEvent *event)
 
 void EggWidget::onLibraryDoubleClicked(const QModelIndex &index)
 {
-    ePlayer->createPlaylist(eLibrary->audios(), index.row());
+    ePlayer->createPlaylist(eLibrary->audios()->currentState(), index.row());
     ePlayer->play();
 }
 

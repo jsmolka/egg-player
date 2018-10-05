@@ -95,16 +95,6 @@ void Playlist::previous()
     changeIndex(previousIndex());
 }
 
-void Playlist::onAudiosInserted(int index)
-{
-    for (int &element : m_indices)
-    {
-        if (element >= index)
-            ++element;
-    }
-    m_indices << index;
-}
-
 void Playlist::onAudiosRemoved(int index)
 {
     auto iter = m_indices.begin();
@@ -120,7 +110,6 @@ void Playlist::onAudiosRemoved(int index)
                 --*iter;
             ++iter;
         }
-
     }
 
     if (m_index >= index)
@@ -131,13 +120,12 @@ void Playlist::createAudios(Audios *audios)
 {
     if (m_audios)
     {
-        disconnect(m_audios, &Audios::inserted, this, &Playlist::onAudiosInserted);
         disconnect(m_audios, &Audios::removed, this, &Playlist::onAudiosRemoved);
+        m_audios->deleteLater();
     }
 
     m_audios = audios;
 
-    connect(m_audios, &Audios::inserted, this, &Playlist::onAudiosInserted);
     connect(m_audios, &Audios::removed, this, &Playlist::onAudiosRemoved);
 }
 
