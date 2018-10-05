@@ -4,7 +4,8 @@ A Groove Music like music player.
 ## Changes since latest release
 - add drag and drop support
 - improve window state restoring
-- improve file system stability
+- improve filesystem stability
+- improve reaction to filesystem changes
 
 ## Roadmap
 - [ ] documentation

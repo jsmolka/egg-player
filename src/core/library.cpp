@@ -3,14 +3,7 @@
 #include <QApplication>
 
 Library::Library(QObject *parent)
-    : Library(false, parent)
-{
-
-}
-
-Library::Library(bool sorted, QObject *parent)
     : QObject(parent)
-    , m_sorted(sorted)
     , m_audios(this)
     , m_initialLoader(this)
     , m_coverLoader(this)
@@ -18,27 +11,18 @@ Library::Library(bool sorted, QObject *parent)
     connect(&m_initialLoader, &InitialLoader::loaded, this, &Library::insert);
     connect(&m_initialLoader, &InitialLoader::finished,this, &Library::onAudioLoaderFinished);
     connect(&m_audioLoader, &AudioLoader::loaded, this, &Library::insert);
+    connect(&m_audioUpdater, &AudioUpdater::updated, this, &Library::onAudioUpdatedUpdated);
 
-    connect(&m_fileSystem, &FileSystem::modified, &m_audioUpdater, &AudioUpdater::update);
-    connect(&m_fileSystem, &FileSystem::renamed, this, &Library::onFileSystemRenamed);
     connect(&m_fileSystem, &FileSystem::added, &m_audioLoader, &AudioLoader::load);
+    connect(&m_fileSystem, &FileSystem::renamed, this, &Library::onFileSystemRenamed);
     connect(&m_fileSystem, &FileSystem::removed, this, &Library::onFileSystemRemoved);
+    connect(&m_fileSystem, &FileSystem::modified, &m_audioUpdater, &AudioUpdater::update);
 }
 
 Library *Library::instance()
 {
     static Library *library = new Library(qApp);
     return library;
-}
-
-void Library::setSorted(bool sorted)
-{
-    m_sorted = sorted;
-}
-
-bool Library::isSorted() const
-{
-    return m_sorted;
 }
 
 Audios *Library::audios()
@@ -73,17 +57,28 @@ void Library::insert(Audio *audio)
 {
     audio->setParent(this);
     m_fileSystem.watchAudio(audio);
-
-    if (m_sorted)
-        m_audios.insert(lowerBound(audio), audio);
-    else
-        m_audios.append(audio);
+    m_audios.insert(lowerBound(audio), audio);
 }
 
 void Library::onAudioLoaderFinished()
 {
     m_coverLoader.setAudios(m_audios.vector());
     m_coverLoader.start();
+}
+
+void Library::onAudioUpdatedUpdated(Audio *audio)
+{
+    const int low = lowerBound(audio);
+    if (audio != m_audios.at(low))
+    {
+        const int index = m_audios.indexOf(audio);
+        if (index != -1)
+            m_audios.move(index, low);
+    }
+    else
+    {
+        emit m_audios.updated(low);
+    }
 }
 
 void Library::onFileSystemRenamed(Audio *audio, const File &to)
@@ -104,10 +99,8 @@ int Library::lowerBound(Audio *audio)
     while (low < high)
     {
         const int mid = (low + high) / 2;
-        if (QString::compare(
-                audio->tag().title(),
-                m_audios.at(mid)->tag().title(),
-                Qt::CaseInsensitive) < 0)
+        const int diff = audio->tag().title().compare(m_audios.at(mid)->tag().title(), Qt::CaseInsensitive);
+        if (diff <= 0)
             high = mid;
         else
             low = mid + 1;

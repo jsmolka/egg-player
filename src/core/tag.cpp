@@ -69,8 +69,6 @@ File Tag::file() const
 void Tag::setTitle(const QString &title)
 {
     m_title = title;
-
-    emit updated();
 }
 
 QString Tag::title() const
@@ -81,8 +79,6 @@ QString Tag::title() const
 void Tag::setArtist(const QString &artist)
 {
     m_artist = artist;
-
-    emit updated();
 }
 
 QString Tag::artist() const
@@ -93,8 +89,6 @@ QString Tag::artist() const
 void Tag::setAlbum(const QString &album)
 {
     m_album = album;
-
-    emit updated();
 }
 
 QString Tag::album() const
@@ -105,8 +99,6 @@ QString Tag::album() const
 void Tag::setGenre(const QString &genre)
 {
     m_genre = genre;
-
-    emit updated();
 }
 
 QString Tag::genre() const
@@ -117,8 +109,6 @@ QString Tag::genre() const
 void Tag::setYear(int year)
 {
     m_year = year;
-
-    emit updated();
 }
 
 int Tag::year() const
@@ -129,8 +119,6 @@ int Tag::year() const
 void Tag::setTrack(int track)
 {
     m_track = track;
-
-    emit updated();
 }
 
 int Tag::track() const
@@ -141,8 +129,6 @@ int Tag::track() const
 void Tag::setDuration(int duration)
 {
     m_duration = duration;
-
-    emit updated();
 }
 
 int Tag::duration() const

@@ -1,15 +1,12 @@
 # Things to do
-  
-## General
-- keep audios sorted after modifying
-- properly react to audios changes
 
+## General
+- check move signals in playlist
+  
 ## Cache
 - store cache version and detect possible changes
   
 ## User interface
-- do not show certain info at low size
-- [expand scrollbar](https://stackoverflow.com/a/23677355/7057528)
 - only show certain column based on the size
 
 ## Future

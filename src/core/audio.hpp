@@ -45,12 +45,6 @@ public:
 
     void update();
 
-signals:
-    void updated(Audio *audio);
-
-private slots:
-    void onTagUpdated();
-
 private:
     File m_file;
     bool m_valid;

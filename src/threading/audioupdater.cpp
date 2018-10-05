@@ -17,4 +17,6 @@ void AudioUpdater::update(Audio *audio)
 
     const QPixmap cover = Cover::loadFromFile(audio->file());
     m_cache.updateAudioCover(audio, cover);
+
+    emit updated(audio);
 }

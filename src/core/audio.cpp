@@ -11,7 +11,7 @@ Audio::Audio(QObject *parent)
     , m_modified(0)
     , m_tag(this)
 {
-    connect(&m_tag, &Tag::updated, this, &Audio::onTagUpdated);
+
 }
 
 Audio::Audio(const File &file, QObject *parent)
@@ -105,17 +105,7 @@ Cover &Audio::cover() const
 
 void Audio::update()
 {
-    m_tag.blockSignals(true);
-
     m_valid = m_tag.read();
     m_duration.setSecs(m_tag.duration());
     m_modified = QFileInfo(m_file).lastModified().toSecsSinceEpoch();
-    emit updated(this);
-
-    m_tag.blockSignals(false);
-}
-
-void Audio::onTagUpdated()
-{
-    emit updated(this);
 }

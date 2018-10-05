@@ -20,6 +20,7 @@ void AudiosWidget::setAudios(Audios *audios)
         disconnect(audios, &Audios::inserted, this, &AudiosWidget::onAudioInserted);
         disconnect(audios, &Audios::updated, this, &AudiosWidget::onAudiosUpdated);
         disconnect(audios, &Audios::removed, this, &AudiosWidget::onAudiosRemoved);
+        disconnect(audios, &Audios::moved, this, &AudiosWidget::onAudiosMoved);
     }
 
     m_audios = audios;
@@ -27,6 +28,7 @@ void AudiosWidget::setAudios(Audios *audios)
     connect(audios, &Audios::inserted, this, &AudiosWidget::onAudioInserted);
     connect(audios, &Audios::updated, this, &AudiosWidget::onAudiosUpdated);
     connect(audios, &Audios::removed, this, &AudiosWidget::onAudiosRemoved);
+    connect(audios, &Audios::moved, this, &AudiosWidget::onAudiosMoved);
 }
 
 void AudiosWidget::addColumn(AudioInfo info, Qt::Alignment horizontal, bool expand)
@@ -38,20 +40,26 @@ void AudiosWidget::addColumn(AudioInfo info, Qt::Alignment horizontal, bool expa
         horizontalHeader()->setSectionResizeMode(m_columns.size() - 1, QHeaderView::ResizeToContents);
 }
 
-void AudiosWidget::onAudiosUpdated(int index)
+void AudiosWidget::onAudiosUpdated(int row)
 {
-    removeRow(index);
-    insert(m_audios->at(index), index);
+    removeRow(row);
+    insert(m_audios->at(row), row);
 }
 
-void AudiosWidget::onAudioInserted(int index)
+void AudiosWidget::onAudioInserted(int row)
 {
-    insert(m_audios->at(index), index);
+    insert(m_audios->at(row), row);
 }
 
-void AudiosWidget::onAudiosRemoved(int index)
+void AudiosWidget::onAudiosRemoved(int row)
 {
-    removeRow(index);
+    removeRow(row);
+}
+
+void AudiosWidget::onAudiosMoved(int from, int to)
+{
+    removeRow(from);
+    insert(m_audios->at(to), to);
 }
 
 void AudiosWidget::insert(Audio *audio, int row)

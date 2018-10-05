@@ -56,7 +56,6 @@ signals:
     void updated(int index);
 
 private slots:
-    void onAudioUpdated(Audio *audio);
     void onParentAudioRemoved(Audio *audio);
 };
 

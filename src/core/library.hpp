@@ -20,12 +20,8 @@ class Library : public QObject
 
 public:
     explicit Library(QObject *parent = nullptr);
-    explicit Library(bool sorted, QObject *parent = nullptr);
 
     static Library *instance();
-
-    void setSorted(bool sorted);
-    bool isSorted() const;
 
     Audios *audios();
     FileSystem &fileSystem() const;
@@ -41,6 +37,7 @@ signals:
 
 private slots:
     void onAudioLoaderFinished();
+    void onAudioUpdatedUpdated(Audio *audio);
 
     void onFileSystemRenamed(Audio *audio, const File &to);
     void onFileSystemRemoved(Audio *audio);
@@ -48,7 +45,6 @@ private slots:
 private:
     int lowerBound(Audio *audio);
 
-    bool m_sorted;
     Audios m_audios;
     FileSystem m_fileSystem;
     InitialLoader m_initialLoader;

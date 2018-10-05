@@ -65,14 +65,12 @@ void Audios::reserve(int size)
 
 void Audios::insert(int index, Audio *audio)
 {
-    connect(audio, &Audio::updated, this, &Audios::onAudioUpdated);
     Audio::vector::insert(index, audio);
     emit inserted(index);
 }
 
 void Audios::append(Audio *audio)
 {
-    connect(audio, &Audio::updated, this, &Audios::onAudioUpdated);
     Audio::vector::append(audio);
     emit inserted(size() - 1);
 }
@@ -80,7 +78,6 @@ void Audios::append(Audio *audio)
 void Audios::remove(int index)
 {
     Audio *audio = at(index);
-    disconnect(audio, &Audio::updated, this, &Audios::onAudioUpdated);
     Audio::vector::remove(index);
     emit removed(index);
     emit removedAudio(audio);
@@ -101,7 +98,6 @@ void Audios::move(int from, int to)
 
 Audios::iterator Audios::insert(Audios::iterator before, Audio *audio)
 {
-    connect(audio, &Audio::updated, this, &Audios::onAudioUpdated);
     auto position = Audio::vector::insert(before, audio);
     emit inserted(static_cast<int>(position - begin()));
     return position;
@@ -109,7 +105,6 @@ Audios::iterator Audios::insert(Audios::iterator before, Audio *audio)
 
 Audios::iterator Audios::erase(Audios::iterator position)
 {
-    disconnect(*position, &Audio::updated, this, &Audios::onAudioUpdated);
     auto next = Audio::vector::erase(position);
     emit removed(static_cast<int>(position - begin()));
     emit removedAudio(*position);
@@ -152,13 +147,6 @@ Audios *Audios::currentState()
     Audios *audios = new Audios(*this, this);
     connect(this, &Audios::removedAudio, audios, &Audios::onParentAudioRemoved);
     return audios;
-}
-
-void Audios::onAudioUpdated(Audio *audio)
-{
-    const int index = indexOf(audio);
-    if (index != -1)
-        emit updated(indexOf(audio));
 }
 
 void Audios::onParentAudioRemoved(Audio *audio)

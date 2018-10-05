@@ -40,9 +40,6 @@ public:
     void setDuration(int duration);
     int duration() const;
 
-signals:
-    void updated();
-
 private:
     File m_file;
     QString m_title;

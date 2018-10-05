@@ -30,8 +30,6 @@ void setup(QApplication &app)
     app.setOrganizationName(APP_ORG_NAME);
     app.setFont(font(cfgApp.fontSize()));
 
-    eLibrary->setSorted(true);
-
     ePlayer->setVolume(cfgPlayer.volume());
     ePlayer->playlist().setLoop(cfgPlayer.loop());
     ePlayer->playlist().setShuffle(cfgPlayer.shuffle());

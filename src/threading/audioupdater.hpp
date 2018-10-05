@@ -12,6 +12,9 @@ class AudioUpdater : public Callable
 public:
     explicit AudioUpdater(QObject *parent = nullptr);
 
+signals:
+    void updated(Audio *audio);
+
 public slots:
     void update(Audio *audio);
 
