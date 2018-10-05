@@ -64,7 +64,6 @@ HEADERS += \
     src/core/fileutil.hpp \
     src/widgets/eggwidget.hpp \
     src/widgets/barwidget.hpp \
-    src/widgets/librarywidget.hpp \
     src/widgets/components/borderlayout.hpp \
     src/widgets/components/clickablestyle.hpp \
     src/widgets/components/iconbutton.hpp \
@@ -103,7 +102,9 @@ HEADERS += \
     src/threading/base/expiringthread.hpp \
     src/core/utils.hpp \
     src/core/cache/sqlquery.hpp \
-    src/core/cache/database.hpp
+    src/core/cache/database.hpp \
+    src/widgets/components/audioswidget.hpp \
+    src/widgets/librarywidget.hpp
 
 SOURCES += \
     src/main.cpp \
@@ -125,7 +126,6 @@ SOURCES += \
     src/core/tag.cpp \
     src/widgets/eggwidget.cpp \
     src/widgets/barwidget.cpp \
-    src/widgets/librarywidget.cpp \
     src/widgets/components/borderlayout.cpp \
     src/widgets/components/clickablestyle.cpp \
     src/widgets/components/iconbutton.cpp \
@@ -162,4 +162,6 @@ SOURCES += \
     src/threading/audioloader.cpp \
     src/threading/base/expiringthread.cpp \
     src/core/cache/sqlquery.cpp \
-    src/core/cache/database.cpp
+    src/core/cache/database.cpp \
+    src/widgets/components/audioswidget.cpp \
+    src/widgets/librarywidget.cpp

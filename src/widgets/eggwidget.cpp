@@ -20,7 +20,7 @@ EggWidget::EggWidget(QWidget *parent)
 {
     setup();
 
-    connect(&m_library, &LibraryWidget::doubleClicked, this, &EggWidget::onLibraryDoubleClicked);
+    connect(&m_library, &AudiosWidget::doubleClicked, this, &EggWidget::onLibraryDoubleClicked);
 
     m_library.setAudios(eLibrary->audios());
     eLibrary->initialLoad(cfgLibrary.paths());
@@ -93,13 +93,6 @@ void EggWidget::setupUi()
     QLabel *label = new QLabel(this);
     label->setFixedWidth(315);
     label->setStyleSheet("QLabel {background-color: #666666;}");
-
-    m_library.addColumn(LibraryWidget::Title);
-    m_library.addColumn(LibraryWidget::Artist);
-    m_library.addColumn(LibraryWidget::Album);
-    m_library.addColumn(LibraryWidget::Year, Qt::AlignLeft, false);
-    m_library.addColumn(LibraryWidget::Genre);
-    m_library.addColumn(LibraryWidget::Duration, Qt::AlignRight, false);
 
     BorderLayout *layout = new BorderLayout(0, this);
     layout->addWidget(&m_library, BorderLayout::Center);

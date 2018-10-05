@@ -10,7 +10,6 @@
 ## User interface
 - do not show certain info at low size
 - [expand scrollbar](https://stackoverflow.com/a/23677355/7057528)
-- base class to audios displaying and inherited library class
 - only show certain column based on the size
 
 ## Future

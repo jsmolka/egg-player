@@ -6,18 +6,18 @@
  * - scrollbar-width
  */
 
-LibraryWidget {
+AudiosWidget {
 	color: white;
 	background: black;
 	alternate-background-color: rgb(28, 28, 28);
 }
 
-LibraryWidget:item {
+AudiosWidget:item {
 	border: 0;
 	padding: cell-padding;
 }
 
-LibraryWidget::item:hover {
+AudiosWidget::item:hover {
 	background: rgb(50, 50, 50);
 }
 
