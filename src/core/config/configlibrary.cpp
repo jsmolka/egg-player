@@ -7,7 +7,7 @@
 
 void ConfigLibrary::setDefaults()
 {
-    setDefault("cellPadding", 5);
+    setDefault("cellPadding", 10);
     setDefault("itemHeight", 50);
     setDefault("paths", QJsonArray({QStandardPaths::writableLocation(QStandardPaths::MusicLocation)}));
     setDefault("scrollBarWidth", 12);
