@@ -6,9 +6,9 @@
 class VolumeButton : public IconButton
 {
 public:
-    explicit VolumeButton(QWidget *parent = nullptr);
-
     enum Icon {VolumeFull, VolumeMedium, VolumeLow, VolumeMute};
+
+    explicit VolumeButton(QWidget *parent = nullptr);
 
     void setIcon(VolumeButton::Icon icon);
     VolumeButton::Icon icon() const;

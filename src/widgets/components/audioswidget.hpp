@@ -12,31 +12,26 @@ class AudiosWidget : public TableWidget
     Q_OBJECT
 
 public:
-    explicit AudiosWidget(QWidget *parent = nullptr);
-
     enum AudioInfo {Title, Artist, Album, Track, Year, Genre, Duration};
+
+    explicit AudiosWidget(QWidget *parent = nullptr);
 
     void setAudios(Audios *audios);
     void addColumn(AudioInfo info, Qt::Alignment horizontal = Qt::AlignLeft, bool expand = true);
 
-public slots:
-    void insert(Audio *audio, int row = -1);
-
 private slots:
     void onAudiosUpdated(int row);
-    void onAudioInserted(int row);
+    void onAudiosInserted(int row);
     void onAudiosRemoved(int row);
     void onAudiosMoved(int from, int to);
 
 private:
     struct Column
     {
-        Column(AudioInfo info = AudioInfo::Title, Qt::Alignment alignment = Qt::AlignLeft) :
-            info(info), alignment(alignment) {}
-
         AudioInfo info;
         Qt::Alignment alignment;
     };
+    void insert(Audio *audio, int row = -1);
     QString audioText(Audio *audio, int column) const;
 
     void setup();

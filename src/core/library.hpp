@@ -36,8 +36,8 @@ signals:
     void inserted(Audio *audio, int index);
 
 private slots:
-    void onAudioLoaderFinished();
-    void onAudioUpdatedUpdated(Audio *audio);
+    void onInitialLoaderFinished();
+    void onAudioUpdaterUpdated(Audio *audio);
 
     void onFileSystemRenamed(Audio *audio, const File &to);
     void onFileSystemRemoved(Audio *audio);

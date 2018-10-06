@@ -11,9 +11,9 @@
 #include "config.hpp"
 #include "constants.hpp"
 #include "duration.hpp"
-#include "fileutil.hpp"
 #include "iconfactory.hpp"
 #include "player.hpp"
+#include "utils.hpp"
 
 BarWidget::BarWidget(QWidget *parent)
     : QWidget(parent)

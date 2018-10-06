@@ -6,9 +6,9 @@
 class PlayPauseButton : public IconButton
 {
 public:
-    explicit PlayPauseButton(QWidget *parent = nullptr);
-
     enum Icon {Play, Pause};
+
+    explicit PlayPauseButton(QWidget *parent = nullptr);
 
     void setIcon(PlayPauseButton::Icon icon);
     PlayPauseButton::Icon icon() const;

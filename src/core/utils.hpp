@@ -1,23 +1,69 @@
 #ifndef UTILS_HPP
 #define UTILS_HPP
 
+#include <QFile>
 #include <QString>
+#include <QTextStream>
 
 #include <taglib/fileref.h>
 
-inline const wchar_t *toWString(const QString &string)
+#include "types.hpp"
+
+namespace Util
 {
-    return reinterpret_cast<const wchar_t *>(string.constData());
+    inline const wchar_t *toWString(const QString &string)
+    {
+        return reinterpret_cast<const wchar_t *>(string.constData());
+    }
+
+    inline QString toQString(const TagLib::String &string)
+    {
+        return QString::fromWCharArray(string.toCWString(), static_cast<int>(string.size()));
+    }
+
+    inline QString toQString(const TagLib::FileName &string)
+    {
+        return QString::fromWCharArray(static_cast<const wchar_t *>(string));
+    }
 }
 
-inline QString toQString(const TagLib::String &string)
+namespace FileUtil
 {
-    return QString::fromWCharArray(string.toCWString(), static_cast<int>(string.size()));
-}
+    inline QString read(const File &file, const QString &defaultValue = QString())
+    {
+        QFile qFile(file);
+        if (!qFile.open(QFile::ReadOnly))
+            return defaultValue;
 
-inline QString toQString(const TagLib::FileName &string)
-{
-    return QString::fromWCharArray(static_cast<const wchar_t *>(string));
+        return QTextStream(&qFile).readAll();
+    }
+
+    inline QByteArray readBytes(const File &file, const QByteArray &defaultValue = QByteArray())
+    {
+        QFile qFile(file);
+        if (!qFile.open(QFile::ReadOnly))
+            return defaultValue;
+
+        return qFile.readAll();
+    }
+
+    inline void write(const File &file, const QString &content)
+    {
+        QFile qFile(file);
+        if (!qFile.open(QFile::WriteOnly))
+            return;
+
+        QTextStream(&qFile) << content;
+    }
+
+    inline void write(const File &file, const QByteArray &content)
+    {
+        QFile qFile(file);
+        if (!qFile.open(QFile::WriteOnly))
+            return;
+
+        qFile.write(content);
+    }
 }
 
 #endif // UTILS_HPP

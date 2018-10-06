@@ -39,7 +39,7 @@ Cover Cover::defaultCover()
 QPixmap Cover::loadFromFile(const File &file)
 {
     QPixmap cover;
-    TagLib::MPEG::File mFile(toWString(file));
+    TagLib::MPEG::File mFile(Util::toWString(file));
     if (mFile.hasID3v2Tag())
     {
         const TagLib::ID3v2::Tag *tag = mFile.ID3v2Tag();

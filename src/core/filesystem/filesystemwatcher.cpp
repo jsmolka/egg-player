@@ -15,16 +15,6 @@ FileSystemWatcher::FileSystemWatcher(QObject *parent)
     m_timer.setSingleShot(true);
 }
 
-void FileSystemWatcher::setBufferDuration(int duration)
-{
-    m_bufferDuration = duration;
-}
-
-int FileSystemWatcher::bufferDuration() const
-{
-    return m_bufferDuration;
-}
-
 void FileSystemWatcher::addPath(const Path &path)
 {
     m_watcher.addPath(path);
@@ -60,7 +50,7 @@ void FileSystemWatcher::onDirectoryChanged(const Path &dir)
     if (m_bufferedDir.isNull() || m_bufferedDir.contains(dir))
         m_bufferedDir = dir;
 
-    m_timer.start(m_bufferDuration);
+    m_timer.start(s_bufferDuration);
 }
 
 void FileSystemWatcher::onTimerTimeout()

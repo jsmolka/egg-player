@@ -7,7 +7,7 @@ Controller::Controller(QObject *parent)
 
 }
 
-int Controller::running() const
+int Controller::runningWorker() const
 {
     return m_running;
 }

@@ -13,9 +13,6 @@ class FileSystemWatcher : public QObject
 public:
     explicit FileSystemWatcher(QObject *parent = nullptr);
 
-    void setBufferDuration(int duration);
-    int bufferDuration() const;
-
     void addPath(const Path &path);
     void addPaths(const QStringList &paths);
 
@@ -32,10 +29,10 @@ private slots:
     void onTimerTimeout();
 
 private:
+    static constexpr int s_bufferDuration{1000};
+
     QFileSystemWatcher m_watcher;
     QTimer m_timer;
-
-    int m_bufferDuration{1000};
     Path m_bufferedDir;
     bool m_ignoreDir;
 };

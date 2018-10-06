@@ -27,7 +27,7 @@ Tag::Tag(const File &file, QObject *parent)
 
 bool Tag::read()
 {
-    const TagLib::MPEG::File file(toWString(m_file));
+    const TagLib::MPEG::File file(Util::toWString(m_file));
 
     if (!file.isValid() || !file.audioProperties())
     {
@@ -42,10 +42,10 @@ bool Tag::read()
     if (file.tag())
     {
         TagLib::Tag *tag = file.tag();
-        m_title = toQString(tag->title());
-        m_artist = toQString(tag->artist());
-        m_album = toQString(tag->album());
-        m_genre = toQString(tag->genre());
+        m_title = Util::toQString(tag->title());
+        m_artist = Util::toQString(tag->artist());
+        m_album = Util::toQString(tag->album());
+        m_genre = Util::toQString(tag->genre());
         m_year = static_cast<int>(tag->year());
         m_track = static_cast<int>(tag->track());
     }

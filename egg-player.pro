@@ -61,7 +61,6 @@ HEADERS += \
     src/core/logger.hpp \
     src/core/player.hpp \
     src/core/tag.hpp \
-    src/core/fileutil.hpp \
     src/widgets/eggwidget.hpp \
     src/widgets/barwidget.hpp \
     src/widgets/components/borderlayout.hpp \
@@ -138,7 +137,6 @@ SOURCES += \
     src/threading/coverloaderworker.cpp \
     src/core/duration.cpp \
     src/core/cover.cpp \
-    src/core/fileutil.cpp \
     src/core/playlist.cpp \
     src/core/audios.cpp \
     src/core/filesystem/filesystemwatcher.cpp \

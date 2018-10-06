@@ -4,7 +4,7 @@
 
 #include "config.hpp"
 #include "constants.hpp"
-#include "fileutil.hpp"
+#include "utils.hpp"
 
 AudiosWidget::AudiosWidget(QWidget *parent)
     : TableWidget(parent)
@@ -17,7 +17,7 @@ void AudiosWidget::setAudios(Audios *audios)
 {
     if (m_audios)
     {
-        disconnect(audios, &Audios::inserted, this, &AudiosWidget::onAudioInserted);
+        disconnect(audios, &Audios::inserted, this, &AudiosWidget::onAudiosInserted);
         disconnect(audios, &Audios::updated, this, &AudiosWidget::onAudiosUpdated);
         disconnect(audios, &Audios::removed, this, &AudiosWidget::onAudiosRemoved);
         disconnect(audios, &Audios::moved, this, &AudiosWidget::onAudiosMoved);
@@ -25,15 +25,18 @@ void AudiosWidget::setAudios(Audios *audios)
 
     m_audios = audios;
 
-    connect(audios, &Audios::inserted, this, &AudiosWidget::onAudioInserted);
-    connect(audios, &Audios::updated, this, &AudiosWidget::onAudiosUpdated);
-    connect(audios, &Audios::removed, this, &AudiosWidget::onAudiosRemoved);
-    connect(audios, &Audios::moved, this, &AudiosWidget::onAudiosMoved);
+    connect(m_audios, &Audios::inserted, this, &AudiosWidget::onAudiosInserted);
+    connect(m_audios, &Audios::updated, this, &AudiosWidget::onAudiosUpdated);
+    connect(m_audios, &Audios::removed, this, &AudiosWidget::onAudiosRemoved);
+    connect(m_audios, &Audios::moved, this, &AudiosWidget::onAudiosMoved);
 }
 
 void AudiosWidget::addColumn(AudioInfo info, Qt::Alignment horizontal, bool expand)
 {
-    m_columns << Column(info, Qt::AlignVCenter | horizontal);
+    Column column;
+    column.info = info;
+    column.alignment = Qt::AlignVCenter | horizontal;
+    m_columns << column;
     setColumnCount(m_columns.size());
 
     if (!expand)
@@ -42,11 +45,16 @@ void AudiosWidget::addColumn(AudioInfo info, Qt::Alignment horizontal, bool expa
 
 void AudiosWidget::onAudiosUpdated(int row)
 {
-    removeRow(row);
-    insert(m_audios->at(row), row);
+    Audio *audio = m_audios->at(row);
+    for (int column = 0; column < m_columns.size(); ++column)
+    {
+        QTableWidgetItem *item = takeItem(row, column);
+        item->setText(audioText(audio, column));
+        setItem(row, column, item);
+    }
 }
 
-void AudiosWidget::onAudioInserted(int row)
+void AudiosWidget::onAudiosInserted(int row)
 {
     insert(m_audios->at(row), row);
 }
@@ -58,19 +66,8 @@ void AudiosWidget::onAudiosRemoved(int row)
 
 void AudiosWidget::onAudiosMoved(int from, int to)
 {
-    removeRow(from);
-    insert(m_audios->at(to), to);
-}
-
-void AudiosWidget::insert(Audio *audio, int row)
-{
-    insertRow(row);
-    for (int index = 0; index < m_columns.size(); ++index)
-    {
-        QTableWidgetItem *item = new QTableWidgetItem(audioText(audio, index));
-        item->setTextAlignment(m_columns[index].alignment);
-        setItem(row, index, item);
-    }
+    onAudiosRemoved(from);
+    onAudiosInserted(to);
 }
 
 void AudiosWidget::setup()
@@ -90,6 +87,17 @@ void AudiosWidget::setupCss()
     );
 }
 
+void AudiosWidget::insert(Audio *audio, int row)
+{
+    insertRow(row);
+    for (int column = 0; column < m_columns.size(); ++column)
+    {
+        QTableWidgetItem *item = new QTableWidgetItem(audioText(audio, column));
+        item->setTextAlignment(m_columns[column].alignment);
+        setItem(row, column, item);
+    }
+}
+
 QString AudiosWidget::audioText(Audio *audio, int column) const
 {
     switch(m_columns[column].info)
@@ -101,13 +109,13 @@ QString AudiosWidget::audioText(Audio *audio, int column) const
     case AudioInfo::Album:
         return audio->tag().album();
     case AudioInfo::Track:
-        return audio->tag().track() == 0
-            ? QString()
-            : QString::number(audio->tag().track());
+        return audio->tag().track() != 0
+            ? QString::number(audio->tag().track())
+            : QString();
     case AudioInfo::Year:
-        return audio->tag().year() == 0
-            ? QString()
-            : QString::number(audio->tag().year());
+        return audio->tag().year() != 0
+            ? QString::number(audio->tag().year())
+            : QString();
     case AudioInfo::Genre:
         return audio->tag().genre();
     case AudioInfo::Duration:

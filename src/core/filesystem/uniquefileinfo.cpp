@@ -31,7 +31,7 @@ quint64 UniqueFileInfo::volume() const
 void UniqueFileInfo::readInfo(const File &file)
 {
     HANDLE handle = CreateFileW(
-        toWString(file),
+        Util::toWString(file),
         0,
         FILE_SHARE_READ | FILE_SHARE_WRITE,
         nullptr,

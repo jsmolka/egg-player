@@ -8,10 +8,10 @@
 #include "config.hpp"
 #include "constants.hpp"
 #include "directory.hpp"
-#include "fileutil.hpp"
 #include "library.hpp"
 #include "player.hpp"
 #include "threadpool.hpp"
+#include "utils.hpp"
 
 EggWidget::EggWidget(QWidget *parent)
     : MainWindow(parent)

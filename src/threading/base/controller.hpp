@@ -12,10 +12,8 @@ class Controller : public QObject
 
 public:
     explicit Controller(QObject *parent = nullptr);
-    virtual ~Controller() = default;
 
-    int running() const;
-
+    int runningWorker() const;
     void runWorker(Runnable *runnable);
 
 public slots:

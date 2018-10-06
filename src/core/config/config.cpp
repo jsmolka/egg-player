@@ -4,7 +4,7 @@
 #include <QJsonDocument>
 
 #include "constants.hpp"
-#include "fileutil.hpp"
+#include "utils.hpp"
 
 Config::Config(QObject *parent)
     : QObject(parent)

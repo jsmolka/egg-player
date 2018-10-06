@@ -9,9 +9,9 @@ Library::Library(QObject *parent)
     , m_coverLoader(this)
 {
     connect(&m_initialLoader, &InitialLoader::loaded, this, &Library::insert);
-    connect(&m_initialLoader, &InitialLoader::finished,this, &Library::onAudioLoaderFinished);
+    connect(&m_initialLoader, &InitialLoader::finished,this, &Library::onInitialLoaderFinished);
     connect(&m_audioLoader, &AudioLoader::loaded, this, &Library::insert);
-    connect(&m_audioUpdater, &AudioUpdater::updated, this, &Library::onAudioUpdatedUpdated);
+    connect(&m_audioUpdater, &AudioUpdater::updated, this, &Library::onAudioUpdaterUpdated);
 
     connect(&m_fileSystem, &FileSystem::added, &m_audioLoader, &AudioLoader::load);
     connect(&m_fileSystem, &FileSystem::renamed, this, &Library::onFileSystemRenamed);
@@ -55,18 +55,17 @@ void Library::loadFiles(const Files &files)
 
 void Library::insert(Audio *audio)
 {
-    audio->setParent(this);
     m_fileSystem.watchAudio(audio);
     m_audios.insert(lowerBound(audio), audio);
 }
 
-void Library::onAudioLoaderFinished()
+void Library::onInitialLoaderFinished()
 {
     m_coverLoader.setAudios(m_audios.vector());
     m_coverLoader.start();
 }
 
-void Library::onAudioUpdatedUpdated(Audio *audio)
+void Library::onAudioUpdaterUpdated(Audio *audio)
 {
     const int low = lowerBound(audio);
     if (audio != m_audios.at(low))
@@ -89,7 +88,6 @@ void Library::onFileSystemRenamed(Audio *audio, const File &to)
 void Library::onFileSystemRemoved(Audio *audio)
 {
     m_audios.remove(audio);
-    audio->deleteLater();
 }
 
 int Library::lowerBound(Audio *audio)

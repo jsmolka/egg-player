@@ -37,7 +37,7 @@ int BorderLayout::count() const
 
 QLayoutItem *BorderLayout::itemAt(int index) const
 {
-    const ItemWrapper *wrapper = m_items.value(index);
+    ItemWrapper *wrapper = m_items.value(index);
     return wrapper ? wrapper->item : nullptr;
 }
 
@@ -156,14 +156,16 @@ QLayoutItem *BorderLayout::takeAt(int index)
 
 void BorderLayout::add(QLayoutItem *item, Position position)
 {
-    m_items.append(new ItemWrapper(item, position));
+    ItemWrapper *wrapper = new ItemWrapper;
+    wrapper->item = item;
+    wrapper->position = position;
+    m_items.append(wrapper);
 }
 
 QSize BorderLayout::calculateSize(SizeType sizeType) const
 {
     QSize totalSize;
-
-    for (const ItemWrapper *wrapper : m_items)
+    for (ItemWrapper *wrapper : qAsConst(m_items))
     {
         QSize itemSize;
         const Position position = wrapper->position;

@@ -44,7 +44,6 @@ private:
     void setup();
 
     Icons m_icons;
-
     int m_iconIndex;
     bool m_lockable;
     bool m_locked;

@@ -11,7 +11,6 @@ TableWidget::TableWidget(QWidget *parent)
 
     connect(this, &TableWidget::entered, this, &TableWidget::onEntered);
     connect(this, &TableWidget::hoverRowChanged, this, &TableWidget::onHoverRowChanged);
-
     connect(this, &TableWidget::hoverRowChanged, &m_delegate, &RowHoverDelegate::setHoverRow);
 }
 

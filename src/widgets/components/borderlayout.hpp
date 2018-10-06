@@ -30,9 +30,6 @@ private:
 
     struct ItemWrapper
     {
-        ItemWrapper(QLayoutItem *item, Position position) :
-            item(item), position(position) {}
-
         QLayoutItem *item;
         Position position;
     };

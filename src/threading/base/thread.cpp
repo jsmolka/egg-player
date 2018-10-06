@@ -17,7 +17,7 @@ void Thread::setObjectCount(int count)
     if (count == 0)
     {
         quit();
-        setMaxObjectCount(0);
+        m_maxObjectCount = 0;
         emit emptied();
     }
 }
