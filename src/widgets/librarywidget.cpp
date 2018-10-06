@@ -25,8 +25,8 @@ void LibraryWidget::adjustToWidth(int width)
     const static float factor = static_cast<float>(GetScaleFactorForDevice(DEVICE_PRIMARY)) / 100.0f;
 
     const bool hideAlbum = width < 675 * factor;
-    const bool hideGenre = width < 925 * factor;
-    const bool hideYear = width < 1025 * factor;
+    const bool hideGenre = width < 875 * factor;
+    const bool hideYear = width < 975 * factor;
 
     setColumnHidden(2, hideAlbum);
     setColumnHidden(3, hideYear);
