@@ -29,12 +29,15 @@ private slots:
     void onTimerTimeout();
 
 private:
-    static constexpr int s_bufferDuration{1000};
+    static qint64 dirSize(const Path &dir);
+
+    static constexpr int s_bufferDuration{500};
 
     QFileSystemWatcher m_watcher;
     QTimer m_timer;
     Path m_bufferedDir;
     bool m_ignoreDir;
+    qint64 m_lastSize;
 };
 
 #endif // FILESYSTEMWATCHER_HPP

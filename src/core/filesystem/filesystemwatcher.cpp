@@ -1,5 +1,6 @@
 #include "filesystemwatcher.hpp"
 
+#include <QDirIterator>
 #include <QFileInfo>
 
 FileSystemWatcher::FileSystemWatcher(QObject *parent)
@@ -7,6 +8,7 @@ FileSystemWatcher::FileSystemWatcher(QObject *parent)
     , m_watcher(this)
     , m_timer(this)
     , m_ignoreDir(false)
+    , m_lastSize(0)
 {
     connect(&m_watcher, &QFileSystemWatcher::fileChanged, this, &FileSystemWatcher::onFileChanged);
     connect(&m_watcher, &QFileSystemWatcher::directoryChanged, this, &FileSystemWatcher::onDirectoryChanged);
@@ -55,9 +57,30 @@ void FileSystemWatcher::onDirectoryChanged(const Path &dir)
 
 void FileSystemWatcher::onTimerTimeout()
 {
+    const qint64 size = dirSize(m_bufferedDir);
+    if (size != m_lastSize)
+    {
+        m_lastSize = size;
+        m_timer.start(s_bufferDuration);
+        return;
+    }
+
     if (!m_ignoreDir)
         emit directoryChanged(m_bufferedDir);
 
     m_bufferedDir = Path();
     m_ignoreDir = false;
+    m_lastSize = 0;
+}
+
+qint64 FileSystemWatcher::dirSize(const Path &dir)
+{
+    qint64 size = 0;
+    QDirIterator dirIter(dir, QDir::Files, QDirIterator::Subdirectories);
+    while (dirIter.hasNext())
+    {
+        dirIter.next();
+        size += dirIter.fileInfo().size();
+    }
+    return size;
 }
