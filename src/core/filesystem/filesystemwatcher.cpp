@@ -57,17 +57,17 @@ void FileSystemWatcher::onDirectoryChanged(const Path &dir)
 
 void FileSystemWatcher::onTimerTimeout()
 {
-    const qint64 size = dirSize(m_bufferedDir);
-    if (size != m_lastSize)
-    {
-        m_lastSize = size;
-        m_timer.start(s_bufferDuration);
-        return;
-    }
-
     if (!m_ignoreDir)
+    {
+        const qint64 size = dirSize(m_bufferedDir);
+        if (size != m_lastSize)
+        {
+            m_lastSize = size;
+            m_timer.start(s_bufferDuration);
+            return;
+        }
         emit directoryChanged(m_bufferedDir);
-
+    }
     m_bufferedDir = Path();
     m_ignoreDir = false;
     m_lastSize = 0;
