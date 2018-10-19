@@ -1,11 +1,27 @@
 # Things to do
 - replace const static with static const
 - proper style for ifdef in constants
+- make code generally more robust and log unlikely behavior
 
-## Cache
-- introduce versioning system with own table
-- use current state as first version and write possible conversions for future changes
-- save current state at exiting / load at startup
+## Database
+- save the currently played audio (with position) and try to load it on start
+- split into multiple classes with different functionality
+- DbProvider
+  - returns /creates the database of the current thread
+- DbInitializer
+  - initializes database
+  - create tables
+  - insert default cover
+  - convert between versions
+    - alter columns depending on the current db version
+- DbItem
+  - base class for db items / tables
+  - assignTo function to assign to corresponding class
+  - commit function to apply made changes to the database
+  - several getby functions
+  - use a base function for getby and just pass the condition (consider limit)
+- DbComplex
+  - contains functions which will alter multiple tables at the same time
 
 ## Filesystem
 - make it more robust
