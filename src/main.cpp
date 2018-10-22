@@ -22,6 +22,7 @@ QFont font(double size)
     return font;
 }
 
+#include "dbinitializer.hpp"
 void setup(QApplication &app)
 {
     qsrand(time(0));
@@ -34,7 +35,8 @@ void setup(QApplication &app)
     ePlayer->playlist().setLoop(cfgPlayer.loop());
     ePlayer->playlist().setShuffle(cfgPlayer.shuffle());
 
-    Cache().initialize();
+    //Cache().initialize();
+    DbInitializer().initialize();
 
     qRegisterMetaType<File>("File");
     qRegisterMetaType<Path>("Path");

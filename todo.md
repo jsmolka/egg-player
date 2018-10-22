@@ -2,6 +2,7 @@
 - replace const static with static const
 - proper style for ifdef in constants
 - make code generally more robust and log unlikely behavior
+- remove custom file and path type
 
 ## Database
 - save the currently played audio (with position) and try to load it on start

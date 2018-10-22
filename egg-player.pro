@@ -15,6 +15,7 @@ INCLUDEPATH += \
     src/core/bass \
     src/core/cache \
     src/core/config \
+    src/core/database \
     src/core/filesystem \
     src/threading \
     src/threading/base \
@@ -103,7 +104,13 @@ HEADERS += \
     src/core/cache/sqlquery.hpp \
     src/core/cache/database.hpp \
     src/widgets/components/audioswidget.hpp \
-    src/widgets/librarywidget.hpp
+    src/widgets/librarywidget.hpp \
+    src/core/database/dbtableitem.hpp \
+    src/core/database/dbaudio.hpp \
+    src/core/database/dbinitializer.hpp \
+    src/core/database/dbprovider.hpp \
+    src/core/globals.hpp \
+    src/core/database/dbclass.hpp
 
 SOURCES += \
     src/main.cpp \
@@ -162,4 +169,8 @@ SOURCES += \
     src/core/cache/sqlquery.cpp \
     src/core/cache/database.cpp \
     src/widgets/components/audioswidget.cpp \
-    src/widgets/librarywidget.cpp
+    src/widgets/librarywidget.cpp \
+    src/core/database/dbaudio.cpp \
+    src/core/database/dbinitializer.cpp \
+    src/core/database/dbprovider.cpp \
+    src/core/database/dbclass.cpp
