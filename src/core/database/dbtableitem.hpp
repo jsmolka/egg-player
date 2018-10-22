@@ -3,15 +3,18 @@
 
 #include <QVariant>
 
-#include "dbclass.hpp"
+#include "dbbase.hpp"
 
-class DbTableItem : public DbClass
+class DbTableItem : public DbBase
 {
 public:
-    using DbClass::DbClass;
+    using DbBase::DbBase;
 
+    virtual bool exists() = 0;
     virtual bool insert() = 0;
     virtual bool commit() = 0;
+
+protected:
     virtual bool getBy(const QVariant &column, const QVariant &value) = 0;
 };
 

@@ -61,4 +61,5 @@ void DbInitializer::dropTable(const QString &table)
 {
     query().prepare("DROP TABLE IF EXISTS :table");
     query().bindValue(":table", QVariant(table));
+    query().exec();
 }

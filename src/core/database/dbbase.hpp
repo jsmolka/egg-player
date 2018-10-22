@@ -1,23 +1,23 @@
-#ifndef DBCLASS_HPP
-#define DBCLASS_HPP
+#ifndef DBBASE_HPP
+#define DBBASE_HPP
 
 #include <QSqlDatabase>
 
 #include "sqlquery.hpp"
 
-class DbClass
+class DbBase
 {
 public:
-    DbClass();
-    virtual ~DbClass() = default;
+    DbBase();
+    virtual ~DbBase() = default;
 
 protected:
     QSqlDatabase &db();
     SqlQuery &query();
 
-private:
+private:    
     QSqlDatabase m_db;
     SqlQuery m_query;
 };
 
-#endif // DBCLASS_HPP
+#endif // DBBASE_HPP

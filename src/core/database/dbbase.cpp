@@ -1,20 +1,20 @@
-#include "dbclass.hpp"
+#include "dbbase.hpp"
 
 #include "dbprovider.hpp"
 
-DbClass::DbClass()
+DbBase::DbBase()
     : m_db(DbProvider::db())
 {
     m_query = SqlQuery(m_db);
     m_query.setForwardOnly(true);
 }
 
-QSqlDatabase &DbClass::db()
+QSqlDatabase &DbBase::db()
 {
     return m_db;
 }
 
-SqlQuery &DbClass::query()
+SqlQuery &DbBase::query()
 {
     return m_query;
 }

@@ -1,6 +1,19 @@
 #include "dbaudio.hpp"
 
+#include <QDateTime>
+#include <QFileInfo>
 #include <QSqlRecord>
+
+bool DbAudio::exists()
+{
+    query().prepare(
+        "SELECT 1 FROM audios "
+        "WHERE file = :file"
+    );
+    query().bindValue(":file", m_file);
+
+    return query().exec() && query().first();
+}
 
 bool DbAudio::insert()
 {
@@ -61,18 +74,60 @@ bool DbAudio::commit()
     return query().exec();
 }
 
-bool DbAudio::updatePrimaryKey(const File &file)
+bool DbAudio::updatePrimaryKey(const QString &file)
 {
     query().prepare(
         "UPDATE audios SET"
-        " file = :newfile,"
+        " file = :newfile, "
         "WHERE file = :file"
     );
     query().bindValue(":newfile", file);
     query().bindValue(":file", m_file);
+
     m_file = file;
 
     return query().exec();
+}
+
+bool DbAudio::getByFile(const QString &file)
+{
+    return getBy("file", file);
+}
+
+bool DbAudio::getByTitle(const QString &title)
+{
+    return getBy("title", title);
+}
+
+void DbAudio::assign(Audio *audio)
+{
+    m_file = audio->file();
+    m_title = audio->tag().title();
+    m_artist = audio->tag().artist();
+    m_album = audio->tag().album();
+    m_genre = audio->tag().genre();
+    m_year = audio->tag().year();
+    m_track = audio->tag().track();
+    m_duration = audio->duration().secs();
+    m_coverId = audio->cover().id();
+    m_modified = audio->modified();
+}
+
+void DbAudio::load(Audio *audio)
+{
+    audio->setValid(true);
+    audio->setCached(true);
+    audio->setFile(m_file);
+    audio->tag().setTitle(m_title);
+    audio->tag().setArtist(m_artist);
+    audio->tag().setAlbum(m_album);
+    audio->tag().setGenre(m_genre);
+    audio->tag().setYear(m_year);
+    audio->tag().setTrack(m_track);
+    audio->duration().setSecs(m_duration);
+    audio->cover().setId(m_coverId);
+    audio->setModified(m_modified);
+    audio->setOutdated(m_modified !=  QFileInfo(m_file).lastModified().toSecsSinceEpoch());
 }
 
 bool DbAudio::getBy(const QVariant &column, const QVariant &value)
@@ -100,17 +155,7 @@ bool DbAudio::getBy(const QVariant &column, const QVariant &value)
     m_track = record.value("track").toInt();
     m_duration = record.value("duration").toInt();
     m_coverId = record.value("coverid").toInt();
-    m_modified = record.value("modified").toInt();
+    m_modified = static_cast<qint64>(record.value("modified").toULongLong());
 
     return true;
-}
-
-bool DbAudio::getByFile(const File &file)
-{
-    return getBy("file", file);
-}
-
-bool DbAudio::getByTitle(const QString &title)
-{
-    return getBy("title", title);
 }

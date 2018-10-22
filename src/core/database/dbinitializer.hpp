@@ -1,12 +1,12 @@
 #ifndef DBINITIALIZER_HPP
 #define DBINITIALIZER_HPP
 
-#include "dbclass.hpp"
+#include "dbbase.hpp"
 
-class DbInitializer : public DbClass
+class DbInitializer : public DbBase
 {
 public:
-    using DbClass::DbClass;
+    using DbBase::DbBase;
 
     void initialize();
 
