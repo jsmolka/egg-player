@@ -11,6 +11,7 @@ public:
     void initialize();
 
 private:
+    bool tableExists(const QString &table);
     void createTables();
     void createTableAudios();
     void createTableCovers();

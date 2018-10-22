@@ -2,106 +2,6 @@
 
 #include <QSqlRecord>
 
-void DbAudio::setFile(const File &file)
-{
-    m_file = file;
-}
-
-File DbAudio::file() const
-{
-    return m_file;
-}
-
-void DbAudio::setTitle(const QString &title)
-{
-    m_title = title;
-}
-
-QString DbAudio::title() const
-{
-    return m_title;
-}
-
-void DbAudio::setArtist(const QString &artist)
-{
-    m_artist = artist;
-}
-
-QString DbAudio::artist() const
-{
-    return m_artist;
-}
-
-void DbAudio::setAlbum(const QString &album)
-{
-    m_album = album;
-}
-
-QString DbAudio::album() const
-{
-    return m_album;
-}
-
-void DbAudio::setGenre(const QString &genre)
-{
-    m_genre = genre;
-}
-
-QString DbAudio::genre() const
-{
-    return m_genre;
-}
-
-void DbAudio::setYear(int year)
-{
-    m_year = year;
-}
-
-int DbAudio::year() const
-{
-    return m_year;
-}
-
-void DbAudio::setTrack(int track)
-{
-    m_track = track;
-}
-
-int DbAudio::track() const
-{
-    return m_track;
-}
-
-void DbAudio::setDuration(int duration)
-{
-    m_duration = duration;
-}
-
-int DbAudio::duration() const
-{
-    return m_duration;
-}
-
-void DbAudio::setCoverId(int id)
-{
-    m_coverId = id;
-}
-
-int DbAudio::coverId() const
-{
-    return m_coverId;
-}
-
-void DbAudio::setModified(qint64 modified)
-{
-    m_modified = modified;
-}
-
-qint64 DbAudio::modified() const
-{
-    return m_modified;
-}
-
 bool DbAudio::insert()
 {
     query().prepare(
@@ -157,6 +57,20 @@ bool DbAudio::commit()
     query().bindValue(":duration", m_duration);
     query().bindValue(":coverid", m_coverId);
     query().bindValue(":modified", m_modified);
+
+    return query().exec();
+}
+
+bool DbAudio::updatePrimaryKey(const File &file)
+{
+    query().prepare(
+        "UPDATE audios SET"
+        " file = :newfile,"
+        "WHERE file = :file"
+    );
+    query().bindValue(":newfile", file);
+    query().bindValue(":file", m_file);
+    m_file = file;
 
     return query().exec();
 }

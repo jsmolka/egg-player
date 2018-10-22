@@ -1,30 +1,39 @@
 #ifndef GLOBALS_HPP
 #define GLOBALS_HPP
 
-#define CPROP(var, type, set, get)      \
+#define EGG_MEMBER(type, var)           \
     private:                            \
         type m_##var;                   \
+
+#define EGG_GETTER(type, var, get)      \
     public:                             \
-        void ##set(const ##type &##var) \
-        {                               \
-            m_##var = ##var;            \
-        }                               \
-        type ##get() const              \
+        type get() const                \
         {                               \
             return m_##var;             \
         }                               \
 
-#define PPROP(var, type, set, get)      \
-    private:                            \
-        type m_##var;                   \
+#define EGG_CSETTER(type, var, set)     \
     public:                             \
-        void ##set(##type ##var)        \
+        void set(const type &var)       \
         {                               \
-            m_##var = ##var;            \
+            m_##var = var;              \
         }                               \
-        type ##get() const              \
+
+#define EGG_PSETTER(type, var, set)     \
+    public:                             \
+        void set(type var)              \
         {                               \
-            return m_##var;             \
+            m_##var = var;              \
         }                               \
+
+#define EGG_CPROP(type, var, set, get)  \
+    EGG_MEMBER(type, var)               \
+    EGG_CSETTER(type, var, set)         \
+    EGG_GETTER(type, var, get)          \
+
+#define EGG_PPROP(type, var, set, get)  \
+    EGG_MEMBER(type, var)               \
+    EGG_PSETTER(type, var, set)         \
+    EGG_GETTER(type, var, get)          \
 
 #endif // GLOBALS_HPP

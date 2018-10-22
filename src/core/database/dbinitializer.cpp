@@ -1,22 +1,31 @@
 #include "dbinitializer.hpp"
 
-#include <QFileInfo>
 #include <QVariant>
 
 #include "constants.hpp"
 
 void DbInitializer::initialize()
 {
-    if (!QFileInfo(SQL_PATH).exists())
-        createTables();
+    createTables();
+}
 
+bool DbInitializer::tableExists(const QString &table)
+{
+    query().prepare(
+        "SELECT 1 FROM sqlite_master "
+        "WHERE name = :name"
+    );
+    query().bindValue(":name", table);
 
+    return query().exec() && query().first();
 }
 
 void DbInitializer::createTables()
 {
-    createTableAudios();
-    createTableCovers();
+    if (!tableExists("audios"))
+        createTableAudios();
+    if (!tableExists("covers"))
+        createTableCovers();
 }
 
 void DbInitializer::createTableAudios()

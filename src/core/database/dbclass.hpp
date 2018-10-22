@@ -9,6 +9,7 @@ class DbClass
 {
 public:
     DbClass();
+    virtual ~DbClass() = default;
 
 protected:
     QSqlDatabase &db();
