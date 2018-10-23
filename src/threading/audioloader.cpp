@@ -10,10 +10,15 @@ AudioLoader::AudioLoader(QObject *parent)
 
 void AudioLoader::load(const File &file)
 {
-    Audio *audio = m_cache.loadAudio(file);
-    if (!audio)
+    Audio *audio = new Audio;
+    if (m_dbAudio.getByFile(file))
     {
-        audio = new Audio(file);
+        m_dbAudio.assignTo(audio);
+    }
+    else
+    {
+        audio->setFile(file);
+        audio->update();
         if (!audio->isValid())
         {
             delete audio;
@@ -25,7 +30,8 @@ void AudioLoader::load(const File &file)
         if (isInterrupted())
             return;
 
-        m_cache.insertAudio(audio);
+        m_dbAudio.loadFrom(audio);
+        m_dbAudio.insert();
     }
     if (audio->isOutdated())
     {
@@ -34,7 +40,9 @@ void AudioLoader::load(const File &file)
 
         audio->update();
         audio->cover().invalidate();
-        m_cache.updateAudio(audio);
+
+        m_dbAudio.loadFrom(audio);
+        m_dbAudio.commit();
     }
     if (!audio->cover().isValid())
     {
@@ -42,7 +50,11 @@ void AudioLoader::load(const File &file)
             return;
 
         const QPixmap cover = Cover::loadFromFile(audio->file());
-        m_cache.updateAudioCover(audio, cover);
+        m_dbCover.getOrInsertCover(cover);
+
+        m_dbAudio.setCoverId(m_dbCover.id());
+        m_dbAudio.commit();
+        audio->cover().setId(m_dbCover.id());
     }
     audio->moveToThread(qApp->thread());
     emit loaded(audio);

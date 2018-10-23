@@ -1,6 +1,5 @@
 #include "coverloader.hpp"
 
-#include "cache.hpp"
 #include "coverloaderworker.hpp"
 
 CoverLoader::CoverLoader(QObject *parent)

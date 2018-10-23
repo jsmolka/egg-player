@@ -2,7 +2,8 @@
 #define AUDIOUPDATER_HPP
 
 #include "audio.hpp"
-#include "cache.hpp"
+#include "dbaudio.hpp"
+#include "dbcover.hpp"
 #include "callable.hpp"
 
 class AudioUpdater : public Callable
@@ -19,7 +20,8 @@ public slots:
     void update(Audio *audio);
 
 private:
-    Cache m_cache;
+    DbAudio m_dbAudio;
+    DbCover m_dbCover;
 };
 
 #endif // AUDIOUPDATER_HPP

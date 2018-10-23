@@ -50,7 +50,6 @@ HEADERS += \
     src/core/bass/bass.hpp \
     src/core/bass/basserror.hpp \
     src/core/bass/bassstream.hpp \
-    src/core/cache/cache.hpp \
     src/core/constants.hpp \
     src/core/config/config.hpp \
     src/core/config/configapp.hpp \
@@ -119,7 +118,6 @@ SOURCES += \
     src/core/bass/bass.cpp \
     src/core/bass/basserror.cpp \
     src/core/bass/bassstream.cpp \
-    src/core/cache/cache.cpp \
     src/core/constants.cpp \
     src/core/config/config.cpp \
     src/core/config/configapp.cpp \

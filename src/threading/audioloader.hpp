@@ -2,8 +2,9 @@
 #define AUDIOLOADER_HPP
 
 #include "audio.hpp"
-#include "cache.hpp"
 #include "callable.hpp"
+#include "dbaudio.hpp"
+#include "dbcover.hpp"
 #include "types.hpp"
 
 class AudioLoader : public Callable
@@ -20,7 +21,8 @@ signals:
     void loaded(Audio *audio);
 
 private:
-    Cache m_cache;
+    DbAudio m_dbAudio;
+    DbCover m_dbCover;
 };
 
 #endif // AUDIOLOADER_HPP

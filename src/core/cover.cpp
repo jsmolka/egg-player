@@ -9,7 +9,7 @@
 #include <taglib/id3v2frame.h>
 #include <taglib/mpegfile.h>
 
-#include "cache.hpp"
+#include "dbcover.hpp"
 #include "logger.hpp"
 #include "tag.hpp"
 #include "utils.hpp"
@@ -128,7 +128,10 @@ QPixmap Cover::coverify(const QPixmap &cover)
 
 QPixmap Cover::loadFromCache(int id)
 {
-    return Cache().coverById(id);
+    DbCover dbCover;
+    dbCover.getById(id);
+
+    return dbCover.cover();
 }
 
 QColor Cover::rawDominantColor(const QImage &image)

@@ -24,15 +24,20 @@ public:
     bool getById(int id);
     bool getBySize(int size);
     bool getByCover(const QPixmap &cover);
-
-    int lastId();
-    int nextId();
+    bool getOrInsertCover(const QPixmap &cover);
 
 protected:
     bool getBy(const QVariant &column, const QVariant &value);
 
 private:
     static QByteArray coverToBytes(const QPixmap &cover);
+
+    bool insert(const QByteArray &bytes);
+    bool commit(const QByteArray &bytes);
+
+    int lastId();
+    int nextId();
+
     int coverId(const QByteArray &bytes);
     int coverIdBySize(const QByteArray &bytes);
     int coverIdByBlob(const QByteArray &bytes);

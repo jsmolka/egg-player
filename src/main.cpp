@@ -2,9 +2,9 @@
 #include <QFont>
 #include <QFontDatabase>
 
-#include "cache.hpp"
 #include "config.hpp"
 #include "constants.hpp"
+#include "dbinitializer.hpp"
 #include "eggwidget.hpp"
 #include "library.hpp"
 #include "player.hpp"
@@ -22,7 +22,6 @@ QFont font(double size)
     return font;
 }
 
-#include "dbinitializer.hpp"
 void setup(QApplication &app)
 {
     qsrand(time(0));
@@ -35,7 +34,6 @@ void setup(QApplication &app)
     ePlayer->playlist().setLoop(cfgPlayer.loop());
     ePlayer->playlist().setShuffle(cfgPlayer.shuffle());
 
-    //Cache().initialize();
     DbInitializer().initialize();
 
     qRegisterMetaType<File>("File");

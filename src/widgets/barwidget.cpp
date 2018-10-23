@@ -7,7 +7,6 @@
 #include <QPropertyAnimation>
 #include <QStyleOption>
 
-#include "cache.hpp"
 #include "config.hpp"
 #include "constants.hpp"
 #include "duration.hpp"

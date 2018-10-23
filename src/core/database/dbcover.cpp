@@ -1,6 +1,8 @@
 #include "dbcover.hpp"
 
 #include <QBuffer>
+#include <QMutex>
+#include <QMutexLocker>
 #include <QSqlRecord>
 
 bool DbCover::exists()
@@ -16,43 +18,12 @@ bool DbCover::exists()
 
 bool DbCover::insert()
 {
-    const QByteArray bytes = coverToBytes(m_cover);
-    const int id = coverId(bytes);
-    if (id != 0)
-    {
-        m_id = id;
-        return true;
-    }
-
-    query().prepare(
-        "INSERT INTO covers VALUES ("
-        " :id,"
-        " :size,"
-        " :cover"
-        ")"
-    );
-    query().bindValue(":id", m_id);
-    query().bindValue(":size", bytes.size());
-    query().bindValue(":cover", bytes);
-
-    return query().exec();
+    return insert(coverToBytes(m_cover));
 }
 
 bool DbCover::commit()
 {
-    const QByteArray bytes = coverToBytes(m_cover);
-
-    query().prepare(
-        "UPDATE covers SET"
-        " size = :size"
-        " cover = :cover "
-        "WHERE id = :id"
-    );
-    query().bindValue(":size", bytes.size());
-    query().bindValue(":cover", bytes);
-    query().bindValue(":id", m_id);
-
-    return query().exec();
+    return commit(coverToBytes(m_cover));
 }
 
 bool DbCover::getById(int id)
@@ -70,20 +41,21 @@ bool DbCover::getByCover(const QPixmap &cover)
     return getBy("cover", coverToBytes(cover));
 }
 
-int DbCover::lastId()
+bool DbCover::getOrInsertCover(const QPixmap &cover)
 {
-    query().exec("SELECT max(id) FROM covers");
+    const QByteArray bytes = coverToBytes(cover);
+    const int id = coverId(bytes);
+    if (id == 0)
+    {
+        static QMutex mutex;
+        QMutexLocker locker(&mutex);
 
-    int id = 1;
-    if (query().first())
-        id = query().value(0).toInt();
-
-    return id;
-}
-
-int DbCover::nextId()
-{
-    return lastId() + 1;
+        m_id = nextId();
+        m_size = bytes.size();
+        m_cover = cover;
+        return insert(bytes);
+    }
+    return getById(id);
 }
 
 bool DbCover::getBy(const QVariant &column, const QVariant &value)
@@ -114,6 +86,57 @@ QByteArray DbCover::coverToBytes(const QPixmap &cover)
     cover.save(&buffer, "PNG");
 
     return bytes;
+}
+
+bool DbCover::insert(const QByteArray &bytes)
+{
+    query().prepare(
+        "INSERT INTO covers VALUES ("
+        " :id,"
+        " :size,"
+        " :cover"
+        ")"
+    );
+    query().bindValue(":id", m_id);
+    query().bindValue(":size", bytes.size());
+    query().bindValue(":cover", bytes);
+
+    m_size = bytes.size();
+
+    return query().exec();
+}
+
+bool DbCover::commit(const QByteArray &bytes)
+{
+    query().prepare(
+        "UPDATE covers SET"
+        " size = :size"
+        " cover = :cover "
+        "WHERE id = :id"
+    );
+    query().bindValue(":id", m_id);
+    query().bindValue(":size", bytes.size());
+    query().bindValue(":cover", bytes);
+
+    m_size = bytes.size();
+
+    return query().exec();
+}
+
+int DbCover::lastId()
+{
+    query().exec("SELECT max(id) FROM covers");
+
+    int id = 1;
+    if (query().first())
+        id = query().value(0).toInt();
+
+    return id;
+}
+
+int DbCover::nextId()
+{
+    return lastId() + 1;
 }
 
 int DbCover::coverId(const QByteArray &bytes)
