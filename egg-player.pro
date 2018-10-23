@@ -110,7 +110,8 @@ HEADERS += \
     src/core/database/dbinitializer.hpp \
     src/core/database/dbprovider.hpp \
     src/core/globals.hpp \
-    src/core/database/dbbase.hpp
+    src/core/database/dbbase.hpp \
+    src/core/database/dbcover.hpp
 
 SOURCES += \
     src/main.cpp \
@@ -173,4 +174,5 @@ SOURCES += \
     src/core/database/dbaudio.cpp \
     src/core/database/dbinitializer.cpp \
     src/core/database/dbprovider.cpp \
-    src/core/database/dbbase.cpp
+    src/core/database/dbbase.cpp \
+    src/core/database/dbcover.cpp

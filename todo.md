@@ -3,6 +3,10 @@
 - proper style for ifdef in constants
 - make code generally more robust and log unlikely behavior
 - remove custom file and path type
+- use imports relative to main ("core/audio.hpp", "core/db/audio.hpp")
+- use namespaces
+- switch getter and setter position (also in macro)
+- use SqlRecord in Cover
 
 ## Database
 - save the currently played audio (with position) and try to load it on start

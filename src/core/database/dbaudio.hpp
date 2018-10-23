@@ -28,12 +28,21 @@ public:
 
     bool getByFile(const QString &file);
     bool getByTitle(const QString &title);
+    bool getByAlbum(const QString &album);
+    bool getByArtist(const QString &artist);
+    bool getByYear(int year);
+    bool getByDuration(int duration);
+    bool getByCoverId(int coverId);
+    bool getByModified(qint64 modified);
 
-    void assign(Audio *audio);
-    void load(Audio *audio);
+    void assignTo(Audio *audio);
+    void loadFrom(Audio *audio);
 
 protected:
     bool getBy(const QVariant &column, const QVariant &value);
+
+private:
+    void loadFromRecord(const QSqlRecord &record);
 };
 
 #endif // DBAUDIO_HPP

@@ -99,21 +99,37 @@ bool DbAudio::getByTitle(const QString &title)
     return getBy("title", title);
 }
 
-void DbAudio::assign(Audio *audio)
+bool DbAudio::getByAlbum(const QString &album)
 {
-    m_file = audio->file();
-    m_title = audio->tag().title();
-    m_artist = audio->tag().artist();
-    m_album = audio->tag().album();
-    m_genre = audio->tag().genre();
-    m_year = audio->tag().year();
-    m_track = audio->tag().track();
-    m_duration = audio->duration().secs();
-    m_coverId = audio->cover().id();
-    m_modified = audio->modified();
+    return getBy("album", album);
 }
 
-void DbAudio::load(Audio *audio)
+bool DbAudio::getByArtist(const QString &artist)
+{
+    return getBy("artist", artist);
+}
+
+bool DbAudio::getByYear(int year)
+{
+    return getBy("year", year);
+}
+
+bool DbAudio::getByDuration(int duration)
+{
+    return getBy("duration", duration);
+}
+
+bool DbAudio::getByCoverId(int coverId)
+{
+    return getBy("coverid", coverId);
+}
+
+bool DbAudio::getByModified(qint64 modified)
+{
+    return getBy("modified", modified);
+}
+
+void DbAudio::assignTo(Audio *audio)
 {
     audio->setValid(true);
     audio->setCached(true);
@@ -128,6 +144,20 @@ void DbAudio::load(Audio *audio)
     audio->cover().setId(m_coverId);
     audio->setModified(m_modified);
     audio->setOutdated(m_modified !=  QFileInfo(m_file).lastModified().toSecsSinceEpoch());
+}
+
+void DbAudio::loadFrom(Audio *audio)
+{
+    m_file = audio->file();
+    m_title = audio->tag().title();
+    m_artist = audio->tag().artist();
+    m_album = audio->tag().album();
+    m_genre = audio->tag().genre();
+    m_year = audio->tag().year();
+    m_track = audio->tag().track();
+    m_duration = audio->duration().secs();
+    m_coverId = audio->cover().id();
+    m_modified = audio->modified();
 }
 
 bool DbAudio::getBy(const QVariant &column, const QVariant &value)
@@ -145,7 +175,13 @@ bool DbAudio::getBy(const QVariant &column, const QVariant &value)
     if (!query().first())
         return false;
 
-    const QSqlRecord record = query().record();
+    loadFromRecord(query().record());
+
+    return true;
+}
+
+void DbAudio::loadFromRecord(const QSqlRecord &record)
+{
     m_file = record.value("file").toString();
     m_title = record.value("title").toString();
     m_artist = record.value("artist").toString();
@@ -156,6 +192,4 @@ bool DbAudio::getBy(const QVariant &column, const QVariant &value)
     m_duration = record.value("duration").toInt();
     m_coverId = record.value("coverid").toInt();
     m_modified = static_cast<qint64>(record.value("modified").toULongLong());
-
-    return true;
 }
