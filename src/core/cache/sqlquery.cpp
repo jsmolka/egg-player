@@ -1,5 +1,6 @@
 #include "sqlquery.hpp"
 
+#include <QMapIterator>
 #include <QSqlError>
 
 #include "logger.hpp"
@@ -25,9 +26,13 @@ bool SqlQuery::exec(const QString &query)
 QString SqlQuery::lastQuery() const
 {
     QString query = QSqlQuery::lastQuery();
-    for (auto iter = boundValues().cbegin(); iter != boundValues().cend(); ++iter)
-        query.replace(iter.key(), iter.value().toString());
+    QMapIterator<QString, QVariant> iter(boundValues());
 
+    while (iter.hasNext())
+    {
+        iter.next();
+        query.replace(iter.key(), iter.value().toString());
+    }
     return query;
 }
 

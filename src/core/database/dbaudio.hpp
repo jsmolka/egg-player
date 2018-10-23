@@ -39,7 +39,7 @@ public:
     void loadFrom(Audio *audio);
 
 protected:
-    bool getBy(const QVariant &column, const QVariant &value);
+    bool getBy(const QString &column, const QVariant &value);
 
 private:
     void loadFromRecord(const QSqlRecord &record);

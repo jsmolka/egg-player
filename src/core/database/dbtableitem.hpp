@@ -15,7 +15,7 @@ public:
     virtual bool commit() = 0;
 
 protected:
-    virtual bool getBy(const QVariant &column, const QVariant &value) = 0;
+    virtual bool getBy(const QString &column, const QVariant &value) = 0;
 };
 
 #endif // DBTABLEITEM_HPP

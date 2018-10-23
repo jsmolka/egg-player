@@ -27,7 +27,7 @@ public:
     bool getOrInsertCover(const QPixmap &cover);
 
 protected:
-    bool getBy(const QVariant &column, const QVariant &value);
+    bool getBy(const QString &column, const QVariant &value);
 
 private:
     static QByteArray coverToBytes(const QPixmap &cover);

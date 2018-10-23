@@ -160,13 +160,12 @@ void DbAudio::loadFrom(Audio *audio)
     m_modified = audio->modified();
 }
 
-bool DbAudio::getBy(const QVariant &column, const QVariant &value)
+bool DbAudio::getBy(const QString &column, const QVariant &value)
 {
     query().prepare(
         "SELECT * FROM audios "
-        "WHERE :column = :value"
+        "WHERE " + column + " = :value"
     );
-    query().bindValue(":column", column);
     query().bindValue(":value", value);
 
     if (!query().exec())

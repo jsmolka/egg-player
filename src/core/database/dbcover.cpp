@@ -58,13 +58,12 @@ bool DbCover::getOrInsertCover(const QPixmap &cover)
     return getById(id);
 }
 
-bool DbCover::getBy(const QVariant &column, const QVariant &value)
+bool DbCover::getBy(const QString &column, const QVariant &value)
 {
     query().prepare(
         "SELECT * FROM covers "
-        "WHERE :column = :value"
+        "WHERE " + column + " = :value"
     );
-    query().bindValue(":column", column);
     query().bindValue(":value", value);
 
     if (!query().exec())

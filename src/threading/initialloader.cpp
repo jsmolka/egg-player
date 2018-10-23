@@ -27,7 +27,13 @@ Files InitialLoader::files() const
 
 void InitialLoader::start()
 {
-    for (const Files &chunk : chunk<Path>(m_files, QThread::idealThreadCount()))
+#ifdef QT_DEBUG
+    const int threads = 1;
+#else
+    const int threads = QThread::idealThreadCount();
+#endif
+
+    for (const Files &chunk : chunk<Path>(m_files, threads))
     {
         InitialLoaderWorker *worker = new InitialLoaderWorker(chunk);
         connect(worker, &InitialLoaderWorker::loaded, this, &InitialLoader::loaded);

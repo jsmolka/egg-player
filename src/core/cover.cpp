@@ -70,7 +70,7 @@ void Cover::invalidate()
 
 bool Cover::isValid() const
 {
-    return m_id > 0;
+    return m_id != 0;
 }
 
 void Cover::setId(int id)
