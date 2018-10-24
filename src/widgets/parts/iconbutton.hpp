@@ -6,6 +6,8 @@
 #include <QPushButton>
 #include <QVector>
 
+#include "core/globals.hpp"
+
 using Icons = QVector<QIcon>;
 
 class IconButton : public QPushButton

@@ -4,14 +4,12 @@
 #include <QDropEvent>
 #include <QFileInfo>
 
-#include "borderlayout.hpp"
-#include "config.hpp"
-#include "constants.hpp"
-#include "directory.hpp"
-#include "library.hpp"
-#include "player.hpp"
-#include "threadpool.hpp"
-#include "utils.hpp"
+#include "core/globals.hpp"
+#include "core/library.hpp"
+#include "core/player.hpp"
+#include "core/filesystem/directory.hpp"
+#include "threading/core/threadpool.hpp"
+#include "widgets/parts/borderlayout.hpp"
 
 EggWidget::EggWidget(QWidget *parent)
     : MainWindow(parent)
@@ -52,10 +50,10 @@ void EggWidget::onLibraryDoubleClicked(const QModelIndex &index)
 
 void EggWidget::processDropEvent(const QMimeData *data)
 {
-    Files files;
+    QStrings files;
     for (const QUrl &url : data->urls())
     {
-        const Path path = url.toLocalFile();
+        const QString path = url.toLocalFile();
         if (QFileInfo(path).isDir())
         {
             eLibrary->fileSystem().addPath(path);

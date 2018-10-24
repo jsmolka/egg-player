@@ -1,8 +1,7 @@
 #include "playpausebutton.hpp"
 
-#include "constants.hpp"
-#include "iconfactory.hpp"
-#include "player.hpp"
+#include "core/player.hpp"
+#include "widgets/parts/iconfactory.hpp"
 
 PlayPauseButton::PlayPauseButton(QWidget *parent)
     : IconButton(parent)

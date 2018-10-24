@@ -1,6 +1,6 @@
 #include "runnable.hpp"
 
-#include "threadpool.hpp"
+#include "threading/core/threadpool.hpp"
 
 Runnable::Runnable(QObject *parent)
     : ThreadedObject(parent)

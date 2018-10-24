@@ -2,13 +2,11 @@
 #include <QFont>
 #include <QFontDatabase>
 
-#include "config.hpp"
-#include "constants.hpp"
-#include "dbinitializer.hpp"
-#include "eggwidget.hpp"
-#include "library.hpp"
-#include "player.hpp"
-#include "types.hpp"
+#include "core/globals.hpp"
+#include "core/library.hpp"
+#include "core/player.hpp"
+#include "core/database/dbinitializer.hpp"
+#include "widgets/eggwidget.hpp"
 
 QFont font(double size)
 {
@@ -35,9 +33,6 @@ void setup(QApplication &app)
     ePlayer->playlist().setShuffle(cfgPlayer.shuffle());
 
     DbInitializer().initialize();
-
-    qRegisterMetaType<File>("File");
-    qRegisterMetaType<Path>("Path");
 }
 
 int main(int argc, char *argv[])

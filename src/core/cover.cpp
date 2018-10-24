@@ -9,10 +9,8 @@
 #include <taglib/id3v2frame.h>
 #include <taglib/mpegfile.h>
 
-#include "dbcover.hpp"
-#include "logger.hpp"
-#include "tag.hpp"
-#include "utils.hpp"
+#include "core/tag.hpp"
+#include "core/database/dbcover.hpp"
 
 Cover::Cover()
     : Cover(0)
@@ -36,7 +34,7 @@ Cover Cover::defaultCover()
     return Cover(s_defaultId);
 }
 
-QPixmap Cover::loadFromFile(const File &file)
+QPixmap Cover::loadFromFile(const QString &file)
 {
     QPixmap cover;
     TagLib::MPEG::File mFile(Util::toWString(file));

@@ -7,12 +7,9 @@
 #include <QPropertyAnimation>
 #include <QStyleOption>
 
-#include "config.hpp"
-#include "constants.hpp"
-#include "duration.hpp"
-#include "iconfactory.hpp"
-#include "player.hpp"
-#include "utils.hpp"
+#include "core/duration.hpp"
+#include "core/player.hpp"
+#include "widgets/parts/iconfactory.hpp"
 
 BarWidget::BarWidget(QWidget *parent)
     : QWidget(parent)

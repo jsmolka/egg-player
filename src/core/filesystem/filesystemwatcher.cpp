@@ -17,7 +17,7 @@ FileSystemWatcher::FileSystemWatcher(QObject *parent)
     m_timer.setSingleShot(true);
 }
 
-void FileSystemWatcher::addPath(const Path &path)
+void FileSystemWatcher::addPath(const QString &path)
 {
     m_watcher.addPath(path);
 }
@@ -27,7 +27,7 @@ void FileSystemWatcher::addPaths(const QStringList &paths)
     m_watcher.addPaths(paths);
 }
 
-void FileSystemWatcher::removePath(const Path &path)
+void FileSystemWatcher::removePath(const QString &path)
 {
     m_watcher.removePath(path);
 }
@@ -37,7 +37,7 @@ void FileSystemWatcher::removePaths(const QStringList &paths)
     m_watcher.removePaths(paths);
 }
 
-void FileSystemWatcher::onFileChanged(const File &file)
+void FileSystemWatcher::onFileChanged(const QString &file)
 {
     if (QFileInfo::exists(file))
     {
@@ -47,7 +47,7 @@ void FileSystemWatcher::onFileChanged(const File &file)
     }
 }
 
-void FileSystemWatcher::onDirectoryChanged(const Path &dir)
+void FileSystemWatcher::onDirectoryChanged(const QString &dir)
 {
     if (m_bufferedDir.isNull() || m_bufferedDir.contains(dir))
         m_bufferedDir = dir;
@@ -68,12 +68,12 @@ void FileSystemWatcher::onTimerTimeout()
         }
         emit directoryChanged(m_bufferedDir);
     }
-    m_bufferedDir = Path();
+    m_bufferedDir = QString();
     m_ignoreDir = false;
     m_lastSize = 0;
 }
 
-qint64 FileSystemWatcher::dirSize(const Path &dir)
+qint64 FileSystemWatcher::dirSize(const QString &dir)
 {
     qint64 size = 0;
     QDirIterator dirIter(dir, QDir::Files, QDirIterator::Subdirectories);

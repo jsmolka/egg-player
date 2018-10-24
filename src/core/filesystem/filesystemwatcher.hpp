@@ -4,7 +4,7 @@
 #include <QFileSystemWatcher>
 #include <QTimer>
 
-#include "types.hpp"
+#include "core/globals.hpp"
 
 class FileSystemWatcher : public QObject
 {
@@ -13,29 +13,29 @@ class FileSystemWatcher : public QObject
 public:
     explicit FileSystemWatcher(QObject *parent = nullptr);
 
-    void addPath(const Path &path);
+    void addPath(const QString &path);
     void addPaths(const QStringList &paths);
 
-    void removePath(const Path &path);
+    void removePath(const QString &path);
     void removePaths(const QStringList &paths);
 
 signals:
-    void fileChanged(const File &file);
-    void directoryChanged(const Path &dir);
+    void fileChanged(const QString &file);
+    void directoryChanged(const QString &dir);
 
 private slots:
-    void onFileChanged(const File &file);
-    void onDirectoryChanged(const Path &dir);
+    void onFileChanged(const QString &file);
+    void onDirectoryChanged(const QString &dir);
     void onTimerTimeout();
 
 private:
-    static qint64 dirSize(const Path &dir);
+    static qint64 dirSize(const QString &dir);
 
     static constexpr int s_bufferDuration{500};
 
     QFileSystemWatcher m_watcher;
     QTimer m_timer;
-    Path m_bufferedDir;
+    QString m_bufferedDir;
     bool m_ignoreDir;
     qint64 m_lastSize;
 };

@@ -35,18 +35,18 @@ FileSystem &Library::fileSystem() const
     return const_cast<FileSystem &>(m_fileSystem);
 }
 
-void Library::initialLoad(const Paths &paths)
+void Library::initialLoad(const QStrings &paths)
 {
-    for (const Path &path : paths)
+    for (const QString &path : paths)
         m_fileSystem.addPath(path);
 
     m_initialLoader.setFiles(m_fileSystem.globAudios());
     m_initialLoader.start();
 }
 
-void Library::loadFiles(const Files &files)
+void Library::loadFiles(const QStrings &files)
 {
-    for (const File &file : files)
+    for (const QString &file : files)
     {
         if (!m_fileSystem.audios().contains(file))
             m_audioLoader.load(file);
@@ -80,7 +80,7 @@ void Library::onAudioUpdaterUpdated(Audio *audio)
     }
 }
 
-void Library::onFileSystemRenamed(Audio *audio, const File &to)
+void Library::onFileSystemRenamed(Audio *audio, const QString &to)
 {
     audio->setFile(to);
 }

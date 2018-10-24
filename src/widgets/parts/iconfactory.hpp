@@ -4,6 +4,8 @@
 #include <QIcon>
 #include <QPixmap>
 
+#include "core/globals.hpp"
+
 class IconFactory
 {
 public:

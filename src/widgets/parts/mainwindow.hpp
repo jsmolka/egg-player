@@ -4,6 +4,8 @@
 #include <QSize>
 #include <QWidget>
 
+#include "core/globals.hpp"
+
 class MainWindow : public QWidget
 {
 public:

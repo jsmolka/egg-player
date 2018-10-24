@@ -1,7 +1,7 @@
 #ifndef CONFIGAPP_HPP
 #define CONFIGAPP_HPP
 
-#include "configitem.hpp"
+#include "core/config/configitem.hpp"
 
 class ConfigApp : public ConfigItem
 {

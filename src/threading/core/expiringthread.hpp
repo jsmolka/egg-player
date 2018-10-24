@@ -3,7 +3,7 @@
 
 #include <QTimer>
 
-#include "thread.hpp"
+#include "threading/core/thread.hpp"
 
 class ExpiringThread : public QObject
 {

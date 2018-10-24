@@ -4,12 +4,13 @@
 #include <QLabel>
 #include <QWidget>
 
-#include "audio.hpp"
-#include "iconbutton.hpp"
-#include "playpausebutton.hpp"
-#include "slider.hpp"
-#include "shortcut.hpp"
-#include "volumebutton.hpp"
+#include "core/audio.hpp"
+#include "core/globals.hpp"
+#include "core/shortcut.hpp"
+#include "widgets/parts/iconbutton.hpp"
+#include "widgets/parts/playpausebutton.hpp"
+#include "widgets/parts/slider.hpp"
+#include "widgets/parts/volumebutton.hpp"
 
 class BarWidget : public QWidget
 {

@@ -11,15 +11,7 @@ QT += \
 INCLUDEPATH += \
     lib/bass-2.4/include \
     lib/taglib-1.11.1/include \
-    src/core \
-    src/core/bass \
-    src/core/config \
-    src/core/database \
-    src/core/filesystem \
-    src/threading \
-    src/threading/base \
-    src/widgets \
-    src/widgets/components
+    src
 
 LIBS += \
     -luser32 \
@@ -62,17 +54,16 @@ HEADERS += \
     src/core/tag.hpp \
     src/widgets/eggwidget.hpp \
     src/widgets/barwidget.hpp \
-    src/widgets/components/borderlayout.hpp \
-    src/widgets/components/clickablestyle.hpp \
-    src/widgets/components/iconbutton.hpp \
-    src/widgets/components/iconfactory.hpp \
-    src/widgets/components/mainwindow.hpp \
-    src/widgets/components/rowhoverdelegate.hpp \
-    src/widgets/components/slider.hpp \
-    src/widgets/components/smoothtablewidget.hpp \
-    src/widgets/components/tablewidget.hpp \
+    src/widgets/parts/borderlayout.hpp \
+    src/widgets/parts/clickablestyle.hpp \
+    src/widgets/parts/iconbutton.hpp \
+    src/widgets/parts/iconfactory.hpp \
+    src/widgets/parts/mainwindow.hpp \
+    src/widgets/parts/rowhoverdelegate.hpp \
+    src/widgets/parts/slider.hpp \
+    src/widgets/parts/smoothtablewidget.hpp \
+    src/widgets/parts/tablewidget.hpp \
     src/threading/coverloaderworker.hpp \
-    src/core/types.hpp \
     src/core/duration.hpp \
     src/core/cover.hpp \
     src/core/playlist.hpp \
@@ -84,23 +75,23 @@ HEADERS += \
     src/core/filesystem/uniquefileinfo.hpp \
     src/core/config/configitem.hpp \
     src/core/shortcut.hpp \
-    src/widgets/components/volumebutton.hpp \
-    src/widgets/components/playpausebutton.hpp \
-    src/threading/base/thread.hpp \
-    src/threading/base/threadedobject.hpp \
-    src/threading/base/threadpool.hpp \
-    src/threading/base/runnable.hpp \
-    src/threading/base/callable.hpp \
-    src/threading/base/controller.hpp \
+    src/widgets/parts/volumebutton.hpp \
+    src/widgets/parts/playpausebutton.hpp \
+    src/threading/core/thread.hpp \
+    src/threading/core/threadedobject.hpp \
+    src/threading/core/threadpool.hpp \
+    src/threading/core/runnable.hpp \
+    src/threading/core/callable.hpp \
+    src/threading/core/controller.hpp \
     src/threading/initialloaderworker.hpp \
     src/threading/initialloader.hpp \
     src/threading/coverloader.hpp \
     src/threading/audioupdater.hpp \
     src/threading/audioloader.hpp \
-    src/threading/base/expiringthread.hpp \
+    src/threading/core/expiringthread.hpp \
     src/core/utils.hpp \
     src/core/database/sqlquery.hpp \
-    src/widgets/components/audioswidget.hpp \
+    src/widgets/parts/audioswidget.hpp \
     src/widgets/librarywidget.hpp \
     src/core/database/dbtableitem.hpp \
     src/core/database/dbaudio.hpp \
@@ -109,7 +100,9 @@ HEADERS += \
     src/core/globals.hpp \
     src/core/database/dbbase.hpp \
     src/core/database/dbcover.hpp \
-    src/core/database/cache.hpp
+    src/core/database/cache.hpp \
+    src/core/types.hpp \
+    src/core/macros.hpp
 
 SOURCES += \
     src/main.cpp \
@@ -130,15 +123,15 @@ SOURCES += \
     src/core/tag.cpp \
     src/widgets/eggwidget.cpp \
     src/widgets/barwidget.cpp \
-    src/widgets/components/borderlayout.cpp \
-    src/widgets/components/clickablestyle.cpp \
-    src/widgets/components/iconbutton.cpp \
-    src/widgets/components/iconfactory.cpp \
-    src/widgets/components/mainwindow.cpp \
-    src/widgets/components/rowhoverdelegate.cpp \
-    src/widgets/components/slider.cpp \
-    src/widgets/components/smoothtablewidget.cpp \
-    src/widgets/components/tablewidget.cpp \
+    src/widgets/parts/borderlayout.cpp \
+    src/widgets/parts/clickablestyle.cpp \
+    src/widgets/parts/iconbutton.cpp \
+    src/widgets/parts/iconfactory.cpp \
+    src/widgets/parts/mainwindow.cpp \
+    src/widgets/parts/rowhoverdelegate.cpp \
+    src/widgets/parts/slider.cpp \
+    src/widgets/parts/smoothtablewidget.cpp \
+    src/widgets/parts/tablewidget.cpp \
     src/threading/coverloaderworker.cpp \
     src/core/duration.cpp \
     src/core/cover.cpp \
@@ -150,22 +143,22 @@ SOURCES += \
     src/core/filesystem/uniquefileinfo.cpp \
     src/core/config/configitem.cpp \
     src/core/shortcut.cpp \
-    src/widgets/components/volumebutton.cpp \
-    src/widgets/components/playpausebutton.cpp \
-    src/threading/base/thread.cpp \
-    src/threading/base/threadedobject.cpp \
-    src/threading/base/threadpool.cpp \
-    src/threading/base/runnable.cpp \
-    src/threading/base/callable.cpp \
-    src/threading/base/controller.cpp \
+    src/widgets/parts/volumebutton.cpp \
+    src/widgets/parts/playpausebutton.cpp \
+    src/threading/core/thread.cpp \
+    src/threading/core/threadedobject.cpp \
+    src/threading/core/threadpool.cpp \
+    src/threading/core/runnable.cpp \
+    src/threading/core/callable.cpp \
+    src/threading/core/controller.cpp \
     src/threading/initialloaderworker.cpp \
     src/threading/initialloader.cpp \
     src/threading/coverloader.cpp \
     src/threading/audioupdater.cpp \
     src/threading/audioloader.cpp \
-    src/threading/base/expiringthread.cpp \
+    src/threading/core/expiringthread.cpp \
     src/core/database/sqlquery.cpp \
-    src/widgets/components/audioswidget.cpp \
+    src/widgets/parts/audioswidget.cpp \
     src/widgets/librarywidget.cpp \
     src/core/database/dbaudio.cpp \
     src/core/database/dbinitializer.cpp \

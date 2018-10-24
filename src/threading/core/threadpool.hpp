@@ -3,8 +3,8 @@
 
 #include <QVector>
 
-#include "expiringthread.hpp"
-#include "threadedobject.hpp"
+#include "threading/core/expiringthread.hpp"
+#include "threading/core/threadedobject.hpp"
 
 class ThreadPool : public QObject
 {

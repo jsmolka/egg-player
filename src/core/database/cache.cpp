@@ -3,8 +3,8 @@
 #include <QDateTime>
 #include <QFileInfo>
 
-#include "dbaudio.hpp"
-#include "dbcover.hpp"
+#include "core/database/dbaudio.hpp"
+#include "core/database/dbcover.hpp"
 
 Audio *Cache::loadAudio(const QString &file)
 {    

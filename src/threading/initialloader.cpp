@@ -1,26 +1,26 @@
 #include "initialloader.hpp"
 
-#include "initialloaderworker.hpp"
+#include "threading/initialloaderworker.hpp"
 
 InitialLoader::InitialLoader(QObject *parent)
-    : InitialLoader(Files(), parent)
+    : InitialLoader(QStrings(), parent)
 {
 
 }
 
-InitialLoader::InitialLoader(const Files &files, QObject *parent)
+InitialLoader::InitialLoader(const QStrings &files, QObject *parent)
     : Controller(parent)
     , m_files(files)
 {
 
 }
 
-void InitialLoader::setFiles(const Files &files)
+void InitialLoader::setFiles(const QStrings &files)
 {
     m_files = files;
 }
 
-Files InitialLoader::files() const
+QStrings InitialLoader::files() const
 {
     return m_files;
 }
@@ -33,7 +33,7 @@ void InitialLoader::start()
     const int threads = QThread::idealThreadCount();
 #endif
 
-    for (const Files &chunk : chunk<Path>(m_files, threads))
+    for (const QStrings &chunk : chunk<QString>(m_files, threads))
     {
         InitialLoaderWorker *worker = new InitialLoaderWorker(chunk);
         connect(worker, &InitialLoaderWorker::loaded, this, &InitialLoader::loaded);

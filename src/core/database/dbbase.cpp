@@ -1,6 +1,6 @@
 #include "dbbase.hpp"
 
-#include "dbprovider.hpp"
+#include "core/database/dbprovider.hpp"
 
 DbBase::DbBase()
     : m_db(DbProvider::db())

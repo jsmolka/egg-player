@@ -5,8 +5,8 @@
 #include <QPixmap>
 #include <QSqlRecord>
 
-#include "dbtableitem.hpp"
-#include "globals.hpp"
+#include "core/globals.hpp"
+#include "core/database/dbtableitem.hpp"
 
 class DbCover : public DbTableItem
 {

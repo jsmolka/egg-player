@@ -2,8 +2,6 @@
 
 #include <QApplication>
 
-#include "logger.hpp"
-
 Shortcut::Shortcut(const QString &shortcut, bool repeat, QObject *parent)
     : QObject(parent)
     , m_id(++s_id)

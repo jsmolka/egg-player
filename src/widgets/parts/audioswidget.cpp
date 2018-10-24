@@ -2,10 +2,6 @@
 
 #include <QHeaderView>
 
-#include "config.hpp"
-#include "constants.hpp"
-#include "utils.hpp"
-
 AudiosWidget::AudiosWidget(QWidget *parent)
     : TableWidget(parent)
     , m_audios(nullptr)

@@ -1,7 +1,5 @@
 #include "bass.hpp"
 
-#include "logger.hpp"
-
 Bass::Bass()
 {
     if (s_refs++ > 0)

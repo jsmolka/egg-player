@@ -5,7 +5,7 @@
 #include <QObject>
 #include <QSet>
 
-#include "types.hpp"
+#include "core/globals.hpp"
 
 class Directory : public QObject
 {
@@ -13,18 +13,18 @@ class Directory : public QObject
 
 public:
     explicit Directory(QObject *parent = nullptr);
-    explicit Directory(const Path &path, QObject *parent = nullptr);
+    explicit Directory(const QString &path, QObject *parent = nullptr);
 
-    Path path() const;
-    QSet<File> files() const;
-    QHash<Path, Directory *> dirs() const;
+    QString path() const;
+    QSet<QString> files() const;
+    QHash<QString, Directory *> dirs() const;
 
     bool exists() const;
 
     void parse();
 
-    Files globAudios(bool recursive = true) const;
-    Files processChanges();
+    QStrings globAudios(bool recursive = true) const;
+    QStrings processChanges();
 
 signals:
     void parsed(Directory *dir);
@@ -32,13 +32,13 @@ signals:
     void removed(Directory *dir);
 
 private:
-    void processRemovedDirChanges(Files &changes);
-    void processExistingDirChanges(Files &changes);
-    void processFileChanges(Files &changes);
+    void processRemovedDirChanges(QStrings &changes);
+    void processExistingDirChanges(QStrings &changes);
+    void processFileChanges(QStrings &changes);
 
-    Path m_path;
-    QSet<File> m_files;
-    QHash<Path, Directory *> m_dirs;
+    QString m_path;
+    QSet<QString> m_files;
+    QHash<QString, Directory *> m_dirs;
 };
 
 #endif // DIRECTORY_HPP

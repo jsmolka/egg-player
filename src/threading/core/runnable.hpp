@@ -1,7 +1,7 @@
 #ifndef RUNNABLE_HPP
 #define RUNNABLE_HPP
 
-#include "threadedobject.hpp"
+#include "threading/core/threadedobject.hpp"
 
 class Runnable : public ThreadedObject
 {

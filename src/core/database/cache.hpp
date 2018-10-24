@@ -4,8 +4,8 @@
 #include <QPixmap>
 #include <QString>
 
-#include "audio.hpp"
-#include "globals.hpp"
+#include "core/audio.hpp"
+#include "core/globals.hpp"
 
 class Cache
 {

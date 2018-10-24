@@ -3,9 +3,9 @@
 
 #include <QMimeData>
 
-#include "barwidget.hpp"
-#include "librarywidget.hpp"
-#include "mainwindow.hpp"
+#include "widgets/barwidget.hpp"
+#include "widgets/librarywidget.hpp"
+#include "widgets/parts/mainwindow.hpp"
 
 class EggWidget : public MainWindow
 {

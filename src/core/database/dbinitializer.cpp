@@ -1,7 +1,7 @@
 #include "dbinitializer.hpp"
 
-#include "cover.hpp"
-#include "dbcover.hpp"
+#include "core/cover.hpp"
+#include "core/database/dbcover.hpp"
 
 void DbInitializer::initialize()
 {

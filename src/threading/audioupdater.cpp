@@ -1,6 +1,6 @@
 #include "audioupdater.hpp"
 
-#include "cache.hpp"
+#include "core/database/cache.hpp"
 
 AudioUpdater::AudioUpdater(QObject *parent)
     : Callable(parent)

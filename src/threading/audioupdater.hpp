@@ -1,8 +1,9 @@
 #ifndef AUDIOUPDATER_HPP
 #define AUDIOUPDATER_HPP
 
-#include "audio.hpp"
-#include "callable.hpp"
+#include "core/audio.hpp"
+#include "core/globals.hpp"
+#include "threading/core/callable.hpp"
 
 class AudioUpdater : public Callable
 {

@@ -3,7 +3,7 @@
 
 #include <QMetaObject>
 
-#include "threadedobject.hpp"
+#include "threading/core/threadedobject.hpp"
 
 class Callable : public ThreadedObject
 {

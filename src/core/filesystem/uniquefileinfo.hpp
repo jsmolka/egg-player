@@ -3,19 +3,19 @@
 
 #include <QHashFunctions>
 
-#include "types.hpp"
+#include "core/globals.hpp"
 
 class UniqueFileInfo
 {
 public:
     UniqueFileInfo();
-    explicit UniqueFileInfo(const File &file);
+    explicit UniqueFileInfo(const QString &file);
 
     quint64 index() const;
     quint64 volume() const;
 
 private:
-    void readInfo(const File &file);
+    void readInfo(const QString &file);
 
     quint64 m_index;
     quint64 m_volume;

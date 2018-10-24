@@ -4,9 +4,10 @@
 #include <QObject>
 #include <QTimer>
 
-#include "audio.hpp"
-#include "bass.hpp"
-#include "playlist.hpp"
+#include "core/audio.hpp"
+#include "core/globals.hpp"
+#include "core/playlist.hpp"
+#include "core/bass/bass.hpp"
 
 #define ePlayer (Player::instance())
 

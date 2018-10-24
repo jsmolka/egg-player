@@ -3,8 +3,8 @@
 #include <QApplication>
 #include <QJsonDocument>
 
-#include "constants.hpp"
-#include "utils.hpp"
+#include "core/constants.hpp"
+#include "core/utils.hpp"
 
 Config::Config(QObject *parent)
     : QObject(parent)

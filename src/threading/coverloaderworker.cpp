@@ -1,6 +1,6 @@
 #include "coverloaderworker.hpp"
 
-#include "cache.hpp"
+#include "core/database/cache.hpp"
 
 CoverLoaderWorker::CoverLoaderWorker(QObject *parent)
     : CoverLoaderWorker(Audio::vector(), parent)

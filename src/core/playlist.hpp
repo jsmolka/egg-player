@@ -4,8 +4,9 @@
 #include <QObject>
 #include <QVector>
 
-#include "audio.hpp"
-#include "audios.hpp"
+#include "core/audio.hpp"
+#include "core/audios.hpp"
+#include "core/globals.hpp"
 
 class Playlist : public QObject
 {

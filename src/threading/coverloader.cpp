@@ -1,6 +1,6 @@
 #include "coverloader.hpp"
 
-#include "coverloaderworker.hpp"
+#include "threading/coverloaderworker.hpp"
 
 CoverLoader::CoverLoader(QObject *parent)
     : CoverLoader(Audio::vector(), parent)

@@ -5,8 +5,8 @@
 #include <QFile>
 #include <QTextStream>
 
-#include "config.hpp"
-#include "constants.hpp"
+#include "core/constants.hpp"
+#include "core/config/config.hpp"
 
 void Logger::log(const QString &message, const QString &func, const QVector<QVariant> &args)
 {

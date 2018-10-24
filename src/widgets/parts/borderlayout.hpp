@@ -5,6 +5,8 @@
 #include <QRect>
 #include <QVector>
 
+#include "core/globals.hpp"
+
 class BorderLayout : public QLayout
 {
 public:

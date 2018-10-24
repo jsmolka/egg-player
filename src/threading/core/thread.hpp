@@ -3,6 +3,8 @@
 
 #include <QThread>
 
+#include "core/globals.hpp"
+
 class Thread : public QThread
 {
     Q_OBJECT

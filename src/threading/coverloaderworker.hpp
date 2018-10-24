@@ -1,8 +1,9 @@
 #ifndef COVERLOADERWORKER_HPP
 #define COVERLOADERWORKER_HPP
 
-#include "audio.hpp"
-#include "runnable.hpp"
+#include "core/audio.hpp"
+#include "core/globals.hpp"
+#include "threading/core/runnable.hpp"
 
 class CoverLoaderWorker : public Runnable
 {

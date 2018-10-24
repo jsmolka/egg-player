@@ -3,7 +3,8 @@
 
 #include <QObject>
 
-#include "thread.hpp"
+#include "core/globals.hpp"
+#include "threading/core/thread.hpp"
 
 class ThreadedObject : public QObject
 {

@@ -3,7 +3,7 @@
 
 #include <QVariant>
 
-#include "dbbase.hpp"
+#include "core/database/dbbase.hpp"
 
 class DbTableItem : public DbBase
 {

@@ -1,7 +1,5 @@
 #include "playlist.hpp"
 
-#include "config.hpp"
-
 Playlist::Playlist(QObject *parent)
     : QObject(parent)
     , m_audios(nullptr)

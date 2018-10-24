@@ -3,9 +3,7 @@
 #include <QHash>
 #include <QString>
 
-#include "bass/bass.h"
-
-#include "logger.hpp"
+#include <bass/bass.h>
 
 void BassError::error()
 {

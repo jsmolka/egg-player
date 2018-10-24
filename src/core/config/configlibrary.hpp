@@ -1,8 +1,8 @@
 #ifndef CONFIGLIBRARY_HPP
 #define CONFIGLIBRARY_HPP
 
-#include "configitem.hpp"
-#include "types.hpp"
+#include "core/types.hpp"
+#include "core/config/configitem.hpp"
 
 class ConfigLibrary : public ConfigItem
 {
@@ -17,8 +17,8 @@ public:
     void setItemHeight(int height);
     int itemHeight() const;
 
-    void setPaths(const Paths &paths);
-    Paths paths() const;
+    void setPaths(const QStrings &paths);
+    QStrings paths() const;
 
     void setScrollBarWidth(int width);
     int scrollBarWidth() const;

@@ -1,7 +1,7 @@
 #ifndef CONFIGSHORTCUT_HPP
 #define CONFIGSHORTCUT_HPP
 
-#include "configitem.hpp"
+#include "core/config/configitem.hpp"
 
 class ConfigShortcut : public ConfigItem
 {

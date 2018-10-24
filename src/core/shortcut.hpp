@@ -9,6 +9,8 @@
 #include <QHash>
 #include <QObject>
 
+#include "core/globals.hpp"
+
 class Shortcut : public QObject, public QAbstractNativeEventFilter
 {
     Q_OBJECT

@@ -2,13 +2,8 @@
 #define TYPES_HPP
 
 #include <QString>
-#include <QMetaType>
 #include <QVector>
 
-using File = QString;
-using Path = QString;
-
-using Files = QVector<QString>;
-using Paths = QVector<QString>;
+using QStrings = QVector<QString>;
 
 #endif // TYPES_HPP

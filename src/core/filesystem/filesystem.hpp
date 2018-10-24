@@ -4,12 +4,12 @@
 #include <QHash>
 #include <QObject>
 
-#include "audio.hpp"
-#include "bimap.hpp"
-#include "directory.hpp"
-#include "filesystemwatcher.hpp"
-#include "types.hpp"
-#include "uniquefileinfo.hpp"
+#include "core/audio.hpp"
+#include "core/bimap.hpp"
+#include "core/globals.hpp"
+#include "core/filesystem/directory.hpp"
+#include "core/filesystem/filesystemwatcher.hpp"
+#include "core/filesystem/uniquefileinfo.hpp"
 
 class FileSystem : public QObject
 {
@@ -18,22 +18,22 @@ class FileSystem : public QObject
 public:
     explicit FileSystem(QObject *parent = nullptr);
 
-    Bimap<File, UniqueFileInfo> uniqueInfo() const;
-    QHash<Path, Directory *> dirs() const;
-    QHash<File, Audio *> audios() const;
+    Bimap<QString, UniqueFileInfo> uniqueInfo() const;
+    QHash<QString, Directory *> dirs() const;
+    QHash<QString, Audio *> audios() const;
     FileSystemWatcher &watcher();
 
-    void addPath(const Path &path);
+    void addPath(const QString &path);
 
-    Files globAudios() const;
+    QStrings globAudios() const;
 
     void watchAudio(Audio *audio);
     void unwatchAudio(Audio *audio);
 
 signals:
     void modified(Audio *audio);
-    void renamed(Audio *audio, const File &to);
-    void added(const File &file);
+    void renamed(Audio *audio, const QString &to);
+    void added(const QString &file);
     void removed(Audio *audio);
 
 private slots:
@@ -41,18 +41,18 @@ private slots:
     void onDirCreated(Directory *dir);
     void onDirRemoved(Directory *dir);
 
-    void onFileChanged(const File &file);
-    void onDirectoryChanged(const Path &dir);
+    void onFileChanged(const QString &file);
+    void onDirectoryChanged(const QString &dir);
 
 private:
-    void eventModified(const File &file);
-    void eventRenamed(const File &from, const File &to);
-    void eventAdded(const File &file, const UniqueFileInfo &info);
-    void eventRemoved(const File &file);
+    void eventModified(const QString &file);
+    void eventRenamed(const QString &from, const QString &to);
+    void eventAdded(const QString &file, const UniqueFileInfo &info);
+    void eventRemoved(const QString &file);
 
-    Bimap<File, UniqueFileInfo> m_unique;
-    QHash<Path, Directory *> m_dirs;
-    QHash<File, Audio *> m_audios;
+    Bimap<QString, UniqueFileInfo> m_unique;
+    QHash<QString, Directory *> m_dirs;
+    QHash<QString, Audio *> m_audios;
     FileSystemWatcher m_watcher;
 };
 

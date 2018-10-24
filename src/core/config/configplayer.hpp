@@ -1,7 +1,7 @@
 #ifndef CONFIGPLAYER_HPP
 #define CONFIGPLAYER_HPP
 
-#include "configitem.hpp"
+#include "core/config/configitem.hpp"
 
 class ConfigPlayer : public ConfigItem
 {

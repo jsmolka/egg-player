@@ -1,10 +1,11 @@
 #ifndef BASSSTREAM_HPP
 #define BASSSTREAM_HPP
 
-#include "bass/bass.h"
+#include <bass/bass.h>
 
-#include "audio.hpp"
-#include "basserror.hpp"
+#include "core/audio.hpp"
+#include "core/globals.hpp"
+#include "core/bass/basserror.hpp"
 
 class BassStream : public BassError
 {

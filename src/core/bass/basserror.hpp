@@ -1,6 +1,8 @@
 #ifndef BASSERROR_HPP
 #define BASSERROR_HPP
 
+#include "core/globals.hpp"
+
 class BassError
 {
 protected:

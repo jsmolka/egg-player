@@ -2,9 +2,6 @@
 
 #include <Windows.h>
 
-#include "logger.hpp"
-#include "utils.hpp"
-
 UniqueFileInfo::UniqueFileInfo()
     : m_index(0)
     , m_volume(0)
@@ -12,7 +9,7 @@ UniqueFileInfo::UniqueFileInfo()
 
 }
 
-UniqueFileInfo::UniqueFileInfo(const File &file)
+UniqueFileInfo::UniqueFileInfo(const QString &file)
     : UniqueFileInfo()
 {
     readInfo(file);
@@ -28,7 +25,7 @@ quint64 UniqueFileInfo::volume() const
     return m_volume;
 }
 
-void UniqueFileInfo::readInfo(const File &file)
+void UniqueFileInfo::readInfo(const QString &file)
 {
     HANDLE handle = CreateFileW(
         Util::toWString(file),

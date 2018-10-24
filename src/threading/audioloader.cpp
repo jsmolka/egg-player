@@ -2,15 +2,10 @@
 
 #include <QApplication>
 
-#include "cache.hpp"
+#include "core/cover.hpp"
+#include "core/database/cache.hpp"
 
-AudioLoader::AudioLoader(QObject *parent)
-    : Callable(parent)
-{
-
-}
-
-void AudioLoader::load(const File &file)
+void AudioLoader::load(const QString &file)
 {
     Audio *audio = Cache::loadAudio(file);
     if (!audio)

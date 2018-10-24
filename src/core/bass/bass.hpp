@@ -5,10 +5,11 @@
 
 #include <QAtomicInt>
 
-#include "bass/bass.h"
+#include <bass/bass.h>
 
-#include "basserror.hpp"
-#include "bassstream.hpp"
+#include "core/globals.hpp"
+#include "core/bass/basserror.hpp"
+#include "core/bass/bassstream.hpp"
 
 class Bass : public BassError
 {

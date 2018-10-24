@@ -2,8 +2,6 @@
 
 #include <QApplication>
 
-#include "config.hpp"
-
 Player::Player(QObject *parent)
     : QObject(parent)
     , m_playlist(this)

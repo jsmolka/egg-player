@@ -5,11 +5,12 @@
 #include <QVector>
 #include <QVariant>
 
-#define LOG(message, ...) Logger::log(message, __FUNCTION__, {__VA_ARGS__})
-
 namespace Logger
 {
     extern void log(const QString &message, const QString &func, const QVector<QVariant> &args);
 }
+
+#define EGG_LOG(message, ...) Logger::log(message, __FUNCTION__, {__VA_ARGS__})
+#define LOG EGG_LOG
 
 #endif // LOGGER_HPP

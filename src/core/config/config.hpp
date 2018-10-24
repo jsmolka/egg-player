@@ -3,17 +3,17 @@
 
 #include <QObject>
 
-#include "configapp.hpp"
-#include "configbar.hpp"
-#include "configlibrary.hpp"
-#include "configplayer.hpp"
-#include "configshortcut.hpp"
+#include "core/config/configapp.hpp"
+#include "core/config/configbar.hpp"
+#include "core/config/configlibrary.hpp"
+#include "core/config/configplayer.hpp"
+#include "core/config/configshortcut.hpp"
 
-#define cfgApp (Config::instance()->app())
-#define cfgBar (Config::instance()->bar())
-#define cfgLibrary (Config::instance()->library())
-#define cfgPlayer (Config::instance()->player())
-#define cfgShortcut (Config::instance()->shortcut())
+#define cfgApp Config::instance()->app()
+#define cfgBar Config::instance()->bar()
+#define cfgLibrary Config::instance()->library()
+#define cfgPlayer Config::instance()->player()
+#define cfgShortcut Config::instance()->shortcut()
 
 class Config : QObject
 {

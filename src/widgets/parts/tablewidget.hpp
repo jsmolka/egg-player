@@ -1,9 +1,10 @@
 #ifndef TABLEWIDGET_HPP
 #define TABLEWIDGET_HPP
 
-#include "clickablestyle.hpp"
-#include "rowhoverdelegate.hpp"
-#include "smoothtablewidget.hpp"
+#include "core/globals.hpp"
+#include "widgets/parts/clickablestyle.hpp"
+#include "widgets/parts/rowhoverdelegate.hpp"
+#include "widgets/parts/smoothtablewidget.hpp"
 
 class TableWidget : public SmoothTableWidget
 {

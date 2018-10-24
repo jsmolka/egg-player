@@ -3,29 +3,29 @@
 #include <QDirIterator>
 
 Directory::Directory(QObject *parent)
-    : Directory(Path(), parent)
+    : Directory(QString(), parent)
 {
 
 }
 
-Directory::Directory(const Path &path, QObject *parent)
+Directory::Directory(const QString &path, QObject *parent)
     : QObject(parent)
     , m_path(path)
 {
 
 }
 
-Path Directory::path() const
+QString Directory::path() const
 {
     return m_path;
 }
 
-QSet<File> Directory::files() const
+QSet<QString> Directory::files() const
 {
     return m_files;
 }
 
-QHash<Path, Directory *> Directory::dirs() const
+QHash<QString, Directory *> Directory::dirs() const
 {
     return m_dirs;
 }
@@ -59,10 +59,10 @@ void Directory::parse()
     emit parsed(this);
 }
 
-Files Directory::globAudios(bool recursive) const
+QStrings Directory::globAudios(bool recursive) const
 {
-    Files files;
-    for (const File &file : qAsConst(m_files))
+    QStrings files;
+    for (const QString &file : qAsConst(m_files))
         files << file;
 
     if (recursive)
@@ -73,9 +73,9 @@ Files Directory::globAudios(bool recursive) const
     return files;
 }
 
-Files Directory::processChanges()
+QStrings Directory::processChanges()
 {
-    Files changes;
+    QStrings changes;
 
     processRemovedDirChanges(changes);
     processExistingDirChanges(changes);
@@ -84,7 +84,7 @@ Files Directory::processChanges()
     return changes;
 }
 
-void Directory::processRemovedDirChanges(Files &changes)
+void Directory::processRemovedDirChanges(QStrings &changes)
 {
     auto iter = m_dirs.begin();
     while (iter != m_dirs.end())
@@ -103,7 +103,7 @@ void Directory::processRemovedDirChanges(Files &changes)
     }
 }
 
-void Directory::processExistingDirChanges(Files &changes)
+void Directory::processExistingDirChanges(QStrings &changes)
 {
     QDirIterator dirIter(m_path, QDir::Dirs | QDir::NoDotAndDotDot);
     while (dirIter.hasNext())
@@ -122,7 +122,7 @@ void Directory::processExistingDirChanges(Files &changes)
     }
 }
 
-void Directory::processFileChanges(Files &changes)
+void Directory::processFileChanges(QStrings &changes)
 {
     if (!exists())
     {
@@ -149,7 +149,7 @@ void Directory::processFileChanges(Files &changes)
     while (dirIter.hasNext())
     {
         dirIter.next();
-        const File file = dirIter.filePath();
+        const QString file = dirIter.filePath();
         if (!m_files.contains(file))
         {
             changes << file;

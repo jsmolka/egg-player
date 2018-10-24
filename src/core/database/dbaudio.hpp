@@ -1,9 +1,9 @@
 #ifndef DBAUDIO_HPP
 #define DBAUDIO_HPP
 
-#include "audio.hpp"
-#include "dbtableitem.hpp"
-#include "globals.hpp"
+#include "core/audio.hpp"
+#include "core/globals.hpp"
+#include "core/database/dbtableitem.hpp"
 
 class DbAudio : public DbTableItem
 {

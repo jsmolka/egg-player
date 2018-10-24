@@ -1,7 +1,7 @@
 #ifndef CONFIGBAR_HPP
 #define CONFIGBAR_HPP
 
-#include "configitem.hpp"
+#include "core/config/configitem.hpp"
 
 class ConfigBar : public ConfigItem
 {

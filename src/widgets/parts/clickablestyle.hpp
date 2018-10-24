@@ -3,6 +3,8 @@
 
 #include <QProxyStyle>
 
+#include "core/globals.hpp"
+
 class ClickableStyle : public QProxyStyle
 {
 public:

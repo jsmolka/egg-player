@@ -4,7 +4,7 @@
 #include <QObject>
 #include <QVector>
 
-#include "runnable.hpp"
+#include "threading/core/runnable.hpp"
 
 class Controller : public QObject
 {

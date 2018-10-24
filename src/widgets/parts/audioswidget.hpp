@@ -3,9 +3,10 @@
 
 #include <QVector>
 
-#include "audio.hpp"
-#include "audios.hpp"
-#include "tablewidget.hpp"
+#include "core/audio.hpp"
+#include "core/audios.hpp"
+#include "core/globals.hpp"
+#include "widgets/parts/tablewidget.hpp"
 
 class AudiosWidget : public TableWidget
 {

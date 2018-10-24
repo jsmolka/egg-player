@@ -4,10 +4,10 @@
 #include <QObject>
 #include <QVector>
 
-#include "cover.hpp"
-#include "duration.hpp"
-#include "tag.hpp"
-#include "types.hpp"
+#include "core/cover.hpp"
+#include "core/duration.hpp"
+#include "core/globals.hpp"
+#include "core/tag.hpp"
 
 class Audio : public QObject
 {
@@ -17,43 +17,32 @@ public:
     using vector = QVector<Audio *>;
 
     explicit Audio(QObject *parent = nullptr);
-    explicit Audio(const File &file, QObject *parent = nullptr);
+    explicit Audio(const QString &file, QObject *parent = nullptr);
 
-    void setFile(const File &file);
-    File file() const;
+    void setFile(const QString &file);
+    QString file() const;
 
-    void setValid(bool valid);
-    bool isValid() const;
-
-    void setCached(bool cached);
-    bool isCached() const;
-
-    void setOutdated(bool outdated);
-    bool isOutdated() const;
-
-    void setModified(qint64 modified);
-    qint64 modified() const;
+    EGG_PPROP(bool, valid, setValid, isValid)
+    EGG_PPROP(bool, cached, setCached, isCached)
+    EGG_PPROP(bool, outdated, setOutdated, isOutdated)
+    EGG_PPROP(qint64, modified, setModified, modified)
 
     Tag &tag();
     Tag &tag() const;
 
-    Duration &duration();
-    Duration &duration() const;
-
     Cover &cover();
     Cover &cover() const;
 
-    void update();
+    Duration &duration();
+    Duration &duration() const;
+
+    bool update();
 
 private:
-    File m_file;
-    bool m_valid;
-    bool m_cached;
-    bool m_outdated;
-    qint64 m_modified;
+    QString m_file;
     Tag m_tag;
-    Duration m_duration;
     Cover m_cover;
+    Duration m_duration;
 };
 
 #endif // AUDIO_HPP

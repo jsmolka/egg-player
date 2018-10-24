@@ -3,14 +3,14 @@
 
 #include <QObject>
 
-#include "audio.hpp"
-#include "audios.hpp"
-#include "audioupdater.hpp"
-#include "audioloader.hpp"
-#include "coverloader.hpp"
-#include "filesystem.hpp"
-#include "initialloader.hpp"
-#include "types.hpp"
+#include "core/audio.hpp"
+#include "core/audios.hpp"
+#include "core/globals.hpp"
+#include "core/filesystem/filesystem.hpp"
+#include "threading/audioupdater.hpp"
+#include "threading/audioloader.hpp"
+#include "threading/coverloader.hpp"
+#include "threading/initialloader.hpp"
 
 #define eLibrary (Library::instance())
 
@@ -26,8 +26,8 @@ public:
     Audios *audios();
     FileSystem &fileSystem() const;
 
-    void initialLoad(const Paths &paths);
-    void loadFiles(const Files &files);
+    void initialLoad(const QStrings &paths);
+    void loadFiles(const QStrings &files);
 
 public slots:
     void insert(Audio *audio);
@@ -39,7 +39,7 @@ private slots:
     void onInitialLoaderFinished();
     void onAudioUpdaterUpdated(Audio *audio);
 
-    void onFileSystemRenamed(Audio *audio, const File &to);
+    void onFileSystemRenamed(Audio *audio, const QString &to);
     void onFileSystemRemoved(Audio *audio);
 
 private:

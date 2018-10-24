@@ -1,7 +1,8 @@
 #ifndef VOLUMEBUTTON_HPP
 #define VOLUMEBUTTON_HPP
 
-#include "iconbutton.hpp"
+#include "core/globals.hpp"
+#include "widgets/parts/iconbutton.hpp"
 
 class VolumeButton : public IconButton
 {

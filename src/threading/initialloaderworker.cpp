@@ -2,34 +2,34 @@
 
 #include <QApplication>
 
-#include "cache.hpp"
+#include "core/database/cache.hpp"
 
 InitialLoaderWorker::InitialLoaderWorker(QObject *parent)
-    : InitialLoaderWorker(Files(), parent)
+    : InitialLoaderWorker(QStrings(), parent)
 {
 
 }
 
-InitialLoaderWorker::InitialLoaderWorker(const Files &files, QObject *parent)
+InitialLoaderWorker::InitialLoaderWorker(const QStrings &files, QObject *parent)
     : Runnable(parent)
     , m_files(files)
 {
 
 }
 
-void InitialLoaderWorker::setFiles(const Files &files)
+void InitialLoaderWorker::setFiles(const QStrings &files)
 {
     m_files = files;
 }
 
-Files InitialLoaderWorker::files() const
+QStrings InitialLoaderWorker::files() const
 {
     return m_files;
 }
 
 void InitialLoaderWorker::work()
 {
-    for (const File &file : qAsConst(m_files))
+    for (const QString &file : qAsConst(m_files))
     {
         if (isInterrupted())
             return;

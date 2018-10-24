@@ -1,9 +1,9 @@
 #ifndef INITIALAUDIOLOADER_HPP
 #define INITIALAUDIOLOADER_HPP
 
-#include "audio.hpp"
-#include "controller.hpp"
-#include "types.hpp"
+#include "core/audio.hpp"
+#include "core/globals.hpp"
+#include "threading/core/controller.hpp"
 
 class InitialLoader : public Controller
 {
@@ -11,10 +11,10 @@ class InitialLoader : public Controller
 
 public:
     explicit InitialLoader(QObject *parent = nullptr);
-    explicit InitialLoader(const Files &files, QObject *parent = nullptr);
+    explicit InitialLoader(const QStrings &files, QObject *parent = nullptr);
 
-    void setFiles(const Files &files);
-    Files files() const;
+    void setFiles(const QStrings &files);
+    QStrings files() const;
 
 public slots:
     void start() override;
@@ -23,7 +23,7 @@ signals:
     void loaded(Audio *audio);
 
 private:
-    Files m_files;
+    QStrings m_files;
 };
 
 #endif // INITIALAUDIOLOADER_HPP

@@ -1,43 +1,11 @@
 #ifndef GLOBALS_HPP
 #define GLOBALS_HPP
 
-#include "config.hpp"
-#include "constants.hpp"
-#include "logger.hpp"
-
-#define EGG_MEMBER(type, var)               \
-    private:                                \
-        type m_##var;                       \
-
-#define EGG_GETTER(type, var, get)          \
-    public:                                 \
-        inline type get() const             \
-        {                                   \
-            return m_##var;                 \
-        }                                   \
-
-#define EGG_CSETTER(type, var, set)         \
-    public:                                 \
-        inline void set(const type &var)    \
-        {                                   \
-            m_##var = var;                  \
-        }                                   \
-
-#define EGG_PSETTER(type, var, set)         \
-    public:                                 \
-        inline void set(type var)           \
-        {                                   \
-            m_##var = var;                  \
-        }                                   \
-
-#define EGG_CPROP(type, var, set, get)      \
-    EGG_MEMBER(type, var)                   \
-    EGG_CSETTER(type, var, set)             \
-    EGG_GETTER(type, var, get)              \
-
-#define EGG_PPROP(type, var, set, get)      \
-    EGG_MEMBER(type, var)                   \
-    EGG_PSETTER(type, var, set)             \
-    EGG_GETTER(type, var, get)              \
+#include "core/constants.hpp"
+#include "core/logger.hpp"
+#include "core/macros.hpp"
+#include "core/types.hpp"
+#include "core/utils.hpp"
+#include "core/config/config.hpp"
 
 #endif // GLOBALS_HPP

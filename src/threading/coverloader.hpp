@@ -1,8 +1,9 @@
 #ifndef COVERLOADER_HPP
 #define COVERLOADER_HPP
 
-#include "audio.hpp"
-#include "controller.hpp"
+#include "core/audio.hpp"
+#include "core/globals.hpp"
+#include "threading/core/controller.hpp"
 
 class CoverLoader : public Controller
 {

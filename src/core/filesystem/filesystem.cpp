@@ -10,17 +10,17 @@ FileSystem::FileSystem(QObject *parent)
     connect(&m_watcher, &FileSystemWatcher::directoryChanged, this, &FileSystem::onDirectoryChanged);
 }
 
-Bimap<File, UniqueFileInfo> FileSystem::uniqueInfo() const
+Bimap<QString, UniqueFileInfo> FileSystem::uniqueInfo() const
 {
     return m_unique;
 }
 
-QHash<Path, Directory *> FileSystem::dirs() const
+QHash<QString, Directory *> FileSystem::dirs() const
 {
     return m_dirs;
 }
 
-QHash<File, Audio *> FileSystem::audios() const
+QHash<QString, Audio *> FileSystem::audios() const
 {
     return m_audios;
 }
@@ -30,7 +30,7 @@ FileSystemWatcher &FileSystem::watcher()
     return m_watcher;
 }
 
-void FileSystem::addPath(const Path &path)
+void FileSystem::addPath(const QString &path)
 {
     if (m_dirs.contains(path))
         return;
@@ -42,9 +42,9 @@ void FileSystem::addPath(const Path &path)
     dir->parse();
 }
 
-Files FileSystem::globAudios() const
+QStrings FileSystem::globAudios() const
 {
-    Files result;
+    QStrings result;
     for (Directory *dir : qAsConst(m_dirs))
         result << dir->globAudios(false);
 
@@ -66,7 +66,7 @@ void FileSystem::onDirParsed(Directory *dir)
     QStringList paths;
     paths.reserve(dir->files().size() + 1);
     paths << dir->path();
-    for (const File &file : dir->files())
+    for (const QString &file : dir->files())
     {
         paths << file;
         m_unique.insert(file, UniqueFileInfo(file));
@@ -88,18 +88,18 @@ void FileSystem::onDirRemoved(Directory *dir)
     dir->deleteLater();
 }
 
-void FileSystem::onFileChanged(const File &file)
+void FileSystem::onFileChanged(const QString &file)
 {
     eventModified(file);
 }
 
-void FileSystem::onDirectoryChanged(const Path &dir)
+void FileSystem::onDirectoryChanged(const QString &dir)
 {
-    const Files files = m_dirs.value(dir)->processChanges();
-    QHash<UniqueFileInfo, File> renamedFrom;
-    QHash<UniqueFileInfo, File> renamedTo;
+    const QStrings files = m_dirs.value(dir)->processChanges();
+    QHash<UniqueFileInfo, QString> renamedFrom;
+    QHash<UniqueFileInfo, QString> renamedTo;
 
-    for (const File &file : files)
+    for (const QString &file : files)
     {
         if (m_unique.contains(file))
             renamedFrom.insert(m_unique.value(file), file);
@@ -125,13 +125,13 @@ void FileSystem::onDirectoryChanged(const Path &dir)
         eventAdded(iter.value(), iter.key());
 }
 
-void FileSystem::eventModified(const File &file)
+void FileSystem::eventModified(const QString &file)
 {
     if (m_audios.contains(file))
         emit modified(m_audios.value(file));
 }
 
-void FileSystem::eventRenamed(const File &from, const File &to)
+void FileSystem::eventRenamed(const QString &from, const QString &to)
 {
     m_watcher.removePath(from);
     m_watcher.addPath(to);
@@ -149,14 +149,14 @@ void FileSystem::eventRenamed(const File &from, const File &to)
     }
 }
 
-void FileSystem::eventAdded(const File &file, const UniqueFileInfo &info)
+void FileSystem::eventAdded(const QString &file, const UniqueFileInfo &info)
 {
     m_watcher.addPath(file);
     m_unique.insert(file, info);
     emit added(file);
 }
 
-void FileSystem::eventRemoved(const File &file)
+void FileSystem::eventRemoved(const QString &file)
 {
     m_watcher.removePath(file);
     m_unique.remove(file);

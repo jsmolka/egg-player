@@ -7,7 +7,7 @@
 
 #include <taglib/fileref.h>
 
-#include "types.hpp"
+#include "core/types.hpp"
 
 namespace Util
 {
@@ -29,7 +29,7 @@ namespace Util
 
 namespace FileUtil
 {
-    inline QString read(const File &file, const QString &defaultValue = QString())
+    inline QString read(const QString &file, const QString &defaultValue = QString())
     {
         QFile qFile(file);
         if (!qFile.open(QFile::ReadOnly))
@@ -38,7 +38,7 @@ namespace FileUtil
         return QTextStream(&qFile).readAll();
     }
 
-    inline QByteArray readBytes(const File &file, const QByteArray &defaultValue = QByteArray())
+    inline QByteArray readBytes(const QString &file, const QByteArray &defaultValue = QByteArray())
     {
         QFile qFile(file);
         if (!qFile.open(QFile::ReadOnly))
@@ -47,7 +47,7 @@ namespace FileUtil
         return qFile.readAll();
     }
 
-    inline void write(const File &file, const QString &content)
+    inline void write(const QString &file, const QString &content)
     {
         QFile qFile(file);
         if (!qFile.open(QFile::WriteOnly))
@@ -56,7 +56,7 @@ namespace FileUtil
         QTextStream(&qFile) << content;
     }
 
-    inline void write(const File &file, const QByteArray &content)
+    inline void write(const QString &file, const QByteArray &content)
     {
         QFile qFile(file);
         if (!qFile.open(QFile::WriteOnly))

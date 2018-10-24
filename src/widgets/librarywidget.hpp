@@ -3,7 +3,8 @@
 
 #include <QResizeEvent>
 
-#include "audioswidget.hpp"
+#include "core/globals.hpp"
+#include "widgets/parts/audioswidget.hpp"
 
 class LibraryWidget : public AudiosWidget
 {

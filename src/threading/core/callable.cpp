@@ -1,6 +1,6 @@
 #include "callable.hpp"
 
-#include "threadpool.hpp"
+#include "threading/core/threadpool.hpp"
 
 Callable::Callable(QObject *parent)
     : ThreadedObject(parent)

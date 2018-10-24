@@ -4,7 +4,7 @@
 #include <QColor>
 #include <QPixmap>
 
-#include "types.hpp"
+#include "core/globals.hpp"
 
 class Cover
 {
@@ -14,7 +14,7 @@ public:
 
     static int defaultSize();
     static Cover defaultCover();
-    static QPixmap loadFromFile(const File &file);
+    static QPixmap loadFromFile(const QString &file);
     static QPixmap scale(const QPixmap &pixmap, int size, bool fast = false);
 
     void invalidate();

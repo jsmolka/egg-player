@@ -8,6 +8,8 @@
 #include <QVector>
 #include <QWheelEvent>
 
+#include "core/globals.hpp"
+
 class SmoothTableWidget : public QTableWidget
 {
     Q_OBJECT

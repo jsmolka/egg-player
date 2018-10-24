@@ -1,7 +1,5 @@
 #include "thread.hpp"
 
-#include "logger.hpp"
-
 Thread::Thread(QObject *parent)
     : QThread(parent)
     , m_objectCount(0)
