@@ -3,8 +3,6 @@
 #include <QMapIterator>
 #include <QSqlError>
 
-#include "logger.hpp"
-
 bool SqlQuery::exec()
 {
     const bool success = QSqlQuery::exec();
@@ -39,7 +37,7 @@ QString SqlQuery::lastQuery() const
 void SqlQuery::error() const
 {
     const QSqlError error = lastError();
-    if (error.type() == QSqlError::NoError)
+    if (!error.isValid() || error.type() == QSqlError::NoError)
         return;
 
     LOG("Errors \"%1\" and \"%2\" for query \"%3\"", error.databaseText(), error.driverText(), lastQuery());

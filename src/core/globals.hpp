@@ -1,6 +1,10 @@
 #ifndef GLOBALS_HPP
 #define GLOBALS_HPP
 
+#include "config.hpp"
+#include "constants.hpp"
+#include "logger.hpp"
+
 #define EGG_MEMBER(type, var)               \
     private:                                \
         type m_##var;                       \

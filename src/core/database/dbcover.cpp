@@ -51,7 +51,6 @@ bool DbCover::getOrInsertCover(const QPixmap &cover)
         const QMutexLocker locker(&mutex);
 
         m_id = nextId();
-        m_size = bytes.size();
         m_cover = cover;
         return insert(bytes);
     }
@@ -62,7 +61,7 @@ bool DbCover::updateId(int id)
 {
     query().prepare(
         "UPDATE covers SET"
-        " id = :newid "
+        "  id = :newid "
         "WHERE id = :id"
     );
     query().bindValue(":newid", id);
@@ -111,10 +110,9 @@ bool DbCover::update(const QString &column, const QVariant &value)
 {
     query().prepare(
         "UPDATE covers SET"
-        " :column = :value "
+        "  " + column + " = :value "
         "WHERE id = :file"
     );
-    query().bindValue(":column", column);
     query().bindValue(":value", value);
     query().bindValue(":id", m_id);
 
@@ -133,35 +131,35 @@ QByteArray DbCover::coverToBytes(const QPixmap &cover)
 
 bool DbCover::insert(const QByteArray &bytes)
 {
+    m_size = bytes.size();
+
     query().prepare(
         "INSERT INTO covers VALUES ("
-        " :id,"
-        " :size,"
-        " :cover"
+        "  :id,"
+        "  :size,"
+        "  :cover"
         ")"
     );
     query().bindValue(":id", m_id);
-    query().bindValue(":size", bytes.size());
+    query().bindValue(":size", m_size);
     query().bindValue(":cover", bytes);
-
-    m_size = bytes.size();
 
     return query().exec();
 }
 
 bool DbCover::commit(const QByteArray &bytes)
 {
+    m_size = bytes.size();
+
     query().prepare(
         "UPDATE covers SET"
-        " size = :size"
-        " cover = :cover "
+        "  size = :size"
+        "  cover = :cover "
         "WHERE id = :id"
     );
     query().bindValue(":id", m_id);
-    query().bindValue(":size", bytes.size());
+    query().bindValue(":size", m_size);
     query().bindValue(":cover", bytes);
-
-    m_size = bytes.size();
 
     return query().exec();
 }
@@ -202,7 +200,10 @@ int DbCover::coverIdBySize(const QByteArray &bytes)
 
     int id = 0;
     if (query().first())
-        id = query().value(0).toInt();
+    {
+        const QSqlRecord record = query().record();
+        id = record.value("id").toInt();
+    }
     if (query().next())
         id = 0;
 
@@ -220,8 +221,10 @@ int DbCover::coverIdByBlob(const QByteArray &bytes)
 
     int id = 0;
     if (query().first())
-        id = query().value(0).toInt();
-
+    {
+        const QSqlRecord record = query().record();
+        id = record.value("id").toInt();
+    }
     return id;
 }
 

@@ -3,6 +3,8 @@
 
 #include <QSqlDatabase>
 
+#include "globals.hpp"
+
 class DbProvider
 {
 public:

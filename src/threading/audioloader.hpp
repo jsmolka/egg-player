@@ -3,8 +3,6 @@
 
 #include "audio.hpp"
 #include "callable.hpp"
-#include "dbaudio.hpp"
-#include "dbcover.hpp"
 #include "types.hpp"
 
 class AudioLoader : public Callable
@@ -19,10 +17,6 @@ public slots:
 
 signals:
     void loaded(Audio *audio);
-
-private:
-    DbAudio m_dbAudio;
-    DbCover m_dbCover;
 };
 
 #endif // AUDIOLOADER_HPP

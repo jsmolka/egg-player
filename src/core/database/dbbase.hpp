@@ -3,6 +3,7 @@
 
 #include <QSqlDatabase>
 
+#include "globals.hpp"
 #include "sqlquery.hpp"
 
 class DbBase

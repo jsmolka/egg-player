@@ -2,6 +2,7 @@
 #define DBINITIALIZER_HPP
 
 #include "dbbase.hpp"
+#include "globals.hpp"
 
 class DbInitializer : public DbBase
 {
@@ -16,6 +17,8 @@ private:
     void createTableAudios();
     void createTableCovers();
     void dropTable(const QString &table);
+
+    void insertDefaultCover();
 
     static constexpr int s_version = 1;
 };

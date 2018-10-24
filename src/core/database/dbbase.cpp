@@ -3,8 +3,8 @@
 #include "dbprovider.hpp"
 
 DbBase::DbBase()
+    : m_db(DbProvider::db())
 {
-    m_db = DbProvider::db();
     m_query = SqlQuery(m_db);
     m_query.setForwardOnly(true);
 }

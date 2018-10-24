@@ -1,7 +1,5 @@
 #include "dbaudio.hpp"
 
-#include <QDateTime>
-#include <QFileInfo>
 #include <QSqlRecord>
 
 bool DbAudio::exists()
@@ -19,16 +17,16 @@ bool DbAudio::insert()
 {
     query().prepare(
         "INSERT INTO audios VALUES ("
-        " :file,"
-        " :title,"
-        " :artist,"
-        " :album,"
-        " :genre,"
-        " :year,"
-        " :track,"
-        " :duration,"
-        " :coverid,"
-        " :modified"
+        "  :file,"
+        "  :title,"
+        "  :artist,"
+        "  :album,"
+        "  :genre,"
+        "  :year,"
+        "  :track,"
+        "  :duration,"
+        "  :coverid,"
+        "  :modified"
         ")"
     );
     query().bindValue(":file", m_file);
@@ -49,15 +47,15 @@ bool DbAudio::commit()
 {
     query().prepare(
         "UPDATE audios SET"
-        " title = :title,"
-        " artist = :artist,"
-        " album = :album,"
-        " genre = :genre,"
-        " year = :year,"
-        " track = :track,"
-        " duration = :duration,"
-        " coverid = :coverid,"
-        " modified = :modified "
+        "  title = :title,"
+        "  artist = :artist,"
+        "  album = :album,"
+        "  genre = :genre,"
+        "  year = :year,"
+        "  track = :track,"
+        "  duration = :duration,"
+        "  coverid = :coverid,"
+        "  modified = :modified "
         "WHERE file = :file"
     );
     query().bindValue(":file", m_file);
@@ -118,7 +116,7 @@ bool DbAudio::updateFile(const QString &file)
 {
     query().prepare(
         "UPDATE audios SET"
-        " file = :newfile, "
+        "  file = :newfile, "
         "WHERE file = :file"
     );
     query().bindValue(":newfile", file);
@@ -180,8 +178,6 @@ bool DbAudio::updateModified(qint64 modified)
 
 void DbAudio::assignTo(Audio *audio)
 {
-    audio->setValid(true);
-    audio->setCached(true);
     audio->setFile(m_file);
     audio->tag().setTitle(m_title);
     audio->tag().setArtist(m_artist);
@@ -192,7 +188,6 @@ void DbAudio::assignTo(Audio *audio)
     audio->duration().setSecs(m_duration);
     audio->cover().setId(m_coverId);
     audio->setModified(m_modified);
-    audio->setOutdated(m_modified !=  QFileInfo(m_file).lastModified().toSecsSinceEpoch());
 }
 
 void DbAudio::loadFrom(Audio *audio)
@@ -232,7 +227,7 @@ bool DbAudio::update(const QString &column, const QVariant &value)
 {
     query().prepare(
         "UPDATE audios SET"
-        " " + column + " = :value "
+        "  " + column + " = :value "
         "WHERE file = :file"
     );
     query().bindValue(":value", value);

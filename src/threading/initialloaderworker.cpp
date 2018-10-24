@@ -2,7 +2,7 @@
 
 #include <QApplication>
 
-#include "dbaudio.hpp"
+#include "cache.hpp"
 
 InitialLoaderWorker::InitialLoaderWorker(QObject *parent)
     : InitialLoaderWorker(Files(), parent)
@@ -29,34 +29,21 @@ Files InitialLoaderWorker::files() const
 
 void InitialLoaderWorker::work()
 {
-    DbAudio dbAudio;
     for (const File &file : qAsConst(m_files))
     {
         if (isInterrupted())
             return;
 
-        Audio *audio = new Audio;
-        if (dbAudio.getByFile(file))
-        {
-            dbAudio.assignTo(audio);
-        }
-        else
-        {
-            audio->setFile(file);
-            audio->update();
-            if (!audio->isValid())
-            {
-                delete audio;
-                continue;
-            }
-        }
+        Audio *audio = Cache::loadAudio(file);
+        if (!audio)
+            continue;
+
         if (!audio->isCached())
         {
             if (isInterrupted())
                 return;
 
-            dbAudio.loadFrom(audio);
-            dbAudio.insert();
+            Cache::insertAudio(audio);
         }
         if (audio->isOutdated())
         {
@@ -65,9 +52,7 @@ void InitialLoaderWorker::work()
 
             audio->update();
             audio->cover().invalidate();
-
-            dbAudio.loadFrom(audio);
-            dbAudio.commit();
+            Cache::updateAudio(audio);
         }
         audio->moveToThread(qApp->thread());
         emit loaded(audio);

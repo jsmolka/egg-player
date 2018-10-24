@@ -13,7 +13,6 @@ INCLUDEPATH += \
     lib/taglib-1.11.1/include \
     src/core \
     src/core/bass \
-    src/core/cache \
     src/core/config \
     src/core/database \
     src/core/filesystem \
@@ -100,8 +99,7 @@ HEADERS += \
     src/threading/audioloader.hpp \
     src/threading/base/expiringthread.hpp \
     src/core/utils.hpp \
-    src/core/cache/sqlquery.hpp \
-    src/core/cache/database.hpp \
+    src/core/database/sqlquery.hpp \
     src/widgets/components/audioswidget.hpp \
     src/widgets/librarywidget.hpp \
     src/core/database/dbtableitem.hpp \
@@ -110,7 +108,8 @@ HEADERS += \
     src/core/database/dbprovider.hpp \
     src/core/globals.hpp \
     src/core/database/dbbase.hpp \
-    src/core/database/dbcover.hpp
+    src/core/database/dbcover.hpp \
+    src/core/database/cache.hpp
 
 SOURCES += \
     src/main.cpp \
@@ -165,12 +164,12 @@ SOURCES += \
     src/threading/audioupdater.cpp \
     src/threading/audioloader.cpp \
     src/threading/base/expiringthread.cpp \
-    src/core/cache/sqlquery.cpp \
-    src/core/cache/database.cpp \
+    src/core/database/sqlquery.cpp \
     src/widgets/components/audioswidget.cpp \
     src/widgets/librarywidget.cpp \
     src/core/database/dbaudio.cpp \
     src/core/database/dbinitializer.cpp \
     src/core/database/dbprovider.cpp \
     src/core/database/dbbase.cpp \
-    src/core/database/dbcover.cpp
+    src/core/database/dbcover.cpp \
+    src/core/database/cache.cpp

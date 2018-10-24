@@ -1,7 +1,6 @@
 #include "coverloaderworker.hpp"
 
-#include "dbaudio.hpp"
-#include "dbcover.hpp"
+#include "cache.hpp"
 
 CoverLoaderWorker::CoverLoaderWorker(QObject *parent)
     : CoverLoaderWorker(Audio::vector(), parent)
@@ -28,8 +27,6 @@ Audio::vector CoverLoaderWorker::audios() const
 
 void CoverLoaderWorker::work()
 {
-    DbCover dbCover;
-
     for (Audio *audio : qAsConst(m_audios))
     {
         if (isInterrupted())
@@ -38,12 +35,8 @@ void CoverLoaderWorker::work()
         if (!audio->cover().isValid())
         {
             const QPixmap cover = Cover::loadFromFile(audio->file());
-            dbCover.getOrInsertCover(cover);
-            audio->cover().setId(dbCover.id());
-
-            DbAudio dbAudio;
-            dbAudio.loadFrom(audio);
-            dbAudio.updateCoverId(audio->cover().id());
+            if (!cover.isNull())
+                Cache::updateAudioCover(audio, cover);
         }
     }
     emit finished();

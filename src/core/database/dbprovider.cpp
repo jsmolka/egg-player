@@ -3,9 +3,6 @@
 #include <QSqlQuery>
 #include <QThread>
 
-#include "constants.hpp"
-#include "logger.hpp"
-
 QSqlDatabase DbProvider::db()
 {
     if (!QSqlDatabase::isDriverAvailable("QSQLITE"))
@@ -17,8 +14,11 @@ QSqlDatabase DbProvider::db()
 
     QSqlDatabase db = QSqlDatabase::database(connection, false);
     db.setDatabaseName(SQL_PATH);
-    db.open();
-
+    if (!db.isOpen())
+    {
+        if (!db.open())
+            LOG("Cannot open database");
+    }
     return db;
 }
 

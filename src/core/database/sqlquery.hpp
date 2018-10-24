@@ -3,6 +3,8 @@
 
 #include <QSqlQuery>
 
+#include "globals.hpp"
+
 class SqlQuery : public QSqlQuery
 {
 public:
