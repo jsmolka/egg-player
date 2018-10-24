@@ -28,7 +28,6 @@ Audio::vector CoverLoaderWorker::audios() const
 
 void CoverLoaderWorker::work()
 {
-    DbAudio dbAudio;
     DbCover dbCover;
 
     for (Audio *audio : qAsConst(m_audios))
@@ -40,11 +39,11 @@ void CoverLoaderWorker::work()
         {
             const QPixmap cover = Cover::loadFromFile(audio->file());
             dbCover.getOrInsertCover(cover);
-
-            dbAudio.loadFrom(audio);
-            dbAudio.setCoverId(dbCover.id());
-            dbAudio.commit();
             audio->cover().setId(dbCover.id());
+
+            DbAudio dbAudio;
+            dbAudio.loadFrom(audio);
+            dbAudio.updateCoverId(audio->cover().id());
         }
     }
     emit finished();

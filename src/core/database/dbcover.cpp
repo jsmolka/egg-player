@@ -48,7 +48,7 @@ bool DbCover::getOrInsertCover(const QPixmap &cover)
     if (id == 0)
     {
         static QMutex mutex;
-        QMutexLocker locker(&mutex);
+        const QMutexLocker locker(&mutex);
 
         m_id = nextId();
         m_size = bytes.size();
@@ -56,6 +56,36 @@ bool DbCover::getOrInsertCover(const QPixmap &cover)
         return insert(bytes);
     }
     return getById(id);
+}
+
+bool DbCover::updateId(int id)
+{
+    query().prepare(
+        "UPDATE covers SET"
+        " id = :newid "
+        "WHERE id = :id"
+    );
+    query().bindValue(":newid", id);
+    query().bindValue(":id", m_id);
+
+    m_id = id;
+
+    return query().exec();
+}
+
+bool DbCover::updateSize(int size)
+{
+    m_size = size;
+
+    return update("size", size);
+}
+
+bool DbCover::updateCover(const QPixmap &cover)
+{
+    m_cover = cover;
+    const QByteArray bytes = coverToBytes(cover);
+
+    return update("cover", bytes);
 }
 
 bool DbCover::getBy(const QString &column, const QVariant &value)
@@ -75,6 +105,20 @@ bool DbCover::getBy(const QString &column, const QVariant &value)
     loadFromRecord(query().record());
 
     return true;
+}
+
+bool DbCover::update(const QString &column, const QVariant &value)
+{
+    query().prepare(
+        "UPDATE covers SET"
+        " :column = :value "
+        "WHERE id = :file"
+    );
+    query().bindValue(":column", column);
+    query().bindValue(":value", value);
+    query().bindValue(":id", m_id);
+
+    return query().exec();
 }
 
 QByteArray DbCover::coverToBytes(const QPixmap &cover)

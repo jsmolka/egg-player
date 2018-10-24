@@ -74,21 +74,6 @@ bool DbAudio::commit()
     return query().exec();
 }
 
-bool DbAudio::updatePrimaryKey(const QString &file)
-{
-    query().prepare(
-        "UPDATE audios SET"
-        " file = :newfile, "
-        "WHERE file = :file"
-    );
-    query().bindValue(":newfile", file);
-    query().bindValue(":file", m_file);
-
-    m_file = file;
-
-    return query().exec();
-}
-
 bool DbAudio::getByFile(const QString &file)
 {
     return getBy("file", file);
@@ -127,6 +112,70 @@ bool DbAudio::getByCoverId(int coverId)
 bool DbAudio::getByModified(qint64 modified)
 {
     return getBy("modified", modified);
+}
+
+bool DbAudio::updateFile(const QString &file)
+{
+    query().prepare(
+        "UPDATE audios SET"
+        " file = :newfile, "
+        "WHERE file = :file"
+    );
+    query().bindValue(":newfile", file);
+    query().bindValue(":file", m_file);
+
+    m_file = file;
+
+    return query().exec();
+}
+
+bool DbAudio::updateTitle(const QString &title)
+{
+    m_title = title;
+
+    return update("title", title);
+}
+
+bool DbAudio::updateAlbum(const QString &album)
+{
+    m_album = album;
+
+    return update("album", album);
+}
+
+bool DbAudio::updateArtist(const QString &artist)
+{
+    m_artist = artist;
+
+    return update("artist", artist);
+}
+
+bool DbAudio::updateYear(int year)
+{
+    m_year = year;
+
+    return update("year", year);
+}
+
+bool DbAudio::updateDuration(int duration)
+{
+    m_duration = duration;
+
+    return update("duration", duration);
+}
+
+bool DbAudio::updateCoverId(int coverId)
+{
+    m_coverId = coverId;
+
+    return update("coverid", coverId);
+}
+
+bool DbAudio::updateModified(qint64 modified)
+{
+    m_modified = modified;
+
+    return update("modified", modified);
 }
 
 void DbAudio::assignTo(Audio *audio)
@@ -177,6 +226,19 @@ bool DbAudio::getBy(const QString &column, const QVariant &value)
     loadFromRecord(query().record());
 
     return true;
+}
+
+bool DbAudio::update(const QString &column, const QVariant &value)
+{
+    query().prepare(
+        "UPDATE audios SET"
+        " " + column + " = :value "
+        "WHERE file = :file"
+    );
+    query().bindValue(":value", value);
+    query().bindValue(":file", m_file);
+
+    return query().exec();
 }
 
 void DbAudio::loadFromRecord(const QSqlRecord &record)

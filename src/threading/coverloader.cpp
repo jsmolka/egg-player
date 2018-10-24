@@ -27,7 +27,13 @@ Audio::vector CoverLoader::audios() const
 
 void CoverLoader::start()
 {
-    for (const Audio::vector &chunk : chunk<Audio *>(m_audios, QThread::idealThreadCount()))
+#ifdef QT_DEBUG
+    const int threads = 1;
+#else
+    const int threads = QThread::idealThreadCount();
+#endif
+
+    for (const Audio::vector &chunk : chunk<Audio *>(m_audios, threads))
     {
         CoverLoaderWorker *worker = new CoverLoaderWorker(chunk);
         runWorker(worker);

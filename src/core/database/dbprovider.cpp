@@ -1,11 +1,16 @@
 #include "dbprovider.hpp"
 
+#include <QSqlQuery>
 #include <QThread>
 
 #include "constants.hpp"
+#include "logger.hpp"
 
 QSqlDatabase DbProvider::db()
 {
+    if (!QSqlDatabase::isDriverAvailable("QSQLITE"))
+        LOG("QSQLITE driver not available");
+
     const QString connection = threadConnection();
     if (!QSqlDatabase::contains(connection))
         QSqlDatabase::addDatabase("QSQLITE", connection);

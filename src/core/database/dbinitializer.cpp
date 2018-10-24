@@ -3,6 +3,8 @@
 #include <QVariant>
 
 #include "constants.hpp"
+#include "cover.hpp"
+#include "dbcover.hpp"
 
 void DbInitializer::initialize()
 {
@@ -26,6 +28,15 @@ void DbInitializer::createTables()
         createTableAudios();
     if (!tableExists("covers"))
         createTableCovers();
+
+    DbCover dbCover;
+    if (!dbCover.getById(1))
+    {
+        const QPixmap cover = Cover::scale(QPixmap(IMG_DEFAULT_COVER), Cover::defaultSize());
+        dbCover.setId(1);
+        dbCover.setCover(cover);
+        dbCover.insert();
+    }
 }
 
 void DbInitializer::createTableAudios()

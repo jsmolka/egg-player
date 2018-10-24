@@ -16,6 +16,7 @@ public:
 
 protected:
     virtual bool getBy(const QString &column, const QVariant &value) = 0;
+    virtual bool update(const QString &column, const QVariant &value) = 0;
 };
 
 #endif // DBTABLEITEM_HPP

@@ -24,7 +24,6 @@ public:
     bool exists();
     bool insert();
     bool commit();
-    bool updatePrimaryKey(const QString &file);
 
     bool getByFile(const QString &file);
     bool getByTitle(const QString &title);
@@ -35,11 +34,21 @@ public:
     bool getByCoverId(int coverId);
     bool getByModified(qint64 modified);
 
+    bool updateFile(const QString &file);
+    bool updateTitle(const QString &title);
+    bool updateAlbum(const QString &album);
+    bool updateArtist(const QString &artist);
+    bool updateYear(int year);
+    bool updateDuration(int duration);
+    bool updateCoverId(int coverId);
+    bool updateModified(qint64 modified);
+
     void assignTo(Audio *audio);
     void loadFrom(Audio *audio);
 
 protected:
     bool getBy(const QString &column, const QVariant &value);
+    bool update(const QString &column, const QVariant &value);
 
 private:
     void loadFromRecord(const QSqlRecord &record);
