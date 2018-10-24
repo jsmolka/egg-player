@@ -5,12 +5,12 @@
 LibraryWidget::LibraryWidget(QWidget *parent)
     : AudiosWidget(parent)
 {
-    addColumn(AudiosWidget::Title);
-    addColumn(AudiosWidget::Artist);
-    addColumn(AudiosWidget::Album);
-    addColumn(AudiosWidget::Year, Qt::AlignLeft, false);
-    addColumn(AudiosWidget::Genre);
-    addColumn(AudiosWidget::Duration, Qt::AlignRight, false);
+    addColumn(AudioInfo::Title);
+    addColumn(AudioInfo::Artist);
+    addColumn(AudioInfo::Album);
+    addColumn(AudioInfo::Year, Qt::AlignLeft, false);
+    addColumn(AudioInfo::Genre);
+    addColumn(AudioInfo::Duration, Qt::AlignRight, false);
 }
 
 void LibraryWidget::resizeEvent(QResizeEvent *event)

@@ -12,12 +12,7 @@ AudiosWidget::AudiosWidget(QWidget *parent)
 void AudiosWidget::setAudios(Audios *audios)
 {
     if (m_audios)
-    {
-        disconnect(audios, &Audios::inserted, this, &AudiosWidget::onAudiosInserted);
-        disconnect(audios, &Audios::updated, this, &AudiosWidget::onAudiosUpdated);
-        disconnect(audios, &Audios::removed, this, &AudiosWidget::onAudiosRemoved);
-        disconnect(audios, &Audios::moved, this, &AudiosWidget::onAudiosMoved);
-    }
+        disconnect(audios, nullptr, this, nullptr);
 
     m_audios = audios;
 
@@ -27,12 +22,18 @@ void AudiosWidget::setAudios(Audios *audios)
     connect(m_audios, &Audios::moved, this, &AudiosWidget::onAudiosMoved);
 }
 
-void AudiosWidget::addColumn(AudioInfo info, Qt::Alignment horizontal, bool expand)
+Audios *AudiosWidget::audios() const
+{
+    return m_audios;
+}
+
+void AudiosWidget::addColumn(AudioInfo::Info info, Qt::Alignment horizontal, bool expand)
 {
     Column column;
     column.info = info;
     column.alignment = Qt::AlignVCenter | horizontal;
     m_columns << column;
+
     setColumnCount(m_columns.size());
 
     if (!expand)

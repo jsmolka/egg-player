@@ -11,31 +11,56 @@ void AudioLoader::load(const QString &file)
     if (!audio)
         return;
 
-    if (!audio->isCached())
-    {
-        if (isInterrupted())
-            return;
+    if (!insertAudio(audio))
+        return;
 
+    if (!updateAudio(audio))
+        return;
+
+    if (!loadCover(audio))
+        return;
+
+    audio->moveToThread(qApp->thread());
+    emit loaded(audio);
+}
+
+bool AudioLoader::insertAudio(Audio *audio)
+{
+    if (isInterrupted())
+        return false;
+
+    if (!audio->isCached())
         Cache::insertAudio(audio);
-    }
+
+    return true;
+}
+
+bool AudioLoader::updateAudio(Audio *audio)
+{
+    if (isInterrupted())
+        return false;
+
     if (audio->isOutdated())
     {
-        if (isInterrupted())
-            return;
+        if (!audio->update())
+            return false;
 
-        audio->update();
         audio->cover().invalidate();
         Cache::updateAudio(audio);
     }
+    return true;
+}
+
+bool AudioLoader::loadCover(Audio *audio)
+{
+    if (isInterrupted())
+        return false;
+
     if (!audio->cover().isValid())
     {
-        if (isInterrupted())
-            return;
-
         const QPixmap cover = Cover::loadFromFile(audio->file());
         if (!cover.isNull())
             Cache::updateAudioCover(audio, cover);
     }
-    audio->moveToThread(qApp->thread());
-    emit loaded(audio);
+    return true;
 }

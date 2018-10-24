@@ -2,7 +2,6 @@
 #define AUDIOLOADER_HPP
 
 #include "core/audio.hpp"
-#include "core/globals.hpp"
 #include "threading/core/callable.hpp"
 
 class AudioLoader : public Callable
@@ -17,6 +16,11 @@ public slots:
 
 signals:
     void loaded(Audio *audio);
+
+private:
+    bool insertAudio(Audio *audio);
+    bool updateAudio(Audio *audio);
+    bool loadCover(Audio *audio);
 };
 
 #endif // AUDIOLOADER_HPP

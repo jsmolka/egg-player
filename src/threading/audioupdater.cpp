@@ -2,24 +2,39 @@
 
 #include "core/database/cache.hpp"
 
-AudioUpdater::AudioUpdater(QObject *parent)
-    : Callable(parent)
-{
-
-}
-
 void AudioUpdater::update(Audio *audio)
 {
-    audio->update();
+    if (!updateAudio(audio))
+        return;
+
+    if (!loadCover(audio))
+        return;
+
+    emit updated(audio);
+}
+
+bool AudioUpdater::updateAudio(Audio *audio)
+{
+    if (isInterrupted())
+        return false;
+
+    if (!audio->update())
+        return false;
+
     audio->cover().invalidate();
     Cache::updateAudio(audio);
 
+    return true;
+}
+
+bool AudioUpdater::loadCover(Audio *audio)
+{
     if (isInterrupted())
-        return;
+        return false;
 
     const QPixmap cover = Cover::loadFromFile(audio->file());
     if (!cover.isNull())
         Cache::updateAudioCover(audio, cover);
 
-    emit updated(audio);
+    return true;
 }

@@ -4,7 +4,6 @@
 #include <QObject>
 
 #include "core/audio.hpp"
-#include "core/globals.hpp"
 
 class Audios : public QObject, private Audio::vector
 {
