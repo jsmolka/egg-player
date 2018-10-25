@@ -3,23 +3,39 @@
 #include <QHeaderView>
 
 AudiosWidget::AudiosWidget(QWidget *parent)
+    : AudiosWidget(nullptr, parent)
+{
+
+}
+
+AudiosWidget::AudiosWidget(Audios *audios, QWidget *parent)
     : TableWidget(parent)
-    , m_audios(nullptr)
+    , m_audios(audios)
 {
     setup();
+
+    setAudios(audios);
 }
 
 void AudiosWidget::setAudios(Audios *audios)
-{
+{    
     if (m_audios)
-        disconnect(audios, nullptr, this, nullptr);
+    {
+        disconnect(m_audios, nullptr, this, nullptr);
+        clearContents();
+    }
+
+    if (!audios)
+        return;
 
     m_audios = audios;
+    connect(audios, &Audios::inserted, this, &AudiosWidget::onAudiosInserted);
+    connect(audios, &Audios::updated, this, &AudiosWidget::onAudiosUpdated);
+    connect(audios, &Audios::removed, this, &AudiosWidget::onAudiosRemoved);
+    connect(audios, &Audios::moved, this, &AudiosWidget::onAudiosMoved);
 
-    connect(m_audios, &Audios::inserted, this, &AudiosWidget::onAudiosInserted);
-    connect(m_audios, &Audios::updated, this, &AudiosWidget::onAudiosUpdated);
-    connect(m_audios, &Audios::removed, this, &AudiosWidget::onAudiosRemoved);
-    connect(m_audios, &Audios::moved, this, &AudiosWidget::onAudiosMoved);
+    for (int row = 0; row < audios->size(); ++row)
+        insert(audios->at(row), row);
 }
 
 Audios *AudiosWidget::audios() const
@@ -27,27 +43,26 @@ Audios *AudiosWidget::audios() const
     return m_audios;
 }
 
-void AudiosWidget::addColumn(AudioInfo::Info info, Qt::Alignment horizontal, bool expand)
+void AudiosWidget::addColumn(AudioInfo info, Qt::Alignment align, SizePolicy policy)
 {
-    Column column;
-    column.info = info;
-    column.alignment = Qt::AlignVCenter | horizontal;
-    m_columns << column;
-
+    m_columns << qMakePair(info, Qt::AlignVCenter | align);
     setColumnCount(m_columns.size());
 
-    if (!expand)
+    if (policy == SizePolicy::Shrink)
         horizontalHeader()->setSectionResizeMode(m_columns.size() - 1, QHeaderView::ResizeToContents);
 }
 
 void AudiosWidget::onAudiosUpdated(int row)
 {
     Audio *audio = m_audios->at(row);
-    for (int column = 0; column < m_columns.size(); ++column)
+
+    for (int col = 0; col < m_columns.size(); ++col)
     {
-        QTableWidgetItem *item = takeItem(row, column);
-        item->setText(audioText(audio, column));
-        setItem(row, column, item);
+        const Column column = m_columns.at(col);
+
+        QTableWidgetItem *item = takeItem(row, col);
+        item->setText(audioInfo(audio, column.first));
+        setItem(row, col, item);
     }
 }
 
@@ -84,20 +99,9 @@ void AudiosWidget::setupCss()
     );
 }
 
-void AudiosWidget::insert(Audio *audio, int row)
+QString AudiosWidget::audioInfo(Audio *audio, AudioInfo info)
 {
-    insertRow(row);
-    for (int column = 0; column < m_columns.size(); ++column)
-    {
-        QTableWidgetItem *item = new QTableWidgetItem(audioText(audio, column));
-        item->setTextAlignment(m_columns[column].alignment);
-        setItem(row, column, item);
-    }
-}
-
-QString AudiosWidget::audioText(Audio *audio, int column) const
-{
-    switch(m_columns[column].info)
+    switch(info)
     {
     case AudioInfo::Title:
         return audio->tag().title();
@@ -119,4 +123,19 @@ QString AudiosWidget::audioText(Audio *audio, int column) const
         return audio->duration().toString();
     }
     return QString();
+}
+
+void AudiosWidget::insert(Audio *audio, int row)
+{
+    insertRow(row);
+
+    for (int col = 0; col < m_columns.size(); ++col)
+    {
+        const Column column = m_columns.at(col);
+
+        QTableWidgetItem *item = new QTableWidgetItem;
+        item->setText(audioInfo(audio, column.first));
+        item->setTextAlignment(column.second);
+        setItem(row, col, item);
+    }
 }

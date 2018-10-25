@@ -1,8 +1,11 @@
 # Things to do
+
+## Rework
 - replace const static with static const
 - proper style for ifdef in constants
 - make code generally more robust and log unlikely behavior
 - use namespaces
+- Shortcut: use enums for repeat, no bool
 
 ## Filesystem
 - make it more robust

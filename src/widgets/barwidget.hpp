@@ -21,6 +21,8 @@ class BarWidget : public QWidget
 public:
     explicit BarWidget(QWidget *parent = nullptr);
 
+    EGG_PPROP(int, duration, setDuration, duration)
+
     QLabel &coverLabel();
     QLabel &trackLabel();
     QLabel &currentTimeLabel();
@@ -35,9 +37,6 @@ public:
 
     Slider &durationSlider();
     Slider &volumeSlider();
-
-    void setDuration(int duration);
-    int duration() const;
 
     void setColor(const QColor &color);
     QColor color() const;
@@ -78,8 +77,6 @@ private:
     Shortcut m_scPrevious;
     Shortcut m_scVolumeUp;
     Shortcut m_scVolumeDown;
-
-    int m_duration{250};
 };
 
 #endif // BARWIDGET_HPP

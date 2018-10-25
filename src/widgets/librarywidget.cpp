@@ -8,9 +8,9 @@ LibraryWidget::LibraryWidget(QWidget *parent)
     addColumn(AudioInfo::Title);
     addColumn(AudioInfo::Artist);
     addColumn(AudioInfo::Album);
-    addColumn(AudioInfo::Year, Qt::AlignLeft, false);
+    addColumn(AudioInfo::Year, Qt::AlignLeft, SizePolicy::Shrink);
     addColumn(AudioInfo::Genre);
-    addColumn(AudioInfo::Duration, Qt::AlignRight, false);
+    addColumn(AudioInfo::Duration, Qt::AlignRight, SizePolicy::Shrink);
 }
 
 void LibraryWidget::resizeEvent(QResizeEvent *event)

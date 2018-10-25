@@ -1,6 +1,7 @@
 #ifndef AUDIOSWIDGET_HPP
 #define AUDIOSWIDGET_HPP
 
+#include <QPair>
 #include <QVector>
 
 #include "core/audio.hpp"
@@ -8,22 +9,21 @@
 #include "core/globals.hpp"
 #include "widgets/parts/tablewidget.hpp"
 
-namespace AudioInfo
-{
-    enum Info {Title, Artist, Album, Track, Year, Genre, Duration};
-}
-
 class AudiosWidget : public TableWidget
 {
     Q_OBJECT
 
 public:
+    enum AudioInfo {Title, Artist, Album, Track, Year, Genre, Duration};
+    enum SizePolicy {Expand, Shrink};
+
     explicit AudiosWidget(QWidget *parent = nullptr);
+    explicit AudiosWidget(Audios *audios, QWidget *parent = nullptr);
 
     void setAudios(Audios *audios);
     Audios *audios() const;
 
-    void addColumn(AudioInfo::Info info, Qt::Alignment horizontal = Qt::AlignLeft, bool expand = true);
+    void addColumn(AudioInfo info, Qt::Alignment align = Qt::AlignLeft, SizePolicy policy = Expand);
 
 private slots:
     void onAudiosUpdated(int row);
@@ -32,20 +32,17 @@ private slots:
     void onAudiosMoved(int from, int to);
 
 private:
-    struct Column
-    {
-        AudioInfo::Info info;
-        Qt::Alignment alignment;
-    };
+    using Column = QPair<AudioInfo, Qt::Alignment>;
+    using Columns = QVector<Column>;
 
-    void insert(Audio *audio, int row = -1);
-    QString audioText(Audio *audio, int column) const;
+    static QString audioInfo(Audio *audio, AudioInfo info);
+    void insert(Audio *audio, int row);
 
     void setup();
     void setupCss();
 
     Audios *m_audios;
-    QVector<Column> m_columns;
+    Columns m_columns;
 };
 
 #endif // AUDIOSWIDGET_HPP

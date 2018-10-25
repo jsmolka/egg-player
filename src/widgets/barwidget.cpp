@@ -3,9 +3,7 @@
 #include <QFontMetrics>
 #include <QGridLayout>
 #include <QPalette>
-#include <QPainter>
 #include <QPropertyAnimation>
-#include <QStyleOption>
 
 #include "core/duration.hpp"
 #include "core/player.hpp"
@@ -13,6 +11,7 @@
 
 BarWidget::BarWidget(QWidget *parent)
     : QWidget(parent)
+    , m_duration(250)
     , m_coverLabel(this)
     , m_trackLabel(this)
     , m_currentTimeLabel(this)
@@ -113,16 +112,6 @@ Slider &BarWidget::durationSlider()
 Slider &BarWidget::volumeSlider()
 {
     return m_volumeSlider;
-}
-
-void BarWidget::setDuration(int duration)
-{
-    m_duration = duration;
-}
-
-int BarWidget::duration() const
-{
-    return m_duration;
 }
 
 void BarWidget::setColor(const QColor &color)
@@ -252,13 +241,13 @@ void BarWidget::setupUi()
     m_shuffleButton.setLockable(true);
     m_loopButton.setLockable(true);
 
-    const QSize buttonSize = QSize(cfgBar.iconSize(), cfgBar.iconSize());
-    m_playPauseButton.setSize(buttonSize);
-    m_previousButton.setSize(buttonSize);
-    m_nextButton.setSize(buttonSize);
-    m_shuffleButton.setSize(buttonSize);
-    m_loopButton.setSize(buttonSize);
-    m_volumeButton.setSize(buttonSize);
+    const QSize iconSize = QSize(cfgBar.iconSize(), cfgBar.iconSize());
+    m_playPauseButton.setSize(iconSize);
+    m_previousButton.setSize(iconSize);
+    m_nextButton.setSize(iconSize);
+    m_shuffleButton.setSize(iconSize);
+    m_loopButton.setSize(iconSize);
+    m_volumeButton.setSize(iconSize);
 
     m_shuffleButton.setLocked(cfgPlayer.shuffle());
     m_loopButton.setLocked(cfgPlayer.loop());
