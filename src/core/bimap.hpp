@@ -3,8 +3,6 @@
 
 #include <QHash>
 
-#include "core/globals.hpp"
-
 template <typename T1, typename T2>
 class Bimap
 {

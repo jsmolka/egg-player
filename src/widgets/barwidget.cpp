@@ -24,34 +24,34 @@ BarWidget::BarWidget(QWidget *parent)
     , m_volumeButton(this)
     , m_durationSlider(this)
     , m_volumeSlider(this)
-    , m_scPlayPause(cfgShortcut.playPause(), false, this)
-    , m_scNext(cfgShortcut.next(), false, this)
-    , m_scPrevious(cfgShortcut.previous(), false, this)
-    , m_scVolumeUp(cfgShortcut.volumeUp(), true, this)
-    , m_scVolumeDown(cfgShortcut.volumeDown(), true, this)
+    , m_scPlayPause(cfg_shortcut.playPause(), false, this)
+    , m_scNext(cfg_shortcut.next(), false, this)
+    , m_scPrevious(cfg_shortcut.previous(), false, this)
+    , m_scVolumeUp(cfg_shortcut.volumeUp(), true, this)
+    , m_scVolumeDown(cfg_shortcut.volumeDown(), true, this)
 {
     setup();
 
-    connect(ePlayer, &Player::audioChanged, this, &BarWidget::onPlayerAudioChanged);
-    connect(ePlayer, &Player::positionChanged, this, &BarWidget::onPlayerPositionChanged);
-    connect(ePlayer, &Player::volumeChanged, &m_volumeSlider, &Slider::setValue);
+    connect(egg_player, &Player::audioChanged, this, &BarWidget::onPlayerAudioChanged);
+    connect(egg_player, &Player::positionChanged, this, &BarWidget::onPlayerPositionChanged);
+    connect(egg_player, &Player::volumeChanged, &m_volumeSlider, &Slider::setValue);
 
-    connect(&m_nextButton, &IconButton::pressed, &ePlayer->playlist(), &Playlist::next);
-    connect(&m_playPauseButton, &IconButton::pressed, ePlayer, &Player::toggleState);
+    connect(&m_nextButton, &IconButton::pressed, &egg_player->playlist(), &Playlist::next);
+    connect(&m_playPauseButton, &IconButton::pressed, egg_player, &Player::toggleState);
     connect(&m_previousButton, &IconButton::pressed, this, &BarWidget::onPlayerPrevious);
-    connect(&m_shuffleButton, &IconButton::locked, &ePlayer->playlist(), &Playlist::setShuffle);
-    connect(&m_loopButton, &IconButton::locked, &ePlayer->playlist(), &Playlist::setLoop);
+    connect(&m_shuffleButton, &IconButton::locked, &egg_player->playlist(), &Playlist::setShuffle);
+    connect(&m_loopButton, &IconButton::locked, &egg_player->playlist(), &Playlist::setLoop);
     connect(&m_volumeButton, &IconButton::pressed, this, &BarWidget::onVolumeButtonPressed);
 
     connect(&m_durationSlider, &Slider::sliderMoved, this, &BarWidget::onLengthSliderMoved);
-    connect(&m_durationSlider, &Slider::sliderValueChanged, ePlayer, &Player::setPosition);
-    connect(&m_volumeSlider, &Slider::sliderMoved, ePlayer, &Player::setVolume);
+    connect(&m_durationSlider, &Slider::sliderValueChanged, egg_player, &Player::setPosition);
+    connect(&m_volumeSlider, &Slider::sliderMoved, egg_player, &Player::setVolume);
 
-    connect(&m_scPlayPause, &Shortcut::pressed, ePlayer, &Player::toggleState);
-    connect(&m_scNext, &Shortcut::pressed, &ePlayer->playlist(), &Playlist::next);
+    connect(&m_scPlayPause, &Shortcut::pressed, egg_player, &Player::toggleState);
+    connect(&m_scNext, &Shortcut::pressed, &egg_player->playlist(), &Playlist::next);
     connect(&m_scPrevious, &Shortcut::pressed, this, &BarWidget::onPlayerPrevious);
-    connect(&m_scVolumeUp, &Shortcut::pressed, ePlayer, &Player::increaseVolume);
-    connect(&m_scVolumeDown, &Shortcut::pressed, ePlayer, &Player::decreaseVolume);
+    connect(&m_scVolumeUp, &Shortcut::pressed, egg_player, &Player::increaseVolume);
+    connect(&m_scVolumeDown, &Shortcut::pressed, egg_player, &Player::decreaseVolume);
 }
 
 QLabel &BarWidget::coverLabel()
@@ -140,7 +140,7 @@ void BarWidget::onPlayerAudioChanged(Audio *audio)
     m_durationSlider.setEnabled(true);
     m_durationSlider.setRange(0, audio->duration().secs());
 
-    m_coverLabel.setPixmap(audio->cover().pixmap(cfgBar.coverSize()));
+    m_coverLabel.setPixmap(audio->cover().pixmap(cfg_bar.coverSize()));
     m_trackLabel.setText(trackLabelText(audio));
 
     m_currentTimeLabel.setText(Duration(0).toString());
@@ -151,7 +151,7 @@ void BarWidget::onPlayerAudioChanged(Audio *audio)
 
 void BarWidget::onPlayerPositionChanged(int position)
 {
-    if (ePlayer->playlist().isEmpty()
+    if (egg_player->playlist().isEmpty()
             || m_durationSlider.isPressed()
             || m_durationSlider.maximum() < position)
         return;
@@ -162,10 +162,10 @@ void BarWidget::onPlayerPositionChanged(int position)
 
 void BarWidget::onPlayerPrevious()
 {
-    if (m_durationSlider.value() > cfgPlayer.previousLimit())
-        ePlayer->setPosition(0);
+    if (m_durationSlider.value() > cfg_player.previousLimit())
+        egg_player->setPosition(0);
     else
-        ePlayer->playlist().previous();
+        egg_player->playlist().previous();
 }
 
 void BarWidget::onVolumeButtonPressed()
@@ -197,7 +197,7 @@ void BarWidget::setup()
 {
     setAutoFillBackground(true);
     setColor(Cover::defaultCover().dominantColor());
-    setFixedHeight(cfgBar.height());
+    setFixedHeight(cfg_bar.height());
 
     setupCss();
     setupUi();
@@ -206,32 +206,32 @@ void BarWidget::setup()
 void BarWidget::setupCss()
 {
     setStyleSheet(FileUtil::read(CSS_BAR)
-        .replace("groove-height", QString::number(cfgBar.grooveHeight()))
-        .replace("handle-size-half", QString::number(cfgBar.handleSize() / 2))
-        .replace("handle-size", QString::number(cfgBar.handleSize()))
-        .replace("icon-size-half", QString::number(cfgBar.iconSize() / 2))
+        .replace("groove-height", QString::number(cfg_bar.grooveHeight()))
+        .replace("handle-size-half", QString::number(cfg_bar.handleSize() / 2))
+        .replace("handle-size", QString::number(cfg_bar.handleSize()))
+        .replace("icon-size-half", QString::number(cfg_bar.iconSize() / 2))
     );
 }
 
 void BarWidget::setupUi()
 {
-    m_coverLabel.setPixmap(Cover::defaultCover().pixmap(cfgBar.coverSize()));
+    m_coverLabel.setPixmap(Cover::defaultCover().pixmap(cfg_bar.coverSize()));
     m_coverLabel.setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
-    m_trackLabel.setFixedWidth(cfgBar.trackWidth());
+    m_trackLabel.setFixedWidth(cfg_bar.trackWidth());
     m_trackLabel.setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
-    m_currentTimeLabel.setFixedWidth(cfgBar.timeWidth());
+    m_currentTimeLabel.setFixedWidth(cfg_bar.timeWidth());
     m_currentTimeLabel.setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Maximum);
     m_currentTimeLabel.setAlignment(Qt::AlignRight | Qt::AlignHCenter);
-    m_totalTimeLabel.setFixedWidth(cfgBar.timeWidth());
+    m_totalTimeLabel.setFixedWidth(cfg_bar.timeWidth());
     m_totalTimeLabel.setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Maximum);
 
     m_durationSlider.setEnabled(false);
     m_durationSlider.setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding);
     m_volumeSlider.setVisible(false);
     m_volumeSlider.setRange(0, 100);
-    m_volumeSlider.setValue(cfgPlayer.volume());
+    m_volumeSlider.setValue(cfg_player.volume());
     m_volumeSlider.setSizePolicy(QSizePolicy::Fixed, QSizePolicy::MinimumExpanding);
-    m_volumeSlider.setFixedWidth(5 * cfgBar.iconSize() + 4 * cfgBar.spacing());
+    m_volumeSlider.setFixedWidth(5 * cfg_bar.iconSize() + 4 * cfg_bar.spacing());
 
     m_previousButton.setIcons({IconFactory::make(ICO_PREVIOUS)});
     m_nextButton.setIcons({IconFactory::make(ICO_NEXT)});
@@ -241,7 +241,7 @@ void BarWidget::setupUi()
     m_shuffleButton.setLockable(true);
     m_loopButton.setLockable(true);
 
-    const QSize iconSize = QSize(cfgBar.iconSize(), cfgBar.iconSize());
+    const QSize iconSize = QSize(cfg_bar.iconSize(), cfg_bar.iconSize());
     m_playPauseButton.setSize(iconSize);
     m_previousButton.setSize(iconSize);
     m_nextButton.setSize(iconSize);
@@ -249,12 +249,12 @@ void BarWidget::setupUi()
     m_loopButton.setSize(iconSize);
     m_volumeButton.setSize(iconSize);
 
-    m_shuffleButton.setLocked(cfgPlayer.shuffle());
-    m_loopButton.setLocked(cfgPlayer.loop());
+    m_shuffleButton.setLocked(cfg_player.shuffle());
+    m_loopButton.setLocked(cfg_player.loop());
 
     QGridLayout *layout = new QGridLayout(this);
-    layout->setHorizontalSpacing(cfgBar.spacing());
-    layout->setContentsMargins(cfgBar.margin(), cfgBar.margin(), cfgBar.margin(), cfgBar.margin());
+    layout->setHorizontalSpacing(cfg_bar.spacing());
+    layout->setContentsMargins(cfg_bar.margin(), cfg_bar.margin(), cfg_bar.margin(), cfg_bar.margin());
     layout->addWidget(&m_coverLabel, 0, 0);
     layout->addWidget(&m_trackLabel, 0, 1);
     layout->addWidget(&m_currentTimeLabel, 0, 2);

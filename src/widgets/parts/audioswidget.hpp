@@ -1,7 +1,6 @@
 #ifndef AUDIOSWIDGET_HPP
 #define AUDIOSWIDGET_HPP
 
-#include <QPair>
 #include <QVector>
 
 #include "core/audio.hpp"
@@ -32,7 +31,11 @@ private slots:
     void onAudiosMoved(int from, int to);
 
 private:
-    using Column = QPair<AudioInfo, Qt::Alignment>;
+    struct Column
+    {
+        AudioInfo info;
+        Qt::Alignment align;
+    };
     using Columns = QVector<Column>;
 
     static QString audioInfo(Audio *audio, AudioInfo info);

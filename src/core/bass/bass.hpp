@@ -1,21 +1,24 @@
 #ifndef BASS_HPP
 #define BASS_HPP
 
-#include <functional>
-
-#include <QAtomicInt>
-
 #include <bass/bass.h>
 
 #include "core/globals.hpp"
 #include "core/bass/basserror.hpp"
 #include "core/bass/bassstream.hpp"
 
-class Bass : public BassError
+#define egg_bass (Bass::instance())
+
+class Bass : private BassError
 {
 public:
     Bass();
+    Bass(const Bass &) = delete;
     ~Bass();
+
+    static Bass &instance();
+
+    BassStream &stream();
 
     static bool start();
     static bool pause();
@@ -29,17 +32,13 @@ public:
 
     static BASS_DEVICEINFO deviceInfo();
 
-    BassStream &stream();
+    void operator=(const Bass &) = delete;
 
 private:
-    static bool setConfig();
     static bool isValidVersion();
+    static bool setConfig();
     static bool init();
     static bool free();
-
-    static bool call(const std::function<BOOL()> &func);
-
-    static QAtomicInt s_refs;
 
     BassStream m_stream;
 };

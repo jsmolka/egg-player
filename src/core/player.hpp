@@ -11,6 +11,8 @@
 
 #define ePlayer (Player::instance())
 
+#define egg_player (ePlayer)
+
 class Player : public QObject
 {
     Q_OBJECT
@@ -58,7 +60,6 @@ private:
 
     Playlist m_playlist;
     QTimer m_updateTimer;
-    Bass m_bass;
     int m_volume;
     int m_position;
     bool m_playing;

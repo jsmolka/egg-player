@@ -45,7 +45,11 @@ Audios *AudiosWidget::audios() const
 
 void AudiosWidget::addColumn(AudioInfo info, Qt::Alignment align, SizePolicy policy)
 {
-    m_columns << qMakePair(info, Qt::AlignVCenter | align);
+    Column column;
+    column.info = info;
+    column.align = align;
+    m_columns << column;
+
     setColumnCount(m_columns.size());
 
     if (policy == SizePolicy::Shrink)
@@ -61,7 +65,7 @@ void AudiosWidget::onAudiosUpdated(int row)
         const Column column = m_columns.at(col);
 
         QTableWidgetItem *item = takeItem(row, col);
-        item->setText(audioInfo(audio, column.first));
+        item->setText(audioInfo(audio, column.info));
         setItem(row, col, item);
     }
 }
@@ -134,8 +138,8 @@ void AudiosWidget::insert(Audio *audio, int row)
         const Column column = m_columns.at(col);
 
         QTableWidgetItem *item = new QTableWidgetItem;
-        item->setText(audioInfo(audio, column.first));
-        item->setTextAlignment(column.second);
+        item->setText(audioInfo(audio, column.info));
+        item->setTextAlignment(column.align);
         setItem(row, col, item);
     }
 }

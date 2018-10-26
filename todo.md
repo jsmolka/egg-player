@@ -6,6 +6,11 @@
 - make code generally more robust and log unlikely behavior
 - use namespaces
 - Shortcut: use enums for repeat, no bool
+- Player: make it a pure singleton
+- use limit in database
+
+## Database
+- table with current version, converter functions
 
 ## Filesystem
 - make it more robust

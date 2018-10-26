@@ -3,11 +3,17 @@
 #include <QHash>
 #include <QString>
 
-#include <bass/bass.h>
+bool BassError::check(bool value)
+{
+    if (!value)
+        error();
+
+    return value;
+}
 
 void BassError::error()
 {
-    const static QHash<int, QString> errors =
+    static const QHash<int, QString> errors =
     {
         {BASS_OK            , "all is OK"},
         {BASS_ERROR_MEM     , "memory error"},
@@ -49,5 +55,5 @@ void BassError::error()
     };
 
     if (BASS_ErrorGetCode() != BASS_OK)
-        LOG(errors.value(BASS_ErrorGetCode()));
+        EGG_LOG(errors.value(BASS_ErrorGetCode()));
 }

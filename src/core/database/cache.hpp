@@ -5,7 +5,6 @@
 #include <QString>
 
 #include "core/audio.hpp"
-#include "core/globals.hpp"
 
 class Cache
 {

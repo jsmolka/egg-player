@@ -5,8 +5,6 @@
 #include <QRect>
 #include <QVector>
 
-#include "core/globals.hpp"
-
 class BorderLayout : public QLayout
 {
 public:
@@ -16,25 +14,29 @@ public:
     BorderLayout(int spacing = -1, QWidget *parent = nullptr);
     ~BorderLayout() override;
 
+    void add(QLayoutItem *item, Position position);
     void addItem(QLayoutItem *item) override;
     void addWidget(QWidget *widget, Position position);
+
     int count() const override;
+
     QLayoutItem *itemAt(int index) const override;
-    QSize minimumSize() const override;
-    void setGeometry(const QRect &rect) override;
-    QSize sizeHint() const override;
     QLayoutItem *takeAt(int index) override;
-    void add(QLayoutItem *item, Position position);
+
+    void setGeometry(const QRect &rect) override;
+    QSize minimumSize() const override;
+    QSize sizeHint() const override;
 
 private:
-    enum SizeType {MinimumSize, SizeHint};
-    QSize calculateSize(SizeType sizeType) const;
-
     struct ItemWrapper
     {
         QLayoutItem *item;
         Position position;
     };
+
+    enum SizeType {MinimumSize, SizeHint};
+    QSize calculateSize(SizeType sizeType) const;
+
     QVector<ItemWrapper *> m_items;
 };
 

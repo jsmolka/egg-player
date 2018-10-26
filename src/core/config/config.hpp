@@ -15,6 +15,12 @@
 #define cfgPlayer Config::instance()->player()
 #define cfgShortcut Config::instance()->shortcut()
 
+#define cfg_app (cfgApp)
+#define cfg_bar (cfgBar)
+#define cfg_library (cfgLibrary)
+#define cfg_player (cfgPlayer)
+#define cfg_shortcut (cfgShortcut)
+
 class Config : QObject
 {
 public:

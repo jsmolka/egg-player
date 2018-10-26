@@ -14,6 +14,8 @@
 
 #define eLibrary (Library::instance())
 
+#define egg_library eLibrary
+
 class Library : public QObject
 {
     Q_OBJECT

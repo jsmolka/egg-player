@@ -44,8 +44,8 @@ int Player::volume() const
 
 int Player::position()
 {
-    return m_bass.stream().isValid()
-        ? m_bass.stream().position()
+    return egg_bass.stream().isValid()
+        ? egg_bass.stream().position()
         : -1;
 }
 
@@ -60,8 +60,8 @@ void Player::createPlaylist(Audios *audios, int index)
 void Player::setVolume(int volume)
 {
     volume = qBound(0, volume, 100);
-    if (m_bass.stream().isValid())
-        if (!m_bass.stream().setVolume(static_cast<float>(volume) / static_cast<float>(cfgPlayer.volumeQuotient())))
+    if (egg_bass.stream().isValid())
+        if (!egg_bass.stream().setVolume(static_cast<float>(volume) / static_cast<float>(cfgPlayer.volumeQuotient())))
             return;
 
     m_volume = volume;
@@ -71,8 +71,8 @@ void Player::setVolume(int volume)
 
 void Player::setPosition(int position)
 {
-    if (m_bass.stream().isValid())
-        if (!m_bass.stream().setPosition(position))
+    if (egg_bass.stream().isValid())
+        if (!egg_bass.stream().setPosition(position))
             return;
 
     emit positionChanged(position);
@@ -90,8 +90,8 @@ void Player::decreaseVolume()
 
 void Player::play()
 {
-    if (m_bass.stream().isValid())
-        if (!m_bass.stream().play())
+    if (egg_bass.stream().isValid())
+        if (!egg_bass.stream().play())
             return;
 
     m_playing = true;
@@ -100,8 +100,8 @@ void Player::play()
 
 void Player::pause()
 {
-    if (m_bass.stream().isValid())
-        if (!m_bass.stream().pause())
+    if (egg_bass.stream().isValid())
+        if (!egg_bass.stream().pause())
             return;
 
     m_playing = false;
@@ -134,7 +134,7 @@ void Player::onPlaylistIndexChanged(int index)
 
 void Player::update()
 {
-    if (!m_playing || !m_bass.stream().isValid())
+    if (!m_playing || !egg_bass.stream().isValid())
         return;
 
     const int position = this->position();
@@ -157,10 +157,10 @@ void Player::callback(HSYNC handle, DWORD channel, DWORD data, void *user)
 
 void Player::setAudio(Audio *audio)
 {
-    if (!audio || !m_bass.stream().create(audio))
+    if (!audio || !egg_bass.stream().create(audio))
         return;
 
-    m_bass.stream().setCallback(callback, this);
+    egg_bass.stream().setCallback(callback, this);
     setVolume(m_volume);
 
     if (m_playing)

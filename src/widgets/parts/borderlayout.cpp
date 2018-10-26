@@ -20,6 +20,14 @@ BorderLayout::~BorderLayout()
         delete item;
 }
 
+void BorderLayout::add(QLayoutItem *item, Position position)
+{
+    ItemWrapper *wrapper = new ItemWrapper;
+    wrapper->item = item;
+    wrapper->position = position;
+    m_items << wrapper;
+}
+
 void BorderLayout::addItem(QLayoutItem *item)
 {
     add(item, West);
@@ -38,12 +46,16 @@ int BorderLayout::count() const
 QLayoutItem *BorderLayout::itemAt(int index) const
 {
     ItemWrapper *wrapper = m_items.value(index);
+
     return wrapper ? wrapper->item : nullptr;
 }
 
-QSize BorderLayout::minimumSize() const
+QLayoutItem *BorderLayout::takeAt(int index)
 {
-    return calculateSize(MinimumSize);
+    if (index < 0 || index >= m_items.size())
+        return nullptr;
+
+    return m_items.takeAt(index)->item;
 }
 
 void BorderLayout::setGeometry(const QRect &rect)
@@ -62,7 +74,7 @@ void BorderLayout::setGeometry(const QRect &rect)
         QLayoutItem *item = wrapper->item;
         const Position position = wrapper->position;
 
-        if (position == North)
+        if (position == Position::North)
         {
             item->setGeometry(QRect(
                 rect.x(),
@@ -72,7 +84,7 @@ void BorderLayout::setGeometry(const QRect &rect)
             ));
             northHeight += item->geometry().height() + spacing();
         }
-        else if (position == South)
+        else if (position == Position::South)
         {
             item->setGeometry(QRect(
                 item->geometry().x(),
@@ -89,11 +101,12 @@ void BorderLayout::setGeometry(const QRect &rect)
                 item->geometry().height()
             ));
         }
-        else if (position == Center)
+        else if (position == Position::Center)
         {
             center = wrapper;
         }
     }
+
     centerHeight = rect.height() - northHeight - southHeight;
 
     for (ItemWrapper *wrapper : qAsConst(m_items))
@@ -101,7 +114,7 @@ void BorderLayout::setGeometry(const QRect &rect)
         QLayoutItem *item = wrapper->item;
         const Position position = wrapper->position;
 
-        if (position == West)
+        if (position == Position::West)
         {
             item->setGeometry(QRect(
                 rect.x() + westWidth,
@@ -111,7 +124,7 @@ void BorderLayout::setGeometry(const QRect &rect)
             ));
             westWidth += item->geometry().width() + spacing();
         }
-        else if (position == East)
+        else if (position == Position::East)
         {
             item->setGeometry(QRect(
                 item->geometry().x(),
@@ -141,25 +154,14 @@ void BorderLayout::setGeometry(const QRect &rect)
     }
 }
 
+QSize BorderLayout::minimumSize() const
+{
+    return calculateSize(SizeType::MinimumSize);
+}
+
 QSize BorderLayout::sizeHint() const
 {
-    return calculateSize(SizeHint);
-}
-
-QLayoutItem *BorderLayout::takeAt(int index)
-{
-    if (index < 0 || index >= m_items.size())
-        return nullptr;
-
-    return m_items.takeAt(index)->item;
-}
-
-void BorderLayout::add(QLayoutItem *item, Position position)
-{
-    ItemWrapper *wrapper = new ItemWrapper;
-    wrapper->item = item;
-    wrapper->position = position;
-    m_items.append(wrapper);
+    return calculateSize(SizeType::SizeHint);
 }
 
 QSize BorderLayout::calculateSize(SizeType sizeType) const
@@ -170,19 +172,19 @@ QSize BorderLayout::calculateSize(SizeType sizeType) const
         QSize itemSize;
         const Position position = wrapper->position;
 
-        if (sizeType == MinimumSize)
+        if (sizeType == SizeType::MinimumSize)
             itemSize = wrapper->item->minimumSize();
         else
             itemSize = wrapper->item->sizeHint();
 
-        if (position == North
-                || position == South
-                || position == Center)
+        if (position == Position::North
+                || position == Position::South
+                || position == Position::Center)
             totalSize.rheight() += itemSize.height();
 
-        if (position == West
-                || position == East
-                || position == Center)
+        if (position == Position::West
+                || position == Position::East
+                || position == Position::Center)
             totalSize.rwidth() += itemSize.width();
     }
     return totalSize;

@@ -51,10 +51,8 @@ bool Cache::updateAudioCover(Audio *audio, const QPixmap &cover)
 {
     DbCover dbCover;
     if (!dbCover.getOrInsertCover(cover))
-    {
-        LOG("Could not get or insert cover %1", audio->file());
         return false;
-    }
+
     return updateAudioCoverId(audio, dbCover.id());
 }
 

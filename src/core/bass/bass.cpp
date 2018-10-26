@@ -2,17 +2,20 @@
 
 Bass::Bass()
 {
-    if (s_refs++ > 0)
-        return;
-
     if (isValidVersion() && setConfig())
         init();
 }
 
 Bass::~Bass()
 {
-    if (--s_refs == 0)
-        free();
+    free();
+}
+
+Bass &Bass::instance()
+{
+    static Bass bass;
+
+    return bass;
 }
 
 BassStream &Bass::stream()
@@ -22,101 +25,74 @@ BassStream &Bass::stream()
 
 bool Bass::start()
 {
-    return call(BASS_Start);
+    return check(BASS_Start());
 }
 
 bool Bass::pause()
 {
-    return call(BASS_Pause);
+    return check(BASS_Pause());
 }
 
 bool Bass::stop()
 {
-    return call(BASS_Stop);
+    return check(BASS_Stop());
 }
 
 bool Bass::setVolume(float volume)
 {
-    const bool success = BASS_SetVolume(volume);
-    if (!success)
-        error();
-
-    return success;
+    return check(BASS_SetVolume(volume));
 }
 
 float Bass::volume()
 {
-    if (qFuzzyCompare(BASS_GetVolume(), -1))
-        error();
+    const float volume = BASS_GetVersion();
+    check(!qFuzzyCompare(volume, -1));
 
-    return BASS_GetVolume();
+    return volume;
 }
 
 bool Bass::setDevice(DWORD device)
 {
-    const bool success = BASS_SetDevice(device);
-    if (!success)
-        error();
-
-    return success;
+    return check(BASS_SetDevice(device));
 }
 
 DWORD Bass::device()
 {
-    if (BASS_GetDevice() == 0)
-        error();
+    const DWORD device = BASS_GetDevice();
+    check(device != 0);
 
-    return BASS_GetDevice();
+    return device;
 }
 
 BASS_DEVICEINFO Bass::deviceInfo()
 {
     BASS_DEVICEINFO info;
-    if (!BASS_GetDeviceInfo(device(), &info))
-        error();
+    check(BASS_GetDeviceInfo(device(), &info));
 
     return info;
 }
 
-bool Bass::setConfig()
-{
-    const bool success = BASS_SetConfig(BASS_CONFIG_DEV_DEFAULT, 1);
-    if (!success)
-        error();
-
-    return success;
-}
-
 bool Bass::isValidVersion()
 {
-    const bool valid = HIWORD(BASS_GetVersion()) == BASSVERSION;
-    if (!valid)
-        LOG("Different BASS versions");
+    if (HIWORD(BASS_GetVersion()) != BASSVERSION)
+    {
+        EGG_LOG("Different BASS versions");
+        return false;
+    }
+    return true;
+}
 
-    return valid;
+bool Bass::setConfig()
+{
+    return check(BASS_SetConfig(BASS_CONFIG_DEV_DEFAULT, 1));
 }
 
 bool Bass::init()
 {
-    const bool success = BASS_Init(-1, 44100, 0, nullptr, nullptr);
-    if (!success)
-        error();
-
-    return success;
+    return check(BASS_Init(-1, 44100, 0, nullptr, nullptr));
 }
 
 bool Bass::free()
 {
-    return call(BASS_Free);
+    return check(BASS_Free());
 }
-
-bool Bass::call(const std::function<BOOL()> &func)
-{
-    const bool success = func();
-    if (!success)
-        error();
-
-    return success;
-}
-
-QAtomicInt Bass::s_refs = 0;
