@@ -49,11 +49,15 @@ bool Cache::updateAudio(Audio *audio)
 
 bool Cache::updateAudioCover(Audio *audio, const QPixmap &cover)
 {
-    DbCover dbCover;
-    if (!dbCover.getOrInsertCover(cover))
-        return false;
+    int id;
+    {
+        DbCover dbCover;
+        if (!dbCover.getOrInsertCover(cover))
+            return false;
 
-    return updateAudioCoverId(audio, dbCover.id());
+        id = dbCover.id();
+    }
+    return updateAudioCoverId(audio, id);
 }
 
 bool Cache::updateAudioCoverId(Audio *audio, int coverId)

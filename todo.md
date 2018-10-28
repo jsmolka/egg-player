@@ -8,9 +8,14 @@
 - Shortcut: use enums for repeat, no bool
 - Player: make it a pure singleton
 - use limit in database
+- ThreadedObject: virtual function for objects per thread
 
 ## Database
 - table with current version, converter functions
+- properly fix "database is locked"
+  - maybe create a DatabasePool singleton
+  - loads and opens the database for a connection
+  - properly closes and removes them at destruction
 
 ## Filesystem
 - make it more robust
