@@ -3,11 +3,11 @@
 
 #include <QProxyStyle>
 
-#include "core/globals.hpp"
-
 class ClickableStyle : public QProxyStyle
 {
 public:
+    using QProxyStyle::QProxyStyle;
+
     int styleHint(QStyle::StyleHint hint, const QStyleOption *option, const QWidget *widget, QStyleHintReturn *returnData) const;
 };
 

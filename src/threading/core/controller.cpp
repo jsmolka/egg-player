@@ -2,25 +2,20 @@
 
 Controller::Controller(QObject *parent)
     : QObject(parent)
-    , m_running(0)
+    , m_activeWorker(0)
 {
 
 }
 
-int Controller::runningWorker() const
+void Controller::runWorker(Runnable *worker)
 {
-    return m_running;
-}
-
-void Controller::runWorker(Runnable *runnable)
-{
-    connect(runnable, &Runnable::finished, this, &Controller::onWorkerFinished);
-    ++m_running;
-    runnable->run();
+    connect(worker, &Runnable::finished, this, &Controller::onWorkerFinished);
+    ++m_activeWorker;
+    worker->run();
 }
 
 void Controller::onWorkerFinished()
 {
-    if (--m_running == 0)
+    if (--m_activeWorker == 0)
         emit finished();
 }

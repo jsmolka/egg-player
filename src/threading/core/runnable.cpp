@@ -3,16 +3,15 @@
 #include "threading/core/threadpool.hpp"
 
 Runnable::Runnable(QObject *parent)
-    : ThreadedObject(parent)
+    : ThreadObject(parent)
     , m_thread(nullptr)
 {
-    setObjectsPerThread(s_objectsPerThread);
-    moveToThread(ThreadPool::instance()->getSuitibleThread(*this));
+    moveToThread(egg_pool.getSuitibleThread(this));
 }
 
 Runnable::~Runnable()
 {
-    m_thread->setObjectCount(m_thread->objectCount() - 1);
+    m_thread->decrementObjects();
 }
 
 Thread *Runnable::thread()
@@ -20,8 +19,16 @@ Thread *Runnable::thread()
     return m_thread;
 }
 
+int Runnable::objectsPerThread() const
+{
+    return 1;
+}
+
 void Runnable::moveToThread(Thread *thread)
 {
+    if (m_thread)
+        disconnect(m_thread, nullptr, this, nullptr);
+
     m_thread = thread;
 
     connect(thread, &Thread::started, this, &Runnable::work);
@@ -29,10 +36,10 @@ void Runnable::moveToThread(Thread *thread)
     connect(thread, &Thread::interrupted, this, &Runnable::interrupt);
 
     QObject::moveToThread(thread);
-    thread->setObjectCount(thread->objectCount() + 1);
+    thread->incrementObjects();
 
-    if (thread->maxObjectCount() == 0)
-        thread->setMaxObjectCount(objectsPerThread());
+    if (thread->maxObjects() == 0)
+        thread->setMaxObjects(objectsPerThread());
 }
 
 void Runnable::run()

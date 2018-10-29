@@ -12,11 +12,11 @@ class Thread : public QThread
 public:
     explicit Thread(QObject *parent = nullptr);
 
-    void setObjectCount(int count);
-    int objectCount() const;
+    EGG_PPROP(int, objects, setObjects, objects)
+    EGG_PPROP(int, maxObjects, setMaxObjects, maxObjects)
 
-    void setMaxObjectCount(int count);
-    int maxObjectCount() const;
+    void incrementObjects();
+    void decrementObjects();
 
     bool isEmpty() const;
     bool isFull() const;
@@ -28,12 +28,6 @@ public slots:
 signals:
     void interrupted();
     void emptied();
-
-private:
-    static constexpr int s_timeout{2500};
-
-    int m_objectCount;
-    int m_maxObjectCount;
 };
 
 #endif // THREAD_HPP

@@ -1,6 +1,6 @@
-#include "configapp.hpp"
+#include "cfgapp.hpp"
 
-void ConfigApp::setDefaults()
+void cfg::App::setDefaults()
 {
     setDefault("fontSize", 10.25);
     setDefault("log", true);
@@ -8,42 +8,42 @@ void ConfigApp::setDefaults()
     setDefault("minimalWidth", 800);
 }
 
-void ConfigApp::setFontSize(double size)
+void cfg::App::setFontSize(double size)
 {
     set("fontSize", size);
 }
 
-double ConfigApp::fontSize() const
+double cfg::App::fontSize() const
 {
     return get("fontSize").toDouble();
 }
 
-void ConfigApp::setLog(bool log)
+void cfg::App::setLog(bool log)
 {
     set("log", log);
 }
 
-bool ConfigApp::log() const
+bool cfg::App::log() const
 {
     return get("log").toBool();
 }
 
-void ConfigApp::setMinimalHeight(int height)
+void cfg::App::setMinimalHeight(int height)
 {
     set("minimalHeight", height);
 }
 
-int ConfigApp::minimalHeight() const
+int cfg::App::minimalHeight() const
 {
     return scale(get("minimalHeight").toInt());
 }
 
-void ConfigApp::setMinimalWidth(int width)
+void cfg::App::setMinimalWidth(int width)
 {
     set("minimalWidth", width);
 }
 
-int ConfigApp::minimalWidth() const
+int cfg::App::minimalWidth() const
 {
     return scale(get("minimalWidth").toInt());
 }

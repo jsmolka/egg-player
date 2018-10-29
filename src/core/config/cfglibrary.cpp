@@ -1,11 +1,11 @@
-#include "configlibrary.hpp"
+#include "cfglibrary.hpp"
 
 #include <QJsonArray>
 #include <QStandardPaths>
 #include <QVariant>
 #include <QVector>
 
-void ConfigLibrary::setDefaults()
+void cfg::Library::setDefaults()
 {
     setDefault("cellPadding", 10);
     setDefault("itemHeight", 50);
@@ -13,27 +13,27 @@ void ConfigLibrary::setDefaults()
     setDefault("scrollBarWidth", 12);
 }
 
-void ConfigLibrary::setCellPadding(int padding)
+void cfg::Library::setCellPadding(int padding)
 {
     set("cellPadding", padding);
 }
 
-int ConfigLibrary::cellPadding() const
+int cfg::Library::cellPadding() const
 {
     return scale(get("cellPadding").toInt());
 }
 
-void ConfigLibrary::setItemHeight(int height)
+void cfg::Library::setItemHeight(int height)
 {
     set("itemHeight", height);
 }
 
-int ConfigLibrary::itemHeight() const
+int cfg::Library::itemHeight() const
 {
     return scale(get("itemHeight").toInt());
 }
 
-void ConfigLibrary::setPaths(const QStrings &paths)
+void cfg::Library::setPaths(const QStrings &paths)
 {
     QJsonArray array;
     for (const QString &path : paths)
@@ -42,7 +42,7 @@ void ConfigLibrary::setPaths(const QStrings &paths)
     set("paths", QJsonValue(array));
 }
 
-QStrings ConfigLibrary::paths() const
+QStrings cfg::Library::paths() const
 {
     QStrings paths;
     const QJsonArray array = get("paths").toArray();
@@ -52,12 +52,12 @@ QStrings ConfigLibrary::paths() const
     return paths;
 }
 
-void ConfigLibrary::setScrollBarWidth(int width)
+void cfg::Library::setScrollBarWidth(int width)
 {
     set("scrollBarWidth", width);
 }
 
-int ConfigLibrary::scrollBarWidth() const
+int cfg::Library::scrollBarWidth() const
 {
     return scale(get("scrollBarWidth").toInt());
 }

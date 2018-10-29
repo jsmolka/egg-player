@@ -1,13 +1,15 @@
-#ifndef CONFIGLIBRARY_HPP
-#define CONFIGLIBRARY_HPP
+#ifndef CFGLIBRARY_HPP
+#define CFGLIBRARY_HPP
 
 #include "core/types.hpp"
-#include "core/config/configitem.hpp"
+#include "core/config/cfgbase.hpp"
 
-class ConfigLibrary : public ConfigItem
+namespace cfg
+{
+class Library : public Base
 {
 public:
-    using ConfigItem::ConfigItem;
+    using Base::Base;
 
     void setDefaults() override;
 
@@ -23,5 +25,6 @@ public:
     void setScrollBarWidth(int width);
     int scrollBarWidth() const;
 };
+}
 
-#endif // CONFIGLIBRARY_HPP
+#endif // CFGLIBRARY_HPP

@@ -44,7 +44,7 @@ int Player::volume() const
 
 int Player::position()
 {
-    return egg_bass.stream().isValid()
+    return egg_bass.stream().isHandleValid()
         ? egg_bass.stream().position()
         : -1;
 }
@@ -60,7 +60,7 @@ void Player::createPlaylist(Audios *audios, int index)
 void Player::setVolume(int volume)
 {
     volume = qBound(0, volume, 100);
-    if (egg_bass.stream().isValid())
+    if (egg_bass.stream().isHandleValid())
         if (!egg_bass.stream().setVolume(static_cast<float>(volume) / static_cast<float>(cfgPlayer.volumeQuotient())))
             return;
 
@@ -71,7 +71,7 @@ void Player::setVolume(int volume)
 
 void Player::setPosition(int position)
 {
-    if (egg_bass.stream().isValid())
+    if (egg_bass.stream().isHandleValid())
         if (!egg_bass.stream().setPosition(position))
             return;
 
@@ -90,7 +90,7 @@ void Player::decreaseVolume()
 
 void Player::play()
 {
-    if (egg_bass.stream().isValid())
+    if (egg_bass.stream().isHandleValid())
         if (!egg_bass.stream().play())
             return;
 
@@ -100,7 +100,7 @@ void Player::play()
 
 void Player::pause()
 {
-    if (egg_bass.stream().isValid())
+    if (egg_bass.stream().isHandleValid())
         if (!egg_bass.stream().pause())
             return;
 
@@ -134,7 +134,7 @@ void Player::onPlaylistIndexChanged(int index)
 
 void Player::update()
 {
-    if (!m_playing || !egg_bass.stream().isValid())
+    if (!m_playing || !egg_bass.stream().isHandleValid())
         return;
 
     const int position = this->position();

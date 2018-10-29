@@ -1,12 +1,14 @@
-#ifndef CONFIGAPP_HPP
-#define CONFIGAPP_HPP
+#ifndef CFGAPP_HPP
+#define CFGAPP_HPP
 
-#include "core/config/configitem.hpp"
+#include "core/config/cfgbase.hpp"
 
-class ConfigApp : public ConfigItem
+namespace cfg
+{
+class App : public Base
 {
 public:
-    using ConfigItem::ConfigItem;
+    using Base::Base;
 
     void setDefaults() override;
 
@@ -22,5 +24,6 @@ public:
     void setMinimalWidth(int width);
     int minimalWidth() const;
 };
+}
 
-#endif // CONFIGAPP_HPP
+#endif // CFGAPP_HPP

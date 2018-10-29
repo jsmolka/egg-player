@@ -12,7 +12,7 @@ class ExpiringThread : public QObject
 public:
     explicit ExpiringThread(QObject *parent = nullptr);
 
-    Thread *thread() const;
+    Thread *thread();
 
 signals:
     void expired(ExpiringThread *thread);
@@ -23,8 +23,6 @@ private slots:
     void onAppQuitting();
 
 private:
-    static constexpr int s_timeout{30000};
-
     Thread *m_thread;
     QTimer m_timer;
     bool m_quitting;

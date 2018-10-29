@@ -9,6 +9,7 @@
 - Player: make it a pure singleton
 - use limit in database
 - ThreadedObject: virtual function for objects per thread
+- process ThreadObject events differently
 
 ## Database
 - table with current version, converter functions

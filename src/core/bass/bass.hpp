@@ -12,8 +12,8 @@
 class Bass : private BassError
 {
 public:
-    Bass();
-    Bass(const Bass &) = delete;
+    explicit Bass();
+    explicit Bass(const Bass &) = delete;
     ~Bass();
 
     static Bass &instance();

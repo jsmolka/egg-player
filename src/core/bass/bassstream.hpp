@@ -10,12 +10,13 @@
 class BassStream : private BassError
 {
 public:
-    BassStream();
+    explicit BassStream();
 
     HSTREAM handle() const;
     HSYNC sync() const;
 
-    bool isValid() const;
+    bool isHandleValid() const;
+    bool isSyncValid() const;
 
     bool isPlaying() const;
     bool isPaused() const;

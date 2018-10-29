@@ -14,11 +14,11 @@ QString documents(const QString &file)
 
 QString resource(const QString &file)
 {
-#   ifdef QT_DEBUG
+#ifdef QT_DEBUG
     return "resource/" + file;
-#   else
+#else
     return ":/resource/" + file;
-#   endif
+#endif
 }
 
 const QString CSS_BAR           = resource("css/bar.css");
@@ -38,14 +38,14 @@ const QString ICO_VOLUME_LOW    = resource("images/icons/volume-low.png");
 const QString ICO_VOLUME_MEDIUM = resource("images/icons/volume-medium.png");
 const QString ICO_VOLUME_MUTE   = resource("images/icons/volume-mute.png");
 
-const QString IMG_DEFAULT_COVER = resource("images/default-cover.png");
-const QString IMG_EGGPLAYER     = resource("images/egg/egg.png");
+const QString IMG_COVER         = resource("images/default-cover.png");
+const QString IMG_EGG           = resource("images/egg/egg.png");
 
 const QString APP_NAME          = "Egg Player";
-const QString APP_ORG_NAME      = "Egg Inc.";
+const QString APP_ORG           = "Egg Inc.";
 
-const QString SQL_CONNECTION    = "cache";
-const QString SQL_PATH          = documents("cache.db");
+const QString DB_CONNECTION     = "cache";
+const QString DB_PATH           = documents("cache.db");
 
 const QString CFG_PATH          = documents("config.json");
 

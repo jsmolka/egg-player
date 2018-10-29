@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QVector>
 
+#include "core/globals.hpp"
 #include "threading/core/runnable.hpp"
 
 class Controller : public QObject
@@ -13,8 +14,9 @@ class Controller : public QObject
 public:
     explicit Controller(QObject *parent = nullptr);
 
-    int runningWorker() const;
-    void runWorker(Runnable *runnable);
+    EGG_PPROP(int, activeWorker, setActiveWorker, activeWorker)
+
+    void runWorker(Runnable *worker);
 
 public slots:
     virtual void start() = 0;
@@ -24,13 +26,10 @@ signals:
 
 protected:
     template <typename T>
-    static inline QVector<QVector<T>> chunk(const QVector<T> &vector, int n);
+    inline QVector<QVector<T>> chunk(const QVector<T> &vector, int n);
 
 private slots:
     void onWorkerFinished();
-
-private:
-    int m_running;
 };
 
 template <typename T>

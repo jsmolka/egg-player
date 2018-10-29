@@ -18,14 +18,13 @@ Audio *Cache::loadAudio(const QString &file)
         audio->setOutdated(audio->modified() !=  QFileInfo(file).lastModified().toSecsSinceEpoch());
         return audio;
     }
+
+    Audio *audio = new Audio(file);
+    if (audio->isValid())
+        return audio;
     else
-    {
-        Audio *audio = new Audio(file);
-        if (audio->isValid())
-            return audio;
-        else
-            delete audio;
-    }
+        delete audio;
+
     return nullptr;
 }
 

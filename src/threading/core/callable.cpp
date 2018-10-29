@@ -3,35 +3,37 @@
 #include "threading/core/threadpool.hpp"
 
 Callable::Callable(QObject *parent)
-    : ThreadedObject(parent)
+    : ThreadObject(parent)
     , m_thread(nullptr)
 {
-    setObjectsPerThread(s_objectsPerThread);
-    moveToThread(ThreadPool::instance()->getSuitibleThread(*this));
+    moveToThread(egg_pool.getSuitibleThread(this));
 }
 
 Callable::~Callable()
 {
-    m_thread->setObjectCount(m_thread->objectCount() - 1);
+    m_thread->decrementObjects();
 }
 
-Thread *Callable::thread()
+int Callable::objectsPerThread() const
 {
-    return m_thread;
+    return 8;
 }
 
 void Callable::moveToThread(Thread *thread)
 {
+    if (m_thread)
+        disconnect(m_thread, nullptr, this, nullptr);
+
     m_thread = thread;
 
     connect(thread, &Thread::interrupted, this, &Callable::interrupt);
     connect(thread, &Thread::finished, this, &Callable::moveToMainThread);
 
     QObject::moveToThread(thread);
-    thread->setObjectCount(thread->objectCount() + 1);
+    thread->incrementObjects();
 
-    if (thread->maxObjectCount() == 0)
-        thread->setMaxObjectCount(objectsPerThread());
+    if (thread->maxObjects() == 0)
+        thread->setMaxObjects(objectsPerThread());
 
     if (!thread->isRunning())
         thread->start();

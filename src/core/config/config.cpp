@@ -1,13 +1,11 @@
 #include "config.hpp"
 
-#include <QApplication>
 #include <QJsonDocument>
 
 #include "core/constants.hpp"
 #include "core/utils.hpp"
 
-Config::Config(QObject *parent)
-    : QObject(parent)
+Config::Config()
 {
     load();
 
@@ -19,47 +17,48 @@ Config::~Config()
     save();
 }
 
-Config *Config::instance()
+Config &Config::instance()
 {
-    static Config *config = new Config(qApp);
+    static Config config;
+
     return config;
 }
 
-ConfigApp &Config::app()
+cfg::App &Config::app()
 {
     return m_app;
 }
 
-ConfigBar &Config::bar()
+cfg::Bar &Config::bar()
 {
     return m_bar;
 }
 
-ConfigLibrary &Config::library()
+cfg::Library &Config::library()
 {
     return m_library;
 }
 
-ConfigPlayer &Config::player()
+cfg::Player &Config::player()
 {
     return m_player;
 }
 
-ConfigShortcut &Config::shortcut()
+cfg::Shortcut &Config::shortcut()
 {
     return m_shortcut;
 }
 
 void Config::load()
 {
-    QJsonDocument json = QJsonDocument::fromJson(FileUtil::readBytes(CFG_PATH, "{}"));
+    const QJsonDocument json = QJsonDocument::fromJson(FileUtil::readBytes(CFG_PATH, "{}"));
+    const QJsonObject object = json.object();
 
-    QJsonObject object = json.object();
-    m_app = ConfigApp(object.value("app").toObject());
-    m_bar = ConfigBar(object.value("bar").toObject());
-    m_library = ConfigLibrary(object.value("library").toObject());
-    m_player = ConfigPlayer(object.value("player").toObject());
-    m_shortcut = ConfigShortcut(object.value("shortcut").toObject());
+    m_app = cfg::App(object.value("app").toObject());
+    m_bar = cfg::Bar(object.value("bar").toObject());
+    m_library = cfg::Library(object.value("library").toObject());
+    m_player = cfg::Player(object.value("player").toObject());
+    m_shortcut = cfg::Shortcut(object.value("shortcut").toObject());
 }
 
 void Config::save()

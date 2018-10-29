@@ -17,9 +17,14 @@ HSYNC BassStream::sync() const
     return m_sync;
 }
 
-bool BassStream::isValid() const
+bool BassStream::isHandleValid() const
 {
     return m_handle != 0;
+}
+
+bool BassStream::isSyncValid() const
+{
+    return m_sync != 0;
 }
 
 bool BassStream::isPlaying() const
@@ -65,18 +70,18 @@ bool BassStream::create(Audio *audio)
 
     m_handle = BASS_StreamCreateFile(false, Util::toWString(audio->file()), 0, 0, BASS_ASYNCFILE);
 
-    return check(isValid());
+    return check(isHandleValid());
 }
 
 bool BassStream::free()
 {
-    if (!isValid())
+    if (!isHandleValid())
         return true;
 
     if (check(BASS_StreamFree(m_handle)))
         m_handle = 0;
 
-    return !isValid();
+    return !isHandleValid();
 }
 
 bool BassStream::setPosition(int position) const
@@ -125,16 +130,16 @@ bool BassStream::setCallback(SYNCPROC *proc, void *user)
 {
     m_sync = BASS_ChannelSetSync(m_handle, BASS_SYNC_END, 0, proc, user);
 
-    return check(m_sync != 0);
+    return check(isSyncValid());
 }
 
 bool BassStream::removeCallback()
 {
-    if (m_sync == 0)
+    if (!isSyncValid())
         return true;
 
     if (check(BASS_ChannelRemoveSync(m_handle, m_sync)))
         m_sync = 0;
 
-    return m_sync == 0;
+    return !isSyncValid();
 }

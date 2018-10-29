@@ -20,14 +20,14 @@ const extern QString ICO_VOLUME_LOW;
 const extern QString ICO_VOLUME_MEDIUM;
 const extern QString ICO_VOLUME_MUTE;
 
-const extern QString IMG_DEFAULT_COVER;
-const extern QString IMG_EGGPLAYER;
+const extern QString IMG_COVER;
+const extern QString IMG_EGG;
 
 const extern QString APP_NAME;
-const extern QString APP_ORG_NAME;
+const extern QString APP_ORG;
 
-const extern QString SQL_CONNECTION;
-const extern QString SQL_PATH;
+const extern QString DB_CONNECTION;
+const extern QString DB_PATH;
 
 const extern QString CFG_PATH;
 

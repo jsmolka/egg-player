@@ -1,50 +1,53 @@
 #ifndef CONFIG_HPP
 #define CONFIG_HPP
 
-#include <QObject>
+#include "core/config/cfgapp.hpp"
+#include "core/config/cfgbar.hpp"
+#include "core/config/cfglibrary.hpp"
+#include "core/config/cfgplayer.hpp"
+#include "core/config/cfgshortcut.hpp"
 
-#include "core/config/configapp.hpp"
-#include "core/config/configbar.hpp"
-#include "core/config/configlibrary.hpp"
-#include "core/config/configplayer.hpp"
-#include "core/config/configshortcut.hpp"
+#define egg_cfg (Config::instance())
 
-#define cfgApp Config::instance()->app()
-#define cfgBar Config::instance()->bar()
-#define cfgLibrary Config::instance()->library()
-#define cfgPlayer Config::instance()->player()
-#define cfgShortcut Config::instance()->shortcut()
+#define cfg_app (egg_cfg.app())
+#define cfg_bar (egg_cfg.bar())
+#define cfg_library (egg_cfg.library())
+#define cfg_player (egg_cfg.player())
+#define cfg_shortcut (egg_cfg.shortcut())
 
-#define cfg_app (cfgApp)
-#define cfg_bar (cfgBar)
-#define cfg_library (cfgLibrary)
-#define cfg_player (cfgPlayer)
-#define cfg_shortcut (cfgShortcut)
+#define cfgApp (cfg_app)
+#define cfgBar (cfg_bar)
+#define cfgLibrary (cfg_library)
+#define cfgPlayer (cfg_player)
+#define cfgShortcut (cfg_shortcut)
 
-class Config : QObject
+class Config
 {
 public:
-    explicit Config(QObject *parent = nullptr);
+    explicit Config();
+    explicit Config(const Config &) = delete;
     ~Config();
 
-    static Config *instance();
+    static Config &instance();
 
-    ConfigApp &app();
-    ConfigBar &bar();
-    ConfigLibrary &library();
-    ConfigPlayer &player();
-    ConfigShortcut &shortcut();
+    cfg::App &app();
+    cfg::Bar &bar();
+    cfg::Library &library();
+    cfg::Player &player();
+    cfg::Shortcut &shortcut();
+
+    void operator=(const Config &) = delete;
 
 private:
     void load();
     void save();
     void setDefaults();
 
-    ConfigApp m_app;
-    ConfigBar m_bar;
-    ConfigLibrary m_library;
-    ConfigPlayer m_player;
-    ConfigShortcut m_shortcut;
+    cfg::App m_app;
+    cfg::Bar m_bar;
+    cfg::Library m_library;
+    cfg::Player m_player;
+    cfg::Shortcut m_shortcut;
 };
 
 #endif // CONFIG_HPP

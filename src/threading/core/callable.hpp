@@ -1,11 +1,9 @@
 #ifndef CALLABLE_HPP
 #define CALLABLE_HPP
 
-#include <QMetaObject>
+#include "threading/core/threadobject.hpp"
 
-#include "threading/core/threadedobject.hpp"
-
-class Callable : public ThreadedObject
+class Callable : public ThreadObject
 {
     Q_OBJECT
 
@@ -13,16 +11,13 @@ public:
     explicit Callable(QObject *parent = nullptr);
     ~Callable() override;
 
-    Thread *thread();
-
+    int objectsPerThread() const override;
     void moveToThread(Thread *thread) override;
 
 protected:
     void invoke(QObject *object, const char *method, QGenericArgument arg = QGenericArgument(nullptr));
 
 private:
-    static constexpr int s_objectsPerThread{8};
-
     Thread *m_thread;
 };
 

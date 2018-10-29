@@ -4,7 +4,9 @@
 #include <QVector>
 
 #include "threading/core/expiringthread.hpp"
-#include "threading/core/threadedobject.hpp"
+#include "threading/core/threadobject.hpp"
+
+#define egg_pool (ThreadPool::instance())
 
 class ThreadPool : public QObject
 {
@@ -12,10 +14,13 @@ class ThreadPool : public QObject
 
 public:
     explicit ThreadPool(QObject *parent = nullptr);
+    explicit ThreadPool(const ThreadPool &) = delete;
 
-    static ThreadPool *instance();
+    static ThreadPool &instance();
 
-    Thread *getSuitibleThread(const ThreadedObject &object);
+    Thread *getSuitibleThread(ThreadObject *object);
+
+    void operator=(const ThreadPool &) = delete;
 
 public slots:
     void interruptThreads();

@@ -1,20 +1,19 @@
 #include "threadpool.hpp"
 
-#include <QApplication>
-
 ThreadPool::ThreadPool(QObject *parent)
     : QObject(parent)
 {
 
 }
 
-ThreadPool *ThreadPool::instance()
+ThreadPool &ThreadPool::instance()
 {
-    static ThreadPool *pool = new ThreadPool(qApp);
+    static ThreadPool pool;
+
     return pool;
 }
 
-Thread *ThreadPool::getSuitibleThread(const ThreadedObject &object)
+Thread *ThreadPool::getSuitibleThread(ThreadObject *object)
 {
     for (ExpiringThread *expiring : qAsConst(m_threads))
     {
@@ -22,7 +21,7 @@ Thread *ThreadPool::getSuitibleThread(const ThreadedObject &object)
         if (thread->isEmpty())
             return thread;
 
-        if (thread->maxObjectCount() == object.objectsPerThread()
+        if (thread->maxObjects() == object->objectsPerThread()
                 && !thread->isFull())
             return thread;
     }

@@ -1,12 +1,14 @@
-#ifndef CONFIGBAR_HPP
-#define CONFIGBAR_HPP
+#ifndef CFGBAR_HPP
+#define CFGBAR_HPP
 
-#include "core/config/configitem.hpp"
+#include "core/config/cfgbase.hpp"
 
-class ConfigBar : public ConfigItem
+namespace cfg
+{
+class Bar : public Base
 {
 public:
-    using ConfigItem::ConfigItem;
+    using Base::Base;
 
     void setDefaults() override;
 
@@ -36,5 +38,6 @@ public:
 
     int coverSize() const;
 };
+}
 
-#endif // CONFIGBAR_HPP
+#endif // CFGBAR_HPP

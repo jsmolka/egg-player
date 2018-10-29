@@ -1,12 +1,14 @@
-#ifndef CONFIGPLAYER_HPP
-#define CONFIGPLAYER_HPP
+#ifndef CFGPLAYER_HPP
+#define CFGPLAYER_HPP
 
-#include "core/config/configitem.hpp"
+#include "core/config/cfgbase.hpp"
 
-class ConfigPlayer : public ConfigItem
+namespace cfg
+{
+class Player : public Base
 {
 public:
-    using ConfigItem::ConfigItem;
+    using Base::Base;
 
     void setDefaults() override;
 
@@ -28,5 +30,6 @@ public:
     void setVolumeQuotient(int quotient);
     int volumeQuotient() const;
 };
+}
 
-#endif // CONFIGPLAYER_HPP
+#endif // CFGPLAYER_HPP

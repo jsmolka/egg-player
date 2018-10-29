@@ -4,7 +4,7 @@
 
 ExpiringThread::ExpiringThread(QObject *parent)
     : QObject(parent)
-    , m_thread(new Thread)
+    , m_thread(new Thread(this))
     , m_timer(this)
     , m_quitting(false)
 {
@@ -15,7 +15,7 @@ ExpiringThread::ExpiringThread(QObject *parent)
     m_timer.setSingleShot(true);
 }
 
-Thread *ExpiringThread::thread() const
+Thread *ExpiringThread::thread()
 {
     return m_thread;
 }
@@ -38,5 +38,5 @@ void ExpiringThread::onAppQuitting()
 void ExpiringThread::onEmptied()
 {
     if (!m_quitting)
-        m_timer.start(s_timeout);
+        m_timer.start(30000);
 }

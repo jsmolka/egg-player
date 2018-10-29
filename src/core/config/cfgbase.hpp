@@ -1,15 +1,17 @@
-#ifndef CONFIGITEM_HPP
-#define CONFIGITEM_HPP
+#ifndef CFGBASE_HPP
+#define CFGBASE_HPP
 
 #include <QJsonObject>
 #include <QJsonValue>
 
-class ConfigItem
+namespace cfg
+{
+class Base
 {
 public:
-    ConfigItem();
-    explicit ConfigItem(const QJsonObject &object);
-    virtual ~ConfigItem() = default;
+    explicit Base();
+    explicit Base(const QJsonObject &object);
+    virtual ~Base() = default;
 
     QJsonObject object() const;
 
@@ -27,5 +29,6 @@ protected:
 private:
     QJsonObject m_object;
 };
+}
 
-#endif // CONFIGITEM_HPP
+#endif // CFGBASE_HPP

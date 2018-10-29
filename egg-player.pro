@@ -43,11 +43,6 @@ HEADERS += \
     src/core/bass/bassstream.hpp \
     src/core/constants.hpp \
     src/core/config/config.hpp \
-    src/core/config/configapp.hpp \
-    src/core/config/configbar.hpp \
-    src/core/config/configlibrary.hpp \
-    src/core/config/configplayer.hpp \
-    src/core/config/configshortcut.hpp \
     src/core/library.hpp \
     src/core/logger.hpp \
     src/core/player.hpp \
@@ -73,12 +68,10 @@ HEADERS += \
     src/core/filesystem/filesystem.hpp \
     src/core/bimap.hpp \
     src/core/filesystem/uniquefileinfo.hpp \
-    src/core/config/configitem.hpp \
     src/core/shortcut.hpp \
     src/widgets/parts/volumebutton.hpp \
     src/widgets/parts/playpausebutton.hpp \
     src/threading/core/thread.hpp \
-    src/threading/core/threadedobject.hpp \
     src/threading/core/threadpool.hpp \
     src/threading/core/runnable.hpp \
     src/threading/core/callable.hpp \
@@ -102,7 +95,14 @@ HEADERS += \
     src/core/database/dbcover.hpp \
     src/core/database/cache.hpp \
     src/core/types.hpp \
-    src/core/macros.hpp
+    src/core/macros.hpp \
+    src/threading/core/threadobject.hpp \
+    src/core/config/cfgapp.hpp \
+    src/core/config/cfgbar.hpp \
+    src/core/config/cfgbase.hpp \
+    src/core/config/cfglibrary.hpp \
+    src/core/config/cfgplayer.hpp \
+    src/core/config/cfgshortcut.hpp
 
 SOURCES += \
     src/main.cpp \
@@ -112,11 +112,6 @@ SOURCES += \
     src/core/bass/bassstream.cpp \
     src/core/constants.cpp \
     src/core/config/config.cpp \
-    src/core/config/configapp.cpp \
-    src/core/config/configbar.cpp \
-    src/core/config/configlibrary.cpp \
-    src/core/config/configplayer.cpp \
-    src/core/config/configshortcut.cpp \
     src/core/library.cpp \
     src/core/logger.cpp \
     src/core/player.cpp \
@@ -141,12 +136,10 @@ SOURCES += \
     src/core/filesystem/directory.cpp \
     src/core/filesystem/filesystem.cpp \
     src/core/filesystem/uniquefileinfo.cpp \
-    src/core/config/configitem.cpp \
     src/core/shortcut.cpp \
     src/widgets/parts/volumebutton.cpp \
     src/widgets/parts/playpausebutton.cpp \
     src/threading/core/thread.cpp \
-    src/threading/core/threadedobject.cpp \
     src/threading/core/threadpool.cpp \
     src/threading/core/runnable.cpp \
     src/threading/core/callable.cpp \
@@ -165,4 +158,11 @@ SOURCES += \
     src/core/database/dbprovider.cpp \
     src/core/database/dbbase.cpp \
     src/core/database/dbcover.cpp \
-    src/core/database/cache.cpp
+    src/core/database/cache.cpp \
+    src/threading/core/threadobject.cpp \
+    src/core/config/cfgapp.cpp \
+    src/core/config/cfgbar.cpp \
+    src/core/config/cfgbase.cpp \
+    src/core/config/cfglibrary.cpp \
+    src/core/config/cfgplayer.cpp \
+    src/core/config/cfgshortcut.cpp

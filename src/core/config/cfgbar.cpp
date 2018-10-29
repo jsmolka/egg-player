@@ -1,6 +1,6 @@
-#include "configbar.hpp"
+#include "cfgbar.hpp"
 
-void ConfigBar::setDefaults()
+void cfg::Bar::setDefaults()
 {
     setDefault("grooveHeight", 2);
     setDefault("handleSize", 16);
@@ -12,87 +12,87 @@ void ConfigBar::setDefaults()
     setDefault("trackWidth", 240);
 }
 
-void ConfigBar::setGrooveHeight(int height)
+void cfg::Bar::setGrooveHeight(int height)
 {
     set("grooveHeight", height);
 }
 
-int ConfigBar::grooveHeight() const
+int cfg::Bar::grooveHeight() const
 {
     return scale(get("grooveHeight").toInt());
 }
 
-void ConfigBar::setHandleSize(int size)
+void cfg::Bar::setHandleSize(int size)
 {
     set("handleSize", size);
 }
 
-int ConfigBar::handleSize() const
+int cfg::Bar::handleSize() const
 {
     return scale(get("handleSize").toInt());
 }
 
-void ConfigBar::setHeight(int height)
+void cfg::Bar::setHeight(int height)
 {
     set("height", height);
 }
 
-int ConfigBar::height() const
+int cfg::Bar::height() const
 {
     return scale(get("height").toInt());
 }
 
-void ConfigBar::setIconSize(int size)
+void cfg::Bar::setIconSize(int size)
 {
     set("iconSize", size);
 }
 
-int ConfigBar::iconSize() const
+int cfg::Bar::iconSize() const
 {
     return scale(get("iconSize").toInt());
 }
 
-void ConfigBar::setMargin(int margin)
+void cfg::Bar::setMargin(int margin)
 {
     set("margin", margin);
 }
 
-int ConfigBar::margin() const
+int cfg::Bar::margin() const
 {
     return scale(get("margin").toInt());
 }
 
-void ConfigBar::setSpacing(int spacing)
+void cfg::Bar::setSpacing(int spacing)
 {
     set("spacing", spacing);
 }
 
-int ConfigBar::spacing() const
+int cfg::Bar::spacing() const
 {
     return scale(get("spacing").toInt());
 }
 
-void ConfigBar::setTimeWidth(int width)
+void cfg::Bar::setTimeWidth(int width)
 {
     set("timeWidth", width);
 }
 
-int ConfigBar::timeWidth() const
+int cfg::Bar::timeWidth() const
 {
     return scale(get("timeWidth").toInt());
 }
 
-void ConfigBar::setTrackWidth(int width)
+void cfg::Bar::setTrackWidth(int width)
 {
     set("timeWidth", width);
 }
 
-int ConfigBar::trackWidth() const
+int cfg::Bar::trackWidth() const
 {
     return scale(get("trackWidth").toInt());
 }
 
-int ConfigBar::coverSize() const
+int cfg::Bar::coverSize() const
 {
     return height() - 2 * margin();
 }

@@ -71,16 +71,6 @@ bool Cover::isValid() const
     return m_id != 0;
 }
 
-void Cover::setId(int id)
-{
-    m_id = id;
-}
-
-int Cover::id() const
-{
-    return m_id;
-}
-
 QPixmap Cover::pixmap(int size)
 {
     const int id = qMax(1, m_id);

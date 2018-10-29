@@ -1,6 +1,6 @@
-#include "configplayer.hpp"
+#include "cfgplayer.hpp"
 
-void ConfigPlayer::setDefaults()
+void cfg::Player::setDefaults()
 {
     setDefault("loop", false);
     setDefault("previousLimit", 3);
@@ -10,62 +10,62 @@ void ConfigPlayer::setDefaults()
     setDefault("volumeQuotient", 1000);
 }
 
-void ConfigPlayer::setLoop(bool loop)
+void cfg::Player::setLoop(bool loop)
 {
     set("loop", loop);
 }
 
-bool ConfigPlayer::loop() const
+bool cfg::Player::loop() const
 {
     return get("loop").toBool();
 }
 
-void ConfigPlayer::setPreviousLimit(int limit)
+void cfg::Player::setPreviousLimit(int limit)
 {
     set("previousLimit", limit);
 }
 
-int ConfigPlayer::previousLimit() const
+int cfg::Player::previousLimit() const
 {
     return get("previousLimit").toInt();
 }
 
-void ConfigPlayer::setShuffle(bool shuffle)
+void cfg::Player::setShuffle(bool shuffle)
 {
     set("shuffle", shuffle);
 }
 
-bool ConfigPlayer::shuffle() const
+bool cfg::Player::shuffle() const
 {
     return get("shuffle").toBool();
 }
 
-void ConfigPlayer::setUpdateInterval(int interval)
+void cfg::Player::setUpdateInterval(int interval)
 {
     set("updateInterval", interval);
 }
 
-int ConfigPlayer::updateInterval() const
+int cfg::Player::updateInterval() const
 {
     return get("updateInterval").toInt();
 }
 
-void ConfigPlayer::setVolume(int volume)
+void cfg::Player::setVolume(int volume)
 {
     set("volume", volume);
 }
 
-int ConfigPlayer::volume() const
+int cfg::Player::volume() const
 {
     return get("volume").toInt();
 }
 
-void ConfigPlayer::setVolumeQuotient(int quotient)
+void cfg::Player::setVolumeQuotient(int quotient)
 {
     set("volumeQuotient", quotient);
 }
 
-int ConfigPlayer::volumeQuotient() const
+int cfg::Player::volumeQuotient() const
 {
     return get("volumeQuotient").toInt();
 }

@@ -25,7 +25,7 @@ void setup(QApplication &app)
     qsrand(time(0));
 
     app.setApplicationName(APP_NAME);
-    app.setOrganizationName(APP_ORG_NAME);
+    app.setOrganizationName(APP_ORG);
     app.setFont(font(cfgApp.fontSize()));
 
     ePlayer->setVolume(cfgPlayer.volume());

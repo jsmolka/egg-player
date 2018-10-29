@@ -1,9 +1,9 @@
 #ifndef RUNNABLE_HPP
 #define RUNNABLE_HPP
 
-#include "threading/core/threadedobject.hpp"
+#include "threading/core/threadobject.hpp"
 
-class Runnable : public ThreadedObject
+class Runnable : public ThreadObject
 {
     Q_OBJECT
 
@@ -13,6 +13,7 @@ public:
 
     Thread *thread();
 
+    int objectsPerThread() const override;
     void moveToThread(Thread *thread) override;
 
 public slots:
@@ -25,8 +26,6 @@ private slots:
     virtual void work() = 0;
 
 private:
-    static constexpr int s_objectsPerThread{1};
-
     Thread *m_thread;
 };
 

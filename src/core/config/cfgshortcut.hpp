@@ -1,12 +1,14 @@
-#ifndef CONFIGSHORTCUT_HPP
-#define CONFIGSHORTCUT_HPP
+#ifndef CFGSHORTCUT_HPP
+#define CFGSHORTCUT_HPP
 
-#include "core/config/configitem.hpp"
+#include "core/config/cfgbase.hpp"
 
-class ConfigShortcut : public ConfigItem
+namespace cfg
+{
+class Shortcut : public Base
 {
 public:
-    using ConfigItem::ConfigItem;
+    using Base::Base;
 
     void setDefaults() override;
 
@@ -25,5 +27,6 @@ public:
     void setVolumeUp(const QString &shortcut);
     QString volumeUp() const;
 };
+}
 
-#endif // CONFIGSHORTCUT_HPP
+#endif // CFGSHORTCUT_HPP

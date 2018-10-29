@@ -1,6 +1,6 @@
-#include "configshortcut.hpp"
+#include "cfgshortcut.hpp"
 
-void ConfigShortcut::setDefaults()
+void cfg::Shortcut::setDefaults()
 {
     setDefault("next", "Ctrl + F12");
     setDefault("playPause", "Ctrl + F11");
@@ -9,52 +9,52 @@ void ConfigShortcut::setDefaults()
     setDefault("volumeUp", "Ctrl + F8");
 }
 
-void ConfigShortcut::setNext(const QString &shortcut)
+void cfg::Shortcut::setNext(const QString &shortcut)
 {
     set("next", shortcut);
 }
 
-QString ConfigShortcut::next() const
+QString cfg::Shortcut::next() const
 {
     return get("next").toString();
 }
 
-void ConfigShortcut::setPlayPause(const QString &shortcut)
+void cfg::Shortcut::setPlayPause(const QString &shortcut)
 {
     set("playPause", shortcut);
 }
 
-QString ConfigShortcut::playPause() const
+QString cfg::Shortcut::playPause() const
 {
     return get("playPause").toString();
 }
 
-void ConfigShortcut::setPrevious(const QString &shortcut)
+void cfg::Shortcut::setPrevious(const QString &shortcut)
 {
     set("previous", shortcut);
 }
 
-QString ConfigShortcut::previous() const
+QString cfg::Shortcut::previous() const
 {
     return get("previous").toString();
 }
 
-void ConfigShortcut::setVolumeDown(const QString &shortcut)
+void cfg::Shortcut::setVolumeDown(const QString &shortcut)
 {
     set("volumeDown", shortcut);
 }
 
-QString ConfigShortcut::volumeDown() const
+QString cfg::Shortcut::volumeDown() const
 {
     return get("volumeDown").toString();
 }
 
-void ConfigShortcut::setVolumeUp(const QString &shortcut)
+void cfg::Shortcut::setVolumeUp(const QString &shortcut)
 {
     set("volumeUp", shortcut);
 }
 
-QString ConfigShortcut::volumeUp() const
+QString cfg::Shortcut::volumeUp() const
 {
     return get("volumeUp").toString();
 }

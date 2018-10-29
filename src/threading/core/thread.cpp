@@ -2,47 +2,36 @@
 
 Thread::Thread(QObject *parent)
     : QThread(parent)
-    , m_objectCount(0)
-    , m_maxObjectCount(0)
+    , m_objects(0)
+    , m_maxObjects(0)
 {
 
 }
 
-void Thread::setObjectCount(int count)
+void Thread::incrementObjects()
 {
-    m_objectCount = count;
+    ++m_objects;
+}
 
-    if (count == 0)
+void Thread::decrementObjects()
+{
+    if (--m_objects == 0)
     {
         quit();
-        m_maxObjectCount = 0;
+        m_maxObjects = 0;
         emit emptied();
     }
-}
 
-int Thread::objectCount() const
-{
-    return m_objectCount;
-}
-
-void Thread::setMaxObjectCount(int count)
-{
-    m_maxObjectCount = count;
-}
-
-int Thread::maxObjectCount() const
-{
-    return m_maxObjectCount;
 }
 
 bool Thread::isEmpty() const
 {
-    return m_objectCount == 0;
+    return m_objects == 0;
 }
 
 bool Thread::isFull() const
 {
-    return m_objectCount == m_maxObjectCount;
+    return m_objects == m_maxObjects;
 }
 
 void Thread::interrupt()
@@ -53,10 +42,11 @@ void Thread::interrupt()
 void Thread::waitToQuit()
 {
     quit();
-    if (!wait(s_timeout))
-    {
-        LOG("Could not stop thread within %1 ms", s_timeout);
-        terminate();
-        wait();
-    }
+
+    if (wait(2500))
+        return;
+
+    EGG_LOG("Could not stop thread within 2500 ms");
+    terminate();
+    wait();
 }

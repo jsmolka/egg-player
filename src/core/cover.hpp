@@ -9,7 +9,7 @@
 class Cover
 {
 public:
-    Cover();
+    explicit Cover();
     explicit Cover(int id);
 
     static int defaultSize();
@@ -17,11 +17,10 @@ public:
     static QPixmap loadFromFile(const QString &file);
     static QPixmap scale(const QPixmap &pixmap, int size, bool fast = false);
 
+    EGG_PPROP(int, id, setId, id)
+
     void invalidate();
     bool isValid() const;
-
-    void setId(int id);
-    int id() const;
 
     QPixmap pixmap(int size = -1);
     QColor dominantColor();
@@ -35,8 +34,6 @@ private:
     static constexpr int s_size{200};
     static constexpr int s_defaultId{1};
     static constexpr int s_dominantSize{30};
-
-    int m_id;
 };
 
 #endif // COVER_HPP

@@ -26,7 +26,7 @@ EggWidget::EggWidget(QWidget *parent)
 
 void EggWidget::closeEvent(QCloseEvent *event)
 {
-    ThreadPool::instance()->interruptThreads();
+    egg_pool.interruptThreads();
 
     MainWindow::closeEvent(event);
 }
