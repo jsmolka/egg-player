@@ -4,7 +4,6 @@
 #include <QDropEvent>
 #include <QFileInfo>
 
-#include "core/globals.hpp"
 #include "core/library.hpp"
 #include "core/player.hpp"
 #include "core/filesystem/directory.hpp"
@@ -13,15 +12,15 @@
 
 EggWidget::EggWidget(QWidget *parent)
     : MainWindow(parent)
-    , m_bar(this)
-    , m_library(this)
+    , m_bar(new BarWidget(this))
+    , m_library(new LibraryWidget(this))
 {
     setup();
 
-    connect(&m_library, &AudiosWidget::doubleClicked, this, &EggWidget::onLibraryDoubleClicked);
+    connect(m_library, &AudiosWidget::doubleClicked, this, &EggWidget::onLibraryDoubleClicked);
 
-    m_library.setAudios(eLibrary->audios());
-    eLibrary->initialLoad(cfgLibrary.paths());
+    m_library->setAudios(egg_library->audios());
+    egg_library->initialLoad(cfg_library.paths());
 }
 
 void EggWidget::closeEvent(QCloseEvent *event)
@@ -38,17 +37,20 @@ void EggWidget::dragEnterEvent(QDragEnterEvent *event)
 
 void EggWidget::dropEvent(QDropEvent *event)
 {
-    if (event->mimeData()->hasUrls())
-        processDropEvent(event->mimeData());
+    if (!event->mimeData()->hasUrls())
+        return;
+
+    const QStrings files = processDropEvent(event->mimeData());
+    egg_library->loadFiles(files);
 }
 
 void EggWidget::onLibraryDoubleClicked(const QModelIndex &index)
 {
-    ePlayer->createPlaylist(eLibrary->audios()->currentState(), index.row());
-    ePlayer->play();
+    egg_player->createPlaylist(egg_library->audios()->currentState(), index.row());
+    egg_player->play();
 }
 
-void EggWidget::processDropEvent(const QMimeData *data)
+QStrings EggWidget::processDropEvent(const QMimeData *data)
 {
     QStrings files;
     for (const QUrl &url : data->urls())
@@ -56,19 +58,20 @@ void EggWidget::processDropEvent(const QMimeData *data)
         const QString path = url.toLocalFile();
         if (QFileInfo(path).isDir())
         {
-            eLibrary->fileSystem().addPath(path);
-            files << eLibrary->fileSystem().dirs().value(path)->globAudios();
+            egg_library->fileSystem().addPath(path);
+            Directory *dir = egg_library->fileSystem().dirs().value(path);
+            files << dir->globAudios();
         }
         else
         {
             if (path.endsWith(QLatin1String(".mp3"), Qt::CaseInsensitive))
             {
-                eLibrary->fileSystem().watcher().addPath(path);
+                egg_library->fileSystem().watcher().addPath(path);
                 files << path;
             }
         }
     }
-    eLibrary->loadFiles(files);
+    return files;
 }
 
 void EggWidget::setup()
@@ -93,8 +96,8 @@ void EggWidget::setupUi()
     label->setStyleSheet("QLabel {background-color: #666666;}");
 
     BorderLayout *layout = new BorderLayout(0, this);
-    layout->addWidget(&m_library, BorderLayout::Center);
+    layout->addWidget(m_library, BorderLayout::Center);
     layout->addWidget(label, BorderLayout::West);
-    layout->addWidget(&m_bar, BorderLayout::South);
+    layout->addWidget(m_bar, BorderLayout::South);
     setLayout(layout);
 }

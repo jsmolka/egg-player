@@ -146,7 +146,7 @@ void BarWidget::onPlayerAudioChanged(Audio *audio)
     m_currentTimeLabel.setText(Duration(0).toString());
     m_totalTimeLabel.setText(audio->duration().toString());
 
-    startTransition(audio->cover().dominantColor());
+    startTransition(audio->cover().color());
 }
 
 void BarWidget::onPlayerPositionChanged(int position)
@@ -196,7 +196,7 @@ QString BarWidget::trackLabelText(Audio *audio) const
 void BarWidget::setup()
 {
     setAutoFillBackground(true);
-    setColor(Cover::defaultCover().dominantColor());
+    setColor(Cover::defaultCover().color());
     setFixedHeight(cfg_bar.height());
 
     setupCss();

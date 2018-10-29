@@ -24,43 +24,43 @@ void AudioLoader::load(const QString &file)
     emit loaded(audio);
 }
 
-bool AudioLoader::insertAudio(Audio *audio)
+bool AudioLoader::insertAudio(Audio *audio) const
 {
     if (isInterrupted())
         return false;
 
-    if (!audio->isCached())
-        Cache::insertAudio(audio);
+    if (audio->isCached())
+        return true;
 
-    return true;
+    return Cache::insertAudio(audio);
 }
 
-bool AudioLoader::updateAudio(Audio *audio)
+bool AudioLoader::updateAudio(Audio *audio) const
 {
     if (isInterrupted())
         return false;
 
-    if (audio->isOutdated())
-    {
-        if (!audio->update())
-            return false;
+    if (!audio->isOutdated())
+        return true;
 
-        audio->cover().invalidate();
-        Cache::updateAudio(audio);
-    }
-    return true;
+    if (!audio->update())
+        return false;
+
+    audio->cover().invalidate();
+    return Cache::updateAudio(audio);
 }
 
-bool AudioLoader::loadCover(Audio *audio)
+bool AudioLoader::loadCover(Audio *audio) const
 {
     if (isInterrupted())
         return false;
 
-    if (!audio->cover().isValid())
-    {
-        const QPixmap cover = Cover::loadFromFile(audio->file());
-        if (!cover.isNull())
-            Cache::updateAudioCover(audio, cover);
-    }
-    return true;
+    if (audio->cover().isValid())
+        return true;
+
+    const QPixmap cover = Cover::loadFromFile(audio->file());
+    if (cover.isNull())
+        return false;
+
+    return Cache::updateAudioCover(audio, cover);
 }

@@ -15,16 +15,6 @@ CoverLoader::CoverLoader(Audio::vector audios, QObject *parent)
 
 }
 
-void CoverLoader::setAudios(const Audio::vector &audios)
-{
-    m_audios = audios;
-}
-
-Audio::vector CoverLoader::audios() const
-{
-    return m_audios;
-}
-
 void CoverLoader::start()
 {
 #ifdef QT_DEBUG

@@ -23,8 +23,9 @@ Audio::Audio(const QString &file, QObject *parent)
 
 void Audio::setFile(const QString &file)
 {
-    m_file = file;
     m_tag.setFile(file);
+
+    m_file = file;
 }
 
 QString Audio::file() const
@@ -39,7 +40,7 @@ Tag &Audio::tag()
 
 Tag &Audio::tag() const
 {
-    return const_cast<Tag &>(m_tag);
+    return const_cast<Tag &>(static_cast<Audio const &>(*this).tag());
 }
 
 Cover &Audio::cover()
@@ -49,7 +50,7 @@ Cover &Audio::cover()
 
 Cover &Audio::cover() const
 {
-    return const_cast<Cover &>(m_cover);
+    return const_cast<Cover &>(static_cast<Audio const &>(*this).cover());
 }
 
 Duration &Audio::duration()
@@ -59,14 +60,21 @@ Duration &Audio::duration()
 
 Duration &Audio::duration() const
 {
-    return const_cast<Duration &>(m_duration);
+    return const_cast<Duration &>(static_cast<Audio const &>(*this).duration());
 }
 
 bool Audio::update()
 {
     m_valid = m_tag.read();
     m_duration.setSecs(m_tag.duration());
-    m_modified = QFileInfo(m_file).lastModified().toSecsSinceEpoch();
+
+    const QDateTime modified = QFileInfo(m_file).lastModified();
+    if (modified.isNull() || !modified.isValid())
+    {
+        EGG_LOG("Cannot get last modification time %1", m_file);
+        return false;
+    }
+    m_modified = modified.toSecsSinceEpoch();
 
     return m_valid;
 }

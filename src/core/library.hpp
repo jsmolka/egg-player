@@ -26,6 +26,9 @@ public:
     static Library *instance();
 
     Audios *audios();
+    Audios *audios() const;
+
+    FileSystem &fileSystem();
     FileSystem &fileSystem() const;
 
     void initialLoad(const QStrings &paths);

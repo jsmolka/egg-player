@@ -5,8 +5,8 @@
 #include <QVector>
 
 #include <taglib/attachedpictureframe.h>
-#include <taglib/id3v2tag.h>
 #include <taglib/id3v2frame.h>
+#include <taglib/id3v2tag.h>
 #include <taglib/mpegfile.h>
 
 #include "core/tag.hpp"
@@ -26,12 +26,12 @@ Cover::Cover(int id)
 
 int Cover::defaultSize()
 {
-    return s_size;
+    return 200;
 }
 
 Cover Cover::defaultCover()
 {
-    return Cover(s_defaultId);
+    return Cover(1);
 }
 
 QPixmap Cover::loadFromFile(const QString &file)
@@ -50,25 +50,30 @@ QPixmap Cover::loadFromFile(const QString &file)
     }
     if (cover.isNull())
     {
-        LOG("Cannot read cover %1", file);
-        cover = loadFromCache(s_defaultId);
+        EGG_LOG("Cannot read cover %1", file);
+        cover = loadFromCache(defaultSize());
     }
-    return scale(coverify(cover), s_size);
+    return scale(coverify(cover), defaultSize());
 }
 
-QPixmap Cover::scale(const QPixmap &pixmap, int size, bool fast)
+QPixmap Cover::scale(const QPixmap &pixmap, int size, ScalePolicy policy)
 {
-    return pixmap.scaled(size, size, Qt::KeepAspectRatio, fast ? Qt::FastTransformation : Qt::SmoothTransformation);
-}
+    Qt::TransformationMode mode =
+        policy == ScalePolicy::Smooth
+            ? Qt::SmoothTransformation
+            : Qt::FastTransformation;
 
-void Cover::invalidate()
-{
-    m_id = 0;
+    return pixmap.scaled(size, size, Qt::KeepAspectRatio, mode);
 }
 
 bool Cover::isValid() const
 {
     return m_id != 0;
+}
+
+void Cover::invalidate()
+{
+    m_id = 0;
 }
 
 QPixmap Cover::pixmap(int size)
@@ -82,16 +87,24 @@ QPixmap Cover::pixmap(int size)
     return size == -1 ? pixmap : scale(pixmap, size);
 }
 
-QColor Cover::dominantColor()
+QColor Cover::color()
 {
     const int id = qMax(1, m_id);
     static QHash<int, QColor> cache;
     if (!cache.contains(id))
     {
-        const QColor raw = rawDominantColor(scale(pixmap(), s_dominantSize, true).toImage());
-        cache.insert(id, adjustDominantColor(raw).toRgb());
+        const QColor raw = computeColor(scale(pixmap(), 30, ScalePolicy::Fast).toImage());
+        cache.insert(id, adjustColor(raw).toRgb());
     }
     return cache.value(id);
+}
+
+QPixmap Cover::loadFromCache(int id)
+{
+    DbCover dbCover;
+    dbCover.getById(id);
+
+    return dbCover.cover();
 }
 
 QPixmap Cover::coverify(const QPixmap &cover)
@@ -114,31 +127,10 @@ QPixmap Cover::coverify(const QPixmap &cover)
     return cover;
 }
 
-QPixmap Cover::loadFromCache(int id)
-{
-    DbCover dbCover;
-    dbCover.getById(id);
-
-    return dbCover.cover();
-}
-
-QColor Cover::rawDominantColor(const QImage &image)
+QColor Cover::computeColor(const QImage &image)
 {
     constexpr int range = 60;
     constexpr int limit = 25;
-
-    struct HsvRange
-    {
-        int mix() const
-        {
-            return h + 2 * s + 3 * v;
-        }
-
-        int h;
-        int s;
-        int v;
-        int c;
-    };
 
     QVector<HsvRange> colorful(range);
     QVector<HsvRange> grey(range);
@@ -174,33 +166,32 @@ QColor Cover::rawDominantColor(const QImage &image)
             ++grey[index].c;
         }
     }
-
-    constexpr static auto dominantColor = [](const QVector<HsvRange> &hsvs) -> QColor
-    {
-        int max = 0;
-        HsvRange most = hsvs[0];
-        for (const HsvRange &hsv : hsvs)
-        {
-            const int temp = hsv.mix();
-            if (temp > max)
-            {
-                most = hsv;
-                max = temp;
-            }
-        }
-
-        const float c = static_cast<float>(most.c);
-        const int h = qRound(static_cast<float>(most.h) / c);
-        const int s = qRound(static_cast<float>(most.s) / c);
-        const int v = qRound(static_cast<float>(most.v) / c);
-
-        return QColor::fromHsv(h, s, v);
-    };
-
     return dominantColor(isColorful ? colorful : grey);
 }
 
-QColor Cover::adjustDominantColor(const QColor &color)
+QColor Cover::dominantColor(const QVector<HsvRange> &ranges)
+{
+    int max = 0;
+    HsvRange dominant = ranges.first();
+    for (const HsvRange &range : ranges)
+    {
+        const int temp = range.h + 2 * range.s + 3 * range.v;
+        if (temp > max)
+        {
+            dominant = range;
+            max = temp;
+        }
+    }
+
+    const float c = static_cast<float>(dominant.c);
+    const int h = qRound(static_cast<float>(dominant.h) / c);
+    const int s = qRound(static_cast<float>(dominant.s) / c);
+    const int v = qRound(static_cast<float>(dominant.v) / c);
+
+    return QColor::fromHsv(h, s, v);
+}
+
+QColor Cover::adjustColor(const QColor &color)
 {
     const qreal hue = color.hsvHueF();
     const qreal saturation = qMin(color.hsvSaturationF(), 0.8);

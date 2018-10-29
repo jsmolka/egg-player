@@ -1,7 +1,6 @@
 #ifndef DBINITIALIZER_HPP
 #define DBINITIALIZER_HPP
 
-#include "core/globals.hpp"
 #include "core/database/dbbase.hpp"
 
 class DbInitializer : public DbBase

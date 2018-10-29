@@ -12,6 +12,8 @@ class Directory : public QObject
     Q_OBJECT
 
 public:
+    enum GlobPolicy {Recursive, Shallow};
+
     explicit Directory(QObject *parent = nullptr);
     explicit Directory(const QString &path, QObject *parent = nullptr);
 
@@ -23,7 +25,7 @@ public:
 
     void parse();
 
-    QStrings globAudios(bool recursive = true) const;
+    QStrings globAudios(GlobPolicy policy = GlobPolicy::Recursive) const;
     QStrings processChanges();
 
 signals:

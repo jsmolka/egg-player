@@ -46,7 +46,7 @@ QStrings FileSystem::globAudios() const
 {
     QStrings result;
     for (Directory *dir : qAsConst(m_dirs))
-        result << dir->globAudios(false);
+        result << dir->globAudios(Directory::GlobPolicy::Shallow);
 
     return result;
 }

@@ -6,7 +6,7 @@
 QSqlDatabase DbProvider::db()
 {
     if (!QSqlDatabase::isDriverAvailable("QSQLITE"))
-        LOG("QSQLITE driver not available");
+        EGG_LOG("QSQLITE driver not available");
 
     const QString connection = threadConnection();
     if (!QSqlDatabase::contains(connection))
@@ -17,7 +17,7 @@ QSqlDatabase DbProvider::db()
     if (!db.isOpen())
     {
         if (!db.open())
-            LOG("Cannot open database");
+            EGG_LOG("Cannot open database");
     }
     return db;
 }

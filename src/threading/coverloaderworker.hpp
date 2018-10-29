@@ -13,14 +13,13 @@ public:
     explicit CoverLoaderWorker(QObject *parent = nullptr);
     explicit CoverLoaderWorker(const Audio::vector &audios, QObject *parent = nullptr);
 
-    void setAudios(const Audio::vector &audios);
-    Audio::vector audios() const;
+    EGG_CPROP(Audio::vector, audios, setAudios, audios)
 
 private slots:
     void work() override;
 
 private:
-    Audio::vector m_audios;
+    bool loadCover(Audio *audio);
 };
 
 #endif // COVERLOADERWORKER_HPP

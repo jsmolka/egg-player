@@ -59,16 +59,16 @@ void Directory::parse()
     emit parsed(this);
 }
 
-QStrings Directory::globAudios(bool recursive) const
+QStrings Directory::globAudios(GlobPolicy policy) const
 {
     QStrings files;
     for (const QString &file : qAsConst(m_files))
         files << file;
 
-    if (recursive)
+    if (policy == GlobPolicy::Recursive)
     {
         for (Directory *dir : qAsConst(m_dirs))
-            files << dir->globAudios(recursive);
+            files << dir->globAudios(policy);
     }
     return files;
 }
@@ -92,7 +92,7 @@ void Directory::processRemovedDirChanges(QStrings &changes)
         Directory *dir = iter.value();
         if (!dir->exists())
         {
-            changes << dir->globAudios(false);
+            changes << dir->globAudios(GlobPolicy::Shallow);
             iter = m_dirs.erase(iter);
             emit removed(dir);
         }
@@ -126,7 +126,7 @@ void Directory::processFileChanges(QStrings &changes)
 {
     if (!exists())
     {
-        changes << globAudios(false);
+        changes << globAudios(GlobPolicy::Shallow);
         emit removed(this);
         return;
     }

@@ -15,29 +15,26 @@ CoverLoaderWorker::CoverLoaderWorker(const Audio::vector &audios, QObject *paren
 
 }
 
-void CoverLoaderWorker::setAudios(const Audio::vector &audios)
-{
-    m_audios = audios;
-}
-
-Audio::vector CoverLoaderWorker::audios() const
-{
-    return m_audios;
-}
-
 void CoverLoaderWorker::work()
 {
     for (Audio *audio : qAsConst(m_audios))
     {
-        if (isInterrupted())
+        if (!loadCover(audio))
             return;
-
-        if (!audio->cover().isValid())
-        {
-            const QPixmap cover = Cover::loadFromFile(audio->file());
-            if (!cover.isNull())
-                Cache::updateAudioCover(audio, cover);
-        }
     }
     emit finished();
+}
+
+bool CoverLoaderWorker::loadCover(Audio *audio)
+{
+    if (isInterrupted())
+        return false;
+
+    if (!audio->cover().isValid())
+    {
+        const QPixmap cover = Cover::loadFromFile(audio->file());
+        if (!cover.isNull())
+            Cache::updateAudioCover(audio, cover);
+    }
+    return true;
 }

@@ -30,9 +30,19 @@ Audios *Library::audios()
     return &m_audios;
 }
 
+Audios *Library::audios() const
+{
+    return const_cast<Audios *>(static_cast<Library const &>(*this).audios());
+}
+
+FileSystem &Library::fileSystem()
+{
+    return m_fileSystem;
+}
+
 FileSystem &Library::fileSystem() const
 {
-    return const_cast<FileSystem &>(m_fileSystem);
+    return const_cast<FileSystem &>(static_cast<Library const &>(*this).fileSystem());
 }
 
 void Library::initialLoad(const QStrings &paths)

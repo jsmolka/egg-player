@@ -1,5 +1,9 @@
 # Things to do
 
+## Notes
+- Callable (and other threading classes)
+  - think about private / protected / public
+
 ## Rework
 - replace const static with static const
 - proper style for ifdef in constants
@@ -11,15 +15,25 @@
 - ThreadedObject: virtual function for objects per thread
 - process ThreadObject events differently
 
-## Database
+## Config Rework
+- create different config structure with sub objects
+- create
+  - RootObject
+  - SubObject
+- use a structure to properly store and loads objects
+- maybe create a custom utils class with macros etc.
+
+## Database Rework
 - table with current version, converter functions
 - properly fix "database is locked"
   - maybe create a DatabasePool singleton
   - loads and opens the database for a connection
   - properly closes and removes them at destruction
+- proper query binding
 
-## Filesystem
+## Filesystem Rework
 - make it more robust
+- split into more and better classes
 - prevent crashes when adding lots of files
 
 ## User interface

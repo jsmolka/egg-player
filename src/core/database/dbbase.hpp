@@ -3,21 +3,19 @@
 
 #include <QSqlDatabase>
 
-#include "core/globals.hpp"
 #include "core/database/sqlquery.hpp"
 
 class DbBase
 {
 public:
-    DbBase();
+    explicit DbBase();
+    explicit DbBase(QSqlDatabase db);
     virtual ~DbBase() = default;
 
 protected:
-    QSqlDatabase &db();
     SqlQuery &query();
 
 private:    
-    QSqlDatabase m_db;
     SqlQuery m_query;
 };
 

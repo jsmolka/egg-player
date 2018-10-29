@@ -18,9 +18,9 @@ signals:
     void loaded(Audio *audio);
 
 private:
-    bool insertAudio(Audio *audio);
-    bool updateAudio(Audio *audio);
-    bool loadCover(Audio *audio);
+    bool insertAudio(Audio *audio) const;
+    bool updateAudio(Audio *audio) const;
+    bool loadCover(Audio *audio) const;
 };
 
 #endif // AUDIOLOADER_HPP

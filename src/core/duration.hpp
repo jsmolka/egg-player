@@ -3,19 +3,17 @@
 
 #include <QString>
 
+#include "core/globals.hpp"
+
 class Duration
 {
 public:
-    Duration();
+    explicit Duration();
     explicit Duration(int secs);
 
-    void setSecs(int secs);
-    int secs() const;
+    EGG_PPROP(int, secs, setSecs, secs)
 
     QString toString() const;
-
-private:
-    int m_secs;
 };
 
 #endif // DURATION_HPP

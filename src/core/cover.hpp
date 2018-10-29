@@ -9,31 +9,37 @@
 class Cover
 {
 public:
+    enum ScalePolicy {Fast, Smooth};
+
     explicit Cover();
     explicit Cover(int id);
 
     static int defaultSize();
     static Cover defaultCover();
     static QPixmap loadFromFile(const QString &file);
-    static QPixmap scale(const QPixmap &pixmap, int size, bool fast = false);
+    static QPixmap scale(const QPixmap &pixmap, int size, ScalePolicy policy = ScalePolicy::Smooth);
 
     EGG_PPROP(int, id, setId, id)
 
-    void invalidate();
     bool isValid() const;
+    void invalidate();
 
     QPixmap pixmap(int size = -1);
-    QColor dominantColor();
+    QColor color();
 
 private:
-    static QPixmap coverify(const QPixmap &cover);
+    struct HsvRange
+    {
+        int h;
+        int s;
+        int v;
+        int c;
+    };
     static QPixmap loadFromCache(int id);
-    static QColor rawDominantColor(const QImage &image);
-    static QColor adjustDominantColor(const QColor &color);
-
-    static constexpr int s_size{200};
-    static constexpr int s_defaultId{1};
-    static constexpr int s_dominantSize{30};
+    static QPixmap coverify(const QPixmap &cover);
+    static QColor computeColor(const QImage &image);
+    static QColor dominantColor(const QVector<HsvRange> &ranges);
+    static QColor adjustColor(const QColor &color);
 };
 
 #endif // COVER_HPP

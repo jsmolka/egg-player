@@ -13,14 +13,10 @@ public:
     explicit CoverLoader(QObject *parent = nullptr);
     explicit CoverLoader(Audio::vector audios, QObject *parent = nullptr);
 
-    void setAudios(const Audio::vector &audios);
-    Audio::vector audios() const;
+    EGG_CPROP(Audio::vector, audios, setAudios, audios)
 
 public slots:
     void start() override;
-
-private:
-    Audio::vector m_audios;
 };
 
 #endif // COVERLOADER_HPP
