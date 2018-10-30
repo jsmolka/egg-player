@@ -11,15 +11,15 @@ class AudioUpdater : public Callable
 public:
     using Callable::Callable;
 
-signals:
-    void updated(Audio *audio);
-
 public slots:
     void update(Audio *audio);
 
+signals:
+    void updated(Audio *audio);
+
 private:
-    bool updateAudio(Audio *audio);
-    bool loadCover(Audio *audio);
+    bool updateAudio(Audio *audio) const;
+    bool loadCover(Audio *audio) const;
 };
 
 #endif // AUDIOUPDATER_HPP

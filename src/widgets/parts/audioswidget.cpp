@@ -2,6 +2,8 @@
 
 #include <QHeaderView>
 
+#include "core/globals.hpp"
+
 AudiosWidget::AudiosWidget(QWidget *parent)
     : AudiosWidget(nullptr, parent)
 {
@@ -10,7 +12,7 @@ AudiosWidget::AudiosWidget(QWidget *parent)
 
 AudiosWidget::AudiosWidget(Audios *audios, QWidget *parent)
     : TableWidget(parent)
-    , m_audios(audios)
+    , m_audios(nullptr)
 {
     setup();
 
@@ -24,13 +26,13 @@ void AudiosWidget::setAudios(Audios *audios)
         disconnect(m_audios, nullptr, this, nullptr);
         clearContents();
     }
+    m_audios = audios;
 
     if (!audios)
         return;
 
-    m_audios = audios;
-    connect(audios, &Audios::inserted, this, &AudiosWidget::onAudiosInserted);
     connect(audios, &Audios::updated, this, &AudiosWidget::onAudiosUpdated);
+    connect(audios, &Audios::inserted, this, &AudiosWidget::onAudiosInserted);
     connect(audios, &Audios::removed, this, &AudiosWidget::onAudiosRemoved);
     connect(audios, &Audios::moved, this, &AudiosWidget::onAudiosMoved);
 
@@ -64,9 +66,8 @@ void AudiosWidget::onAudiosUpdated(int row)
     {
         const Column column = m_columns.at(col);
 
-        QTableWidgetItem *item = takeItem(row, col);
+        QTableWidgetItem *item = itemAt(row, col);
         item->setText(audioInfo(audio, column.info));
-        setItem(row, col, item);
     }
 }
 
@@ -90,7 +91,7 @@ void AudiosWidget::setup()
 {
     horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
     verticalHeader()->setSectionResizeMode(QHeaderView::Fixed);
-    verticalHeader()->setDefaultSectionSize(cfgLibrary.itemHeight());
+    verticalHeader()->setDefaultSectionSize(cfg_library.itemHeight());
 
     setupCss();
 }
@@ -98,8 +99,8 @@ void AudiosWidget::setup()
 void AudiosWidget::setupCss()
 {
     setStyleSheet(FileUtil::read(CSS_LIBRARY)
-        .replace("cell-padding", QString::number(cfgLibrary.cellPadding()))
-        .replace("scrollbar-width", QString::number(cfgLibrary.scrollBarWidth()))
+        .replace("cell-padding", QString::number(cfg_library.cellPadding()))
+        .replace("scrollbar-width", QString::number(cfg_library.scrollBarWidth()))
     );
 }
 

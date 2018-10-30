@@ -1,5 +1,6 @@
 #include "audioupdater.hpp"
 
+#include "core/cover.hpp"
 #include "core/database/cache.hpp"
 
 void AudioUpdater::update(Audio *audio)
@@ -13,7 +14,7 @@ void AudioUpdater::update(Audio *audio)
     emit updated(audio);
 }
 
-bool AudioUpdater::updateAudio(Audio *audio)
+bool AudioUpdater::updateAudio(Audio *audio) const
 {
     if (isInterrupted())
         return false;
@@ -22,19 +23,17 @@ bool AudioUpdater::updateAudio(Audio *audio)
         return false;
 
     audio->cover().invalidate();
-    Cache::updateAudio(audio);
-
-    return true;
+    return Cache::updateAudio(audio);
 }
 
-bool AudioUpdater::loadCover(Audio *audio)
+bool AudioUpdater::loadCover(Audio *audio) const
 {
     if (isInterrupted())
         return false;
 
     const QPixmap cover = Cover::loadFromFile(audio->file());
-    if (!cover.isNull())
-        Cache::updateAudioCover(audio, cover);
+    if (cover.isNull())
+        return false;
 
-    return true;
+    return Cache::updateAudioCover(audio, cover);
 }

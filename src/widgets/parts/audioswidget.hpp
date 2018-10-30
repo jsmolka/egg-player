@@ -5,7 +5,6 @@
 
 #include "core/audio.hpp"
 #include "core/audios.hpp"
-#include "core/globals.hpp"
 #include "widgets/parts/tablewidget.hpp"
 
 class AudiosWidget : public TableWidget
@@ -36,16 +35,15 @@ private:
         AudioInfo info;
         Qt::Alignment align;
     };
-    using Columns = QVector<Column>;
-
     static QString audioInfo(Audio *audio, AudioInfo info);
+
     void insert(Audio *audio, int row);
 
     void setup();
     void setupCss();
 
     Audios *m_audios;
-    Columns m_columns;
+    QVector<Column> m_columns;
 };
 
 #endif // AUDIOSWIDGET_HPP
