@@ -3,6 +3,9 @@
 ## Notes
 - Callable (and other threading classes)
   - think about private / protected / public
+- Audios
+  - delete current state in player / playlist
+  - use smart pointer for automatic deletion
 
 ## Rework
 - replace const static with static const

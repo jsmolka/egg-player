@@ -97,7 +97,7 @@ void Library::onFileSystemRenamed(Audio *audio, const QString &to)
 
 void Library::onFileSystemRemoved(Audio *audio)
 {
-    m_audios.remove(audio);
+    m_audios.removeAudio(audio);
 }
 
 int Library::lowerBound(Audio *audio)

@@ -15,38 +15,38 @@ public:
 
     Audio::vector vector() const;
 
-    Audio *at(int index);
-    Audio *at(int index) const;
-    Audio *first() const;
-    Audio *last() const;
+    using Audio::vector::at;
+    using Audio::vector::first;
+    using Audio::vector::last;
 
-    bool isEmpty() const;
+    using Audio::vector::size;
+    using Audio::vector::isEmpty;
+    using Audio::vector::indexOf;
 
-    int size() const;
-    int indexOf(Audio *audio, int from = 0) const;
-
-    void clear();
-    void reserve(int size);
+    using Audio::vector::clear;
+    using Audio::vector::reserve;
 
     void insert(int index, Audio *audio);
     void append(Audio *audio);
     void remove(int index);
-    void remove(Audio *audio);
     void move(int from, int to);
 
     Audios::iterator insert(Audios::iterator before, Audio *audio);
     Audios::iterator erase(Audios::iterator position);
 
-    Audios::iterator begin();
-    Audios::iterator end();
+    using Audio::vector::begin;
+    using Audio::vector::end;
 
-    Audios::const_iterator cbegin() const;
-    Audios::const_iterator cend() const;
+    using Audio::vector::cbegin;
+    using Audio::vector::cend;
 
     Audios &operator<<(Audio *audio);
-    Audio *operator[](int index);
+    using Audio::vector::operator[];
 
     Audios *currentState();
+
+public slots:
+    void removeAudio(Audio *audio);
 
 signals:
     void inserted(int index);
@@ -54,9 +54,6 @@ signals:
     void removedAudio(Audio *audio);
     void moved(int from, int to);
     void updated(int index);
-
-private slots:
-    void onParentAudioRemoved(Audio *audio);
 };
 
 #endif // AUDIOS_HPP

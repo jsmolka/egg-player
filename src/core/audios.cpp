@@ -18,51 +18,6 @@ Audio::vector Audios::vector() const
     return static_cast<Audio::vector>(*this);
 }
 
-Audio *Audios::at(int index)
-{
-    return (*this)[index];
-}
-
-Audio *Audios::at(int index) const
-{
-    return Audio::vector::at(index);
-}
-
-Audio *Audios::first() const
-{
-    return Audio::vector::first();
-}
-
-Audio *Audios::last() const
-{
-    return Audio::vector::last();
-}
-
-bool Audios::isEmpty() const
-{
-    return Audio::vector::isEmpty();
-}
-
-int Audios::size() const
-{
-    return Audio::vector::size();
-}
-
-int Audios::indexOf(Audio *audio, int index) const
-{
-    return Audio::vector::indexOf(audio, index);
-}
-
-void Audios::clear()
-{
-    Audio::vector::clear();
-}
-
-void Audios::reserve(int size)
-{
-    Audio::vector::reserve(size);
-}
-
 void Audios::insert(int index, Audio *audio)
 {
     audio->setParent(this);
@@ -83,14 +38,6 @@ void Audios::remove(int index)
     Audio::vector::remove(index);
     emit removed(index);
     emit removedAudio(audio);
-    audio->deleteLater();
-}
-
-void Audios::remove(Audio *audio)
-{
-    const int index = indexOf(audio);
-    if (index != -1)
-        remove(index);
 }
 
 void Audios::move(int from, int to)
@@ -104,6 +51,7 @@ Audios::iterator Audios::insert(Audios::iterator before, Audio *audio)
     audio->setParent(this);
     auto position = Audio::vector::insert(before, audio);
     emit inserted(static_cast<int>(position - begin()));
+
     return position;
 }
 
@@ -112,49 +60,28 @@ Audios::iterator Audios::erase(Audios::iterator position)
     auto next = Audio::vector::erase(position);
     emit removed(static_cast<int>(position - begin()));
     emit removedAudio(*position);
-    (*position)->deleteLater();
+
     return next;
-}
-
-Audios::iterator Audios::begin()
-{
-    return Audio::vector::begin();
-}
-
-Audios::iterator Audios::end()
-{
-    return Audio::vector::end();
-}
-
-Audios::const_iterator Audios::cbegin() const
-{
-    return Audio::vector::cbegin();
-}
-
-Audios::const_iterator Audios::cend() const
-{
-    return Audio::vector::cend();
 }
 
 Audios &Audios::operator<<(Audio *audio)
 {
     append(audio);
-    return *this;
-}
 
-Audio *Audios::operator[](int index)
-{
-    return Audio::vector::operator[](index);
+    return *this;
 }
 
 Audios *Audios::currentState()
 {
-    Audios *audios = new Audios(*this, this);
-    connect(this, &Audios::removedAudio, audios, &Audios::onParentAudioRemoved);
-    return audios;
+    Audios *state = new Audios(*this, this);
+    connect(this, &Audios::removedAudio, state, &Audios::removeAudio);
+
+    return state;
 }
 
-void Audios::onParentAudioRemoved(Audio *audio)
+void Audios::removeAudio(Audio *audio)
 {
-    remove(audio);
+    const int index = indexOf(audio);
+    if (index != -1)
+        remove(index);
 }
