@@ -7,6 +7,7 @@
 #include "core/audio.hpp"
 #include "core/shortcut.hpp"
 #include "widgets/parts/iconbutton.hpp"
+#include "widgets/parts/lockableiconbutton.hpp"
 #include "widgets/parts/playpausebutton.hpp"
 #include "widgets/parts/slider.hpp"
 #include "widgets/parts/volumebutton.hpp"
@@ -47,8 +48,8 @@ private:
     PlayPauseButton m_playPauseButton;
     IconButton m_nextButton;
     IconButton m_previousButton;
-    IconButton m_shuffleButton;
-    IconButton m_loopButton;
+    LockableIconButton m_shuffleButton;
+    LockableIconButton m_loopButton;
     VolumeButton m_volumeButton;
 
     Slider m_durationSlider;

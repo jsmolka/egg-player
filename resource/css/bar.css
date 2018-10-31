@@ -12,12 +12,12 @@ IconButton {
 	border-radius: icon-size-half;
 }
 
-IconButton[locked=true] {
-    background: rgba(255, 255, 255, 0.3);
-}
-
 IconButton:pressed {
     background: rgba(0, 0, 0, 0.15);
+}
+
+LockableIconButton[locked=true] {
+    background: rgba(255, 255, 255, 0.3);
 }
 
 Slider::groove:horizontal {

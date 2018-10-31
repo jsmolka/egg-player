@@ -16,11 +16,13 @@ class Shortcut : public QObject, public QAbstractNativeEventFilter
     Q_OBJECT
 
 public:
-    Shortcut(const QString &shortcut, bool repeat, QObject *parent = nullptr);
+    enum RepeatPolicy {Repeat, NoRepeat};
+
+    Shortcut(const QString &shortcut, RepeatPolicy repeat, QObject *parent = nullptr);
     ~Shortcut() override;
 
     int id() const;
-    bool isRepeat() const;
+    RepeatPolicy isRepeat() const;
     bool isRegistered() const;
     QString shortcut() const;
 
@@ -45,7 +47,7 @@ private:
     static const QHash<QString, UINT> s_modifiers;
 
     int m_id;
-    bool m_repeat;
+    RepeatPolicy m_repeat;
     bool m_registered;
     QString m_shortcut;
 };

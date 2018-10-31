@@ -2,7 +2,7 @@
 
 #include <QApplication>
 
-Shortcut::Shortcut(const QString &shortcut, bool repeat, QObject *parent)
+Shortcut::Shortcut(const QString &shortcut, RepeatPolicy repeat, QObject *parent)
     : QObject(parent)
     , m_id(++s_id)
     , m_repeat(repeat)
@@ -23,7 +23,7 @@ int Shortcut::id() const
     return m_id;
 }
 
-bool Shortcut::isRepeat() const
+Shortcut::RepeatPolicy Shortcut::isRepeat() const
 {
     return m_repeat;
 }
@@ -84,7 +84,7 @@ UINT Shortcut::parseModifier(const QStringList &sequence)
         if (s_modifiers.contains(key))
             modifier |= s_modifiers.value(key);
     }
-    if (!m_repeat)
+    if (m_repeat == RepeatPolicy::NoRepeat)
         modifier |= MOD_NOREPEAT;
 
     return modifier;

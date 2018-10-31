@@ -22,11 +22,11 @@ BarWidget::BarWidget(QWidget *parent)
     , m_volumeButton(this)
     , m_durationSlider(this)
     , m_volumeSlider(this)
-    , m_scPlayPause(cfg_shortcut.playPause(), false, this)
-    , m_scNext(cfg_shortcut.next(), false, this)
-    , m_scPrevious(cfg_shortcut.previous(), false, this)
-    , m_scVolumeUp(cfg_shortcut.volumeUp(), true, this)
-    , m_scVolumeDown(cfg_shortcut.volumeDown(), true, this)
+    , m_scPlayPause(cfg_shortcut.playPause(), Shortcut::NoRepeat, this)
+    , m_scNext(cfg_shortcut.next(), Shortcut::NoRepeat, this)
+    , m_scPrevious(cfg_shortcut.previous(), Shortcut::NoRepeat, this)
+    , m_scVolumeUp(cfg_shortcut.volumeUp(), Shortcut::Repeat, this)
+    , m_scVolumeDown(cfg_shortcut.volumeDown(), Shortcut::Repeat, this)
 {
     setup();
 
@@ -37,8 +37,8 @@ BarWidget::BarWidget(QWidget *parent)
     connect(&m_nextButton, &IconButton::pressed, &egg_player->playlist(), &Playlist::next);
     connect(&m_playPauseButton, &IconButton::pressed, egg_player, &Player::toggleState);
     connect(&m_previousButton, &IconButton::pressed, this, &BarWidget::onPlayerPrevious);
-    connect(&m_shuffleButton, &IconButton::locked, &egg_player->playlist(), &Playlist::setShuffle);
-    connect(&m_loopButton, &IconButton::locked, &egg_player->playlist(), &Playlist::setLoop);
+    connect(&m_shuffleButton, &LockableIconButton::locked, &egg_player->playlist(), &Playlist::setShuffle);
+    connect(&m_loopButton, &LockableIconButton::locked, &egg_player->playlist(), &Playlist::setLoop);
     connect(&m_volumeButton, &IconButton::pressed, this, &BarWidget::onVolumeButtonPressed);
 
     connect(&m_durationSlider, &Slider::sliderMoved, this, &BarWidget::onDurationSliderMoved);
@@ -175,9 +175,6 @@ void BarWidget::setupUi()
     m_nextButton.setIcons({IconFactory::make(ICO_NEXT)});
     m_shuffleButton.setIcons({IconFactory::make(ICO_SHUFFLE)});
     m_loopButton.setIcons({IconFactory::make(ICO_LOOP)});
-
-    m_shuffleButton.setLockable(true);
-    m_loopButton.setLockable(true);
 
     const QSize iconSize = QSize(cfg_bar.iconSize(), cfg_bar.iconSize());
     m_playPauseButton.setSize(iconSize);

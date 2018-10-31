@@ -48,7 +48,7 @@ void AudiosWidget::addColumn(AudioInfo info, Qt::Alignment align, SizePolicy pol
 {
     Column column;
     column.info = info;
-    column.align = align;
+    column.align = align | Qt::AlignVCenter;
     m_columns << column;
 
     setColumnCount(m_columns.size());

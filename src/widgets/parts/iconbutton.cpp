@@ -1,31 +1,32 @@
 #include "iconbutton.hpp"
 
-#include <QStyle>
+#include <QEvent>
 
 IconButton::IconButton(QWidget *parent)
     : QPushButton(parent)
     , m_iconIndex(0)
-    , m_lockable(false)
-    , m_locked(false)
 {
     setup();
-
-    connect(this, &IconButton::clicked, this, &IconButton::onClicked);
 }
 
-void IconButton::setIcons(const Icons &icons)
+void IconButton::setIcons(const QVector<QIcon> &icons)
 {
     m_icons = icons;
-    setIcon(m_icons.first());
+
+    if (!icons.isEmpty())
+        setIcon(icons.first());
 }
 
-Icons IconButton::icons() const
+QVector<QIcon> IconButton::icons() const
 {
     return m_icons;
 }
 
 void IconButton::setIconIndex(int index)
 {
+    if (m_icons.length() <= index)
+        return;
+
     m_iconIndex = index;
     setIcon(m_icons.at(index));
 }
@@ -35,38 +36,10 @@ int IconButton::iconIndex() const
     return m_iconIndex;
 }
 
-void IconButton::setLockable(bool lockable)
-{
-    m_lockable = lockable;
-}
-
-bool IconButton::isLockable() const
-{
-    return m_lockable;
-}
-
-void IconButton::setLocked(bool locked)
-{
-    m_locked = locked;
-
-    if (!m_lockable)
-        return;
-
-    style()->unpolish(this);
-    style()->polish(this);
-
-    emit this->locked(m_locked);
-}
-
-bool IconButton::isLocked() const
-{
-    return m_locked;
-}
-
 void IconButton::setSize(const QSize &size)
 {
-    setIconSize(size);
     setFixedSize(size);
+    setIconSize(size);
 }
 
 bool IconButton::event(QEvent *event)
@@ -82,11 +55,6 @@ bool IconButton::event(QEvent *event)
         return true;
     }
     return QPushButton::event(event);
-}
-
-void IconButton::onClicked()
-{
-    setLocked(!m_locked);
 }
 
 void IconButton::setup()

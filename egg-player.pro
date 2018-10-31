@@ -102,7 +102,8 @@ HEADERS += \
     src/core/config/cfgbase.hpp \
     src/core/config/cfglibrary.hpp \
     src/core/config/cfgplayer.hpp \
-    src/core/config/cfgshortcut.hpp
+    src/core/config/cfgshortcut.hpp \
+    src/widgets/parts/lockableiconbutton.hpp
 
 SOURCES += \
     src/main.cpp \
@@ -165,4 +166,5 @@ SOURCES += \
     src/core/config/cfgbase.cpp \
     src/core/config/cfglibrary.cpp \
     src/core/config/cfgplayer.cpp \
-    src/core/config/cfgshortcut.cpp
+    src/core/config/cfgshortcut.cpp \
+    src/widgets/parts/lockableiconbutton.cpp
