@@ -31,13 +31,12 @@ void AudiosWidget::setAudios(Audios *audios)
     if (!audios)
         return;
 
-    connect(audios, &Audios::updated, this, &AudiosWidget::onAudiosUpdated);
     connect(audios, &Audios::inserted, this, &AudiosWidget::onAudiosInserted);
     connect(audios, &Audios::removed, this, &AudiosWidget::onAudiosRemoved);
-    connect(audios, &Audios::moved, this, &AudiosWidget::onAudiosMoved);
+    connect(audios, &Audios::updated, this, &AudiosWidget::onAudiosUpdated);
 
     for (int row = 0; row < audios->size(); ++row)
-        insert(audios->at(row), row);
+        insert(row, audios->at(row));
 }
 
 Audios *AudiosWidget::audios() const
@@ -58,6 +57,16 @@ void AudiosWidget::addColumn(AudioInfo info, Qt::Alignment align, SizePolicy pol
         horizontalHeader()->setSectionResizeMode(m_columns.size() - 1, QHeaderView::ResizeToContents);
 }
 
+void AudiosWidget::onAudiosInserted(int row)
+{
+    insert(row, m_audios->at(row));
+}
+
+void AudiosWidget::onAudiosRemoved(int row)
+{
+    removeRow(row);
+}
+
 void AudiosWidget::onAudiosUpdated(int row)
 {
     Audio *audio = m_audios->at(row);
@@ -66,25 +75,10 @@ void AudiosWidget::onAudiosUpdated(int row)
     {
         const Column column = m_columns.at(col);
 
-        QTableWidgetItem *item = itemAt(row, col);
+        QTableWidgetItem *item = takeItem(row, col);
         item->setText(audioInfo(audio, column.info));
+        setItem(row, col, item);
     }
-}
-
-void AudiosWidget::onAudiosInserted(int row)
-{
-    insert(m_audios->at(row), row);
-}
-
-void AudiosWidget::onAudiosRemoved(int row)
-{
-    removeRow(row);
-}
-
-void AudiosWidget::onAudiosMoved(int from, int to)
-{
-    onAudiosRemoved(from);
-    onAudiosInserted(to);
 }
 
 void AudiosWidget::setup()
@@ -130,7 +124,7 @@ QString AudiosWidget::audioInfo(Audio *audio, AudioInfo info)
     return QString();
 }
 
-void AudiosWidget::insert(Audio *audio, int row)
+void AudiosWidget::insert(int row, Audio *audio)
 {
     insertRow(row);
 

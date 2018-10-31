@@ -29,7 +29,6 @@ public:
     void insert(int index, Audio *audio);
     void append(Audio *audio);
     void remove(int index);
-    void move(int from, int to);
 
     Audios::iterator insert(Audios::iterator before, Audio *audio);
     Audios::iterator erase(Audios::iterator position);
@@ -40,10 +39,12 @@ public:
     using Audio::vector::cbegin;
     using Audio::vector::cend;
 
-    Audios &operator<<(Audio *audio);
-    using Audio::vector::operator[];
+    int lowerBound(Audio *audio);
 
     Audios *currentState();
+
+    using Audio::vector::operator[];
+    Audios &operator<<(Audio *audio);
 
 public slots:
     void removeAudio(Audio *audio);
@@ -51,9 +52,8 @@ public slots:
 signals:
     void inserted(int index);
     void removed(int index);
-    void removedAudio(Audio *audio);
-    void moved(int from, int to);
     void updated(int index);
+    void removedAudio(Audio *audio);
 };
 
 #endif // AUDIOS_HPP

@@ -40,12 +40,6 @@ void Audios::remove(int index)
     emit removedAudio(audio);
 }
 
-void Audios::move(int from, int to)
-{
-    Audio::vector::move(from, to);
-    emit moved(from, to);
-}
-
 Audios::iterator Audios::insert(Audios::iterator before, Audio *audio)
 {
     audio->setParent(this);
@@ -64,11 +58,20 @@ Audios::iterator Audios::erase(Audios::iterator position)
     return next;
 }
 
-Audios &Audios::operator<<(Audio *audio)
+int Audios::lowerBound(Audio *audio)
 {
-    append(audio);
-
-    return *this;
+    int low = 0;
+    int high = size();
+    while (low < high)
+    {
+        const int mid = (low + high) / 2;
+        const int diff = audio->tag().title().compare(at(mid)->tag().title(), Qt::CaseInsensitive);
+        if (diff < 0)
+            high = mid;
+        else
+            low = mid + 1;
+    }
+    return low;
 }
 
 Audios *Audios::currentState()
@@ -77,6 +80,13 @@ Audios *Audios::currentState()
     connect(this, &Audios::removedAudio, state, &Audios::removeAudio);
 
     return state;
+}
+
+Audios &Audios::operator<<(Audio *audio)
+{
+    append(audio);
+
+    return *this;
 }
 
 void Audios::removeAudio(Audio *audio)

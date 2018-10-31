@@ -5,7 +5,6 @@
 
 #include "core/audio.hpp"
 #include "core/audios.hpp"
-#include "core/globals.hpp"
 #include "core/filesystem/filesystem.hpp"
 #include "threading/audioupdater.hpp"
 #include "threading/audioloader.hpp"
@@ -48,8 +47,6 @@ private slots:
     void onFileSystemRemoved(Audio *audio);
 
 private:
-    int lowerBound(Audio *audio);
-
     Audios m_audios;
     FileSystem m_fileSystem;
     InitialLoader m_initialLoader;

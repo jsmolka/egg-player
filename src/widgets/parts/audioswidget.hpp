@@ -24,10 +24,9 @@ public:
     void addColumn(AudioInfo info, Qt::Alignment align = Qt::AlignLeft, SizePolicy policy = Expand);
 
 private slots:
-    void onAudiosUpdated(int row);
     void onAudiosInserted(int row);
     void onAudiosRemoved(int row);
-    void onAudiosMoved(int from, int to);
+    void onAudiosUpdated(int row);
 
 private:
     struct Column
@@ -37,7 +36,7 @@ private:
     };
     static QString audioInfo(Audio *audio, AudioInfo info);
 
-    void insert(Audio *audio, int row);
+    void insert(int row, Audio *audio);
 
     void setup();
     void setupCss();

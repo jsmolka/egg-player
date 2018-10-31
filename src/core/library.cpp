@@ -2,6 +2,8 @@
 
 #include <QApplication>
 
+#include "core/globals.hpp"
+
 Library::Library(QObject *parent)
     : QObject(parent)
     , m_audios(this)
@@ -66,7 +68,7 @@ void Library::loadFiles(const QStrings &files)
 void Library::insert(Audio *audio)
 {
     m_fileSystem.watchAudio(audio);
-    m_audios.insert(lowerBound(audio), audio);
+    m_audios.insert(m_audios.lowerBound(audio), audio);
 }
 
 void Library::onInitialLoaderFinished()
@@ -77,16 +79,21 @@ void Library::onInitialLoaderFinished()
 
 void Library::onAudioUpdaterUpdated(Audio *audio)
 {
-    const int low = lowerBound(audio);
-    if (audio != m_audios.at(low))
+    const int index = m_audios.indexOf(audio);
+    if (index == -1)
     {
-        const int index = m_audios.indexOf(audio);
-        if (index != -1)
-            m_audios.move(index, low);
+        EGG_LOG("Updated audio does not exist %1", audio->file());
+        return;
+    }
+
+    if (index == m_audios.lowerBound(audio))
+    {
+        emit m_audios.updated(index);
     }
     else
     {
-        emit m_audios.updated(low);
+        m_audios.remove(index);
+        m_audios.insert(m_audios.lowerBound(audio), audio);
     }
 }
 
@@ -98,20 +105,4 @@ void Library::onFileSystemRenamed(Audio *audio, const QString &to)
 void Library::onFileSystemRemoved(Audio *audio)
 {
     m_audios.removeAudio(audio);
-}
-
-int Library::lowerBound(Audio *audio)
-{
-    int low = 0;
-    int high = m_audios.size();
-    while (low < high)
-    {
-        const int mid = (low + high) / 2;
-        const int diff = audio->tag().title().compare(m_audios.at(mid)->tag().title(), Qt::CaseInsensitive);
-        if (diff <= 0)
-            high = mid;
-        else
-            low = mid + 1;
-    }
-    return low;
 }
