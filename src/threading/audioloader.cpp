@@ -2,7 +2,6 @@
 
 #include <QApplication>
 
-#include "core/cover.hpp"
 #include "core/database/cache.hpp"
 
 void AudioLoader::load(const QString &file)

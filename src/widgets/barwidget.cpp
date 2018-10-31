@@ -5,13 +5,11 @@
 #include <QPalette>
 #include <QPropertyAnimation>
 
-#include "core/duration.hpp"
 #include "core/player.hpp"
 #include "widgets/parts/iconfactory.hpp"
 
 BarWidget::BarWidget(QWidget *parent)
     : QWidget(parent)
-    , m_duration(250)
     , m_coverLabel(this)
     , m_trackLabel(this)
     , m_currentTimeLabel(this)
@@ -43,7 +41,7 @@ BarWidget::BarWidget(QWidget *parent)
     connect(&m_loopButton, &IconButton::locked, &egg_player->playlist(), &Playlist::setLoop);
     connect(&m_volumeButton, &IconButton::pressed, this, &BarWidget::onVolumeButtonPressed);
 
-    connect(&m_durationSlider, &Slider::sliderMoved, this, &BarWidget::onLengthSliderMoved);
+    connect(&m_durationSlider, &Slider::sliderMoved, this, &BarWidget::onDurationSliderMoved);
     connect(&m_durationSlider, &Slider::sliderValueChanged, egg_player, &Player::setPosition);
     connect(&m_volumeSlider, &Slider::sliderMoved, egg_player, &Player::setVolume);
 
@@ -52,66 +50,6 @@ BarWidget::BarWidget(QWidget *parent)
     connect(&m_scPrevious, &Shortcut::pressed, this, &BarWidget::onPlayerPrevious);
     connect(&m_scVolumeUp, &Shortcut::pressed, egg_player, &Player::increaseVolume);
     connect(&m_scVolumeDown, &Shortcut::pressed, egg_player, &Player::decreaseVolume);
-}
-
-QLabel &BarWidget::coverLabel()
-{
-    return m_coverLabel;
-}
-
-QLabel &BarWidget::trackLabel()
-{
-    return m_trackLabel;
-}
-
-QLabel &BarWidget::currentTimeLabel()
-{
-    return m_currentTimeLabel;
-}
-
-QLabel &BarWidget::totalTimeLabel()
-{
-    return m_totalTimeLabel;
-}
-
-PlayPauseButton &BarWidget::playPauseButton()
-{
-    return m_playPauseButton;
-}
-
-IconButton &BarWidget::nextButton()
-{
-    return m_nextButton;
-}
-
-IconButton &BarWidget::previousButton()
-{
-    return m_previousButton;
-}
-
-IconButton &BarWidget::shuffleButton()
-{
-    return m_shuffleButton;
-}
-
-IconButton &BarWidget::loopButton()
-{
-    return m_loopButton;
-}
-
-VolumeButton &BarWidget::volumeButton()
-{
-    return m_volumeButton;
-}
-
-Slider &BarWidget::durationSlider()
-{
-    return m_durationSlider;
-}
-
-Slider &BarWidget::volumeSlider()
-{
-    return m_volumeSlider;
 }
 
 void BarWidget::setColor(const QColor &color)
@@ -126,22 +64,13 @@ QColor BarWidget::color() const
     return palette().color(QPalette::Background);
 }
 
-void BarWidget::startTransition(const QColor &color)
-{
-    QPropertyAnimation *animation = new QPropertyAnimation(this, "color", this);
-    animation->setStartValue(this->color());
-    animation->setEndValue(color);
-    animation->setDuration(m_duration);
-    animation->start(QPropertyAnimation::DeleteWhenStopped);
-}
-
 void BarWidget::onPlayerAudioChanged(Audio *audio)
 {
     m_durationSlider.setEnabled(true);
     m_durationSlider.setRange(0, audio->duration().secs());
 
-    m_coverLabel.setPixmap(audio->cover().pixmap(cfg_bar.coverSize()));
     m_trackLabel.setText(trackLabelText(audio));
+    m_coverLabel.setPixmap(audio->cover().pixmap(cfg_bar.coverSize()));
 
     m_currentTimeLabel.setText(Duration(0).toString());
     m_totalTimeLabel.setText(audio->duration().toString());
@@ -162,7 +91,7 @@ void BarWidget::onPlayerPositionChanged(int position)
 
 void BarWidget::onPlayerPrevious()
 {
-    if (m_durationSlider.value() > cfg_player.previousLimit())
+    if (cfg_player.previousLimit() < m_durationSlider.value())
         egg_player->setPosition(0);
     else
         egg_player->playlist().previous();
@@ -179,7 +108,7 @@ void BarWidget::onVolumeButtonPressed()
     m_loopButton.setVisible(visible);
 }
 
-void BarWidget::onLengthSliderMoved(int value)
+void BarWidget::onDurationSliderMoved(int value)
 {
     m_currentTimeLabel.setText(Duration(value).toString());
 }
@@ -191,6 +120,15 @@ QString BarWidget::trackLabelText(Audio *audio) const
         metrics.elidedText(audio->tag().title(), Qt::ElideRight, m_trackLabel.width()),
         metrics.elidedText(audio->tag().artist(), Qt::ElideRight, m_trackLabel.width())
     );
+}
+
+void BarWidget::startTransition(const QColor &color)
+{
+    QPropertyAnimation *animation = new QPropertyAnimation(this, "color", this);
+    animation->setStartValue(this->color());
+    animation->setEndValue(color);
+    animation->setDuration(250);
+    animation->start(QPropertyAnimation::DeleteWhenStopped);
 }
 
 void BarWidget::setup()
