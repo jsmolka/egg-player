@@ -1,5 +1,7 @@
 #include "bass.hpp"
 
+#include "core/globals.hpp"
+
 Bass::Bass()
 {
     if (isValidVersion() && setConfig())
@@ -18,7 +20,7 @@ Bass &Bass::instance()
     return bass;
 }
 
-BassStream &Bass::stream()
+bass::Stream &Bass::stream()
 {
     return m_stream;
 }

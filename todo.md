@@ -8,8 +8,6 @@
   - use smart pointer for automatic deletion
 - BarWidget
   - update name if the current audio changes
-- IconButton
-  - create a separate LockableButton
 - TableWidget
   - consider the following changes
     - [replace hover with select](https://stackoverflow.com/questions/8644367/how-to-highlight-a-row-in-qtablewidget)

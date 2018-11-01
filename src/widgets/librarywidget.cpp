@@ -8,9 +8,9 @@ LibraryWidget::LibraryWidget(QWidget *parent)
     addColumn(AudioInfo::Title);
     addColumn(AudioInfo::Artist);
     addColumn(AudioInfo::Album);
-    addColumn(AudioInfo::Year, Qt::AlignLeft, SizePolicy::Shrink);
+    addColumn(AudioInfo::Year, Qt::AlignLeft, ColumnSizePolicy::Shrink);
     addColumn(AudioInfo::Genre);
-    addColumn(AudioInfo::Duration, Qt::AlignRight, SizePolicy::Shrink);
+    addColumn(AudioInfo::Duration, Qt::AlignRight, ColumnSizePolicy::Shrink);
 }
 
 void LibraryWidget::resizeEvent(QResizeEvent *event)
@@ -22,7 +22,7 @@ void LibraryWidget::resizeEvent(QResizeEvent *event)
 
 void LibraryWidget::adjustToWidth(int width)
 {
-    const static float factor = static_cast<float>(GetScaleFactorForDevice(DEVICE_PRIMARY)) / 100.0f;
+    static const float factor = static_cast<float>(GetScaleFactorForDevice(DEVICE_PRIMARY)) / 100.0f;
 
     const bool hideAlbum = width < 675 * factor;
     const bool hideGenre = width < 875 * factor;

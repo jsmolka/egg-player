@@ -157,11 +157,13 @@ void BarWidget::setupUi()
     m_coverLabel.setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
     m_trackLabel.setFixedWidth(cfg_bar.trackWidth());
     m_trackLabel.setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
+
     m_currentTimeLabel.setFixedWidth(cfg_bar.timeWidth());
     m_currentTimeLabel.setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Maximum);
-    m_currentTimeLabel.setAlignment(Qt::AlignRight | Qt::AlignHCenter);
+    m_currentTimeLabel.setAlignment(Qt::AlignRight | Qt::AlignVCenter);
     m_totalTimeLabel.setFixedWidth(cfg_bar.timeWidth());
     m_totalTimeLabel.setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Maximum);
+    m_totalTimeLabel.setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
 
     m_durationSlider.setEnabled(false);
     m_durationSlider.setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding);
@@ -171,10 +173,10 @@ void BarWidget::setupUi()
     m_volumeSlider.setSizePolicy(QSizePolicy::Fixed, QSizePolicy::MinimumExpanding);
     m_volumeSlider.setFixedWidth(5 * cfg_bar.iconSize() + 4 * cfg_bar.spacing());
 
-    m_previousButton.setIcons({IconFactory::make(ICO_PREVIOUS)});
-    m_nextButton.setIcons({IconFactory::make(ICO_NEXT)});
-    m_shuffleButton.setIcons({IconFactory::make(ICO_SHUFFLE)});
-    m_loopButton.setIcons({IconFactory::make(ICO_LOOP)});
+    m_previousButton.setIcons(IconFactory::make(ICO_PREVIOUS));
+    m_nextButton.setIcons(IconFactory::make(ICO_NEXT));
+    m_shuffleButton.setIcons(IconFactory::make(ICO_SHUFFLE));
+    m_loopButton.setIcons(IconFactory::make(ICO_LOOP));
 
     const QSize iconSize = QSize(cfg_bar.iconSize(), cfg_bar.iconSize());
     m_playPauseButton.setSize(iconSize);

@@ -1,30 +1,32 @@
 #include "playpausebutton.hpp"
 
+#include "core/globals.hpp"
 #include "core/player.hpp"
 #include "widgets/parts/iconfactory.hpp"
 
 PlayPauseButton::PlayPauseButton(QWidget *parent)
     : IconButton(parent)
-    , m_icon(Play)
 {
-    setIcons({
-        IconFactory::make(ICO_PLAY),
-        IconFactory::make(ICO_PAUSE)
-    });
-
+    setIcons(IconFactory::make(
+        QStrings()
+            << ICO_PLAY
+            << ICO_PAUSE
+    ));
     updateIcon();
+
     connect(ePlayer, &Player::stateChanged, this, &PlayPauseButton::updateIcon);
 }
 
-void PlayPauseButton::setIcon(PlayPauseButton::Icon icon)
+void PlayPauseButton::setIcon(Icon icon)
 {
     m_icon = icon;
 
     switch (icon)
     {
-    case Play:
+    case Icon::Play:
         return setIconIndex(0);
-    case Pause:
+
+    case Icon::Pause:
         return setIconIndex(1);
     }
 }
@@ -36,5 +38,5 @@ PlayPauseButton::Icon PlayPauseButton::icon() const
 
 void PlayPauseButton::updateIcon()
 {
-    setIcon(ePlayer->isPlaying() ? Pause : Play);
+    setIcon(ePlayer->isPlaying() ? Icon::Pause : Icon::Play);
 }

@@ -1,7 +1,6 @@
 #ifndef PLAYPAUSEBUTTON_HPP
 #define PLAYPAUSEBUTTON_HPP
 
-#include "core/globals.hpp"
 #include "widgets/parts/iconbutton.hpp"
 
 class PlayPauseButton : public IconButton
@@ -11,14 +10,14 @@ public:
 
     explicit PlayPauseButton(QWidget *parent = nullptr);
 
-    void setIcon(PlayPauseButton::Icon icon);
-    PlayPauseButton::Icon icon() const;
+    void setIcon(Icon icon);
+    Icon icon() const;
 
 private slots:
     void updateIcon();
 
 private:
-    PlayPauseButton::Icon m_icon;
+    Icon m_icon;
 };
 
 #endif // PLAYPAUSEBUTTON_HPP

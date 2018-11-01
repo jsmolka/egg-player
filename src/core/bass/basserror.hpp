@@ -1,11 +1,9 @@
 #ifndef BASSERROR_HPP
 #define BASSERROR_HPP
 
-#include <bass/bass.h>
-
-#include "core/globals.hpp"
-
-class BassError
+namespace bass
+{
+class Error
 {
 protected:
     static bool check(bool value);
@@ -13,5 +11,6 @@ protected:
 private:
     static void error();
 };
+}
 
 #endif // BASSERROR_HPP

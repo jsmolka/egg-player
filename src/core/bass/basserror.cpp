@@ -3,7 +3,11 @@
 #include <QHash>
 #include <QString>
 
-bool BassError::check(bool value)
+#include <bass/bass.h>
+
+#include "core/globals.hpp"
+
+bool bass::Error::check(bool value)
 {
     if (!value)
         error();
@@ -11,7 +15,7 @@ bool BassError::check(bool value)
     return value;
 }
 
-void BassError::error()
+void bass::Error::error()
 {
     static const QHash<int, QString> errors =
     {
@@ -54,6 +58,5 @@ void BassError::error()
         {BASS_ERROR_UNKNOWN , "some other mystery problem"}
     };
 
-    if (BASS_ErrorGetCode() != BASS_OK)
-        EGG_LOG(errors.value(BASS_ErrorGetCode()));
+    EGG_LOG(errors.value(BASS_ErrorGetCode()));
 }

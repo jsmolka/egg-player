@@ -1,7 +1,6 @@
 #ifndef VOLUMEBUTTON_HPP
-#define VOLUMEBUTTON_HPP
+#define VOLUMEBNUTTON_HPP
 
-#include "core/globals.hpp"
 #include "widgets/parts/iconbutton.hpp"
 
 class VolumeButton : public IconButton
@@ -11,14 +10,14 @@ public:
 
     explicit VolumeButton(QWidget *parent = nullptr);
 
-    void setIcon(VolumeButton::Icon icon);
-    VolumeButton::Icon icon() const;
+    void setIcon(Icon icon);
+    Icon icon() const;
 
 private slots:
     void updateIcon(int volume);
 
 private:
-    VolumeButton::Icon m_icon;
+    Icon m_icon;
 };
 
 #endif // VOLUMEBUTTON_HPP

@@ -3,13 +3,15 @@
 
 #include <QIcon>
 #include <QPixmap>
+#include <QVector>
 
 #include "core/globals.hpp"
 
 class IconFactory
 {
 public:
-    static QIcon make(const QString &file);
+    static QVector<QIcon> make(const QString &file);
+    static QVector<QIcon> make(const QStrings &files);
 
 private:
     static QPixmap makeActive(const QPixmap &pixmap);

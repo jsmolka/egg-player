@@ -4,13 +4,14 @@
 #include <bass/bass.h>
 
 #include "core/audio.hpp"
-#include "core/globals.hpp"
 #include "core/bass/basserror.hpp"
 
-class BassStream : private BassError
+namespace bass
+{
+class Stream : private Error
 {
 public:
-    explicit BassStream();
+    explicit Stream();
 
     HSTREAM handle() const;
     HSYNC sync() const;
@@ -45,5 +46,6 @@ private:
     HSTREAM m_handle;
     HSYNC m_sync;
 };
+}
 
 #endif // BASSSTREAM_HPP

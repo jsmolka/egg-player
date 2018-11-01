@@ -13,7 +13,7 @@ class AudiosWidget : public TableWidget
 
 public:
     enum AudioInfo {Title, Artist, Album, Track, Year, Genre, Duration};
-    enum SizePolicy {Expand, Shrink};
+    enum ColumnSizePolicy {Expand, Shrink};
 
     explicit AudiosWidget(QWidget *parent = nullptr);
     explicit AudiosWidget(Audios *audios, QWidget *parent = nullptr);
@@ -21,7 +21,7 @@ public:
     void setAudios(Audios *audios);
     Audios *audios() const;
 
-    void addColumn(AudioInfo info, Qt::Alignment align = Qt::AlignLeft, SizePolicy policy = Expand);
+    void addColumn(AudioInfo info, Qt::Alignment align = Qt::AlignLeft, ColumnSizePolicy policy = Expand);
 
 private slots:
     void onAudiosInserted(int row);

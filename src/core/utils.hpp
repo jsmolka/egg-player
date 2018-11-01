@@ -7,6 +7,7 @@
 
 #include <taglib/fileref.h>
 
+#include "core/logger.hpp"
 #include "core/types.hpp"
 
 namespace Util
@@ -33,8 +34,10 @@ namespace FileUtil
     {
         QFile qFile(file);
         if (!qFile.open(QFile::ReadOnly))
+        {
+            EGG_LOG("Cannot read file %1", file);
             return defaultValue;
-
+        }
         return QTextStream(&qFile).readAll();
     }
 
@@ -42,8 +45,10 @@ namespace FileUtil
     {
         QFile qFile(file);
         if (!qFile.open(QFile::ReadOnly))
+        {
+            EGG_LOG("Cannot read file %1", file);
             return defaultValue;
-
+        }
         return qFile.readAll();
     }
 
@@ -51,8 +56,10 @@ namespace FileUtil
     {
         QFile qFile(file);
         if (!qFile.open(QFile::WriteOnly))
+        {
+            EGG_LOG("Cannot write file %1", file);
             return;
-
+        }
         QTextStream(&qFile) << content;
     }
 
@@ -60,8 +67,10 @@ namespace FileUtil
     {
         QFile qFile(file);
         if (!qFile.open(QFile::WriteOnly))
+        {
+            EGG_LOG("Cannot write file %1", file);
             return;
-
+        }
         qFile.write(content);
     }
 }

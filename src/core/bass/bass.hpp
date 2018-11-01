@@ -3,13 +3,12 @@
 
 #include <bass/bass.h>
 
-#include "core/globals.hpp"
 #include "core/bass/basserror.hpp"
 #include "core/bass/bassstream.hpp"
 
 #define egg_bass (Bass::instance())
 
-class Bass : private BassError
+class Bass : private bass::Error
 {
 public:
     explicit Bass();
@@ -18,7 +17,7 @@ public:
 
     static Bass &instance();
 
-    BassStream &stream();
+    bass::Stream &stream();
 
     static bool start();
     static bool pause();
@@ -40,7 +39,7 @@ private:
     static bool init();
     static bool free();
 
-    BassStream m_stream;
+    bass::Stream m_stream;
 };
 
 #endif // BASS_HPP

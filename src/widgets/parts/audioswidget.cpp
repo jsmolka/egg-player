@@ -5,17 +5,15 @@
 #include "core/globals.hpp"
 
 AudiosWidget::AudiosWidget(QWidget *parent)
-    : AudiosWidget(nullptr, parent)
-{
-
-}
-
-AudiosWidget::AudiosWidget(Audios *audios, QWidget *parent)
     : TableWidget(parent)
     , m_audios(nullptr)
 {
     setup();
+}
 
+AudiosWidget::AudiosWidget(Audios *audios, QWidget *parent)
+    : AudiosWidget(parent)
+{
     setAudios(audios);
 }
 
@@ -44,7 +42,7 @@ Audios *AudiosWidget::audios() const
     return m_audios;
 }
 
-void AudiosWidget::addColumn(AudioInfo info, Qt::Alignment align, SizePolicy policy)
+void AudiosWidget::addColumn(AudioInfo info, Qt::Alignment align, ColumnSizePolicy policy)
 {
     Column column;
     column.info = info;
@@ -53,7 +51,7 @@ void AudiosWidget::addColumn(AudioInfo info, Qt::Alignment align, SizePolicy pol
 
     setColumnCount(m_columns.size());
 
-    if (policy == SizePolicy::Shrink)
+    if (policy == ColumnSizePolicy::Shrink)
         horizontalHeader()->setSectionResizeMode(m_columns.size() - 1, QHeaderView::ResizeToContents);
 }
 
@@ -104,20 +102,26 @@ QString AudiosWidget::audioInfo(Audio *audio, AudioInfo info)
     {
     case AudioInfo::Title:
         return audio->tag().title();
+
     case AudioInfo::Artist:
         return audio->tag().artist();
+
     case AudioInfo::Album:
         return audio->tag().album();
+
     case AudioInfo::Track:
         return audio->tag().track() != 0
             ? QString::number(audio->tag().track())
             : QString();
+
     case AudioInfo::Year:
         return audio->tag().year() != 0
             ? QString::number(audio->tag().year())
             : QString();
+
     case AudioInfo::Genre:
         return audio->tag().genre();
+
     case AudioInfo::Duration:
         return audio->duration().toString();
     }
