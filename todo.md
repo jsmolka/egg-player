@@ -1,8 +1,6 @@
 # Things to do
 
 ## Notes
-- Callable (and other threading classes)
-  - think about private / protected / public
 - Audios
   - delete current state in player / playlist
   - use smart pointer for automatic deletion
@@ -13,6 +11,10 @@
     - [replace hover with select](https://stackoverflow.com/questions/8644367/how-to-highlight-a-row-in-qtablewidget)
     - [hover implementation 1](https://stackoverflow.com/questions/20565930/qtableview-how-can-i-highlight-the-entire-row-for-mouse-hover)
     - [hover implementation 2](https://stackoverflow.com/questions/23111075/how-to-highlight-the-entire-row-on-mouse-hover-in-qtablewidget-qt5)
+- Threading
+  - use correct visibility for functions
+  - objectsPerThread should be public, moveToThread maybe private
+  - maybe only pass objects per thread to getSuitibleThread
 
 ## Rework
 - replace const static with static const

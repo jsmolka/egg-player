@@ -58,5 +58,11 @@ void bass::Error::error()
         {BASS_ERROR_UNKNOWN , "some other mystery problem"}
     };
 
-    EGG_LOG(errors.value(BASS_ErrorGetCode()));
+    const int code = BASS_ErrorGetCode();
+    if (!errors.contains(code))
+    {
+        EGG_LOG("Invalid error code %1", code);
+        return;
+    }
+    EGG_LOG(errors.value(code));
 }
