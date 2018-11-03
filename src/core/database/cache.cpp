@@ -59,6 +59,14 @@ bool Cache::updateAudioCover(Audio *audio, const QPixmap &cover)
     return updateAudioCoverId(audio, id);
 }
 
+QPixmap Cache::loadCover(int id)
+{
+    DbCover dbCover;
+    dbCover.getById(id);
+
+    return dbCover.cover();
+}
+
 bool Cache::updateAudioCoverId(Audio *audio, int coverId)
 {
     DbAudio dbAudio;

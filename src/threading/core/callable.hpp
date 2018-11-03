@@ -12,10 +12,8 @@ public:
     ~Callable() override;
 
     int objectsPerThread() const override;
-    void moveToThread(Thread *thread) override;
 
-protected:
-    void invoke(QObject *object, const char *method, QGenericArgument arg = QGenericArgument(nullptr));
+    void moveToThread(Thread *thread) override;
 
 private:
     Thread *m_thread;

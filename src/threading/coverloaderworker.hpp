@@ -10,8 +10,7 @@ class CoverLoaderWorker : public Runnable
     Q_OBJECT
 
 public:
-    explicit CoverLoaderWorker(QObject *parent = nullptr);
-    explicit CoverLoaderWorker(const Audio::vector &audios, QObject *parent = nullptr);
+    explicit CoverLoaderWorker(const Audio::vector &audios);
 
     EGG_CPROP(Audio::vector, audios, setAudios, audios)
 

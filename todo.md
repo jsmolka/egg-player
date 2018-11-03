@@ -15,6 +15,11 @@
   - use correct visibility for functions
   - objectsPerThread should be public, moveToThread maybe private
   - maybe only pass objects per thread to getSuitibleThread
+  - do not expose parent for classes which should not have a parent
+
+##  Post-Rework
+- remove globals
+- remove unnecessary getter / setter
 
 ## Rework
 - replace const static with static const

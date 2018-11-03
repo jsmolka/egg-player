@@ -16,7 +16,10 @@ public:
     void setDefaults() override;
 
     bar::LabelWidth &labelWidth();
+    bar::LabelWidth &labelWidth() const;
+
     bar::Slider &slider();
+    bar::Slider &slider() const;
 
     void setHeight(int height);
     int height() const;

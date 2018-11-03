@@ -24,7 +24,7 @@ public:
     bool isValid() const;
     void invalidate();
 
-    QPixmap pixmap(int size = -1);
+    QPixmap pixmap(int size = 0);
     QColor color();
 
 private:
@@ -35,7 +35,6 @@ private:
         int v;
         int c;
     };
-    static QPixmap loadFromCache(int id);
     static QPixmap coverify(const QPixmap &cover);
     static QColor computeColor(const QImage &image);
     static QColor dominantColor(const QVector<HsvRange> &ranges);

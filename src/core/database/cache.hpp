@@ -14,6 +14,8 @@ public:
     static bool updateAudio(Audio *audio);
     static bool updateAudioCover(Audio *audio, const QPixmap &cover);
 
+    static QPixmap loadCover(int id);
+
 private:
     static bool updateAudioCoverId(Audio *audio, int coverId);
 };

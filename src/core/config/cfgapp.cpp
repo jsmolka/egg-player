@@ -28,6 +28,11 @@ cfg::app::MinimalSize &cfg::App::minimalSize()
     return m_minimalSize;
 }
 
+cfg::app::MinimalSize &cfg::App::minimalSize() const
+{
+    return const_cast<cfg::app::MinimalSize &>(static_cast<const cfg::App &>(*this).minimalSize());
+}
+
 void cfg::App::setFontSize(double size)
 {
     set("fontSize", size);

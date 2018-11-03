@@ -2,11 +2,11 @@
 
 #include "threading/core/threadpool.hpp"
 
-Runnable::Runnable(QObject *parent)
-    : ThreadObject(parent)
+Runnable::Runnable()
+    : ThreadObject(nullptr)
     , m_thread(nullptr)
 {
-    moveToThread(egg_pool.getSuitibleThread(this));
+    moveToThread(egg_pool.getSuitibleThread(*this));
 }
 
 Runnable::~Runnable()

@@ -6,7 +6,7 @@ Callable::Callable(QObject *parent)
     : ThreadObject(parent)
     , m_thread(nullptr)
 {
-    moveToThread(egg_pool.getSuitibleThread(this));
+    moveToThread(egg_pool.getSuitibleThread(*this));
 }
 
 Callable::~Callable()
@@ -37,9 +37,4 @@ void Callable::moveToThread(Thread *thread)
 
     if (!thread->isRunning())
         thread->start();
-}
-
-void Callable::invoke(QObject *object, const char *method, QGenericArgument arg)
-{
-    QMetaObject::invokeMethod(object, method, arg);
 }

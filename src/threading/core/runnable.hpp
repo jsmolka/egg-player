@@ -8,7 +8,7 @@ class Runnable : public ThreadObject
     Q_OBJECT
 
 public:
-    explicit Runnable(QObject *parent = nullptr);
+    explicit Runnable();
     ~Runnable() override;
 
     Thread *thread();

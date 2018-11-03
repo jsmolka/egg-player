@@ -1,10 +1,16 @@
 #include "cfgbase.hpp"
 
+#ifdef Q_OS_WIN
 #include <ShellScalingApi.h>
+#endif
 
 float cfg::Base::scale(float value)
 {
+#ifdef Q_OS_WIN
     static const float factor = static_cast<float>(GetScaleFactorForDevice(DEVICE_PRIMARY)) / 100.0f;
+#else
+    static const float factor = 1.0f;
+#endif
 
     return factor * value;
 }

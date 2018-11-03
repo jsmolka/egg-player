@@ -9,8 +9,8 @@ Controller::Controller(QObject *parent)
 
 void Controller::runWorker(Runnable *worker)
 {
+    m_activeWorker++;
     connect(worker, &Runnable::finished, this, &Controller::onWorkerFinished);
-    ++m_activeWorker;
     worker->run();
 }
 

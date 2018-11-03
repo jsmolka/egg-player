@@ -40,7 +40,7 @@ Tag &Audio::tag()
 
 Tag &Audio::tag() const
 {
-    return const_cast<Tag &>(static_cast<Audio const &>(*this).tag());
+    return const_cast<Tag &>(static_cast<const Audio &>(*this).tag());
 }
 
 Cover &Audio::cover()
@@ -50,7 +50,7 @@ Cover &Audio::cover()
 
 Cover &Audio::cover() const
 {
-    return const_cast<Cover &>(static_cast<Audio const &>(*this).cover());
+    return const_cast<Cover &>(static_cast<const Audio &>(*this).cover());
 }
 
 Duration &Audio::duration()
@@ -60,7 +60,7 @@ Duration &Audio::duration()
 
 Duration &Audio::duration() const
 {
-    return const_cast<Duration &>(static_cast<Audio const &>(*this).duration());
+    return const_cast<Duration &>(static_cast<const Audio &>(*this).duration());
 }
 
 bool Audio::update()

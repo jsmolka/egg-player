@@ -9,8 +9,7 @@
 #include <taglib/id3v2tag.h>
 #include <taglib/mpegfile.h>
 
-#include "core/tag.hpp"
-#include "core/database/dbcover.hpp"
+#include "core/database/cache.hpp"
 
 Cover::Cover()
     : Cover(0)
@@ -51,7 +50,7 @@ QPixmap Cover::loadFromFile(const QString &file)
     if (cover.isNull())
     {
         EGG_LOG("Cannot read cover %1", file);
-        cover = loadFromCache(defaultSize());
+        cover = defaultCover().pixmap();
     }
     return scale(coverify(cover), defaultSize());
 }
@@ -80,31 +79,25 @@ QPixmap Cover::pixmap(int size)
 {
     const int id = qMax(1, m_id);
     static QHash<int, QPixmap> cache;
+
     if (!cache.contains(id))
-        cache.insert(id, loadFromCache(id));
+        cache.insert(id, Cache::loadCover(id));
 
     const QPixmap pixmap = cache.value(id);
-    return size == -1 ? pixmap : scale(pixmap, size);
+    return size == 0 ? pixmap : scale(pixmap, size);
 }
 
 QColor Cover::color()
 {
     const int id = qMax(1, m_id);
     static QHash<int, QColor> cache;
+
     if (!cache.contains(id))
     {
         const QColor raw = computeColor(scale(pixmap(), 30, ScalePolicy::Fast).toImage());
         cache.insert(id, adjustColor(raw).toRgb());
     }
     return cache.value(id);
-}
-
-QPixmap Cover::loadFromCache(int id)
-{
-    DbCover dbCover;
-    dbCover.getById(id);
-
-    return dbCover.cover();
 }
 
 QPixmap Cover::coverify(const QPixmap &cover)
@@ -122,6 +115,7 @@ QPixmap Cover::coverify(const QPixmap &cover)
         const int x = (size - width) / 2;
         const int y = (size - height) / 2;
         painter.drawPixmap(x, y, cover);
+
         return square;
     }
     return cover;
@@ -129,8 +123,8 @@ QPixmap Cover::coverify(const QPixmap &cover)
 
 QColor Cover::computeColor(const QImage &image)
 {
-    constexpr int range = 60;
-    constexpr int limit = 25;
+    static constexpr int range = 60;
+    static constexpr int limit = 25;
 
     QVector<HsvRange> colorful(range);
     QVector<HsvRange> grey(range);
@@ -148,22 +142,24 @@ QColor Cover::computeColor(const QImage &image)
         const int h = qMax(0, hsv.hue());
         const int s = hsv.saturation();
         const int v = hsv.value();
+        const int x = h / (360 / range);
 
-        const int index = h / (360 / range);
-        if (qAbs(r - g) > limit || qAbs(g - b) > limit || qAbs(b - r) > limit)
+        if (qAbs(r - g) > limit
+                || qAbs(g - b) > limit
+                || qAbs(b - r) > limit)
         {
             isColorful = true;
-            colorful[index].h += h;
-            colorful[index].s += s;
-            colorful[index].v += v;
-            ++colorful[index].c;
+            colorful[x].h += h;
+            colorful[x].s += s;
+            colorful[x].v += v;
+            colorful[x].c++;
         }
         else if (!isColorful)
         {
-            grey[index].h += h;
-            grey[index].s += s;
-            grey[index].v += v;
-            ++grey[index].c;
+            grey[x].h += h;
+            grey[x].s += s;
+            grey[x].v += v;
+            grey[x].c++;
         }
     }
     return dominantColor(isColorful ? colorful : grey);
@@ -193,9 +189,9 @@ QColor Cover::dominantColor(const QVector<HsvRange> &ranges)
 
 QColor Cover::adjustColor(const QColor &color)
 {
-    const qreal hue = color.hsvHueF();
-    const qreal saturation = qMin(color.hsvSaturationF(), 0.8);
-    const qreal value = qMin(color.valueF(), 0.36);
+    const qreal h = color.hsvHueF();
+    const qreal s = qMin(color.hsvSaturationF(), 0.8);
+    const qreal v = qMin(color.valueF(), 0.36);
 
-    return QColor::fromHsvF(hue, saturation, value);
+    return QColor::fromHsvF(h, s, v);
 }

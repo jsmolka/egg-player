@@ -10,8 +10,7 @@ class CoverLoader : public Controller
     Q_OBJECT
 
 public:
-    explicit CoverLoader(QObject *parent = nullptr);
-    explicit CoverLoader(Audio::vector audios, QObject *parent = nullptr);
+    using Controller::Controller;
 
     EGG_CPROP(Audio::vector, audios, setAudios, audios)
 

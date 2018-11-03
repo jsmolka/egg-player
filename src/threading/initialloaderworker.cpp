@@ -4,58 +4,54 @@
 
 #include "core/database/cache.hpp"
 
-InitialLoaderWorker::InitialLoaderWorker(QObject *parent)
-    : InitialLoaderWorker(QStrings(), parent)
+InitialLoaderWorker::InitialLoaderWorker(const QStrings &files)
+    : m_files(files)
 {
 
-}
-
-InitialLoaderWorker::InitialLoaderWorker(const QStrings &files, QObject *parent)
-    : Runnable(parent)
-    , m_files(files)
-{
-
-}
-
-void InitialLoaderWorker::setFiles(const QStrings &files)
-{
-    m_files = files;
-}
-
-QStrings InitialLoaderWorker::files() const
-{
-    return m_files;
 }
 
 void InitialLoaderWorker::work()
 {
     for (const QString &file : qAsConst(m_files))
     {
-        if (isInterrupted())
-            return;
-
         Audio *audio = Cache::loadAudio(file);
         if (!audio)
             continue;
 
-        if (!audio->isCached())
-        {
-            if (isInterrupted())
-                return;
+        if (!insertAudio(audio))
+            return;
 
-            Cache::insertAudio(audio);
-        }
-        if (audio->isOutdated())
-        {
-            if (isInterrupted())
-                return;
+        if (!updateAudio(audio))
+            return;
 
-            audio->update();
-            audio->cover().invalidate();
-            Cache::updateAudio(audio);
-        }
         audio->moveToThread(qApp->thread());
         emit loaded(audio);
     }
     emit finished();
+}
+
+bool InitialLoaderWorker::insertAudio(Audio *audio) const
+{
+    if (isInterrupted())
+        return false;
+
+    if (audio->isCached())
+        return true;
+
+    return Cache::insertAudio(audio);
+}
+
+bool InitialLoaderWorker::updateAudio(Audio *audio) const
+{
+    if (isInterrupted())
+        return false;
+
+    if (!audio->isOutdated())
+        return true;
+
+    if (!audio->update())
+        return false;
+
+    audio->cover().invalidate();
+    return Cache::updateAudio(audio);
 }

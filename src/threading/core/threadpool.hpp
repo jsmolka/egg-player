@@ -18,7 +18,7 @@ public:
 
     static ThreadPool &instance();
 
-    Thread *getSuitibleThread(ThreadObject *object);
+    Thread *getSuitibleThread(const ThreadObject &object);
 
     void operator=(const ThreadPool &) = delete;
 

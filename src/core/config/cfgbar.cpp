@@ -33,9 +33,19 @@ cfg::bar::LabelWidth &cfg::Bar::labelWidth()
     return m_labelWidth;
 }
 
+cfg::bar::LabelWidth &cfg::Bar::labelWidth() const
+{
+    return const_cast<cfg::bar::LabelWidth &>(static_cast<const cfg::Bar &>(*this).labelWidth());
+}
+
 cfg::bar::Slider &cfg::Bar::slider()
 {
     return m_slider;
+}
+
+cfg::bar::Slider &cfg::Bar::slider() const
+{
+    return const_cast<cfg::bar::Slider &>(static_cast<const cfg::Bar &>(*this).slider());
 }
 
 void cfg::Bar::setHeight(int height)

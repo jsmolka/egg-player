@@ -13,7 +13,7 @@ ThreadPool &ThreadPool::instance()
     return pool;
 }
 
-Thread *ThreadPool::getSuitibleThread(ThreadObject *object)
+Thread *ThreadPool::getSuitibleThread(const ThreadObject &object)
 {
     for (ExpiringThread *expiring : qAsConst(m_threads))
     {
@@ -21,7 +21,7 @@ Thread *ThreadPool::getSuitibleThread(ThreadObject *object)
         if (thread->isEmpty())
             return thread;
 
-        if (thread->maxObjects() == object->objectsPerThread()
+        if (thread->maxObjects() == object.objectsPerThread()
                 && !thread->isFull())
             return thread;
     }

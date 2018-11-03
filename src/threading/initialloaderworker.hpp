@@ -10,11 +10,9 @@ class InitialLoaderWorker : public Runnable
     Q_OBJECT
 
 public:
-    explicit InitialLoaderWorker(QObject *parent = nullptr);
-    explicit InitialLoaderWorker(const QStrings &files, QObject *parent = nullptr);
+    explicit InitialLoaderWorker(const QStrings &files);
 
-    void setFiles(const QStrings &files);
-    QStrings files() const;
+    EGG_CPROP(QStrings, files, setFiles, files)
 
 signals:
     void loaded(Audio *audio);
@@ -23,7 +21,9 @@ private slots:
     void work() override;
 
 private:
-    QStrings m_files;
+    bool insertAudio(Audio *audio) const;
+    bool updateAudio(Audio *audio) const;
+
 };
 
 #endif // INITIALLOADERWORKER_HPP
