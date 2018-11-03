@@ -1,35 +1,41 @@
 #include "cfgbar.hpp"
 
+void cfg::Bar::loadObject(const QJsonObject &object)
+{
+    setObject(object);
+
+    m_labelWidth.loadObject(object.value("labelWidth").toObject());
+    m_slider.loadObject(object.value("slider").toObject());
+}
+
+QJsonObject cfg::Bar::toObject() const
+{
+    QJsonObject object(this->object());
+    object.insert("labelWidth", m_labelWidth.toObject());
+    object.insert("slider", m_slider.toObject());
+
+    return object;
+}
+
 void cfg::Bar::setDefaults()
 {
-    setDefault("grooveHeight", 2);
-    setDefault("handleSize", 16);
     setDefault("height", 68);
     setDefault("iconSize", 32);
     setDefault("margin", 8);
     setDefault("spacing", 10);
-    setDefault("timeWidth", 50);
-    setDefault("trackWidth", 240);
+
+    m_labelWidth.setDefaults();
+    m_slider.setDefaults();
 }
 
-void cfg::Bar::setGrooveHeight(int height)
+cfg::bar::LabelWidth &cfg::Bar::labelWidth()
 {
-    set("grooveHeight", height);
+    return m_labelWidth;
 }
 
-int cfg::Bar::grooveHeight() const
+cfg::bar::Slider &cfg::Bar::slider()
 {
-    return scale(get("grooveHeight").toInt());
-}
-
-void cfg::Bar::setHandleSize(int size)
-{
-    set("handleSize", size);
-}
-
-int cfg::Bar::handleSize() const
-{
-    return scale(get("handleSize").toInt());
+    return m_slider;
 }
 
 void cfg::Bar::setHeight(int height)
@@ -70,26 +76,6 @@ void cfg::Bar::setSpacing(int spacing)
 int cfg::Bar::spacing() const
 {
     return scale(get("spacing").toInt());
-}
-
-void cfg::Bar::setTimeWidth(int width)
-{
-    set("timeWidth", width);
-}
-
-int cfg::Bar::timeWidth() const
-{
-    return scale(get("timeWidth").toInt());
-}
-
-void cfg::Bar::setTrackWidth(int width)
-{
-    set("timeWidth", width);
-}
-
-int cfg::Bar::trackWidth() const
-{
-    return scale(get("trackWidth").toInt());
 }
 
 int cfg::Bar::coverSize() const

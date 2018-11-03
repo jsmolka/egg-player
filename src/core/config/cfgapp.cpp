@@ -1,11 +1,31 @@
 #include "cfgapp.hpp"
 
+void cfg::App::loadObject(const QJsonObject &object)
+{
+    setObject(object);
+
+    m_minimalSize.loadObject(object.value("minimalSize").toObject());
+}
+
+QJsonObject cfg::App::toObject() const
+{
+    QJsonObject object(this->object());
+    object.insert("minimalSize", m_minimalSize.toObject());
+
+    return object;
+}
+
 void cfg::App::setDefaults()
 {
     setDefault("fontSize", 10.25);
     setDefault("log", true);
-    setDefault("minimalHeight", 450);
-    setDefault("minimalWidth", 800);
+
+    m_minimalSize.setDefaults();
+}
+
+cfg::app::MinimalSize &cfg::App::minimalSize()
+{
+    return m_minimalSize;
 }
 
 void cfg::App::setFontSize(double size)
@@ -26,24 +46,4 @@ void cfg::App::setLog(bool log)
 bool cfg::App::log() const
 {
     return get("log").toBool();
-}
-
-void cfg::App::setMinimalHeight(int height)
-{
-    set("minimalHeight", height);
-}
-
-int cfg::App::minimalHeight() const
-{
-    return scale(get("minimalHeight").toInt());
-}
-
-void cfg::App::setMinimalWidth(int width)
-{
-    set("minimalWidth", width);
-}
-
-int cfg::App::minimalWidth() const
-{
-    return scale(get("minimalWidth").toInt());
 }

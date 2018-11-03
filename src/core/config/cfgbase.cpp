@@ -2,20 +2,16 @@
 
 #include <ShellScalingApi.h>
 
-cfg::Base::Base()
+float cfg::Base::scale(float value)
 {
+    static const float factor = static_cast<float>(GetScaleFactorForDevice(DEVICE_PRIMARY)) / 100.0f;
 
+    return factor * value;
 }
 
-cfg::Base::Base(const QJsonObject &object)
-    : m_object(object)
+int cfg::Base::scale(int value)
 {
-
-}
-
-QJsonObject cfg::Base::object() const
-{
-    return m_object;
+    return qRound(scale(static_cast<float>(value)));
 }
 
 void cfg::Base::set(const QString &key, const QJsonValue &value)
@@ -32,15 +28,4 @@ void cfg::Base::setDefault(const QString &key, const QJsonValue &value)
 {
     if (!m_object.contains(key))
          m_object.insert(key, value);
-}
-
-float cfg::Base::scale(float value) const
-{
-    static const float factor = static_cast<float>(GetScaleFactorForDevice(DEVICE_PRIMARY)) / 100.0f;
-    return factor * value;
-}
-
-int cfg::Base::scale(int value) const
-{
-    return static_cast<int>(scale(static_cast<float>(value)));
 }

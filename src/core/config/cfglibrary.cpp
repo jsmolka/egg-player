@@ -5,6 +5,16 @@
 #include <QVariant>
 #include <QVector>
 
+void cfg::Library::loadObject(const QJsonObject &object)
+{
+    setObject(object);
+}
+
+QJsonObject cfg::Library::toObject() const
+{
+    return object();
+}
+
 void cfg::Library::setDefaults()
 {
     setDefault("cellPadding", 10);

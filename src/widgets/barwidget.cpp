@@ -144,9 +144,9 @@ void BarWidget::setup()
 void BarWidget::setupCss()
 {
     setStyleSheet(FileUtil::read(CSS_BAR)
-        .replace("groove-height", QString::number(cfg_bar.grooveHeight()))
-        .replace("handle-size-half", QString::number(cfg_bar.handleSize() / 2))
-        .replace("handle-size", QString::number(cfg_bar.handleSize()))
+        .replace("groove-height", QString::number(cfg_bar.slider().grooveHeight()))
+        .replace("handle-size-half", QString::number(cfg_bar.slider().handleSize() / 2))
+        .replace("handle-size", QString::number(cfg_bar.slider().handleSize()))
         .replace("icon-size-half", QString::number(cfg_bar.iconSize() / 2))
     );
 }
@@ -155,13 +155,13 @@ void BarWidget::setupUi()
 {
     m_coverLabel.setPixmap(Cover::defaultCover().pixmap(cfg_bar.coverSize()));
     m_coverLabel.setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
-    m_trackLabel.setFixedWidth(cfg_bar.trackWidth());
+    m_trackLabel.setFixedWidth(cfg_bar.labelWidth().track());
     m_trackLabel.setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
 
-    m_currentTimeLabel.setFixedWidth(cfg_bar.timeWidth());
+    m_currentTimeLabel.setFixedWidth(cfg_bar.labelWidth().time());
     m_currentTimeLabel.setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Maximum);
     m_currentTimeLabel.setAlignment(Qt::AlignRight | Qt::AlignVCenter);
-    m_totalTimeLabel.setFixedWidth(cfg_bar.timeWidth());
+    m_totalTimeLabel.setFixedWidth(cfg_bar.labelWidth().time());
     m_totalTimeLabel.setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Maximum);
     m_totalTimeLabel.setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
 

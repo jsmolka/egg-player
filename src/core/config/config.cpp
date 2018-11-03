@@ -54,23 +54,23 @@ void Config::load()
     const QJsonDocument json = QJsonDocument::fromJson(FileUtil::readBytes(CFG_PATH, "{}"));
     const QJsonObject object = json.object();
 
-    m_app = cfg::App(object.value("app").toObject());
-    m_bar = cfg::Bar(object.value("bar").toObject());
-    m_library = cfg::Library(object.value("library").toObject());
-    m_player = cfg::Player(object.value("player").toObject());
-    m_shortcut = cfg::Shortcut(object.value("shortcut").toObject());
+    m_app.loadObject(object.value("app").toObject());
+    m_bar.loadObject(object.value("bar").toObject());
+    m_library.loadObject(object.value("library").toObject());
+    m_player.loadObject(object.value("player").toObject());
+    m_shortcut.loadObject(object.value("shortcut").toObject());
 }
 
 void Config::save()
 {
-    QJsonDocument json = QJsonDocument::fromJson("{}");
+    QJsonObject object;
+    object.insert("app", m_app.toObject());
+    object.insert("bar", m_bar.toObject());
+    object.insert("library", m_library.toObject());
+    object.insert("player", m_player.toObject());
+    object.insert("shortcut", m_shortcut.toObject());
 
-    QJsonObject object = json.object();
-    object.insert("app", m_app.object());
-    object.insert("bar", m_bar.object());
-    object.insert("library", m_library.object());
-    object.insert("player", m_player.object());
-    object.insert("shortcut", m_shortcut.object());
+    QJsonDocument json;
     json.setObject(object);
 
     FileUtil::write(CFG_PATH, json.toJson());

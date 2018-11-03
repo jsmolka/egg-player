@@ -103,7 +103,10 @@ HEADERS += \
     src/core/config/cfglibrary.hpp \
     src/core/config/cfgplayer.hpp \
     src/core/config/cfgshortcut.hpp \
-    src/widgets/parts/lockableiconbutton.hpp
+    src/widgets/parts/lockableiconbutton.hpp \
+    src/core/config/cfgappminimalsize.hpp \
+    src/core/config/cfgbarslider.hpp \
+    src/core/config/cfgbarlabelwidth.hpp
 
 SOURCES += \
     src/main.cpp \
@@ -167,4 +170,7 @@ SOURCES += \
     src/core/config/cfglibrary.cpp \
     src/core/config/cfgplayer.cpp \
     src/core/config/cfgshortcut.cpp \
-    src/widgets/parts/lockableiconbutton.cpp
+    src/widgets/parts/lockableiconbutton.cpp \
+    src/core/config/cfgappminimalsize.cpp \
+    src/core/config/cfgbarslider.cpp \
+    src/core/config/cfgbarlabelwidth.cpp

@@ -1,5 +1,15 @@
 #include "cfgshortcut.hpp"
 
+void cfg::Shortcut::loadObject(const QJsonObject &object)
+{
+    setObject(object);
+}
+
+QJsonObject cfg::Shortcut::toObject() const
+{
+    return object();
+}
+
 void cfg::Shortcut::setDefaults()
 {
     setDefault("next", "Ctrl + F12");

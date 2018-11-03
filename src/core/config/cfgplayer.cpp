@@ -1,5 +1,15 @@
 #include "cfgplayer.hpp"
 
+void cfg::Player::loadObject(const QJsonObject &object)
+{
+    setObject(object);
+}
+
+QJsonObject cfg::Player::toObject() const
+{
+    return object();
+}
+
 void cfg::Player::setDefaults()
 {
     setDefault("loop", false);

@@ -9,7 +9,8 @@ namespace cfg
 class Library : public Base
 {
 public:
-    using Base::Base;
+    void loadObject(const QJsonObject &object) override;
+    QJsonObject toObject() const override;
 
     void setDefaults() override;
 

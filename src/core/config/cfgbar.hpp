@@ -1,6 +1,8 @@
 #ifndef CFGBAR_HPP
 #define CFGBAR_HPP
 
+#include "core/config/cfgbarlabelwidth.hpp"
+#include "core/config/cfgbarslider.hpp"
 #include "core/config/cfgbase.hpp"
 
 namespace cfg
@@ -8,15 +10,13 @@ namespace cfg
 class Bar : public Base
 {
 public:
-    using Base::Base;
+    void loadObject(const QJsonObject &object) override;
+    QJsonObject toObject() const override;
 
     void setDefaults() override;
 
-    void setGrooveHeight(int height);
-    int grooveHeight() const;
-
-    void setHandleSize(int size);
-    int handleSize() const;
+    bar::LabelWidth &labelWidth();
+    bar::Slider &slider();
 
     void setHeight(int height);
     int height() const;
@@ -30,13 +30,11 @@ public:
     void setSpacing(int spacing);
     int spacing() const;
 
-    void setTimeWidth(int width);
-    int timeWidth() const;
-
-    void setTrackWidth(int width);
-    int trackWidth() const;
-
     int coverSize() const;
+
+private:
+    bar::LabelWidth m_labelWidth;
+    bar::Slider m_slider;
 };
 }
 

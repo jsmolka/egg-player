@@ -4,16 +4,22 @@
 #include <QJsonObject>
 #include <QJsonValue>
 
+#include "core/macros.hpp"
+
 namespace cfg
 {
 class Base
 {
 public:
-    explicit Base();
-    explicit Base(const QJsonObject &object);
     virtual ~Base() = default;
 
-    QJsonObject object() const;
+    static float scale(float value);
+    static int scale(int value);
+
+    EGG_CPROP(QJsonObject, object, setObject, object)
+
+    virtual void loadObject(const QJsonObject &object) = 0;
+    virtual QJsonObject toObject() const = 0;
 
     virtual void setDefaults() = 0;
 
@@ -22,12 +28,6 @@ protected:
     QJsonValue get(const QString &key) const;
 
     void setDefault(const QString &key, const QJsonValue &value);
-
-    float scale(float value) const;
-    int scale(int value) const;
-
-private:
-    QJsonObject m_object;
 };
 }
 

@@ -77,8 +77,8 @@ QStrings EggWidget::processDropEvent(const QMimeData *data)
 void EggWidget::setup()
 {
     setAcceptDrops(true);
-    setMinimumHeight(cfgApp.minimalHeight());
-    setMinimumWidth(cfgApp.minimalWidth());
+    setMinimumHeight(cfgApp.minimalSize().height());
+    setMinimumWidth(cfgApp.minimalSize().width());
 
     setupCss();
     setupUi();
