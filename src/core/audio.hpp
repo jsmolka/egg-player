@@ -6,7 +6,7 @@
 
 #include "core/cover.hpp"
 #include "core/duration.hpp"
-#include "core/globals.hpp"
+#include "core/macros.hpp"
 #include "core/tag.hpp"
 
 class Audio : public QObject
@@ -27,14 +27,13 @@ public:
     EGG_PPROP(bool, outdated, setOutdated, isOutdated)
     EGG_PPROP(qint64, modified, setModified, modified)
 
+    const Tag &tag() const;
+    const Cover &cover() const;
+    const Duration &duration() const;
+
     Tag &tag();
-    Tag &tag() const;
-
     Cover &cover();
-    Cover &cover() const;
-
     Duration &duration();
-    Duration &duration() const;
 
     bool update();
 

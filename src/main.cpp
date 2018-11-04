@@ -8,9 +8,11 @@
 #include "core/database/dbinitializer.hpp"
 #include "widgets/eggwidget.hpp"
 
+#include <QDebug>
+
 QFont font(double size)
 {
-    const int id = QFontDatabase::addApplicationFont(FONT_LATO);
+    const int id = QFontDatabase::addApplicationFont(constants::font::lato);
     const QString family = QFontDatabase::applicationFontFamilies(id).at(0);
 
     QFont font(family);
@@ -24,8 +26,8 @@ void setup(QApplication &app)
 {
     qsrand(time(0));
 
-    app.setApplicationName(APP_NAME);
-    app.setOrganizationName(APP_ORG);
+    app.setApplicationName(constants::app::name);
+    app.setOrganizationName(constants::app::org);
     app.setFont(font(cfgApp.fontSize()));
 
     ePlayer->setVolume(cfgPlayer.volume());

@@ -5,7 +5,7 @@
 
 #include <bass/bass.h>
 
-#include "core/globals.hpp"
+#include "core/logger.hpp"
 
 bool bass::Error::check(bool value)
 {

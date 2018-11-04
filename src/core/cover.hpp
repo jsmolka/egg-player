@@ -4,14 +4,14 @@
 #include <QColor>
 #include <QPixmap>
 
-#include "core/globals.hpp"
+#include "core/macros.hpp"
 
 class Cover
 {
 public:
     enum ScalePolicy {Fast, Smooth};
 
-    explicit Cover();
+    Cover();
     explicit Cover(int id);
 
     static int defaultSize();

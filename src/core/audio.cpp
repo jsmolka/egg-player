@@ -3,6 +3,8 @@
 #include <QDateTime>
 #include <QFileInfo>
 
+#include "core/logger.hpp"
+
 Audio::Audio(QObject *parent)
     : QObject(parent)
     , m_valid(false)
@@ -33,34 +35,34 @@ QString Audio::file() const
     return m_file;
 }
 
-Tag &Audio::tag()
+const Tag &Audio::tag() const
 {
     return m_tag;
 }
 
-Tag &Audio::tag() const
-{
-    return const_cast<Tag &>(static_cast<const Audio &>(*this).tag());
-}
-
-Cover &Audio::cover()
+const Cover &Audio::cover() const
 {
     return m_cover;
 }
 
-Cover &Audio::cover() const
-{
-    return const_cast<Cover &>(static_cast<const Audio &>(*this).cover());
-}
-
-Duration &Audio::duration()
+const Duration &Audio::duration() const
 {
     return m_duration;
 }
 
-Duration &Audio::duration() const
+Tag &Audio::tag()
 {
-    return const_cast<Duration &>(static_cast<const Audio &>(*this).duration());
+    return EGG_REF_CAST(Audio, Tag, tag);
+}
+
+Cover &Audio::cover()
+{
+    return EGG_REF_CAST(Audio, Cover, cover);
+}
+
+Duration &Audio::duration()
+{
+    return EGG_REF_CAST(Audio, Duration, duration);
 }
 
 bool Audio::update()

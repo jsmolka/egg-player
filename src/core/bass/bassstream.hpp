@@ -11,7 +11,7 @@ namespace bass
 class Stream : private Error
 {
 public:
-    explicit Stream();
+    Stream();
 
     HSTREAM handle() const;
     HSYNC sync() const;

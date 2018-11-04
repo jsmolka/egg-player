@@ -1,6 +1,7 @@
 #ifndef CONFIG_HPP
 #define CONFIG_HPP
 
+#include "core/singleton.hpp"
 #include "core/config/cfgapp.hpp"
 #include "core/config/cfgbar.hpp"
 #include "core/config/cfglibrary.hpp"
@@ -21,22 +22,23 @@
 #define cfgPlayer (cfg_player)
 #define cfgShortcut (cfg_shortcut)
 
-class Config
+class Config : public Singleton<Config>
 {
 public:
-    explicit Config();
-    explicit Config(const Config &) = delete;
+    Config();
     ~Config();
 
-    static Config &instance();
+    const cfg::App &app() const;
+    const cfg::Bar &bar() const;
+    const cfg::Library &library() const;
+    const cfg::Player &player() const;
+    const cfg::Shortcut &shortcut() const;
 
     cfg::App &app();
     cfg::Bar &bar();
     cfg::Library &library();
     cfg::Player &player();
     cfg::Shortcut &shortcut();
-
-    void operator=(const Config &) = delete;
 
 private:
     void load();

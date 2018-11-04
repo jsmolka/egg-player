@@ -6,6 +6,7 @@
 #include <QPropertyAnimation>
 
 #include "core/player.hpp"
+#include "core/config/config.hpp"
 #include "widgets/parts/iconfactory.hpp"
 
 BarWidget::BarWidget(QWidget *parent)
@@ -28,7 +29,7 @@ BarWidget::BarWidget(QWidget *parent)
     , m_scVolumeUp(cfg_shortcut.volumeUp(), Shortcut::Repeat, this)
     , m_scVolumeDown(cfg_shortcut.volumeDown(), Shortcut::Repeat, this)
 {
-    setup();
+    init();
 
     connect(egg_player, &Player::audioChanged, this, &BarWidget::onPlayerAudioChanged);
     connect(egg_player, &Player::positionChanged, this, &BarWidget::onPlayerPositionChanged);
@@ -131,27 +132,17 @@ void BarWidget::startTransition(const QColor &color)
     animation->start(QPropertyAnimation::DeleteWhenStopped);
 }
 
-void BarWidget::setup()
+void BarWidget::init()
 {
     setAutoFillBackground(true);
     setColor(Cover::defaultCover().color());
     setFixedHeight(cfg_bar.height());
 
-    setupCss();
-    setupUi();
+    initUi();
+    initStyle();
 }
 
-void BarWidget::setupCss()
-{
-    setStyleSheet(FileUtil::read(CSS_BAR)
-        .replace("groove-height", QString::number(cfg_bar.slider().grooveHeight()))
-        .replace("handle-size-half", QString::number(cfg_bar.slider().handleSize() / 2))
-        .replace("handle-size", QString::number(cfg_bar.slider().handleSize()))
-        .replace("icon-size-half", QString::number(cfg_bar.iconSize() / 2))
-    );
-}
-
-void BarWidget::setupUi()
+void BarWidget::initUi()
 {
     m_coverLabel.setPixmap(Cover::defaultCover().pixmap(cfg_bar.coverSize()));
     m_coverLabel.setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
@@ -173,10 +164,10 @@ void BarWidget::setupUi()
     m_volumeSlider.setSizePolicy(QSizePolicy::Fixed, QSizePolicy::MinimumExpanding);
     m_volumeSlider.setFixedWidth(5 * cfg_bar.iconSize() + 4 * cfg_bar.spacing());
 
-    m_previousButton.setIcons(IconFactory::make(ICO_PREVIOUS));
-    m_nextButton.setIcons(IconFactory::make(ICO_NEXT));
-    m_shuffleButton.setIcons(IconFactory::make(ICO_SHUFFLE));
-    m_loopButton.setIcons(IconFactory::make(ICO_LOOP));
+    m_previousButton.setIcons(IconFactory::make(constants::ico::previous));
+    m_nextButton.setIcons(IconFactory::make(constants::ico::next));
+    m_shuffleButton.setIcons(IconFactory::make(constants::ico::shuffle));
+    m_loopButton.setIcons(IconFactory::make(constants::ico::loop));
 
     const QSize iconSize = QSize(cfg_bar.iconSize(), cfg_bar.iconSize());
     m_playPauseButton.setSize(iconSize);
@@ -205,4 +196,14 @@ void BarWidget::setupUi()
     layout->addWidget(&m_loopButton, 0, 9);
     layout->addWidget(&m_volumeButton, 0, 10);
     setLayout(layout);
+}
+
+void BarWidget::initStyle()
+{
+    setStyleSheet(FileUtil::read(constants::css::bar)
+        .replace("groove-height", QString::number(cfg_bar.slider().grooveHeight()))
+        .replace("handle-size-half", QString::number(cfg_bar.slider().handleSize() / 2))
+        .replace("handle-size", QString::number(cfg_bar.slider().handleSize()))
+        .replace("icon-size-half", QString::number(cfg_bar.iconSize() / 2))
+    );
 }

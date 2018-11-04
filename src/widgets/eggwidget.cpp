@@ -86,7 +86,7 @@ void EggWidget::setup()
 
 void EggWidget::setupCss()
 {
-    setStyleSheet(FileUtil::read(CSS_EGG));
+    setStyleSheet(FileUtil::read(constants::css::egg));
 }
 
 void EggWidget::setupUi()

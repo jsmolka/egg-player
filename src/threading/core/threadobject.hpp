@@ -10,7 +10,7 @@ class ThreadObject : public QObject
     Q_OBJECT
 
 public:
-    explicit ThreadObject(QObject *parent = nullptr);
+    ThreadObject();
 
     bool isInterrupted() const;
 

@@ -106,7 +106,9 @@ HEADERS += \
     src/widgets/parts/lockableiconbutton.hpp \
     src/core/config/cfgappminimalsize.hpp \
     src/core/config/cfgbarslider.hpp \
-    src/core/config/cfgbarlabelwidth.hpp
+    src/core/config/cfgbarlabelwidth.hpp \
+    src/core/singleton.hpp \
+    src/core/uncopyable.hpp
 
 SOURCES += \
     src/main.cpp \

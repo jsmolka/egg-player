@@ -2,9 +2,8 @@
 
 #include "threading/core/threadpool.hpp"
 
-Callable::Callable(QObject *parent)
-    : ThreadObject(parent)
-    , m_thread(nullptr)
+Callable::Callable()
+    : m_thread(nullptr)
 {
     moveToThread(egg_pool.getSuitibleThread(*this));
 }

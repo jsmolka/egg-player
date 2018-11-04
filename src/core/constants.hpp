@@ -3,34 +3,65 @@
 
 #include <QString>
 
-const extern QString CSS_BAR;
-const extern QString CSS_EGG;
-const extern QString CSS_LIBRARY;
+namespace constants
+{
+namespace css
+{
+const extern QString bar;
+const extern QString egg;
+const extern QString library;
+}
 
-const extern QString FONT_LATO;
+namespace font
+{
+const extern QString lato;
+}
 
-const extern QString ICO_LOOP;
-const extern QString ICO_NEXT;
-const extern QString ICO_PAUSE;
-const extern QString ICO_PLAY;
-const extern QString ICO_PREVIOUS;
-const extern QString ICO_SHUFFLE;
-const extern QString ICO_VOLUME_FULL;
-const extern QString ICO_VOLUME_LOW;
-const extern QString ICO_VOLUME_MEDIUM;
-const extern QString ICO_VOLUME_MUTE;
+namespace ico
+{
+const extern QString loop;
+const extern QString next;
+const extern QString pause;
+const extern QString play;
+const extern QString previous;
+const extern QString shuffle;
 
-const extern QString IMG_COVER;
-const extern QString IMG_EGG;
+namespace volume
+{
+const extern QString full;
+const extern QString medium;
+const extern QString low;
+const extern QString mute;
+}
+}
 
-const extern QString APP_NAME;
-const extern QString APP_ORG;
+namespace img
+{
+const extern QString cover;
+const extern QString egg;
+}
 
-const extern QString DB_CONNECTION;
-const extern QString DB_PATH;
+namespace app
+{
+const extern QString name;
+const extern QString org;
+}
 
-const extern QString CFG_PATH;
+namespace db
+{
+const extern QString connection;
+const extern QString file;
+}
 
-const extern QString LOG_PATH;
+namespace cfg
+{
+const extern QString file;
+}
+
+namespace log
+{
+const extern QString file;
+}
+}
 
 #endif // CONSTANTS_HPP

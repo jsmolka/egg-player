@@ -3,6 +3,7 @@
 #include <QJsonDocument>
 
 #include "core/constants.hpp"
+#include "core/macros.hpp"
 #include "core/utils.hpp"
 
 Config::Config()
@@ -17,41 +18,59 @@ Config::~Config()
     save();
 }
 
-Config &Config::instance()
-{
-    static Config config;
-
-    return config;
-}
-
-cfg::App &Config::app()
+const cfg::App &Config::app() const
 {
     return m_app;
 }
 
-cfg::Bar &Config::bar()
+const cfg::Bar &Config::bar() const
 {
     return m_bar;
 }
 
-cfg::Library &Config::library()
+const cfg::Library &Config::library() const
 {
     return m_library;
 }
 
-cfg::Player &Config::player()
+const cfg::Player &Config::player() const
 {
     return m_player;
 }
 
-cfg::Shortcut &Config::shortcut()
+const cfg::Shortcut &Config::shortcut() const
 {
     return m_shortcut;
 }
 
+cfg::App &Config::app()
+{
+    return EGG_REF_CAST(Config, cfg::App, app);
+}
+
+cfg::Bar &Config::bar()
+{
+    return EGG_REF_CAST(Config, cfg::Bar, bar);
+}
+
+cfg::Library &Config::library()
+{
+    return EGG_REF_CAST(Config, cfg::Library, library);
+}
+
+cfg::Player &Config::player()
+{
+    return EGG_REF_CAST(Config, cfg::Player, player);
+}
+
+cfg::Shortcut &Config::shortcut()
+{
+    return EGG_REF_CAST(Config,  cfg::Shortcut, shortcut);
+}
+
 void Config::load()
 {
-    const QJsonDocument json = QJsonDocument::fromJson(FileUtil::readBytes(CFG_PATH, "{}"));
+    const QJsonDocument json = QJsonDocument::fromJson(FileUtil::readBytes(constants::cfg::file, "{}"));
     const QJsonObject object = json.object();
 
     m_app.loadObject(object.value("app").toObject());
@@ -73,7 +92,7 @@ void Config::save()
     QJsonDocument json;
     json.setObject(object);
 
-    FileUtil::write(CFG_PATH, json.toJson());
+    FileUtil::write(constants::cfg::file, json.toJson());
 }
 
 void Config::setDefaults()

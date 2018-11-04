@@ -69,7 +69,7 @@ void DbInitializer::insertDefaultCover()
     DbCover dbCover;
     if (!dbCover.getById(1))
     {
-        const QPixmap cover = Cover::scale(QPixmap(IMG_COVER), Cover::defaultSize());
+        const QPixmap cover = Cover::scale(QPixmap(constants::img::cover), Cover::defaultSize());
         dbCover.setId(1);
         dbCover.setCover(cover);
         dbCover.insert();

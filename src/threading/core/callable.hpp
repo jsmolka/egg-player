@@ -8,7 +8,7 @@ class Callable : public ThreadObject
     Q_OBJECT
 
 public:
-    explicit Callable(QObject *parent = nullptr);
+    Callable();
     ~Callable() override;
 
     int objectsPerThread() const override;

@@ -9,10 +9,10 @@ VolumeButton::VolumeButton(QWidget *parent)
 {
     setIcons(IconFactory::make(
         QStrings()
-            << ICO_VOLUME_FULL
-            << ICO_VOLUME_MEDIUM
-            << ICO_VOLUME_LOW
-            << ICO_VOLUME_MUTE
+            << constants::ico::volume::full
+            << constants::ico::volume::medium
+            << constants::ico::volume::low
+            << constants::ico::volume::mute
     ));
     updateIcon(ePlayer->volume());
 

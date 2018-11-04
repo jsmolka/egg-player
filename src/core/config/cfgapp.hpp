@@ -14,8 +14,9 @@ public:
 
     void setDefaults() override;
 
+    const app::MinimalSize &minimalSize() const;
+
     app::MinimalSize &minimalSize();
-    app::MinimalSize &minimalSize() const;
 
     void setFontSize(double size);
     double fontSize() const;

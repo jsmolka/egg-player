@@ -20,7 +20,7 @@ void Logger::log(const QString &message, const QString &func, const QVector<QVar
     const QString time = QDateTime::currentDateTime().toString("dd-MM-yy hh:mm");
     edited = QString("[%1] %2: %3").arg(time, func, edited);
 
-    QFile file(LOG_PATH);
+    QFile file(constants::log::file);
     if (file.open(QIODevice::Append))
     {
         QTextStream stream(&file);

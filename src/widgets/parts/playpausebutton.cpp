@@ -9,8 +9,8 @@ PlayPauseButton::PlayPauseButton(QWidget *parent)
 {
     setIcons(IconFactory::make(
         QStrings()
-            << ICO_PLAY
-            << ICO_PAUSE
+            << constants::ico::play
+            << constants::ico::pause
     ));
     updateIcon();
 

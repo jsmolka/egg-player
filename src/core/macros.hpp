@@ -36,4 +36,9 @@
         EGG_PSETTER(type, var, set)         \
         EGG_GETTER(type, var, get)          \
 
+#define EGG_REF_CAST(cls, type, func)       \
+    const_cast<type &>(                     \
+        static_cast<const cls &>(           \
+            *this).func())                  \
+
 #endif // MACROS_HPP

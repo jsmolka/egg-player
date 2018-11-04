@@ -1,6 +1,7 @@
 #include "bass.hpp"
 
-#include "core/globals.hpp"
+#include "core/logger.hpp"
+#include "core/macros.hpp"
 
 Bass::Bass()
 {
@@ -13,16 +14,14 @@ Bass::~Bass()
     free();
 }
 
-Bass &Bass::instance()
+const bass::Stream &Bass::stream() const
 {
-    static Bass bass;
-
-    return bass;
+    return m_stream;
 }
 
 bass::Stream &Bass::stream()
 {
-    return m_stream;
+    return EGG_REF_CAST(Bass, bass::Stream, stream);
 }
 
 bool Bass::start()

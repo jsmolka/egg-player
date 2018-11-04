@@ -2,13 +2,13 @@
 
 #include <QHeaderView>
 
-#include "core/globals.hpp"
+#include "core/config/config.hpp"
 
 AudiosWidget::AudiosWidget(QWidget *parent)
     : TableWidget(parent)
     , m_audios(nullptr)
 {
-    setup();
+    init();
 }
 
 AudiosWidget::AudiosWidget(Audios *audios, QWidget *parent)
@@ -79,18 +79,18 @@ void AudiosWidget::onAudiosUpdated(int row)
     }
 }
 
-void AudiosWidget::setup()
+void AudiosWidget::init()
 {
     horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
     verticalHeader()->setSectionResizeMode(QHeaderView::Fixed);
     verticalHeader()->setDefaultSectionSize(cfg_library.itemHeight());
 
-    setupCss();
+    initStyle();
 }
 
-void AudiosWidget::setupCss()
+void AudiosWidget::initStyle()
 {
-    setStyleSheet(FileUtil::read(CSS_LIBRARY)
+    setStyleSheet(FileUtil::read(constants::css::library)
         .replace("cell-padding", QString::number(cfg_library.cellPadding()))
         .replace("scrollbar-width", QString::number(cfg_library.scrollBarWidth()))
     );

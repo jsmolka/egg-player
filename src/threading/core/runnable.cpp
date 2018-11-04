@@ -3,8 +3,7 @@
 #include "threading/core/threadpool.hpp"
 
 Runnable::Runnable()
-    : ThreadObject(nullptr)
-    , m_thread(nullptr)
+    : m_thread(nullptr)
 {
     moveToThread(egg_pool.getSuitibleThread(*this));
 }

@@ -38,8 +38,8 @@ private:
 
     void insert(int row, Audio *audio);
 
-    void setup();
-    void setupCss();
+    void init();
+    void initStyle();
 
     Audios *m_audios;
     QVector<Column> m_columns;

@@ -2,7 +2,7 @@
 #define COVERLOADERWORKER_HPP
 
 #include "core/audio.hpp"
-#include "core/globals.hpp"
+#include "core/macros.hpp"
 #include "threading/core/runnable.hpp"
 
 class CoverLoaderWorker : public Runnable

@@ -1,5 +1,7 @@
 #include "cfgapp.hpp"
 
+#include "core/macros.hpp"
+
 void cfg::App::loadObject(const QJsonObject &object)
 {
     setObject(object);
@@ -23,14 +25,14 @@ void cfg::App::setDefaults()
     m_minimalSize.setDefaults();
 }
 
-cfg::app::MinimalSize &cfg::App::minimalSize()
+const cfg::app::MinimalSize &cfg::App::minimalSize() const
 {
     return m_minimalSize;
 }
 
-cfg::app::MinimalSize &cfg::App::minimalSize() const
+cfg::app::MinimalSize &cfg::App::minimalSize()
 {
-    return const_cast<cfg::app::MinimalSize &>(static_cast<const cfg::App &>(*this).minimalSize());
+    return EGG_REF_CAST(cfg::App, cfg::app::MinimalSize, minimalSize);
 }
 
 void cfg::App::setFontSize(double size)

@@ -2,9 +2,8 @@
 
 #include <QApplication>
 
-ThreadObject::ThreadObject(QObject *parent)
-    : QObject(parent)
-    , m_interrupted(false)
+ThreadObject::ThreadObject()
+    : m_interrupted(false)
 {
 
 }

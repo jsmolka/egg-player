@@ -28,24 +28,24 @@ void cfg::Bar::setDefaults()
     m_slider.setDefaults();
 }
 
-cfg::bar::LabelWidth &cfg::Bar::labelWidth()
+const cfg::bar::LabelWidth &cfg::Bar::labelWidth() const
 {
     return m_labelWidth;
 }
 
-cfg::bar::LabelWidth &cfg::Bar::labelWidth() const
-{
-    return const_cast<cfg::bar::LabelWidth &>(static_cast<const cfg::Bar &>(*this).labelWidth());
-}
-
-cfg::bar::Slider &cfg::Bar::slider()
+const cfg::bar::Slider &cfg::Bar::slider() const
 {
     return m_slider;
 }
 
-cfg::bar::Slider &cfg::Bar::slider() const
+cfg::bar::LabelWidth &cfg::Bar::labelWidth()
 {
-    return const_cast<cfg::bar::Slider &>(static_cast<const cfg::Bar &>(*this).slider());
+    return EGG_REF_CAST(cfg::Bar, cfg::bar::LabelWidth, labelWidth);
+}
+
+cfg::bar::Slider &cfg::Bar::slider()
+{
+    return EGG_REF_CAST(cfg::Bar, cfg::bar::Slider, slider);
 }
 
 void cfg::Bar::setHeight(int height)

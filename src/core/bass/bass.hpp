@@ -3,19 +3,19 @@
 
 #include <bass/bass.h>
 
+#include "core/singleton.hpp"
 #include "core/bass/basserror.hpp"
 #include "core/bass/bassstream.hpp"
 
 #define egg_bass (Bass::instance())
 
-class Bass : private bass::Error
+class Bass : public Singleton<Bass>, private bass::Error
 {
 public:
-    explicit Bass();
-    explicit Bass(const Bass &) = delete;
+    Bass();
     ~Bass();
 
-    static Bass &instance();
+    const bass::Stream &stream() const;
 
     bass::Stream &stream();
 
@@ -30,8 +30,6 @@ public:
     static DWORD device();
 
     static BASS_DEVICEINFO deviceInfo();
-
-    void operator=(const Bass &) = delete;
 
 private:
     static bool isValidVersion();

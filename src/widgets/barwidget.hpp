@@ -36,9 +36,9 @@ private:
 
     void startTransition(const QColor &color);
 
-    void setup();
-    void setupCss();
-    void setupUi();
+    void init();
+    void initUi();
+    void initStyle();
 
     QLabel m_coverLabel;
     QLabel m_trackLabel;

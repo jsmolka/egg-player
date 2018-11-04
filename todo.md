@@ -6,14 +6,14 @@
   - use smart pointer for automatic deletion
 - BarWidget
   - update name if the current audio changes
+  - properly split
 - TableWidget
   - consider the following changes
     - [replace hover with select](https://stackoverflow.com/questions/8644367/how-to-highlight-a-row-in-qtablewidget)
     - [hover implementation 1](https://stackoverflow.com/questions/20565930/qtableview-how-can-i-highlight-the-entire-row-for-mouse-hover)
     - [hover implementation 2](https://stackoverflow.com/questions/23111075/how-to-highlight-the-entire-row-on-mouse-hover-in-qtablewidget-qt5)
 - Threading
-  - use correct visibility for functions
-  - objectsPerThread should be public, moveToThread maybe private
+  - moveToThread maybe protected
   - maybe only pass objects per thread to getSuitibleThread
   - do not expose parent for classes which should not have a parent
 
@@ -26,19 +26,9 @@
 - proper style for ifdef in constants
 - make code generally more robust and log unlikely behavior
 - use namespaces
-- Shortcut: use enums for repeat, no bool
 - Player: make it a pure singleton
 - use limit in database
-- ThreadedObject: virtual function for objects per thread
 - process ThreadObject events differently
-
-## Config Rework
-- create different config structure with sub objects
-- create
-  - RootObject
-  - SubObject
-- use a structure to properly store and loads objects
-- maybe create a custom utils class with macros etc.
 
 ## Database Rework
 - table with current version, converter functions

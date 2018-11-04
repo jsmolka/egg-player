@@ -13,7 +13,7 @@ QSqlDatabase DbProvider::db()
         QSqlDatabase::addDatabase("QSQLITE", connection);
 
     QSqlDatabase db = QSqlDatabase::database(connection, false);
-    db.setDatabaseName(DB_PATH);
+    db.setDatabaseName(constants::db::file);
     if (!db.isOpen())
     {
         if (!db.open())
@@ -24,5 +24,5 @@ QSqlDatabase DbProvider::db()
 
 QString DbProvider::threadConnection()
 {
-    return DB_CONNECTION + QString::number(reinterpret_cast<quint64>(QThread::currentThread()), 16);
+    return constants::db::connection + QString::number(reinterpret_cast<quint64>(QThread::currentThread()), 16);
 }
