@@ -17,7 +17,9 @@ public:
     static QPixmap loadCover(int id);
 
 private:
+    static Audio *loadAudioFromCache(const QString &file);
     static bool updateAudioCoverId(Audio *audio, int coverId);
+    static int coverId(const QPixmap &cover);
 };
 
 #endif // CACHE_HPP

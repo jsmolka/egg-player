@@ -3,9 +3,9 @@
 
 #include <QSqlDatabase>
 
-#include "core/globals.hpp"
-
-class DbProvider
+namespace db
+{
+class Provider
 {
 public:
     static QSqlDatabase db();
@@ -13,5 +13,6 @@ public:
 private:
     static QString threadConnection();
 };
+}
 
 #endif // DBPROVIDER_HPP

@@ -108,7 +108,8 @@ HEADERS += \
     src/core/config/cfgbarslider.hpp \
     src/core/config/cfgbarlabelwidth.hpp \
     src/core/singleton.hpp \
-    src/core/uncopyable.hpp
+    src/core/uncopyable.hpp \
+    src/core/database/dbinfo.hpp
 
 SOURCES += \
     src/main.cpp \
@@ -175,4 +176,5 @@ SOURCES += \
     src/widgets/parts/lockableiconbutton.cpp \
     src/core/config/cfgappminimalsize.cpp \
     src/core/config/cfgbarslider.cpp \
-    src/core/config/cfgbarlabelwidth.cpp
+    src/core/config/cfgbarlabelwidth.cpp \
+    src/core/database/dbinfo.cpp

@@ -2,13 +2,15 @@
 #define DBAUDIO_HPP
 
 #include "core/audio.hpp"
-#include "core/globals.hpp"
+#include "core/macros.hpp"
 #include "core/database/dbtableitem.hpp"
 
-class DbAudio : public DbTableItem
+namespace db
+{
+class Audio : public TableItem
 {
 public:
-    using DbTableItem::DbTableItem;
+    Audio();
 
     EGG_CPROP(QString, file, setFile, file)
     EGG_CPROP(QString, title, setTitle, title)
@@ -24,6 +26,8 @@ public:
     bool exists();
     bool insert();
     bool commit();
+
+    bool createTable();
 
     bool getByFile(const QString &file);
     bool getByTitle(const QString &title);
@@ -43,8 +47,8 @@ public:
     bool updateCoverId(int coverId);
     bool updateModified(qint64 modified);
 
-    void assignTo(Audio *audio);
-    void loadFrom(Audio *audio);
+    void assignTo(::Audio *audio);
+    void loadFrom(::Audio *audio);
 
 protected:
     bool getBy(const QString &column, const QVariant &value);
@@ -53,5 +57,6 @@ protected:
 private:
     void loadFromRecord(const QSqlRecord &record);
 };
+}
 
 #endif // DBAUDIO_HPP

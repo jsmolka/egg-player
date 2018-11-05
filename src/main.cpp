@@ -8,8 +8,6 @@
 #include "core/database/dbinitializer.hpp"
 #include "widgets/eggwidget.hpp"
 
-#include <QDebug>
-
 QFont font(double size)
 {
     const int id = QFontDatabase::addApplicationFont(constants::font::lato);
@@ -34,7 +32,7 @@ void setup(QApplication &app)
     ePlayer->playlist().setLoop(cfgPlayer.loop());
     ePlayer->playlist().setShuffle(cfgPlayer.shuffle());
 
-    DbInitializer().initialize();
+    db::Initializer::initialize();
 }
 
 int main(int argc, char *argv[])

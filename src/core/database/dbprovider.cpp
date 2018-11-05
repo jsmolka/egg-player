@@ -1,9 +1,11 @@
 #include "dbprovider.hpp"
 
-#include <QSqlQuery>
 #include <QThread>
 
-QSqlDatabase DbProvider::db()
+#include "core/constants.hpp"
+#include "core/logger.hpp"
+
+QSqlDatabase db::Provider::db()
 {
     if (!QSqlDatabase::isDriverAvailable("QSQLITE"))
         EGG_LOG("QSQLITE driver not available");
@@ -22,7 +24,7 @@ QSqlDatabase DbProvider::db()
     return db;
 }
 
-QString DbProvider::threadConnection()
+QString db::Provider::threadConnection()
 {
     return constants::db::connection + QString::number(reinterpret_cast<quint64>(QThread::currentThread()), 16);
 }

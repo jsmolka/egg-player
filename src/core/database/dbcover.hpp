@@ -3,15 +3,16 @@
 
 #include <QByteArray>
 #include <QPixmap>
-#include <QSqlRecord>
 
-#include "core/globals.hpp"
+#include "core/macros.hpp"
 #include "core/database/dbtableitem.hpp"
 
-class DbCover : public DbTableItem
+namespace db
+{
+class Cover : public TableItem
 {
 public:
-    using DbTableItem::DbTableItem;
+    Cover();
 
     EGG_PPROP(int, id, setId, id)
     EGG_PPROP(int, size, setSize, size)
@@ -20,6 +21,8 @@ public:
     bool exists();
     bool insert();
     bool commit();
+
+    bool createTable();
 
     bool getById(int id);
     bool getBySize(int size);
@@ -48,5 +51,6 @@ private:
     int coverIdByBlob(const QByteArray &bytes);
     void loadFromRecord(const QSqlRecord &record);
 };
+}
 
 #endif // DBCOVER_HPP

@@ -8,7 +8,56 @@
 
 Audio *Cache::loadAudio(const QString &file)
 {    
-    DbAudio dbAudio;
+    Audio *audio = loadAudioFromCache(file);
+    if (audio)
+        return audio;
+
+    audio = new Audio(file);
+    if (audio->isValid())
+        return audio;
+
+    delete audio;
+    return nullptr;
+}
+
+bool Cache::insertAudio(Audio *audio)
+{
+    db::Audio dbAudio;
+    dbAudio.loadFrom(audio);
+    audio->setCached(true);
+
+    return dbAudio.insert();
+}
+
+bool Cache::updateAudio(Audio *audio)
+{
+    db::Audio dbAudio;
+    dbAudio.loadFrom(audio);
+    audio->setCached(true);
+
+    return dbAudio.commit();
+}
+
+bool Cache::updateAudioCover(Audio *audio, const QPixmap &cover)
+{
+    const int id = coverId(cover);
+    if (id == 0)
+        return false;
+
+    return updateAudioCoverId(audio, id);
+}
+
+QPixmap Cache::loadCover(int id)
+{
+    db::Cover dbCover;
+    dbCover.getById(id);
+
+    return dbCover.cover();
+}
+
+Audio *Cache::loadAudioFromCache(const QString &file)
+{
+    db::Audio dbAudio;
     if (dbAudio.getByFile(file))
     {
         Audio *audio = new Audio;
@@ -18,61 +67,24 @@ Audio *Cache::loadAudio(const QString &file)
         audio->setOutdated(audio->modified() !=  QFileInfo(file).lastModified().toSecsSinceEpoch());
         return audio;
     }
-
-    Audio *audio = new Audio(file);
-    if (audio->isValid())
-        return audio;
-    else
-        delete audio;
-
     return nullptr;
-}
-
-bool Cache::insertAudio(Audio *audio)
-{
-    DbAudio dbAudio;
-    dbAudio.loadFrom(audio);
-    audio->setCached(true);
-
-    return dbAudio.insert();
-}
-
-bool Cache::updateAudio(Audio *audio)
-{
-    DbAudio dbAudio;
-    dbAudio.loadFrom(audio);
-    audio->setCached(true);
-
-    return dbAudio.commit();
-}
-
-bool Cache::updateAudioCover(Audio *audio, const QPixmap &cover)
-{
-    int id;
-    {
-        DbCover dbCover;
-        if (!dbCover.getOrInsertCover(cover))
-            return false;
-
-        id = dbCover.id();
-    }
-    return updateAudioCoverId(audio, id);
-}
-
-QPixmap Cache::loadCover(int id)
-{
-    DbCover dbCover;
-    dbCover.getById(id);
-
-    return dbCover.cover();
 }
 
 bool Cache::updateAudioCoverId(Audio *audio, int coverId)
 {
-    DbAudio dbAudio;
+    db::Audio dbAudio;
     dbAudio.loadFrom(audio);
     audio->setCached(true);
     audio->cover().setId(coverId);
 
     return dbAudio.updateCoverId(coverId);
+}
+
+int Cache::coverId(const QPixmap &cover)
+{
+    db::Cover dbCover;
+    if (!dbCover.getOrInsertCover(cover))
+        return 0;
+
+    return dbCover.id();
 }

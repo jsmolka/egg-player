@@ -1,8 +1,16 @@
 #include "dbaudio.hpp"
 
-#include <QSqlRecord>
+db::Audio::Audio()
+    : m_year(0)
+    , m_track(0)
+    , m_duration(0)
+    , m_coverId(0)
+    , m_modified(0)
+{
 
-bool DbAudio::exists()
+}
+
+bool db::Audio::exists()
 {
     query().prepare(
         "SELECT 1 FROM audios "
@@ -13,7 +21,7 @@ bool DbAudio::exists()
     return query().exec() && query().first();
 }
 
-bool DbAudio::insert()
+bool db::Audio::insert()
 {
     query().prepare(
         "INSERT INTO audios VALUES ("
@@ -43,7 +51,7 @@ bool DbAudio::insert()
     return query().exec();
 }
 
-bool DbAudio::commit()
+bool db::Audio::commit()
 {
     query().prepare(
         "UPDATE audios SET"
@@ -72,111 +80,129 @@ bool DbAudio::commit()
     return query().exec();
 }
 
-bool DbAudio::getByFile(const QString &file)
+bool db::Audio::createTable()
+{
+    return query().exec(
+        "CREATE TABLE IF NOT EXISTS audios ("
+        "  file TEXT PRIMARY KEY,"
+        "  title TEXT,"
+        "  artist TEXT,"
+        "  album TEXT,"
+        "  genre TEXT,"
+        "  year INTEGER,"
+        "  track INTEGER,"
+        "  duration INTEGER,"
+        "  coverid INTEGER,"
+        "  modified INTEGER"
+        ")"
+    );
+}
+
+bool db::Audio::getByFile(const QString &file)
 {
     return getBy("file", file);
 }
 
-bool DbAudio::getByTitle(const QString &title)
+bool db::Audio::getByTitle(const QString &title)
 {
     return getBy("title", title);
 }
 
-bool DbAudio::getByAlbum(const QString &album)
+bool db::Audio::getByAlbum(const QString &album)
 {
     return getBy("album", album);
 }
 
-bool DbAudio::getByArtist(const QString &artist)
+bool db::Audio::getByArtist(const QString &artist)
 {
     return getBy("artist", artist);
 }
 
-bool DbAudio::getByYear(int year)
+bool db::Audio::getByYear(int year)
 {
     return getBy("year", year);
 }
 
-bool DbAudio::getByDuration(int duration)
+bool db::Audio::getByDuration(int duration)
 {
     return getBy("duration", duration);
 }
 
-bool DbAudio::getByCoverId(int coverId)
+bool db::Audio::getByCoverId(int coverId)
 {
     return getBy("coverid", coverId);
 }
 
-bool DbAudio::getByModified(qint64 modified)
+bool db::Audio::getByModified(qint64 modified)
 {
     return getBy("modified", modified);
 }
 
-bool DbAudio::updateFile(const QString &file)
+bool db::Audio::updateFile(const QString &file)
 {
     query().prepare(
         "UPDATE audios SET"
         "  file = :newfile, "
         "WHERE file = :file"
     );
-    query().bindValue(":newfile", file);
     query().bindValue(":file", m_file);
+    query().bindValue(":newfile", file);
 
     m_file = file;
 
     return query().exec();
 }
 
-bool DbAudio::updateTitle(const QString &title)
+bool db::Audio::updateTitle(const QString &title)
 {
     m_title = title;
 
     return update("title", title);
 }
 
-bool DbAudio::updateAlbum(const QString &album)
+bool db::Audio::updateAlbum(const QString &album)
 {
     m_album = album;
 
     return update("album", album);
 }
 
-bool DbAudio::updateArtist(const QString &artist)
+bool db::Audio::updateArtist(const QString &artist)
 {
     m_artist = artist;
 
     return update("artist", artist);
 }
 
-bool DbAudio::updateYear(int year)
+bool db::Audio::updateYear(int year)
 {
     m_year = year;
 
     return update("year", year);
 }
 
-bool DbAudio::updateDuration(int duration)
+bool db::Audio::updateDuration(int duration)
 {
     m_duration = duration;
 
     return update("duration", duration);
 }
 
-bool DbAudio::updateCoverId(int coverId)
+bool db::Audio::updateCoverId(int coverId)
 {
     m_coverId = coverId;
 
     return update("coverid", coverId);
 }
 
-bool DbAudio::updateModified(qint64 modified)
+bool db::Audio::updateModified(qint64 modified)
 {
     m_modified = modified;
 
     return update("modified", modified);
 }
 
-void DbAudio::assignTo(Audio *audio)
+void db::Audio::assignTo(::Audio *audio)
 {
     audio->setFile(m_file);
     audio->tag().setTitle(m_title);
@@ -190,7 +216,7 @@ void DbAudio::assignTo(Audio *audio)
     audio->setModified(m_modified);
 }
 
-void DbAudio::loadFrom(Audio *audio)
+void db::Audio::loadFrom(::Audio *audio)
 {
     m_file = audio->file();
     m_title = audio->tag().title();
@@ -204,7 +230,7 @@ void DbAudio::loadFrom(Audio *audio)
     m_modified = audio->modified();
 }
 
-bool DbAudio::getBy(const QString &column, const QVariant &value)
+bool db::Audio::getBy(const QString &column, const QVariant &value)
 {
     query().prepare(
         "SELECT * FROM audios "
@@ -223,20 +249,21 @@ bool DbAudio::getBy(const QString &column, const QVariant &value)
     return true;
 }
 
-bool DbAudio::update(const QString &column, const QVariant &value)
+bool db::Audio::update(const QString &column, const QVariant &value)
 {
     query().prepare(
         "UPDATE audios SET"
         "  " + column + " = :value "
         "WHERE file = :file"
     );
-    query().bindValue(":value", value);
     query().bindValue(":file", m_file);
+    query().bindValue(":column", column);
+    query().bindValue(":value", value);
 
     return query().exec();
 }
 
-void DbAudio::loadFromRecord(const QSqlRecord &record)
+void db::Audio::loadFromRecord(const QSqlRecord &record)
 {
     m_file = record.value("file").toString();
     m_title = record.value("title").toString();

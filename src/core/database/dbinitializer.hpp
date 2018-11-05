@@ -1,25 +1,21 @@
 #ifndef DBINITIALIZER_HPP
 #define DBINITIALIZER_HPP
 
-#include "core/database/dbbase.hpp"
-
-class DbInitializer : public DbBase
+namespace db
+{
+class Initializer
 {
 public:
-    using DbBase::DbBase;
-
-    void initialize();
+    static void initialize();
 
 private:
-    bool tableExists(const QString &table);
-    void createTables();
-    void createTableAudios();
-    void createTableCovers();
-    void dropTable(const QString &table);
+    static int version();
 
-    void insertDefaultCover();
-
-    static constexpr int s_version = 1;
+    static void init();
+    static void initTables();
+    static void initDefaultCover();
+    static void initInfo();
 };
+}
 
 #endif // DBINITIALIZER_HPP

@@ -5,12 +5,14 @@
 
 #include "core/database/sqlquery.hpp"
 
-class DbBase
+namespace db
+{
+class Base
 {
 public:
-    explicit DbBase();
-    explicit DbBase(QSqlDatabase db);
-    virtual ~DbBase() = default;
+    Base();
+    explicit Base(QSqlDatabase db);
+    virtual ~Base() = 0;
 
 protected:
     SqlQuery &query();
@@ -18,5 +20,6 @@ protected:
 private:    
     SqlQuery m_query;
 };
+}
 
 #endif // DBBASE_HPP

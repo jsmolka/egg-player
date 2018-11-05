@@ -1,77 +1,69 @@
 #include "dbinitializer.hpp"
 
+#include <QFileInfo>
+
+#include "core/constants.hpp"
 #include "core/cover.hpp"
+#include "core/logger.hpp"
+#include "core/database/dbaudio.hpp"
 #include "core/database/dbcover.hpp"
+#include "core/database/dbinfo.hpp"
 
-void DbInitializer::initialize()
+void db::Initializer::initialize()
 {
-    createTables();
-    insertDefaultCover();
+    if (!QFileInfo::exists(constants::db::file))
+        return init();
+
+    db::Info dbInfo;
+    if (!dbInfo.getById(1))
+        EGG_LOG("Cannot get version of existing database");
+
+    if (dbInfo.version() == version())
+        return;
+
+    switch (dbInfo.version())
+    {
+    }
 }
 
-bool DbInitializer::tableExists(const QString &table)
+int db::Initializer::version()
 {
-    query().prepare(
-        "SELECT 1 FROM sqlite_master "
-        "WHERE name = :name"
-    );
-    query().bindValue(":name", table);
-
-    return query().exec() && query().first();
+    return 1;
 }
 
-void DbInitializer::createTables()
+void db::Initializer::init()
 {
-    if (!tableExists("audios"))
-        createTableAudios();
-    if (!tableExists("covers"))
-        createTableCovers();
+    initTables();
+    initDefaultCover();
+    initInfo();
 }
 
-void DbInitializer::createTableAudios()
+void db::Initializer::initTables()
 {
-    query().exec(
-        "CREATE TABLE IF NOT EXISTS audios("
-        "  file TEXT PRIMARY KEY,"
-        "  title TEXT,"
-        "  artist TEXT,"
-        "  album TEXT,"
-        "  genre TEXT,"
-        "  year INTEGER,"
-        "  track INTEGER,"
-        "  duration INTEGER,"
-        "  coverid INTEGER,"
-        "  modified INTEGER"
-        ")"
-    );
+    db::Audio().createTable();
+    db::Cover().createTable();
+    db::Info().createTable();
 }
 
-void DbInitializer::createTableCovers()
+void db::Initializer::initDefaultCover()
 {
-    query().exec(
-        "CREATE TABLE IF NOT EXISTS covers("
-        "  id INTEGER PRIMARY KEY,"
-        "  size INTEGER,"
-        "  cover BLOB"
-        ")"
-    );
-}
-
-void DbInitializer::dropTable(const QString &table)
-{
-    query().prepare("DROP TABLE IF EXISTS :table");
-    query().bindValue(":table", table);
-    query().exec();
-}
-
-void DbInitializer::insertDefaultCover()
-{
-    DbCover dbCover;
+    db::Cover dbCover;
     if (!dbCover.getById(1))
     {
-        const QPixmap cover = Cover::scale(QPixmap(constants::img::cover), Cover::defaultSize());
+        const QPixmap cover = ::Cover::scale(QPixmap(constants::img::cover), ::Cover::defaultSize());
         dbCover.setId(1);
         dbCover.setCover(cover);
         dbCover.insert();
+    }
+}
+
+void db::Initializer::initInfo()
+{
+    db::Info dbInfo;
+    if (!dbInfo.getById(1))
+    {
+        dbInfo.setId(1);
+        dbInfo.setVerion(version());
+        dbInfo.insert();
     }
 }

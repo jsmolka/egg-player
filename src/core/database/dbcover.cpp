@@ -3,9 +3,15 @@
 #include <QBuffer>
 #include <QMutex>
 #include <QMutexLocker>
-#include <QSqlRecord>
 
-bool DbCover::exists()
+db::Cover::Cover()
+    : m_id(0)
+    , m_size(0)
+{
+
+}
+
+bool db::Cover::exists()
 {
     query().prepare(
         "SELECT 1 FROM audios "
@@ -16,32 +22,43 @@ bool DbCover::exists()
     return query().exec() && query().first();
 }
 
-bool DbCover::insert()
+bool db::Cover::insert()
 {
     return insert(coverToBytes(m_cover));
 }
 
-bool DbCover::commit()
+bool db::Cover::commit()
 {
     return commit(coverToBytes(m_cover));
 }
 
-bool DbCover::getById(int id)
+bool db::Cover::createTable()
+{
+    return query().exec(
+        "CREATE TABLE IF NOT EXISTS covers ("
+        "  id INTEGER PRIMARY KEY,"
+        "  size INTEGER,"
+        "  cover BLOB"
+        ")"
+    );
+}
+
+bool db::Cover::getById(int id)
 {
     return getBy("id", id);
 }
 
-bool DbCover::getBySize(int size)
+bool db::Cover::getBySize(int size)
 {
     return getBy("size", size);
 }
 
-bool DbCover::getByCover(const QPixmap &cover)
+bool db::Cover::getByCover(const QPixmap &cover)
 {
     return getBy("cover", coverToBytes(cover));
 }
 
-bool DbCover::getOrInsertCover(const QPixmap &cover)
+bool db::Cover::getOrInsertCover(const QPixmap &cover)
 {
     const QByteArray bytes = coverToBytes(cover);
     const int id = coverId(bytes);
@@ -57,29 +74,29 @@ bool DbCover::getOrInsertCover(const QPixmap &cover)
     return getById(id);
 }
 
-bool DbCover::updateId(int id)
+bool db::Cover::updateId(int id)
 {
     query().prepare(
         "UPDATE covers SET"
         "  id = :newid "
         "WHERE id = :id"
     );
-    query().bindValue(":newid", id);
     query().bindValue(":id", m_id);
+    query().bindValue(":newid", id);
 
     m_id = id;
 
     return query().exec();
 }
 
-bool DbCover::updateSize(int size)
+bool db::Cover::updateSize(int size)
 {
     m_size = size;
 
     return update("size", size);
 }
 
-bool DbCover::updateCover(const QPixmap &cover)
+bool db::Cover::updateCover(const QPixmap &cover)
 {
     m_cover = cover;
     const QByteArray bytes = coverToBytes(cover);
@@ -87,7 +104,7 @@ bool DbCover::updateCover(const QPixmap &cover)
     return update("cover", bytes);
 }
 
-bool DbCover::getBy(const QString &column, const QVariant &value)
+bool db::Cover::getBy(const QString &column, const QVariant &value)
 {
     query().prepare(
         "SELECT * FROM covers "
@@ -106,20 +123,20 @@ bool DbCover::getBy(const QString &column, const QVariant &value)
     return true;
 }
 
-bool DbCover::update(const QString &column, const QVariant &value)
+bool db::Cover::update(const QString &column, const QVariant &value)
 {
     query().prepare(
         "UPDATE covers SET"
         "  " + column + " = :value "
         "WHERE id = :file"
     );
-    query().bindValue(":value", value);
     query().bindValue(":id", m_id);
+    query().bindValue(":value", value);
 
     return query().exec();
 }
 
-QByteArray DbCover::coverToBytes(const QPixmap &cover)
+QByteArray db::Cover::coverToBytes(const QPixmap &cover)
 {
     QByteArray bytes;
     QBuffer buffer(&bytes);
@@ -129,7 +146,7 @@ QByteArray DbCover::coverToBytes(const QPixmap &cover)
     return bytes;
 }
 
-bool DbCover::insert(const QByteArray &bytes)
+bool db::Cover::insert(const QByteArray &bytes)
 {
     m_size = bytes.size();
 
@@ -147,7 +164,7 @@ bool DbCover::insert(const QByteArray &bytes)
     return query().exec();
 }
 
-bool DbCover::commit(const QByteArray &bytes)
+bool db::Cover::commit(const QByteArray &bytes)
 {
     m_size = bytes.size();
 
@@ -164,7 +181,7 @@ bool DbCover::commit(const QByteArray &bytes)
     return query().exec();
 }
 
-int DbCover::lastId()
+int db::Cover::lastId()
 {
     query().exec("SELECT max(id) FROM covers");
 
@@ -175,12 +192,12 @@ int DbCover::lastId()
     return id;
 }
 
-int DbCover::nextId()
+int db::Cover::nextId()
 {
     return lastId() + 1;
 }
 
-int DbCover::coverId(const QByteArray &bytes)
+int db::Cover::coverId(const QByteArray &bytes)
 {
     int id = coverIdBySize(bytes);
     if (id == 0)
@@ -189,7 +206,7 @@ int DbCover::coverId(const QByteArray &bytes)
     return id;
 }
 
-int DbCover::coverIdBySize(const QByteArray &bytes)
+int db::Cover::coverIdBySize(const QByteArray &bytes)
 {
     query().prepare(
         "SELECT id FROM covers "
@@ -210,7 +227,7 @@ int DbCover::coverIdBySize(const QByteArray &bytes)
     return id;
 }
 
-int DbCover::coverIdByBlob(const QByteArray &bytes)
+int db::Cover::coverIdByBlob(const QByteArray &bytes)
 {
     query().prepare(
         "SELECT id FROM covers "
@@ -228,7 +245,7 @@ int DbCover::coverIdByBlob(const QByteArray &bytes)
     return id;
 }
 
-void DbCover::loadFromRecord(const QSqlRecord &record)
+void db::Cover::loadFromRecord(const QSqlRecord &record)
 {
     m_id = record.value("id").toInt();
     m_size = record.value("size").toInt();

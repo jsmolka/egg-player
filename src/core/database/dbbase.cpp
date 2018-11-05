@@ -2,19 +2,25 @@
 
 #include "core/database/dbprovider.hpp"
 
-DbBase::DbBase()
-    : DbBase(DbProvider::db())
+db::Base::Base()
+    : Base(Provider::db())
 {
 
 }
 
-DbBase::DbBase(QSqlDatabase db)
+db::Base::Base(QSqlDatabase db)
     : m_query(db)
 {
     m_query.setForwardOnly(true);
 }
 
-SqlQuery &DbBase::query()
+
+db::Base::~Base()
+{
+
+}
+
+SqlQuery &db::Base::query()
 {
     return m_query;
 }
