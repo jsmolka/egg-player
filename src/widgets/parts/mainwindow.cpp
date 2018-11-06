@@ -34,6 +34,7 @@ void MainWindow::closeEvent(QCloseEvent *event)
 void MainWindow::resizeEvent(QResizeEvent *event)
 {
     m_size = event->oldSize();
+
     QWidget::resizeEvent(event);
 }
 

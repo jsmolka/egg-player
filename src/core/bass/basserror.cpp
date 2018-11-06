@@ -64,5 +64,5 @@ void bass::Error::error()
         EGG_LOG("Invalid error code %1", code);
         return;
     }
-    EGG_LOG(errors.value(code));
+    EGG_LOG("%1", errors.value(code));
 }

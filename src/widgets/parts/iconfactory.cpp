@@ -2,6 +2,8 @@
 
 #include <QPainter>
 
+#include "core/logger.hpp"
+
 QVector<QIcon> IconFactory::make(const QString &file)
 {
     QIcon icon;

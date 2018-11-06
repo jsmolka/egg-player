@@ -1,6 +1,7 @@
 #include "player.hpp"
 
-#include <QApplication>
+#include "core/macros.hpp"
+#include "core/config/config.hpp"
 
 Player::Player(QObject *parent)
     : QObject(parent)
@@ -13,18 +14,17 @@ Player::Player(QObject *parent)
     connect(&m_updateTimer, &QTimer::timeout, this, &Player::update);
     connect(&m_playlist, &Playlist::indexChanged, this, &Player::onPlaylistIndexChanged);
 
-    m_updateTimer.start(cfgPlayer.updateInterval());
+    m_updateTimer.start(cfg_player.updateInterval());
 }
 
-Player *Player::instance()
+const Playlist &Player::playlist() const
 {
-    static Player *player = new Player(qApp);
-    return player;
+    return m_playlist;
 }
 
 Playlist &Player::playlist()
 {
-    return m_playlist;
+    return EGG_REF_CAST(Player, Playlist, playlist);
 }
 
 bool Player::isPlaying() const
@@ -44,9 +44,7 @@ int Player::volume() const
 
 int Player::position()
 {
-    return egg_bass.stream().isHandleValid()
-        ? egg_bass.stream().position()
-        : -1;
+    return m_bass.stream().isHandleValid() ? m_bass.stream().position() : -1;
 }
 
 void Player::createPlaylist(Audios *audios, int index)
@@ -60,19 +58,18 @@ void Player::createPlaylist(Audios *audios, int index)
 void Player::setVolume(int volume)
 {
     volume = qBound(0, volume, 100);
-    if (egg_bass.stream().isHandleValid())
-        if (!egg_bass.stream().setVolume(static_cast<float>(volume) / static_cast<float>(cfgPlayer.volumeQuotient())))
+    if (m_bass.stream().isHandleValid())
+        if (!m_bass.stream().setVolume(static_cast<float>(volume) / static_cast<float>(cfg_player.volumeQuotient())))
             return;
 
     m_volume = volume;
-    cfgPlayer.setVolume(volume);
     emit volumeChanged(volume);
 }
 
 void Player::setPosition(int position)
 {
-    if (egg_bass.stream().isHandleValid())
-        if (!egg_bass.stream().setPosition(position))
+    if (m_bass.stream().isHandleValid())
+        if (!m_bass.stream().setPosition(position))
             return;
 
     emit positionChanged(position);
@@ -90,8 +87,8 @@ void Player::decreaseVolume()
 
 void Player::play()
 {
-    if (egg_bass.stream().isHandleValid())
-        if (!egg_bass.stream().play())
+    if (m_bass.stream().isHandleValid())
+        if (!m_bass.stream().play())
             return;
 
     m_playing = true;
@@ -100,8 +97,8 @@ void Player::play()
 
 void Player::pause()
 {
-    if (egg_bass.stream().isHandleValid())
-        if (!egg_bass.stream().pause())
+    if (m_bass.stream().isHandleValid())
+        if (!m_bass.stream().pause())
             return;
 
     m_playing = false;
@@ -121,20 +118,20 @@ void Player::toggleState()
 
 void Player::onPlaylistIndexChanged(int index)
 {
-    if (index != -1)
-    {
-        setAudio(m_playlist.audioAt(index));
-    }
-    else
+    if (index == -1)
     {
         pause();
         setPosition(0);
+    }
+    else
+    {
+        setAudio(m_playlist.audioAt(index));
     }
 }
 
 void Player::update()
 {
-    if (!m_playing || !egg_bass.stream().isHandleValid())
+    if (!m_playing || !m_bass.stream().isHandleValid())
         return;
 
     const int position = this->position();
@@ -157,10 +154,10 @@ void Player::callback(HSYNC handle, DWORD channel, DWORD data, void *user)
 
 void Player::setAudio(Audio *audio)
 {
-    if (!audio || !egg_bass.stream().create(audio))
+    if (!audio || !m_bass.stream().create(audio))
         return;
 
-    egg_bass.stream().setCallback(callback, this);
+    m_bass.stream().setCallback(callback, this);
     setVolume(m_volume);
 
     if (m_playing)

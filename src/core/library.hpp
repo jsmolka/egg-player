@@ -5,6 +5,7 @@
 
 #include "core/audio.hpp"
 #include "core/audios.hpp"
+#include "core/singleton.hpp"
 #include "core/filesystem/filesystem.hpp"
 #include "threading/audioupdater.hpp"
 #include "threading/audioloader.hpp"
@@ -15,20 +16,18 @@
 
 #define egg_library eLibrary
 
-class Library : public QObject
+class Library : public QObject, public Singleton<Library>
 {
     Q_OBJECT
 
 public:
     explicit Library(QObject *parent = nullptr);
 
-    static Library *instance();
+    const Audios &audios() const;
+    const FileSystem &fileSystem() const;
 
-    Audios *audios();
-    Audios *audios() const;
-
+    Audios &audios();
     FileSystem &fileSystem();
-    FileSystem &fileSystem() const;
 
     void initialLoad(const QStrings &paths);
     void loadFiles(const QStrings &files);
@@ -43,7 +42,7 @@ private slots:
     void onInitialLoaderFinished();
     void onAudioUpdaterUpdated(Audio *audio);
 
-    void onFileSystemRenamed(Audio *audio, const QString &to);
+    void onFileSystemRenamed(Audio *audio, const QString &file);
     void onFileSystemRemoved(Audio *audio);
 
 private:

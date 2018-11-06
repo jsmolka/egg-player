@@ -2,7 +2,8 @@
 #define INITIALLOADERWORKER_HPP
 
 #include "core/audio.hpp"
-#include "core/globals.hpp"
+#include "core/macros.hpp"
+#include "core/types.hpp"
 #include "threading/core/runnable.hpp"
 
 class InitialLoaderWorker : public Runnable

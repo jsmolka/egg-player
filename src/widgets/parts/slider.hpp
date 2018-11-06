@@ -25,7 +25,7 @@ private slots:
     void onSliderReleased();
 
 private:
-    void setup();
+    void init();
 
     bool m_pressed;
     ClickableStyle m_style;

@@ -21,14 +21,18 @@ EggWidget::EggWidget(QWidget *parent)
 
     connect(&m_library, &AudiosWidget::doubleClicked, this, &EggWidget::onLibraryDoubleClicked);
 
-    m_library.setAudios(egg_library->audios());
+    m_library.setAudios(&egg_library.audios());
 
-    egg_library->initialLoad(cfg_library.paths());
+    egg_library.initialLoad(cfg_library.paths());
 }
 
 void EggWidget::closeEvent(QCloseEvent *event)
 {
     egg_pool.interruptThreads();
+
+    cfg_player.setVolume(egg_player.volume());
+    cfg_player.setLoop(egg_player.playlist().isLoop());
+    cfg_player.setShuffle(egg_player.playlist().isShuffle());
 
     MainWindow::closeEvent(event);
 }
@@ -44,15 +48,15 @@ void EggWidget::dropEvent(QDropEvent *event)
         return;
 
     const QStrings files = processDropEvent(event->mimeData());
-    egg_library->loadFiles(files);
+    egg_library.loadFiles(files);
 }
 
 void EggWidget::onLibraryDoubleClicked(const QModelIndex &index)
 {
-    Audios *state = egg_library->audios()->currentState();
+    Audios *state = egg_library.audios().currentState();
 
-    egg_player->createPlaylist(state, index.row());
-    egg_player->play();
+    egg_player.createPlaylist(state, index.row());
+    egg_player.play();
 }
 
 QStrings EggWidget::processDropEvent(const QMimeData *data)
@@ -65,7 +69,7 @@ QStrings EggWidget::processDropEvent(const QMimeData *data)
 
         if (info.isFile())
             processDropEventFile(files, file);
-        if (info.isDir())
+        else if (info.isDir())
             processDropEventDir(files, file);
     }
     return files;
@@ -79,7 +83,7 @@ void EggWidget::processDropEventFile(QStrings &files, const QString &file)
 
 void EggWidget::processDropEventDir(QStrings &files, const QString &path)
 {
-    FileSystem &fileSystem = egg_library->fileSystem();
+    FileSystem &fileSystem = egg_library.fileSystem();
     fileSystem.addPath(path);
 
     Directory *dir = fileSystem.dirs().value(path, nullptr);
@@ -118,4 +122,3 @@ void EggWidget::initStyle()
 {
     setStyleSheet(FileUtil::read(constants::css::egg));
 }
-

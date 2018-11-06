@@ -1,6 +1,5 @@
 #include "playpausebutton.hpp"
 
-#include "core/globals.hpp"
 #include "core/player.hpp"
 #include "widgets/parts/iconfactory.hpp"
 
@@ -12,9 +11,10 @@ PlayPauseButton::PlayPauseButton(QWidget *parent)
             << constants::ico::play
             << constants::ico::pause
     ));
+
     updateIcon();
 
-    connect(ePlayer, &Player::stateChanged, this, &PlayPauseButton::updateIcon);
+    connect(&egg_player, &Player::stateChanged, this, &PlayPauseButton::updateIcon);
 }
 
 void PlayPauseButton::setIcon(Icon icon)
@@ -38,5 +38,5 @@ PlayPauseButton::Icon PlayPauseButton::icon() const
 
 void PlayPauseButton::updateIcon()
 {
-    setIcon(ePlayer->isPlaying() ? Icon::Pause : Icon::Play);
+    setIcon(egg_player.isPlaying() ? Icon::Pause : Icon::Play);
 }

@@ -19,7 +19,7 @@ void RowHoverDelegate::setHoverRow(int row)
 
 void RowHoverDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
-    QStyleOptionViewItem opt = option;
+    QStyleOptionViewItem opt(option);
     if (index.row() == m_hoverRow)
         opt.state |= QStyle::State_MouseOver;
 

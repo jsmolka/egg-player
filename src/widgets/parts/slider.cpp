@@ -4,7 +4,7 @@ Slider::Slider(QWidget *parent)
     : QSlider(parent)
     , m_pressed(false)
 {
-    setup();
+    init();
 
     connect(this, &Slider::sliderPressed, this, &Slider::onSliderPressed);
     connect(this, &Slider::sliderReleased, this, &Slider::onSliderReleased);
@@ -32,7 +32,7 @@ void Slider::onSliderReleased()
     emit sliderValueChanged(value());
 }
 
-void Slider::setup()
+void Slider::init()
 {
     setFocusPolicy(Qt::NoFocus);
     setOrientation(Qt::Horizontal);

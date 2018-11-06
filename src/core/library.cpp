@@ -1,8 +1,6 @@
 #include "library.hpp"
 
-#include <QApplication>
-
-#include "core/globals.hpp"
+#include "core/macros.hpp"
 
 Library::Library(QObject *parent)
     : QObject(parent)
@@ -11,7 +9,7 @@ Library::Library(QObject *parent)
     , m_coverLoader(this)
 {
     connect(&m_initialLoader, &InitialLoader::loaded, this, &Library::insert);
-    connect(&m_initialLoader, &InitialLoader::finished,this, &Library::onInitialLoaderFinished);
+    connect(&m_initialLoader, &InitialLoader::finished, this, &Library::onInitialLoaderFinished);
     connect(&m_audioLoader, &AudioLoader::loaded, this, &Library::insert);
     connect(&m_audioUpdater, &AudioUpdater::updated, this, &Library::onAudioUpdaterUpdated);
 
@@ -21,30 +19,24 @@ Library::Library(QObject *parent)
     connect(&m_fileSystem, &FileSystem::modified, &m_audioUpdater, &AudioUpdater::update);
 }
 
-Library *Library::instance()
+const Audios &Library::audios() const
 {
-    static Library *library = new Library(qApp);
-    return library;
+    return m_audios;
 }
 
-Audios *Library::audios()
-{
-    return &m_audios;
-}
-
-Audios *Library::audios() const
-{
-    return const_cast<Audios *>(static_cast<Library const &>(*this).audios());
-}
-
-FileSystem &Library::fileSystem()
+const FileSystem &Library::fileSystem() const
 {
     return m_fileSystem;
 }
 
-FileSystem &Library::fileSystem() const
+Audios &Library::audios()
 {
-    return const_cast<FileSystem &>(static_cast<Library const &>(*this).fileSystem());
+    return EGG_REF_CAST(Library, Audios, audios);
+}
+
+FileSystem &Library::fileSystem()
+{
+    return EGG_REF_CAST(Library, FileSystem, fileSystem);
 }
 
 void Library::initialLoad(const QStrings &paths)
@@ -68,6 +60,7 @@ void Library::loadFiles(const QStrings &files)
 void Library::insert(Audio *audio)
 {
     m_fileSystem.watchAudio(audio);
+
     m_audios.insert(m_audios.lowerBound(audio), audio);
 }
 
@@ -80,12 +73,6 @@ void Library::onInitialLoaderFinished()
 void Library::onAudioUpdaterUpdated(Audio *audio)
 {
     const int index = m_audios.indexOf(audio);
-    if (index == -1)
-    {
-        EGG_LOG("Updated audio does not exist %1", audio->file());
-        return;
-    }
-
     if (index == m_audios.lowerBound(audio))
     {
         emit m_audios.updated(index);
@@ -97,9 +84,9 @@ void Library::onAudioUpdaterUpdated(Audio *audio)
     }
 }
 
-void Library::onFileSystemRenamed(Audio *audio, const QString &to)
+void Library::onFileSystemRenamed(Audio *audio, const QString &file)
 {
-    audio->setFile(to);
+    audio->setFile(file);
 }
 
 void Library::onFileSystemRemoved(Audio *audio)

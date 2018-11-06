@@ -8,13 +8,12 @@ class Runnable : public ThreadObject
     Q_OBJECT
 
 public:
-    explicit Runnable();
+    Runnable();
     ~Runnable() override;
 
     Thread *thread();
 
     int objectsPerThread() const override;
-    void moveToThread(Thread *thread) override;
 
 public slots:
     void run();
@@ -26,6 +25,8 @@ private slots:
     virtual void work() = 0;
 
 private:
+    void moveToThread(Thread *thread) override;
+
     Thread *m_thread;
 };
 

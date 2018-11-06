@@ -3,15 +3,11 @@
 
 #include <Windows.h>
 
-#include <QAbstractEventDispatcher>
 #include <QAbstractNativeEventFilter>
-#include <QAtomicInt>
 #include <QHash>
 #include <QObject>
 
-#include "core/globals.hpp"
-
-class Shortcut : public QObject, public QAbstractNativeEventFilter
+class Shortcut : public QObject, private QAbstractNativeEventFilter
 {
     Q_OBJECT
 
@@ -21,10 +17,7 @@ public:
     Shortcut(const QString &shortcut, RepeatPolicy repeat, QObject *parent = nullptr);
     ~Shortcut() override;
 
-    int id() const;
-    RepeatPolicy isRepeat() const;
     bool isRegistered() const;
-    QString shortcut() const;
 
 signals:
     void pressed();
@@ -33,23 +26,25 @@ protected:
     bool nativeEventFilter(const QByteArray &eventType, void *message, long *result) override;
 
 private:
-    void activate();
+    using KeyHash = QHash<QString, UINT>;
 
-    QStringList prepareShortcut();
-    UINT parseModifier(const QStringList &sequence);
-    UINT parseVirtualKey(const QStringList &sequence);
+    static QStringList createSequence(const QString &shortcut);
+    static UINT parseSequence(const QStringList &sequence, const KeyHash &keys);
 
-    bool registerShortcut(UINT modifier, UINT vk);
+    void parseShortcut(const QString &shortcut, RepeatPolicy repeat);
+    void autoRegisterShortcut(const QString &shortcut);
+
+    bool registerShortcut();
     bool unregisterShortcut();
 
-    static QAtomicInt s_id;
-    static const QHash<QString, UINT> s_keys;
-    static const QHash<QString, UINT> s_modifiers;
+    static int s_id;
+    static const KeyHash s_keys;
+    static const KeyHash s_modifiers;
 
     int m_id;
-    RepeatPolicy m_repeat;
+    UINT m_modifier;
+    UINT m_vk;
     bool m_registered;
-    QString m_shortcut;
 };
 
 #endif // SHORTCUT_HPP

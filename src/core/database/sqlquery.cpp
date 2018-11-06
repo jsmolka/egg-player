@@ -3,29 +3,22 @@
 #include <QMapIterator>
 #include <QSqlError>
 
+#include "core/logger.hpp"
+
 bool SqlQuery::exec()
 {
-    const bool success = QSqlQuery::exec();
-    if (!success)
-        error();
-
-    return success;
+    return check(QSqlQuery::exec());
 }
 
 bool SqlQuery::exec(const QString &query)
 {
-    const bool success = QSqlQuery::exec(query);
-    if (!success)
-        error();
-
-    return success;
+    return check(QSqlQuery::exec(query));
 }
 
 QString SqlQuery::lastQuery() const
 {
     QString query = QSqlQuery::lastQuery();
     QMapIterator<QString, QVariant> iter(boundValues());
-
     while (iter.hasNext())
     {
         iter.next();
@@ -34,11 +27,19 @@ QString SqlQuery::lastQuery() const
     return query;
 }
 
+bool SqlQuery::check(bool success) const
+{
+   if (!success)
+       error();
+
+   return success;
+}
+
 void SqlQuery::error() const
 {
     const QSqlError error = lastError();
     if (!error.isValid() || error.type() == QSqlError::NoError)
         return;
 
-    LOG("Errors \"%1\" and \"%2\" for query \"%3\"", error.databaseText(), error.driverText(), lastQuery());
+    EGG_LOG("Errors \"%1\" and \"%2\" for query \"%3\"", error.databaseText(), error.driverText(), lastQuery());
 }

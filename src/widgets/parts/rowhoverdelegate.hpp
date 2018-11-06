@@ -3,8 +3,6 @@
 
 #include <QStyledItemDelegate>
 
-#include "core/globals.hpp"
-
 class RowHoverDelegate : public QStyledItemDelegate
 {
     Q_OBJECT

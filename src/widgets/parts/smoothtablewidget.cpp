@@ -4,87 +4,25 @@
 #include <QDateTime>
 #include <QQueue>
 #include <QtMath>
+#include <QWheelEvent>
 
 SmoothTableWidget::SmoothTableWidget(QWidget *parent)
     : QTableWidget(parent)
+    , m_fps(144)
+    , m_duration(145)
+    , m_acceleration(0.1)
+    , m_smallStepRatio(0.33)
+    , m_bigStepRatio(3.33)
+    , m_smallStepModifier(Qt::ControlModifier)
+    , m_bigStepModifier(Qt::ShiftModifier)
     , m_totalSteps(0)
     , m_stepsLeft(0)
     , m_smoothTimer(this)
     , m_lastEvent(nullptr)
 {
-    setup();
+    init();
 
     connect(&m_smoothTimer, &QTimer::timeout, this, &SmoothTableWidget::onTimeout);
-}
-
-void SmoothTableWidget::setFps(int fps)
-{
-    m_fps = fps;
-}
-
-int SmoothTableWidget::fps() const
-{
-    return m_fps;
-}
-
-void SmoothTableWidget::setDuration(int duration)
-{
-    m_duration = duration;
-}
-
-int SmoothTableWidget::duration() const
-{
-    return m_duration;
-}
-
-void SmoothTableWidget::setAcceleration(double acceleration)
-{
-    m_acceleration = acceleration;
-}
-
-double SmoothTableWidget::acceleration() const
-{
-    return m_acceleration;
-}
-
-void SmoothTableWidget::setSmallStepRatio(double ratio)
-{
-    m_smallStepRatio = ratio;
-}
-
-double SmoothTableWidget::smallStepRatio() const
-{
-    return m_smallStepRatio;
-}
-
-void SmoothTableWidget::setBigStepRatio(double ratio)
-{
-    m_bigStepRatio = ratio;
-}
-
-double SmoothTableWidget::bigStepRatio() const
-{
-    return m_bigStepRatio;
-}
-
-void SmoothTableWidget::setSmallStepModifier(Qt::KeyboardModifier modifier)
-{
-    m_smallStepModifier = modifier;
-}
-
-Qt::KeyboardModifier SmoothTableWidget::smallStepModifier() const
-{
-    return m_smallStepModifier;
-}
-
-void SmoothTableWidget::setBigStepModifier(Qt::KeyboardModifier modifier)
-{
-    m_bigStepModifier = modifier;
-}
-
-Qt::KeyboardModifier SmoothTableWidget::bigStepModifier() const
-{
-    return m_bigStepModifier;
 }
 
 void SmoothTableWidget::wheelEvent(QWheelEvent *event)
@@ -143,7 +81,7 @@ void SmoothTableWidget::onTimeout()
     QApplication::sendEvent(verticalScrollBar(), &event);
 }
 
-void SmoothTableWidget::setup()
+void SmoothTableWidget::init()
 {
     setVerticalScrollMode(QAbstractItemView::ScrollPerPixel);
 }
@@ -152,5 +90,6 @@ double SmoothTableWidget::subDelta(double delta, int stepsLeft) const
 {
     const double m = m_totalSteps / 2.0;
     const double x = abs(m_totalSteps - stepsLeft - m);
+
     return (cos(x * M_PI / m) + 1.0) / (2.0 * m) * delta;
 }

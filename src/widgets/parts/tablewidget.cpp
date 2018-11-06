@@ -7,7 +7,7 @@ TableWidget::TableWidget(QWidget *parent)
     : SmoothTableWidget(parent)
     , m_delegate(this)
 {
-    setup();
+    init();
 
     connect(this, &TableWidget::entered, this, &TableWidget::onEntered);
     connect(this, &TableWidget::hoverRowChanged, this, &TableWidget::onHoverRowChanged);
@@ -40,7 +40,7 @@ void TableWidget::onHoverRowChanged(int row)
     viewport()->update();
 }
 
-void TableWidget::setup()
+void TableWidget::init()
 {
     setAlternatingRowColors(true);
     setEditTriggers(QAbstractItemView::NoEditTriggers);

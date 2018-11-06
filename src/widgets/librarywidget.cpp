@@ -1,6 +1,8 @@
 #include "librarywidget.hpp"
 
-#include <ShellScalingApi.h>
+#include <QResizeEvent>
+
+#include "core/config/cfgbase.hpp"
 
 LibraryWidget::LibraryWidget(QWidget *parent)
     : AudiosWidget(parent)
@@ -22,11 +24,10 @@ void LibraryWidget::resizeEvent(QResizeEvent *event)
 
 void LibraryWidget::adjustToWidth(int width)
 {
-    static const float factor = static_cast<float>(GetScaleFactorForDevice(DEVICE_PRIMARY)) / 100.0f;
 
-    const bool hideAlbum = width < 675 * factor;
-    const bool hideGenre = width < 875 * factor;
-    const bool hideYear = width < 975 * factor;
+    const bool hideAlbum = width < cfg::Base::scale(675);
+    const bool hideGenre = width < cfg::Base::scale(875);
+    const bool hideYear = width < cfg::Base::scale(975);
 
     setColumnHidden(2, hideAlbum);
     setColumnHidden(3, hideYear);

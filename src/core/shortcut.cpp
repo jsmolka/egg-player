@@ -1,15 +1,20 @@
 #include "shortcut.hpp"
 
 #include <QApplication>
+#include <QAbstractEventDispatcher>
+
+#include "core/logger.hpp"
 
 Shortcut::Shortcut(const QString &shortcut, RepeatPolicy repeat, QObject *parent)
     : QObject(parent)
     , m_id(++s_id)
-    , m_repeat(repeat)
+    , m_modifier(0)
+    , m_vk(0)
     , m_registered(false)
-    , m_shortcut(shortcut)
 {
-    activate();
+    parseShortcut(shortcut, repeat);
+
+    autoRegisterShortcut(shortcut);
 }
 
 Shortcut::~Shortcut()
@@ -18,24 +23,9 @@ Shortcut::~Shortcut()
         unregisterShortcut();
 }
 
-int Shortcut::id() const
-{
-    return m_id;
-}
-
-Shortcut::RepeatPolicy Shortcut::isRepeat() const
-{
-    return m_repeat;
-}
-
 bool Shortcut::isRegistered() const
 {
     return m_registered;
-}
-
-QString Shortcut::shortcut() const
-{
-    return m_shortcut;
 }
 
 bool Shortcut::nativeEventFilter(const QByteArray &eventType, void *message, long *result)
@@ -51,69 +41,63 @@ bool Shortcut::nativeEventFilter(const QByteArray &eventType, void *message, lon
     return false;
 }
 
-void Shortcut::activate()
+QStringList Shortcut::createSequence(const QString &shortcut)
 {
-    const QStringList sequence = prepareShortcut();
-    const UINT modifier = parseModifier(sequence);
-    const UINT vk = parseVirtualKey(sequence);
-
-    if (vk == 0 && modifier == 0)
-    {
-        LOG("Cannot parse shortcut %1", m_shortcut);
-        return;
-    }
-
-    if (registerShortcut(modifier, vk))
-        qApp->eventDispatcher()->installNativeEventFilter(this);
-    else
-        LOG("Cannot register shortcut %1", m_shortcut);
+    return shortcut.toUpper()
+        .replace(" ", "")
+        .split("+", QString::SkipEmptyParts);
 }
 
-QStringList Shortcut::prepareShortcut()
-{
-    return m_shortcut.toUpper()
-        .replace(QLatin1String(" "), QLatin1String(""))
-        .split(QLatin1String("+"), QString::SkipEmptyParts);
-}
-
-UINT Shortcut::parseModifier(const QStringList &sequence)
-{
-    UINT modifier = 0;
-    for (const QString &key : sequence)
-    {
-        if (s_modifiers.contains(key))
-            modifier |= s_modifiers.value(key);
-    }
-    if (m_repeat == RepeatPolicy::NoRepeat)
-        modifier |= MOD_NOREPEAT;
-
-    return modifier;
-}
-
-UINT Shortcut::parseVirtualKey(const QStringList &sequence)
+UINT Shortcut::parseSequence(const QStringList &sequence, const KeyHash &keys)
 {
     UINT vk = 0;
     for (const QString &key : sequence)
     {
-        if (s_keys.contains(key))
-            vk = s_keys.value(key);
+        if (keys.contains(key))
+            vk |= keys.value(key);
     }
     return vk;
 }
 
-bool Shortcut::registerShortcut(UINT modifier, UINT vk)
+void Shortcut::parseShortcut(const QString &shortcut, RepeatPolicy repeat)
 {
-    return (m_registered = RegisterHotKey(nullptr, m_id, modifier, vk));
+    const QStringList sequence = createSequence(shortcut);
+
+    m_vk = parseSequence(sequence, s_keys);
+    m_modifier = parseSequence(sequence, s_modifiers);
+
+    if (repeat == RepeatPolicy::NoRepeat)
+        m_modifier |= MOD_NOREPEAT;
+
+    if (m_vk == 0 || m_modifier == 0)
+        EGG_LOG("Cannot parse shortcut %1", shortcut);
+}
+
+void Shortcut::autoRegisterShortcut(const QString &shortcut)
+{
+    if (registerShortcut())
+        qApp->eventDispatcher()->installNativeEventFilter(this);
+    else
+        EGG_LOG("Cannot register shortcut %1", shortcut);
+}
+
+bool Shortcut::registerShortcut()
+{
+    m_registered = RegisterHotKey(nullptr, m_id, m_modifier, m_vk);
+
+    return m_registered;
 }
 
 bool Shortcut::unregisterShortcut()
 {
-    return (m_registered = UnregisterHotKey(nullptr, m_id));
+    m_registered = UnregisterHotKey(nullptr, m_id);
+
+    return m_registered;
 }
 
-QAtomicInt Shortcut::s_id = 0;
+int Shortcut::s_id = 0;
 
-const QHash<QString, UINT> Shortcut::s_keys =
+const Shortcut::KeyHash Shortcut::s_keys =
 {
     {"CANCEL"   , VK_CANCEL   },
     {"BACK"     , VK_BACK     },
@@ -220,7 +204,7 @@ const QHash<QString, UINT> Shortcut::s_keys =
     {"SCROLL"   , VK_SCROLL   }
 };
 
-const QHash<QString, UINT> Shortcut::s_modifiers =
+const Shortcut::KeyHash Shortcut::s_modifiers =
 {
     {"CONTROL", MOD_CONTROL},
     {"CTRL"   , MOD_CONTROL},

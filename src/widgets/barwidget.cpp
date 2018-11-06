@@ -31,26 +31,26 @@ BarWidget::BarWidget(QWidget *parent)
 {
     init();
 
-    connect(egg_player, &Player::audioChanged, this, &BarWidget::onPlayerAudioChanged);
-    connect(egg_player, &Player::positionChanged, this, &BarWidget::onPlayerPositionChanged);
-    connect(egg_player, &Player::volumeChanged, &m_volumeSlider, &Slider::setValue);
+    connect(&egg_player, &Player::audioChanged, this, &BarWidget::onPlayerAudioChanged);
+    connect(&egg_player, &Player::positionChanged, this, &BarWidget::onPlayerPositionChanged);
+    connect(&egg_player, &Player::volumeChanged, &m_volumeSlider, &Slider::setValue);
 
-    connect(&m_nextButton, &IconButton::pressed, &egg_player->playlist(), &Playlist::next);
-    connect(&m_playPauseButton, &IconButton::pressed, egg_player, &Player::toggleState);
+    connect(&m_nextButton, &IconButton::pressed, &egg_player.playlist(), &Playlist::next);
+    connect(&m_playPauseButton, &IconButton::pressed, &egg_player, &Player::toggleState);
     connect(&m_previousButton, &IconButton::pressed, this, &BarWidget::onPlayerPrevious);
-    connect(&m_shuffleButton, &LockableIconButton::locked, &egg_player->playlist(), &Playlist::setShuffle);
-    connect(&m_loopButton, &LockableIconButton::locked, &egg_player->playlist(), &Playlist::setLoop);
+    connect(&m_shuffleButton, &LockableIconButton::locked, &egg_player.playlist(), &Playlist::setShuffle);
+    connect(&m_loopButton, &LockableIconButton::locked, &egg_player.playlist(), &Playlist::setLoop);
     connect(&m_volumeButton, &IconButton::pressed, this, &BarWidget::onVolumeButtonPressed);
 
     connect(&m_durationSlider, &Slider::sliderMoved, this, &BarWidget::onDurationSliderMoved);
-    connect(&m_durationSlider, &Slider::sliderValueChanged, egg_player, &Player::setPosition);
-    connect(&m_volumeSlider, &Slider::sliderMoved, egg_player, &Player::setVolume);
+    connect(&m_durationSlider, &Slider::sliderValueChanged, &egg_player, &Player::setPosition);
+    connect(&m_volumeSlider, &Slider::sliderMoved, &egg_player, &Player::setVolume);
 
-    connect(&m_scPlayPause, &Shortcut::pressed, egg_player, &Player::toggleState);
-    connect(&m_scNext, &Shortcut::pressed, &egg_player->playlist(), &Playlist::next);
+    connect(&m_scPlayPause, &Shortcut::pressed, &egg_player, &Player::toggleState);
+    connect(&m_scNext, &Shortcut::pressed, &egg_player.playlist(), &Playlist::next);
     connect(&m_scPrevious, &Shortcut::pressed, this, &BarWidget::onPlayerPrevious);
-    connect(&m_scVolumeUp, &Shortcut::pressed, egg_player, &Player::increaseVolume);
-    connect(&m_scVolumeDown, &Shortcut::pressed, egg_player, &Player::decreaseVolume);
+    connect(&m_scVolumeUp, &Shortcut::pressed, &egg_player, &Player::increaseVolume);
+    connect(&m_scVolumeDown, &Shortcut::pressed, &egg_player, &Player::decreaseVolume);
 }
 
 void BarWidget::setColor(const QColor &color)
@@ -81,7 +81,7 @@ void BarWidget::onPlayerAudioChanged(Audio *audio)
 
 void BarWidget::onPlayerPositionChanged(int position)
 {
-    if (egg_player->playlist().isEmpty()
+    if (egg_player.playlist().isEmpty()
             || m_durationSlider.isPressed()
             || m_durationSlider.maximum() < position)
         return;
@@ -93,9 +93,9 @@ void BarWidget::onPlayerPositionChanged(int position)
 void BarWidget::onPlayerPrevious()
 {
     if (cfg_player.previousLimit() < m_durationSlider.value())
-        egg_player->setPosition(0);
+        egg_player.setPosition(0);
     else
-        egg_player->playlist().previous();
+        egg_player.playlist().previous();
 }
 
 void BarWidget::onVolumeButtonPressed()

@@ -25,7 +25,7 @@ private slots:
     void onHoverRowChanged(int row);
 
 private:
-    void setup();
+    void init();
 
     RowHoverDelegate m_delegate;
     ClickableStyle m_style;

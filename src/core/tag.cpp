@@ -26,9 +26,7 @@ bool Tag::read()
     const TagLib::MPEG::File file(Util::toWString(m_file));
     if (!file.isValid() || !file.audioProperties())
     {
-        EGG_LOG(QFileInfo::exists(m_file)
-            ? "Cannot read tags %1"
-            : "File does not exist %1", m_file);
+        EGG_LOG("Cannot read tag %1", m_file);
         return false;
     }
 

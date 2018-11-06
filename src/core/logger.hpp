@@ -2,15 +2,16 @@
 #define LOGGER_HPP
 
 #include <QString>
-#include <QVector>
 #include <QVariant>
-
-namespace Logger
-{
-    extern void log(const QString &message, const QString &func, const QVector<QVariant> &args);
-}
+#include <QVector>
 
 #define EGG_LOG(message, ...) Logger::log(message, __FUNCTION__, {__VA_ARGS__})
 #define LOG EGG_LOG
+
+class Logger
+{
+public:
+    static void log(const char *msg, const char *func, const QVector<QVariant> &args);
+};
 
 #endif // LOGGER_HPP

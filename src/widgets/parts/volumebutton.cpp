@@ -14,9 +14,9 @@ VolumeButton::VolumeButton(QWidget *parent)
             << constants::ico::volume::low
             << constants::ico::volume::mute
     ));
-    updateIcon(ePlayer->volume());
+    updateIcon(egg_player.volume());
 
-    connect(ePlayer, &Player::volumeChanged, this, &VolumeButton::updateIcon);
+    connect(&egg_player, &Player::volumeChanged, this, &VolumeButton::updateIcon);
 }
 
 void VolumeButton::setIcon(Icon icon)

@@ -23,6 +23,11 @@ int Runnable::objectsPerThread() const
     return 1;
 }
 
+void Runnable::run()
+{
+    m_thread->start();
+}
+
 void Runnable::moveToThread(Thread *thread)
 {
     if (m_thread)
@@ -39,9 +44,4 @@ void Runnable::moveToThread(Thread *thread)
 
     if (thread->maxObjects() == 0)
         thread->setMaxObjects(objectsPerThread());
-}
-
-void Runnable::run()
-{
-    m_thread->start();
 }

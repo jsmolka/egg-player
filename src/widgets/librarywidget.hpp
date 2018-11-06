@@ -1,15 +1,12 @@
 #ifndef LIBRARYWIDGET_HPP
 #define LIBRARYWIDGET_HPP
 
-#include <QResizeEvent>
-
-#include "core/globals.hpp"
 #include "widgets/parts/audioswidget.hpp"
 
 class LibraryWidget : public AudiosWidget
 {
 public:
-    LibraryWidget(QWidget *parent = nullptr);
+    explicit LibraryWidget(QWidget *parent = nullptr);
 
 protected:
     void resizeEvent(QResizeEvent *event);

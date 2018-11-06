@@ -3,8 +3,6 @@
 
 #include <QSqlQuery>
 
-#include "core/globals.hpp"
-
 class SqlQuery : public QSqlQuery
 {
 public:
@@ -12,9 +10,11 @@ public:
 
     bool exec();
     bool exec(const QString &query);
+
     QString lastQuery() const;
 
 private:
+    bool check(bool success) const;
     void error() const;
 };
 

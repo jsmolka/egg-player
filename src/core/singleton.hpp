@@ -13,9 +13,9 @@ public:
 template<typename T>
 inline T &Singleton<T>::instance()
 {
-    static T t;
+    static T instance;
 
-    return t;
+    return instance;
 }
 
 #endif // SINGLETON_HPP

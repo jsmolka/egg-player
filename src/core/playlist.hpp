@@ -6,7 +6,7 @@
 
 #include "core/audio.hpp"
 #include "core/audios.hpp"
-#include "core/globals.hpp"
+#include "core/macros.hpp"
 
 class Playlist : public QObject
 {
@@ -15,8 +15,7 @@ class Playlist : public QObject
 public:
     explicit Playlist(QObject *parent = nullptr);
 
-    void setIndex(int index);
-    int index() const;
+    EGG_PPROP(int, index, setIndex, index)
 
     bool isLoop() const;
     bool isShuffle() const;
@@ -56,7 +55,6 @@ private:
 
     Audios *m_audios;
     QVector<int> m_indices;
-    int m_index;
     bool m_loop;
     bool m_shuffle;
 };

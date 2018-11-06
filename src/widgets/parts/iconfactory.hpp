@@ -5,7 +5,7 @@
 #include <QPixmap>
 #include <QVector>
 
-#include "core/globals.hpp"
+#include "core/types.hpp"
 
 class IconFactory
 {

@@ -5,22 +5,21 @@
 #include <QTimer>
 
 #include "core/audio.hpp"
-#include "core/globals.hpp"
 #include "core/playlist.hpp"
+#include "core/singleton.hpp"
 #include "core/bass/bass.hpp"
 
-#define ePlayer (Player::instance())
+#define egg_player (Player::instance())
+#define ePlayer egg_player
 
-#define egg_player (ePlayer)
-
-class Player : public QObject
+class Player : public QObject, public Singleton<Player>
 {
     Q_OBJECT
 
 public:
     explicit Player(QObject *parent = nullptr);
 
-    static Player *instance();
+    const Playlist &playlist() const;
 
     Playlist &playlist();
 
@@ -44,10 +43,10 @@ public slots:
     void toggleState();
 
 signals:
-    void audioChanged(Audio *audio);
     void stateChanged();
-    void positionChanged(int position);
     void volumeChanged(int volume);
+    void positionChanged(int position);
+    void audioChanged(Audio *audio);
 
 private slots:
     void onPlaylistIndexChanged(int index);
@@ -58,6 +57,7 @@ private:
 
     void setAudio(Audio *audio);
 
+    Bass m_bass;
     Playlist m_playlist;
     QTimer m_updateTimer;
     int m_volume;

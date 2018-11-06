@@ -2,19 +2,18 @@
 #include <QFont>
 #include <QFontDatabase>
 
-#include "core/globals.hpp"
-#include "core/library.hpp"
+#include "core/constants.hpp"
 #include "core/player.hpp"
 #include "core/database/dbinitializer.hpp"
 #include "widgets/eggwidget.hpp"
 
-QFont font(double size)
+QFont font()
 {
     const int id = QFontDatabase::addApplicationFont(constants::font::lato);
     const QString family = QFontDatabase::applicationFontFamilies(id).at(0);
 
     QFont font(family);
-    font.setPointSizeF(size);
+    font.setPointSizeF(cfg_app.fontSize());
     font.setWeight(QFont::Weight::Medium);
 
     return font;
@@ -26,11 +25,11 @@ void setup(QApplication &app)
 
     app.setApplicationName(constants::app::name);
     app.setOrganizationName(constants::app::org);
-    app.setFont(font(cfgApp.fontSize()));
+    app.setFont(font());
 
-    ePlayer->setVolume(cfgPlayer.volume());
-    ePlayer->playlist().setLoop(cfgPlayer.loop());
-    ePlayer->playlist().setShuffle(cfgPlayer.shuffle());
+    egg_player.setVolume(cfg_player.volume());
+    egg_player.playlist().setLoop(cfg_player.loop());
+    egg_player.playlist().setShuffle(cfg_player.shuffle());
 
     db::Initializer::initialize();
 }

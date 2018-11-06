@@ -3,13 +3,10 @@
 
 #include <bass/bass.h>
 
-#include "core/singleton.hpp"
 #include "core/bass/basserror.hpp"
 #include "core/bass/bassstream.hpp"
 
-#define egg_bass (Bass::instance())
-
-class Bass : public Singleton<Bass>, private bass::Error
+class Bass : private bass::Error
 {
 public:
     Bass();

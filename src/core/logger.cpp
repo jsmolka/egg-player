@@ -8,23 +8,28 @@
 #include "core/constants.hpp"
 #include "core/config/config.hpp"
 
-void Logger::log(const QString &message, const QString &func, const QVector<QVariant> &args)
+void Logger::log(const char *msg, const char *func, const QVector<QVariant> &args)
 {
-    if (!cfgApp.log())
+    if (!cfg_app.log())
         return;
 
-    QString edited = message;
+    QString message(msg);
+    QString function(func);
+
     for (const QVariant &arg : args)
-         edited = edited.arg(arg.toString());
+    {
+        if (arg.canConvert(QVariant::String))
+            message = message.arg(arg.toString());
+    }
 
     const QString time = QDateTime::currentDateTime().toString("dd-MM-yy hh:mm");
-    edited = QString("[%1] %2: %3").arg(time, func, edited);
+    message = QString("[%1] %2: %3").arg(time, function, message);
 
     QFile file(constants::log::file);
     if (file.open(QIODevice::Append))
     {
         QTextStream stream(&file);
-        stream << edited << "\n";
+        stream << message << "\n";
     }
-    qDebug().noquote() << edited;
+    qDebug().noquote() << message;
 }

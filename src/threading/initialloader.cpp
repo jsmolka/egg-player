@@ -2,29 +2,6 @@
 
 #include "threading/initialloaderworker.hpp"
 
-InitialLoader::InitialLoader(QObject *parent)
-    : InitialLoader(QStrings(), parent)
-{
-
-}
-
-InitialLoader::InitialLoader(const QStrings &files, QObject *parent)
-    : Controller(parent)
-    , m_files(files)
-{
-
-}
-
-void InitialLoader::setFiles(const QStrings &files)
-{
-    m_files = files;
-}
-
-QStrings InitialLoader::files() const
-{
-    return m_files;
-}
-
 void InitialLoader::start()
 {
 #ifdef QT_DEBUG
