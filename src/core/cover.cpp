@@ -10,6 +10,7 @@
 #include <taglib/mpegfile.h>
 
 #include "core/logger.hpp"
+#include "core/utils.hpp"
 #include "core/database/cache.hpp"
 
 Cover::Cover()
@@ -58,6 +59,9 @@ QPixmap Cover::loadFromFile(const QString &file)
 
 QPixmap Cover::scale(const QPixmap &pixmap, int size, ScalePolicy policy)
 {
+    if (pixmap.height() == size && pixmap.width() == size)
+        return pixmap;
+
     Qt::TransformationMode mode =
         policy == ScalePolicy::Smooth
             ? Qt::SmoothTransformation

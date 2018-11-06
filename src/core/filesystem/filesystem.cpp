@@ -2,6 +2,9 @@
 
 #include <QFileInfo>
 
+#include "core/logger.hpp"
+#include "core/macros.hpp"
+
 FileSystem::FileSystem(QObject *parent)
     : QObject(parent)
     , m_watcher(this)
@@ -25,9 +28,14 @@ QHash<QString, Audio *> FileSystem::audios() const
     return m_audios;
 }
 
-FileSystemWatcher &FileSystem::watcher()
+const FileSystemWatcher &FileSystem::watcher() const
 {
     return m_watcher;
+}
+
+FileSystemWatcher &FileSystem::watcher()
+{
+    return EGG_REF_CAST(FileSystem, FileSystemWatcher, watcher);
 }
 
 void FileSystem::addPath(const QString &path)
@@ -42,13 +50,13 @@ void FileSystem::addPath(const QString &path)
     dir->parse();
 }
 
-QStrings FileSystem::globAudios() const
+QStrings FileSystem::globFiles() const
 {
-    QStrings result;
+    QStrings files;
     for (Directory *dir : qAsConst(m_dirs))
-        result << dir->globAudios(Directory::GlobPolicy::Shallow);
+        files << dir->globAudios(Directory::GlobPolicy::Shallow);
 
-    return result;
+    return files;
 }
 
 void FileSystem::watchAudio(Audio *audio)
@@ -64,7 +72,6 @@ void FileSystem::unwatchAudio(Audio *audio)
 void FileSystem::onDirParsed(Directory *dir)
 {
     QStringList paths;
-    paths.reserve(dir->files().size() + 1);
     paths << dir->path();
     for (const QString &file : dir->files())
     {
@@ -93,27 +100,43 @@ void FileSystem::onFileChanged(const QString &file)
     eventModified(file);
 }
 
-void FileSystem::onDirectoryChanged(const QString &dir)
+void FileSystem::onDirectoryChanged(const QString &path)
 {
-    const QStrings files = m_dirs.value(dir)->processChanges();
-    QHash<UniqueFileInfo, QString> renamedFrom;
-    QHash<UniqueFileInfo, QString> renamedTo;
-
-    for (const QString &file : files)
+    Directory *dir = m_dirs.value(path, nullptr);
+    if (!dir)
     {
-        if (m_unique.contains(file))
-            renamedFrom.insert(m_unique.value(file), file);
-        else
-            renamedTo.insert(UniqueFileInfo(file), file);
+        EGG_LOG("Changed directory does not exist %1", path);
+        return;
     }
 
-    for (auto iter = renamedFrom.cbegin(); iter != renamedFrom.cend(); ++iter)
+    InfoHash oldInfos;
+    InfoHash newInfos;
+    const QStrings changes = dir->processChanges();
+
+    processChanges(changes, oldInfos, newInfos);
+    triggerEvents(oldInfos, newInfos);
+}
+
+void FileSystem::processChanges(const QStrings &changes, InfoHash &oldInfos, InfoHash &newInfos)
+{
+    for (const QString &file : changes)
+    {
+        if (m_unique.contains(file))
+            oldInfos.insert(m_unique.value(file), file);
+        else
+            newInfos.insert(UniqueFileInfo(file), file);
+    }
+}
+
+void FileSystem::triggerEvents(InfoHash &oldInfos, InfoHash &newInfos)
+{
+    for (auto iter = oldInfos.cbegin(); iter != oldInfos.cend(); ++iter)
     {
         const UniqueFileInfo info = iter.key();
-        if (renamedTo.contains(info))
+        if (newInfos.contains(info))
         {
-            eventRenamed(iter.value(), renamedTo.value(info));
-            renamedTo.remove(info);
+            eventRenamed(iter.value(), newInfos.value(info));
+            newInfos.remove(info);
         }
         else
         {
@@ -121,7 +144,7 @@ void FileSystem::onDirectoryChanged(const QString &dir)
         }
     }
 
-    for (auto iter = renamedTo.cbegin(); iter != renamedTo.cend(); ++iter)
+    for (auto iter = newInfos.cbegin(); iter != newInfos.cend(); ++iter)
         eventAdded(iter.value(), iter.key());
 }
 

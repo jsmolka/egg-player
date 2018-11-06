@@ -40,20 +40,22 @@ void Directory::parse()
     QDirIterator dirIter(m_path, QDir::Files | QDir::Dirs | QDir::NoDotAndDotDot);
     while (dirIter.hasNext())
     {
-        dirIter.next();
-        if (dirIter.fileInfo().isFile())
+        const QString file = dirIter.next();
+        const QFileInfo info = dirIter.fileInfo();
+        if (info.isFile())
         {
-            if (dirIter.filePath().endsWith(QLatin1String(".mp3"), Qt::CaseInsensitive))
-                m_files << dirIter.filePath();
+            if (file.endsWith(".mp3", Qt::CaseInsensitive))
+                m_files << file;
         }
-        else
+        else if (info.isDir())
         {
-            Directory *dir = new Directory(dirIter.filePath(), this);
+            Directory *dir = new Directory(file, this);
             connect(dir, &Directory::parsed, this, &Directory::parsed);
             connect(dir, &Directory::created, this, &Directory::created);
             connect(dir, &Directory::removed, this, &Directory::removed);
             dir->parse();
-            m_dirs.insert(dir->path(), dir);
+
+            m_dirs.insert(file, dir);
         }
     }
     emit parsed(this);
@@ -108,14 +110,15 @@ void Directory::processExistingDirChanges(QStrings &changes)
     QDirIterator dirIter(m_path, QDir::Dirs | QDir::NoDotAndDotDot);
     while (dirIter.hasNext())
     {
-        dirIter.next();
-        Directory *dir = m_dirs.value(dirIter.filePath(), nullptr);
+        const QString path = dirIter.next();
+        Directory *dir = m_dirs.value(path, nullptr);
         if (!dir)
         {
-            dir = new Directory(dirIter.filePath(), this);
+            dir = new Directory(path, this);
             connect(dir, &Directory::created, this, &Directory::created);
             connect(dir, &Directory::removed, this, &Directory::removed);
-            m_dirs.insert(dir->path(), dir);
+
+            m_dirs.insert(path, dir);
             emit created(dir);
         }
         changes << dir->processChanges();
@@ -148,8 +151,7 @@ void Directory::processFileChanges(QStrings &changes)
     QDirIterator dirIter(m_path, QStringList() << "*.mp3", QDir::Files);
     while (dirIter.hasNext())
     {
-        dirIter.next();
-        const QString file = dirIter.filePath();
+        const QString file = dirIter.next();
         if (!m_files.contains(file))
         {
             changes << file;

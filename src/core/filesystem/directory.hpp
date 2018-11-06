@@ -5,7 +5,7 @@
 #include <QObject>
 #include <QSet>
 
-#include "core/globals.hpp"
+#include "core/types.hpp"
 
 class Directory : public QObject
 {

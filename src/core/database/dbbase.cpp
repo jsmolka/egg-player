@@ -3,17 +3,10 @@
 #include "core/database/dbprovider.hpp"
 
 db::Base::Base()
-    : Base(Provider::db())
-{
-
-}
-
-db::Base::Base(QSqlDatabase db)
-    : m_query(db)
+    : m_query(Provider::db())
 {
     m_query.setForwardOnly(true);
 }
-
 
 db::Base::~Base()
 {

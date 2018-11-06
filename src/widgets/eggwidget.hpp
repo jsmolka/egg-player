@@ -3,7 +3,6 @@
 
 #include <QMimeData>
 
-#include "core/globals.hpp"
 #include "widgets/barwidget.hpp"
 #include "widgets/librarywidget.hpp"
 #include "widgets/parts/mainwindow.hpp"
@@ -15,9 +14,6 @@ class EggWidget : public MainWindow
 public:
     explicit EggWidget(QWidget *parent = nullptr);
 
-    EGG_PPROP(BarWidget *, bar, setBar, bar)
-    EGG_PPROP(LibraryWidget *, library, setLibrary, library)
-
 protected:
     void closeEvent(QCloseEvent *event);
     void dragEnterEvent(QDragEnterEvent *event);
@@ -28,10 +24,15 @@ private slots:
 
 private:
     QStrings processDropEvent(const QMimeData *data);
+    void processDropEventFile(QStrings &files, const QString &file);
+    void processDropEventDir(QStrings &files, const QString &path);
 
-    void setup();
-    void setupCss();
-    void setupUi();
+    void init();
+    void initUi();
+    void initStyle();
+
+    BarWidget m_bar;
+    LibraryWidget m_library;
 };
 
 #endif // EGGWIDGET_HPP

@@ -4,8 +4,6 @@
 #include <QFileSystemWatcher>
 #include <QTimer>
 
-#include "core/globals.hpp"
-
 class FileSystemWatcher : public QObject
 {
     Q_OBJECT
@@ -30,8 +28,6 @@ private slots:
 
 private:
     static qint64 dirSize(const QString &dir);
-
-    static constexpr int s_bufferDuration{500};
 
     QFileSystemWatcher m_watcher;
     QTimer m_timer;

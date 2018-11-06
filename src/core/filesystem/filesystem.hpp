@@ -6,7 +6,6 @@
 
 #include "core/audio.hpp"
 #include "core/bimap.hpp"
-#include "core/globals.hpp"
 #include "core/filesystem/directory.hpp"
 #include "core/filesystem/filesystemwatcher.hpp"
 #include "core/filesystem/uniquefileinfo.hpp"
@@ -21,11 +20,14 @@ public:
     Bimap<QString, UniqueFileInfo> uniqueInfo() const;
     QHash<QString, Directory *> dirs() const;
     QHash<QString, Audio *> audios() const;
+
+    const FileSystemWatcher &watcher() const;
+
     FileSystemWatcher &watcher();
 
     void addPath(const QString &path);
 
-    QStrings globAudios() const;
+    QStrings globFiles() const;
 
     void watchAudio(Audio *audio);
     void unwatchAudio(Audio *audio);
@@ -42,9 +44,14 @@ private slots:
     void onDirRemoved(Directory *dir);
 
     void onFileChanged(const QString &file);
-    void onDirectoryChanged(const QString &dir);
+    void onDirectoryChanged(const QString &path);
 
 private:
+    using InfoHash = QHash<UniqueFileInfo, QString>;
+
+    void processChanges(const QStrings &changes, InfoHash &oldInfos, InfoHash &newInfos);
+    void triggerEvents(InfoHash &oldInfos, InfoHash &newInfos);
+
     void eventModified(const QString &file);
     void eventRenamed(const QString &from, const QString &to);
     void eventAdded(const QString &file, const UniqueFileInfo &info);

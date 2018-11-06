@@ -52,7 +52,7 @@ void FileSystemWatcher::onDirectoryChanged(const QString &dir)
     if (m_bufferedDir.isNull() || m_bufferedDir.contains(dir))
         m_bufferedDir = dir;
 
-    m_timer.start(s_bufferDuration);
+    m_timer.start(500);
 }
 
 void FileSystemWatcher::onTimerTimeout()
@@ -63,7 +63,7 @@ void FileSystemWatcher::onTimerTimeout()
         if (size != m_lastSize)
         {
             m_lastSize = size;
-            m_timer.start(s_bufferDuration);
+            m_timer.start(500);
             return;
         }
         emit directoryChanged(m_bufferedDir);

@@ -2,6 +2,9 @@
 
 #include <Windows.h>
 
+#include "core/logger.hpp"
+#include "core/utils.hpp"
+
 UniqueFileInfo::UniqueFileInfo()
     : m_index(0)
     , m_volume(0)
@@ -13,16 +16,14 @@ UniqueFileInfo::UniqueFileInfo(const QString &file)
     : UniqueFileInfo()
 {
     readInfo(file);
+
+    if (!isValid())
+        EGG_LOG("Invalid unique file info %1", file);
 }
 
-quint64 UniqueFileInfo::index() const
+bool UniqueFileInfo::isValid() const
 {
-    return m_index;
-}
-
-quint64 UniqueFileInfo::volume() const
-{
-    return m_volume;
+    return m_index != 0 && m_volume != 0;
 }
 
 void UniqueFileInfo::readInfo(const QString &file)
@@ -39,22 +40,22 @@ void UniqueFileInfo::readInfo(const QString &file)
 
     if (handle == INVALID_HANDLE_VALUE)
     {
-        LOG("Cannot get file handle %1", file);
+        EGG_LOG("Cannot get file handle %1", file);
         return;
     }
 
     BY_HANDLE_FILE_INFORMATION info;
-    if (!GetFileInformationByHandle(handle, &info))
+    if (GetFileInformationByHandle(handle, &info))
     {
-        LOG("Cannot get file information %1", file);
-        return;
+        m_index = info.nFileIndexHigh;
+        m_index <<= 32;
+        m_index += info.nFileIndexLow;
+        m_volume = info.dwVolumeSerialNumber;
     }
-
-    m_index = info.nFileIndexHigh;
-    m_index <<= 32;
-    m_index += info.nFileIndexLow;
-    m_volume = info.dwVolumeSerialNumber;
-
+    else
+    {
+        EGG_LOG("Cannot get file information %1", file);
+    }
     if (!CloseHandle(handle))
-        LOG("Cannot close file handle %1", file);
+        EGG_LOG("Cannot close file handle %1", file);
 }

@@ -3,12 +3,12 @@
 
 #include <QString>
 
-#include "core/globals.hpp"
+#include "core/macros.hpp"
 
 class Duration
 {
 public:
-    explicit Duration();
+    Duration();
     explicit Duration(int secs);
 
     EGG_PPROP(int, secs, setSecs, secs)

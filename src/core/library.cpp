@@ -52,7 +52,7 @@ void Library::initialLoad(const QStrings &paths)
     for (const QString &path : paths)
         m_fileSystem.addPath(path);
 
-    m_initialLoader.setFiles(m_fileSystem.globAudios());
+    m_initialLoader.setFiles(m_fileSystem.globFiles());
     m_initialLoader.start();
 }
 

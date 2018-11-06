@@ -10,7 +10,7 @@ ExpiringThread::ExpiringThread(QObject *parent)
 {
     connect(m_thread, &Thread::emptied, this, &ExpiringThread::onEmptied);
     connect(&m_timer, &QTimer::timeout, this, &ExpiringThread::onTimeout);
-    connect(qApp, &QApplication::aboutToQuit, this, &ExpiringThread::onAppQuitting);
+    connect(qApp, &QApplication::aboutToQuit, this, &ExpiringThread::onQuitting);
 
     m_timer.setSingleShot(true);
 }
@@ -18,6 +18,12 @@ ExpiringThread::ExpiringThread(QObject *parent)
 Thread *ExpiringThread::thread()
 {
     return m_thread;
+}
+
+void ExpiringThread::onEmptied()
+{
+    if (!m_quitting)
+        m_timer.start(30000);
 }
 
 void ExpiringThread::onTimeout()
@@ -30,13 +36,7 @@ void ExpiringThread::onTimeout()
     }
 }
 
-void ExpiringThread::onAppQuitting()
+void ExpiringThread::onQuitting()
 {
     m_quitting = true;
-}
-
-void ExpiringThread::onEmptied()
-{
-    if (!m_quitting)
-        m_timer.start(30000);
 }

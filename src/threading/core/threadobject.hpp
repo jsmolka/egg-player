@@ -14,14 +14,17 @@ public:
 
     bool isInterrupted() const;
 
+    void moveToThread(QThread *) = delete;
+
     virtual int objectsPerThread() const = 0;
-    virtual void moveToThread(Thread *thread) = 0;
 
 public slots:
     void interrupt();
     void moveToMainThread();
 
 private:
+    virtual void moveToThread(Thread *thread) = 0;
+
     bool m_interrupted;
 };
 

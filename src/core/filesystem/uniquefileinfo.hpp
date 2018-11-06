@@ -3,7 +3,7 @@
 
 #include <QHashFunctions>
 
-#include "core/globals.hpp"
+#include "core/macros.hpp"
 
 class UniqueFileInfo
 {
@@ -11,14 +11,13 @@ public:
     UniqueFileInfo();
     explicit UniqueFileInfo(const QString &file);
 
-    quint64 index() const;
-    quint64 volume() const;
+    EGG_PPROP(quint64, index, setIndex, index)
+    EGG_PPROP(quint64, volume, setVolume, volume)
+
+    bool isValid() const;
 
 private:
     void readInfo(const QString &file);
-
-    quint64 m_index;
-    quint64 m_volume;
 };
 
 inline bool operator==(const UniqueFileInfo &info1, const UniqueFileInfo &info2)

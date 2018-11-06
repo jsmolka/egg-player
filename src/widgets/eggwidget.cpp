@@ -5,21 +5,24 @@
 #include <QFileInfo>
 
 #include "core/library.hpp"
+#include "core/logger.hpp"
 #include "core/player.hpp"
-#include "core/filesystem/directory.hpp"
+#include "core/utils.hpp"
+#include "core/config/config.hpp"
 #include "threading/core/threadpool.hpp"
 #include "widgets/parts/borderlayout.hpp"
 
 EggWidget::EggWidget(QWidget *parent)
     : MainWindow(parent)
-    , m_bar(new BarWidget(this))
-    , m_library(new LibraryWidget(this))
+    , m_bar(this)
+    , m_library(this)
 {
-    setup();
+    init();
 
-    connect(m_library, &AudiosWidget::doubleClicked, this, &EggWidget::onLibraryDoubleClicked);
+    connect(&m_library, &AudiosWidget::doubleClicked, this, &EggWidget::onLibraryDoubleClicked);
 
-    m_library->setAudios(egg_library->audios());
+    m_library.setAudios(egg_library->audios());
+
     egg_library->initialLoad(cfg_library.paths());
 }
 
@@ -46,7 +49,9 @@ void EggWidget::dropEvent(QDropEvent *event)
 
 void EggWidget::onLibraryDoubleClicked(const QModelIndex &index)
 {
-    egg_player->createPlaylist(egg_library->audios()->currentState(), index.row());
+    Audios *state = egg_library->audios()->currentState();
+
+    egg_player->createPlaylist(state, index.row());
     egg_player->play();
 }
 
@@ -55,49 +60,62 @@ QStrings EggWidget::processDropEvent(const QMimeData *data)
     QStrings files;
     for (const QUrl &url : data->urls())
     {
-        const QString path = url.toLocalFile();
-        if (QFileInfo(path).isDir())
-        {
-            egg_library->fileSystem().addPath(path);
-            Directory *dir = egg_library->fileSystem().dirs().value(path);
-            files << dir->globAudios();
-        }
-        else
-        {
-            if (path.endsWith(QLatin1String(".mp3"), Qt::CaseInsensitive))
-            {
-                egg_library->fileSystem().watcher().addPath(path);
-                files << path;
-            }
-        }
+        const QString file = url.toLocalFile();
+        const QFileInfo info(file);
+
+        if (info.isFile())
+            processDropEventFile(files, file);
+        if (info.isDir())
+            processDropEventDir(files, file);
     }
     return files;
 }
 
-void EggWidget::setup()
+void EggWidget::processDropEventFile(QStrings &files, const QString &file)
+{
+    if (file.endsWith(".mp3", Qt::CaseInsensitive))
+        files << file;
+}
+
+void EggWidget::processDropEventDir(QStrings &files, const QString &path)
+{
+    FileSystem &fileSystem = egg_library->fileSystem();
+    fileSystem.addPath(path);
+
+    Directory *dir = fileSystem.dirs().value(path, nullptr);
+    if (!dir)
+    {
+        EGG_LOG("Failed retrieving directory %1", path);
+        return;
+    }
+    files << dir->globAudios();
+}
+
+void EggWidget::init()
 {
     setAcceptDrops(true);
     setMinimumHeight(cfgApp.minimalSize().height());
     setMinimumWidth(cfgApp.minimalSize().width());
 
-    setupCss();
-    setupUi();
+    initUi();
+    initStyle();
 }
 
-void EggWidget::setupCss()
+void EggWidget::initUi()
+{
+    QLabel *label = new QLabel(this);
+    label->setFixedWidth(250);
+    label->setStyleSheet("QLabel {background-color: #666666;}");
+
+    BorderLayout *layout = new BorderLayout(0, this);
+    layout->addWidget(&m_library, BorderLayout::Center);
+    layout->addWidget(label, BorderLayout::West);
+    layout->addWidget(&m_bar, BorderLayout::South);
+    setLayout(layout);
+}
+
+void EggWidget::initStyle()
 {
     setStyleSheet(FileUtil::read(constants::css::egg));
 }
 
-void EggWidget::setupUi()
-{
-    QLabel *label = new QLabel(this);
-    label->setFixedWidth(315);
-    label->setStyleSheet("QLabel {background-color: #666666;}");
-
-    BorderLayout *layout = new BorderLayout(0, this);
-    layout->addWidget(m_library, BorderLayout::Center);
-    layout->addWidget(label, BorderLayout::West);
-    layout->addWidget(m_bar, BorderLayout::South);
-    setLayout(layout);
-}

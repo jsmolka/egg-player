@@ -18,9 +18,9 @@ signals:
     void expired(ExpiringThread *thread);
 
 private slots:
-    void onTimeout();
     void onEmptied();
-    void onAppQuitting();
+    void onTimeout();
+    void onQuitting();
 
 private:
     Thread *m_thread;

@@ -13,9 +13,9 @@ public:
 
     int objectsPerThread() const override;
 
+private:
     void moveToThread(Thread *thread) override;
 
-private:
     Thread *m_thread;
 };
 

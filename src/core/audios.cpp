@@ -65,8 +65,8 @@ int Audios::lowerBound(Audio *audio)
     while (low < high)
     {
         const int mid = (low + high) / 2;
-        const int diff = audio->tag().title().compare(at(mid)->tag().title(), Qt::CaseInsensitive);
-        if (diff < 0)
+        const int cmp = audio->tag().title().compare(at(mid)->tag().title(), Qt::CaseInsensitive);
+        if (cmp < 0)
             high = mid;
         else
             low = mid + 1;
