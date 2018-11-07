@@ -10,7 +10,7 @@ void cfg::Bar::loadObject(const QJsonObject &object)
 
 QJsonObject cfg::Bar::toObject() const
 {
-    QJsonObject object(this->object());
+    QJsonObject object = this->object();
     object.insert("labelWidth", m_labelWidth.toObject());
     object.insert("slider", m_slider.toObject());
 

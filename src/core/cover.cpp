@@ -62,7 +62,7 @@ QPixmap Cover::scale(const QPixmap &pixmap, int size, ScalePolicy policy)
     if (pixmap.height() == size && pixmap.width() == size)
         return pixmap;
 
-    Qt::TransformationMode mode =
+    const Qt::TransformationMode mode =
         policy == ScalePolicy::Smooth
             ? Qt::SmoothTransformation
             : Qt::FastTransformation;

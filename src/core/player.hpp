@@ -10,7 +10,6 @@
 #include "core/bass/bass.hpp"
 
 #define egg_player (Player::instance())
-#define ePlayer egg_player
 
 class Player : public QObject, public Singleton<Player>
 {

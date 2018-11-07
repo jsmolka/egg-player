@@ -16,12 +16,6 @@
 #define cfg_player (egg_cfg.player())
 #define cfg_shortcut (egg_cfg.shortcut())
 
-#define cfgApp (cfg_app)
-#define cfgBar (cfg_bar)
-#define cfgLibrary (cfg_library)
-#define cfgPlayer (cfg_player)
-#define cfgShortcut (cfg_shortcut)
-
 class Config : public Singleton<Config>
 {
 public:

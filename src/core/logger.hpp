@@ -6,7 +6,6 @@
 #include <QVector>
 
 #define EGG_LOG(message, ...) Logger::log(message, __FUNCTION__, {__VA_ARGS__})
-#define LOG EGG_LOG
 
 class Logger
 {

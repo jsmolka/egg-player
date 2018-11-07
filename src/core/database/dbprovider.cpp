@@ -16,11 +16,9 @@ QSqlDatabase db::Provider::db()
 
     QSqlDatabase db = QSqlDatabase::database(connection, false);
     db.setDatabaseName(constants::db::file);
-    if (!db.isOpen())
-    {
-        if (!db.open())
-            EGG_LOG("Cannot open database");
-    }
+    if (!db.open())
+        EGG_LOG("Cannot open database");
+
     return db;
 }
 

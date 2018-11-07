@@ -1,5 +1,6 @@
 #include "playpausebutton.hpp"
 
+#include "core/constants.hpp"
 #include "core/player.hpp"
 #include "widgets/parts/iconfactory.hpp"
 

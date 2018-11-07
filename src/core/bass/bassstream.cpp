@@ -1,5 +1,7 @@
 #include "bassstream.hpp"
 
+#include "core/utils.hpp"
+
 bass::Stream::Stream()
     : m_handle(0)
     , m_sync(0)

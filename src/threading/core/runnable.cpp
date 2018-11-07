@@ -5,7 +5,7 @@
 Runnable::Runnable()
     : m_thread(nullptr)
 {
-    moveToThread(egg_pool.getSuitibleThread(*this));
+    moveToThread(egg_pool.suitibleThread(*this));
 }
 
 Runnable::~Runnable()

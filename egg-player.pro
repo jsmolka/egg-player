@@ -90,7 +90,6 @@ HEADERS += \
     src/core/database/dbaudio.hpp \
     src/core/database/dbinitializer.hpp \
     src/core/database/dbprovider.hpp \
-    src/core/globals.hpp \
     src/core/database/dbbase.hpp \
     src/core/database/dbcover.hpp \
     src/core/database/cache.hpp \
@@ -177,4 +176,5 @@ SOURCES += \
     src/core/config/cfgappminimalsize.cpp \
     src/core/config/cfgbarslider.cpp \
     src/core/config/cfgbarlabelwidth.cpp \
-    src/core/database/dbinfo.cpp
+    src/core/database/dbinfo.cpp \
+    src/core/utils.cpp

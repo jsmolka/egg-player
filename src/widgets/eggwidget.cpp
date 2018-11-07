@@ -4,6 +4,7 @@
 #include <QDropEvent>
 #include <QFileInfo>
 
+#include "core/constants.hpp"
 #include "core/library.hpp"
 #include "core/logger.hpp"
 #include "core/player.hpp"
@@ -98,8 +99,8 @@ void EggWidget::processDropEventDir(QStrings &files, const QString &path)
 void EggWidget::init()
 {
     setAcceptDrops(true);
-    setMinimumHeight(cfgApp.minimalSize().height());
-    setMinimumWidth(cfgApp.minimalSize().width());
+    setMinimumHeight(cfg_app.minimalSize().height());
+    setMinimumWidth(cfg_app.minimalSize().width());
 
     initUi();
     initStyle();

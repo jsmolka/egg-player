@@ -3,26 +3,21 @@
 
 #include <QVector>
 
+#include "core/singleton.hpp"
 #include "threading/core/expiringthread.hpp"
 #include "threading/core/threadobject.hpp"
 
 #define egg_pool (ThreadPool::instance())
 
-class ThreadPool : public QObject
+class ThreadPool : public QObject, public Singleton<ThreadPool>
 {
     Q_OBJECT
 
 public:
-    explicit ThreadPool(QObject *parent = nullptr);
-    explicit ThreadPool(const ThreadPool &) = delete;
+    using QObject::QObject;
 
-    static ThreadPool &instance();
+    Thread *suitibleThread(const ThreadObject &object);
 
-    Thread *getSuitibleThread(const ThreadObject &object);
-
-    void operator=(const ThreadPool &) = delete;
-
-public slots:
     void interruptThreads();
 
 private slots:

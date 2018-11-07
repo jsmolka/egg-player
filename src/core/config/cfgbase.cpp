@@ -27,5 +27,5 @@ QJsonValue cfg::Base::get(const QString &key) const
 void cfg::Base::setDefault(const QString &key, const QJsonValue &value)
 {
     if (!m_object.contains(key))
-         m_object.insert(key, value);
+         set(key, value);
 }

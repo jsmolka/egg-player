@@ -4,6 +4,7 @@
 
 #include "core/constants.hpp"
 #include "core/player.hpp"
+#include "core/config/config.hpp"
 #include "core/database/dbinitializer.hpp"
 #include "widgets/eggwidget.hpp"
 

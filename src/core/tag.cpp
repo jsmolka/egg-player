@@ -6,6 +6,9 @@
 #include <taglib/mpegfile.h>
 #include <taglib/tag.h>
 
+#include "core/logger.hpp"
+#include "core/utils.hpp"
+
 Tag::Tag()
     : Tag(QString())
 {
@@ -26,7 +29,7 @@ bool Tag::read()
     const TagLib::MPEG::File file(Util::toWString(m_file));
     if (!file.isValid() || !file.audioProperties())
     {
-        EGG_LOG("Cannot read tag %1", m_file);
+        EGG_LOG("Invalid file %1", m_file);
         return false;
     }
 

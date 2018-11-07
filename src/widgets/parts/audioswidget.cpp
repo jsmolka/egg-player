@@ -2,6 +2,8 @@
 
 #include <QHeaderView>
 
+#include "core/constants.hpp"
+#include "core/utils.hpp"
 #include "core/config/config.hpp"
 
 AudiosWidget::AudiosWidget(QWidget *parent)
@@ -68,11 +70,9 @@ void AudiosWidget::onAudiosRemoved(int row)
 void AudiosWidget::onAudiosUpdated(int row)
 {
     Audio *audio = m_audios->at(row);
-
     for (int col = 0; col < m_columns.size(); ++col)
     {
         const Column column = m_columns.at(col);
-
         QTableWidgetItem *item = takeItem(row, col);
         item->setText(audioInfo(audio, column.info));
         setItem(row, col, item);
@@ -131,11 +131,9 @@ QString AudiosWidget::audioInfo(Audio *audio, AudioInfo info)
 void AudiosWidget::insert(int row, Audio *audio)
 {
     insertRow(row);
-
     for (int col = 0; col < m_columns.size(); ++col)
     {
         const Column column = m_columns.at(col);
-
         QTableWidgetItem *item = new QTableWidgetItem;
         item->setText(audioInfo(audio, column.info));
         item->setTextAlignment(column.align);

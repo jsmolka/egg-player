@@ -42,6 +42,7 @@ void Directory::parse()
     {
         const QString file = dirIter.next();
         const QFileInfo info = dirIter.fileInfo();
+
         if (info.isFile())
         {
             if (file.endsWith(".mp3", Qt::CaseInsensitive))

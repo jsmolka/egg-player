@@ -3,7 +3,7 @@
 
 #include <QThread>
 
-#include "core/globals.hpp"
+#include "core/macros.hpp"
 
 class Thread : public QThread
 {

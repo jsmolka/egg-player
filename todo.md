@@ -1,6 +1,8 @@
 # Things to do
 
-## Notes
+## Rework
+- use QStringLiteral for compile time string conversion
+- process ThreadObject events differently
 - BarWidget
   - update name if the current audio changes
   - properly split into subclasses
@@ -10,13 +12,7 @@
     - [hover implementation 1](https://stackoverflow.com/questions/20565930/qtableview-how-can-i-highlight-the-entire-row-for-mouse-hover)
     - [hover implementation 2](https://stackoverflow.com/questions/23111075/how-to-highlight-the-entire-row-on-mouse-hover-in-qtablewidget-qt5)
 
-## Rework
-- remove globals
-- make code generally more robust and log unlikely behavior
-- use QStringLiteral for compile time string conversion
-- process ThreadObject events differently
-
-## Database Rework
+## Database
 - properly fix "database is locked"
   - maybe create a DatabasePool singleton
     - assign db reference to base, save in provider

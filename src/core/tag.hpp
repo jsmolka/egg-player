@@ -3,12 +3,12 @@
 
 #include <QString>
 
-#include "core/globals.hpp"
+#include "core/macros.hpp"
 
 class Tag
 {
 public:
-    explicit Tag();
+    Tag();
     explicit Tag(const QString &file);
 
     EGG_CPROP(QString, file, setFile, file)

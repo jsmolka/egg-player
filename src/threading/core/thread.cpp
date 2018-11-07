@@ -1,5 +1,7 @@
 #include "thread.hpp"
 
+#include "core/logger.hpp"
+
 Thread::Thread(QObject *parent)
     : QThread(parent)
     , m_objects(0)
@@ -10,7 +12,7 @@ Thread::Thread(QObject *parent)
 
 void Thread::incrementObjects()
 {
-    ++m_objects;
+    m_objects++;
 }
 
 void Thread::decrementObjects()

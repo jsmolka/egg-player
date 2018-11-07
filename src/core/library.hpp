@@ -12,9 +12,7 @@
 #include "threading/coverloader.hpp"
 #include "threading/initialloader.hpp"
 
-#define eLibrary (Library::instance())
-
-#define egg_library eLibrary
+#define egg_library (Library::instance())
 
 class Library : public QObject, public Singleton<Library>
 {

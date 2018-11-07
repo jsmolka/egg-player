@@ -71,7 +71,7 @@ cfg::Shortcut &Config::shortcut()
 void Config::load()
 {
     const QJsonDocument json = QJsonDocument::fromJson(FileUtil::readBytes(constants::cfg::file, "{}"));
-    const QJsonObject object(json.object());
+    const QJsonObject object = json.object();
 
     m_app.loadObject(object.value("app").toObject());
     m_bar.loadObject(object.value("bar").toObject());
