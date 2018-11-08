@@ -108,7 +108,8 @@ HEADERS += \
     src/core/config/cfgbarlabelwidth.hpp \
     src/core/singleton.hpp \
     src/core/uncopyable.hpp \
-    src/core/database/dbinfo.hpp
+    src/core/database/dbinfo.hpp \
+    src/core/windowsfile.hpp
 
 SOURCES += \
     src/main.cpp \
@@ -177,4 +178,5 @@ SOURCES += \
     src/core/config/cfgbarslider.cpp \
     src/core/config/cfgbarlabelwidth.cpp \
     src/core/database/dbinfo.cpp \
-    src/core/utils.cpp
+    src/core/utils.cpp \
+    src/core/windowsfile.cpp

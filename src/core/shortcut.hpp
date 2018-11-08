@@ -17,6 +17,7 @@ public:
     Shortcut(const QString &shortcut, RepeatPolicy repeat, QObject *parent = nullptr);
     ~Shortcut() override;
 
+    QString shortcut() const;
     bool isRegistered() const;
 
 signals:
@@ -32,16 +33,16 @@ private:
     static UINT parseSequence(const QStringList &sequence, const KeyHash &keys);
 
     void parseShortcut(const QString &shortcut, RepeatPolicy repeat);
-    void autoRegisterShortcut(const QString &shortcut);
 
-    bool registerShortcut();
-    bool unregisterShortcut();
+    void registerShortcut();
+    void unregisterShortcut();
 
     static int s_id;
     static const KeyHash s_keys;
     static const KeyHash s_modifiers;
 
     int m_id;
+    QString m_shortcut;
     UINT m_modifier;
     UINT m_vk;
     bool m_registered;

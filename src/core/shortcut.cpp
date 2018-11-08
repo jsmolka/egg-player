@@ -8,19 +8,28 @@
 Shortcut::Shortcut(const QString &shortcut, RepeatPolicy repeat, QObject *parent)
     : QObject(parent)
     , m_id(++s_id)
+    , m_shortcut(shortcut)
     , m_modifier(0)
     , m_vk(0)
     , m_registered(false)
 {
     parseShortcut(shortcut, repeat);
 
-    autoRegisterShortcut(shortcut);
+    registerShortcut();
+
+    if (m_registered)
+        qApp->eventDispatcher()->installNativeEventFilter(this);
 }
 
 Shortcut::~Shortcut()
 {
     if (m_registered)
         unregisterShortcut();
+}
+
+QString Shortcut::shortcut() const
+{
+    return m_shortcut;
 }
 
 bool Shortcut::isRegistered() const
@@ -43,9 +52,7 @@ bool Shortcut::nativeEventFilter(const QByteArray &eventType, void *message, lon
 
 QStringList Shortcut::createSequence(const QString &shortcut)
 {
-    return shortcut.toUpper()
-        .replace(" ", "")
-        .split("+", QString::SkipEmptyParts);
+    return shortcut.toUpper().replace(" ", "").split("+", QString::SkipEmptyParts);
 }
 
 UINT Shortcut::parseSequence(const QStringList &sequence, const KeyHash &keys)
@@ -66,33 +73,25 @@ void Shortcut::parseShortcut(const QString &shortcut, RepeatPolicy repeat)
     m_vk = parseSequence(sequence, s_keys);
     m_modifier = parseSequence(sequence, s_modifiers);
 
-    if (repeat == RepeatPolicy::NoRepeat)
-        m_modifier |= MOD_NOREPEAT;
-
     if (m_vk == 0 || m_modifier == 0)
         EGG_LOG("Cannot parse shortcut %1", shortcut);
+
+    if (repeat == RepeatPolicy::NoRepeat)
+        m_modifier |= MOD_NOREPEAT;
 }
 
-void Shortcut::autoRegisterShortcut(const QString &shortcut)
-{
-    if (registerShortcut())
-        qApp->eventDispatcher()->installNativeEventFilter(this);
-    else
-        EGG_LOG("Cannot register shortcut %1", shortcut);
-}
-
-bool Shortcut::registerShortcut()
+void Shortcut::registerShortcut()
 {
     m_registered = RegisterHotKey(nullptr, m_id, m_modifier, m_vk);
-
-    return m_registered;
+    if (!m_registered)
+        EGG_LOG("Cannot register shortcut %1", m_shortcut);
 }
 
-bool Shortcut::unregisterShortcut()
+void Shortcut::unregisterShortcut()
 {
     m_registered = UnregisterHotKey(nullptr, m_id);
-
-    return m_registered;
+    if (!m_registered)
+        EGG_LOG("Cannot unregister shortcut %1", m_shortcut);
 }
 
 int Shortcut::s_id = 0;
