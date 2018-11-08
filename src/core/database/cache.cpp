@@ -12,12 +12,7 @@ Audio *Cache::loadAudio(const QString &file)
     if (audio)
         return audio;
 
-    audio = new Audio(file);
-    if (audio->isValid())
-        return audio;
-
-    delete audio;
-    return nullptr;
+    return Audio::readFromFile(file);
 }
 
 bool Cache::insertAudio(Audio *audio)

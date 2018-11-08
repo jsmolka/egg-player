@@ -9,8 +9,18 @@ Audios::Audios(QObject *parent)
 Audios::Audios(const Audio::vector &vector, QObject *parent)
     : QObject(parent)
     , Audio::vector(vector)
+    , m_state(false)
 {
 
+}
+
+Audios::~Audios()
+{
+    if (!ownsObjects())
+        return;
+
+    for (Audio *audio : *this)
+        delete audio;
 }
 
 Audio::vector Audios::vector() const
@@ -18,16 +28,19 @@ Audio::vector Audios::vector() const
     return static_cast<Audio::vector>(*this);
 }
 
+bool Audios::ownsObjects() const
+{
+    return !m_state;
+}
+
 void Audios::insert(int index, Audio *audio)
 {
-    audio->setParent(this);
     Audio::vector::insert(index, audio);
     emit inserted(index);
 }
 
 void Audios::append(Audio *audio)
 {
-    audio->setParent(this);
     Audio::vector::append(audio);
     emit inserted(size() - 1);
 }
@@ -38,11 +51,11 @@ void Audios::remove(int index)
     Audio::vector::remove(index);
     emit removed(index);
     emit removedAudio(audio);
+    delete audio;
 }
 
 Audios::iterator Audios::insert(Audios::iterator before, Audio *audio)
 {
-    audio->setParent(this);
     auto position = Audio::vector::insert(before, audio);
     emit inserted(static_cast<int>(position - begin()));
 
@@ -54,6 +67,7 @@ Audios::iterator Audios::erase(Audios::iterator position)
     auto next = Audio::vector::erase(position);
     emit removed(static_cast<int>(position - begin()));
     emit removedAudio(*position);
+    delete *position;
 
     return next;
 }
@@ -77,6 +91,7 @@ int Audios::lowerBound(Audio *audio)
 Audios *Audios::currentState()
 {
     Audios *state = new Audios(*this, this);
+    state->setState(true);
     connect(this, &Audios::removedAudio, state, &Audios::removeAudio);
 
     return state;

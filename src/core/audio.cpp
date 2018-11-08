@@ -5,9 +5,8 @@
 
 #include "core/logger.hpp"
 
-Audio::Audio(QObject *parent)
-    : QObject(parent)
-    , m_valid(false)
+Audio::Audio()
+    : m_valid(false)
     , m_cached(false)
     , m_outdated(false)
     , m_modified(0)
@@ -15,12 +14,22 @@ Audio::Audio(QObject *parent)
 
 }
 
-Audio::Audio(const QString &file, QObject *parent)
-    : Audio(parent)
+Audio::Audio(const QString &file)
+    : Audio()
 {
     setFile(file);
 
-    update();
+    read();
+}
+
+Audio *Audio::readFromFile(const QString &file)
+{
+    Audio *audio = new Audio(file);
+    if (audio->isValid())
+        return audio;
+
+    delete audio;
+    return nullptr;
 }
 
 void Audio::setFile(const QString &file)
@@ -65,12 +74,20 @@ Duration &Audio::duration()
     return EGG_REF_CAST(Audio, Duration, duration);
 }
 
-bool Audio::update()
+bool Audio::read()
 {
+    const QFileInfo info(m_file);
+
+    if (!info.exists())
+    {
+        EGG_LOG("Cannot read non existing file %1", m_file);
+        return false;
+    }
+
     m_valid = m_tag.read();
     m_duration.setSecs(m_tag.duration());
 
-    const QDateTime modified = QFileInfo(m_file).lastModified();
+    const QDateTime modified = info.lastModified();
     if (modified.isNull() || !modified.isValid())
     {
         EGG_LOG("Cannot get last modification time %1", m_file);

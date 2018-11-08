@@ -23,9 +23,9 @@ private:
     quint64 m_volume;
 };
 
-inline bool operator==(const UniqueFileInfo &info1, const UniqueFileInfo &info2)
+inline bool operator==(const UniqueFileInfo &lhs, const UniqueFileInfo &rhs)
 {
-    return info1.index() == info2.index() && info1.volume() == info2.volume();
+    return lhs.index() == rhs.index() && lhs.volume() == rhs.volume();
 }
 
 inline uint qHash(const UniqueFileInfo &key, uint seed)

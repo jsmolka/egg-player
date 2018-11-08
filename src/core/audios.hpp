@@ -4,6 +4,7 @@
 #include <QObject>
 
 #include "core/audio.hpp"
+#include "core/macros.hpp"
 
 class Audios : public QObject, private Audio::vector
 {
@@ -12,8 +13,13 @@ class Audios : public QObject, private Audio::vector
 public:
     explicit Audios(QObject *parent = nullptr);
     explicit Audios(const Audio::vector &vector, QObject *parent = nullptr);
+    ~Audios();
 
     Audio::vector vector() const;
+
+    EGG_PPROP(bool, state, setState, isState)
+
+    bool ownsObjects() const;
 
     using Audio::vector::at;
     using Audio::vector::first;

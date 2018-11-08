@@ -1,6 +1,6 @@
 #include "volumebutton.hpp"
 
-#include "core/globals.hpp"
+#include "core/constants.hpp"
 #include "core/player.hpp"
 #include "widgets/parts/iconfactory.hpp"
 

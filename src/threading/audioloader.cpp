@@ -1,7 +1,5 @@
 #include "audioloader.hpp"
 
-#include <QApplication>
-
 #include "core/database/cache.hpp"
 
 void AudioLoader::load(const QString &file)
@@ -19,7 +17,6 @@ void AudioLoader::load(const QString &file)
     if (!loadCover(audio))
         return;
 
-    audio->moveToThread(qApp->thread());
     emit loaded(audio);
 }
 
@@ -42,7 +39,7 @@ bool AudioLoader::updateAudio(Audio *audio) const
     if (!audio->isOutdated())
         return true;
 
-    if (!audio->update())
+    if (!audio->read())
         return false;
 
     audio->cover().invalidate();

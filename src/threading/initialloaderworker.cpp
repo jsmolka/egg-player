@@ -24,7 +24,6 @@ void InitialLoaderWorker::work()
         if (!updateAudio(audio))
             return;
 
-        audio->moveToThread(qApp->thread());
         emit loaded(audio);
     }
     emit finished();
@@ -49,7 +48,7 @@ bool InitialLoaderWorker::updateAudio(Audio *audio) const
     if (!audio->isOutdated())
         return true;
 
-    if (!audio->update())
+    if (!audio->read())
         return false;
 
     audio->cover().invalidate();

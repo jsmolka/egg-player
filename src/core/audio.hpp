@@ -1,7 +1,6 @@
 #ifndef AUDIO_HPP
 #define AUDIO_HPP
 
-#include <QObject>
 #include <QVector>
 
 #include "core/cover.hpp"
@@ -9,15 +8,15 @@
 #include "core/macros.hpp"
 #include "core/tag.hpp"
 
-class Audio : public QObject
+class Audio
 {
-    Q_OBJECT
-
 public:
     using vector = QVector<Audio *>;
 
-    explicit Audio(QObject *parent = nullptr);
-    explicit Audio(const QString &file, QObject *parent = nullptr);
+    Audio();
+    explicit Audio(const QString &file);
+
+    static Audio *readFromFile(const QString &file);
 
     void setFile(const QString &file);
     QString file() const;
@@ -35,7 +34,7 @@ public:
     Cover &cover();
     Duration &duration();
 
-    bool update();
+    bool read();
 
 private:
     QString m_file;

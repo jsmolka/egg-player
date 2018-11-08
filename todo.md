@@ -1,7 +1,6 @@
 # Things to do
 
 ## Rework
-- use QStringLiteral for compile time string conversion
 - process ThreadObject events differently
 - BarWidget
   - update name if the current audio changes

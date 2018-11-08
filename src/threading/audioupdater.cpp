@@ -18,7 +18,7 @@ bool AudioUpdater::updateAudio(Audio *audio) const
     if (isInterrupted())
         return false;
 
-    if (!audio->update())
+    if (!audio->read())
         return false;
 
     audio->cover().invalidate();
