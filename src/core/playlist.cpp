@@ -3,7 +3,7 @@
 Playlist::Playlist(QObject *parent)
     : QObject(parent)
     , m_index(-1)
-    , m_audios(nullptr)
+    , m_state(nullptr)
     , m_loop(false)
     , m_shuffle(false)
 {
@@ -35,7 +35,7 @@ void Playlist::changeIndex(int index)
 
 Audio *Playlist::audioAt(int index)
 {
-    return isValidIndex(index) ? m_audios->at(m_indices.at(index)) : nullptr;
+    return isValidIndex(index) ? m_state->at(m_indices.at(index)) : nullptr;
 }
 
 Audio *Playlist::currentAudio()
@@ -43,10 +43,10 @@ Audio *Playlist::currentAudio()
     return audioAt(m_index);
 }
 
-void Playlist::create(Audios *audios)
+void Playlist::create(audios::State *state)
 {
-    createAudios(audios);
-    createIndices(audios->size());
+    createAudios(state);
+    createIndices(state->size());
 
     setShuffle(m_shuffle);
 }
@@ -100,16 +100,16 @@ void Playlist::onAudiosRemoved(int index)
         --m_index;
 }
 
-void Playlist::createAudios(Audios *audios)
+void Playlist::createAudios(audios::State *state)
 {
-    if (m_audios)
+    if (m_state)
     {
-        disconnect(m_audios, nullptr, this, nullptr);
-        m_audios->deleteLater();
+        disconnect(m_state, nullptr, this, nullptr);
+        m_state->deleteLater();
     }
-    m_audios = audios;
+    m_state = state;
 
-    connect(m_audios, &Audios::removed, this, &Playlist::onAudiosRemoved);
+    connect(m_state, &Audios::removed, this, &Playlist::onAudiosRemoved);
 }
 
 void Playlist::createIndices(int size)

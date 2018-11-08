@@ -4,7 +4,7 @@
 #include <QVector>
 
 #include "core/audio.hpp"
-#include "core/audios.hpp"
+#include "core/audios/audios.hpp"
 #include "widgets/parts/tablewidget.hpp"
 
 class AudiosWidget : public TableWidget

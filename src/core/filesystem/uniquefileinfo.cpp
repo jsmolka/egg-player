@@ -1,6 +1,6 @@
 #include "uniquefileinfo.hpp"
 
-#include "core/windowsfile.hpp"
+#include "core/filesystem/windowsfile.hpp"
 
 UniqueFileInfo::UniqueFileInfo()
     : m_index(0)

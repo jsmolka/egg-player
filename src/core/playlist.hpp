@@ -5,8 +5,8 @@
 #include <QVector>
 
 #include "core/audio.hpp"
-#include "core/audios.hpp"
 #include "core/macros.hpp"
+#include "core/audios/audios.hpp"
 
 class Playlist : public QObject
 {
@@ -27,7 +27,7 @@ public:
     Audio *audioAt(int index);
     Audio *currentAudio();
 
-    void create(Audios *audios);
+    void create(audios::State *state);
 
 public slots:
     void setLoop(bool loop);
@@ -43,7 +43,7 @@ private slots:
     void onAudiosRemoved(int index);
 
 private:
-    void createAudios(Audios *audios);
+    void createAudios(audios::State *state);
     void createIndices(int size);
 
     bool isValidIndex(int index);
@@ -53,7 +53,7 @@ private:
     void shuffle();
     void unshuffle();
 
-    Audios *m_audios;
+    audios::State *m_state;
     QVector<int> m_indices;
     bool m_loop;
     bool m_shuffle;

@@ -47,10 +47,10 @@ int Player::position()
     return m_bass.stream().isHandleValid() ? m_bass.stream().position() : -1;
 }
 
-void Player::createPlaylist(Audios *audios, int index)
+void Player::createPlaylist(audios::State *state, int index)
 {
     m_playlist.setIndex(index);
-    m_playlist.create(audios);
+    m_playlist.create(state);
 
     setAudio(m_playlist.currentAudio());
 }

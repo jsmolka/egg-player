@@ -62,7 +62,7 @@ HEADERS += \
     src/core/duration.hpp \
     src/core/cover.hpp \
     src/core/playlist.hpp \
-    src/core/audios.hpp \
+    src/core/audios/audios.hpp \
     src/core/filesystem/filesystemwatcher.hpp \
     src/core/filesystem/directory.hpp \
     src/core/filesystem/filesystem.hpp \
@@ -109,7 +109,9 @@ HEADERS += \
     src/core/singleton.hpp \
     src/core/uncopyable.hpp \
     src/core/database/dbinfo.hpp \
-    src/core/windowsfile.hpp
+    src/core/filesystem/windowsfile.hpp \
+    src/core/audios/audiosbase.hpp \
+    src/core/audios/audiosstate.hpp
 
 SOURCES += \
     src/main.cpp \
@@ -138,7 +140,7 @@ SOURCES += \
     src/core/duration.cpp \
     src/core/cover.cpp \
     src/core/playlist.cpp \
-    src/core/audios.cpp \
+    src/core/audios/audios.cpp \
     src/core/filesystem/filesystemwatcher.cpp \
     src/core/filesystem/directory.cpp \
     src/core/filesystem/filesystem.cpp \
@@ -179,4 +181,6 @@ SOURCES += \
     src/core/config/cfgbarlabelwidth.cpp \
     src/core/database/dbinfo.cpp \
     src/core/utils.cpp \
-    src/core/windowsfile.cpp
+    src/core/filesystem/windowsfile.cpp \
+    src/core/audios/audiosbase.cpp \
+    src/core/audios/audiosstate.cpp

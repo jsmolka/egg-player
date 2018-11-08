@@ -1,36 +1,9 @@
 #include "audios.hpp"
 
-Audios::Audios(QObject *parent)
-    : Audios(Audio::vector(), parent)
-{
-
-}
-
-Audios::Audios(const Audio::vector &vector, QObject *parent)
-    : QObject(parent)
-    , Audio::vector(vector)
-    , m_state(false)
-{
-
-}
-
 Audios::~Audios()
 {
-    if (!ownsObjects())
-        return;
-
     for (Audio *audio : *this)
         delete audio;
-}
-
-Audio::vector Audios::vector() const
-{
-    return static_cast<Audio::vector>(*this);
-}
-
-bool Audios::ownsObjects() const
-{
-    return !m_state;
 }
 
 void Audios::insert(int index, Audio *audio)
@@ -88,13 +61,9 @@ int Audios::lowerBound(Audio *audio)
     return low;
 }
 
-Audios *Audios::currentState()
+audios::State *Audios::currentState()
 {
-    Audios *state = new Audios(*this, this);
-    state->setState(true);
-    connect(this, &Audios::removedAudio, state, &Audios::removeAudio);
-
-    return state;
+    return new audios::State(*this, this);
 }
 
 Audios &Audios::operator<<(Audio *audio)

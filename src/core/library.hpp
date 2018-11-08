@@ -4,8 +4,8 @@
 #include <QObject>
 
 #include "core/audio.hpp"
-#include "core/audios.hpp"
 #include "core/singleton.hpp"
+#include "core/audios/audios.hpp"
 #include "core/filesystem/filesystem.hpp"
 #include "threading/audioupdater.hpp"
 #include "threading/audioloader.hpp"

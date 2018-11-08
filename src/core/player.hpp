@@ -28,7 +28,7 @@ public:
     int volume() const;
     int position();
 
-    void createPlaylist(Audios *audios, int index = 0);
+    void createPlaylist(audios::State *state, int index = 0);
 
 public slots:
     void setVolume(int volume);
