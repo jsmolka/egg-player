@@ -1,3 +1,9 @@
 # Qt
-/bin
 *.pro.user
+
+# Build
+release/
+debug/
+.qmake.stash
+Makefile*
+egg-player_resource.rc

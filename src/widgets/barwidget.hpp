@@ -6,11 +6,11 @@
 
 #include "core/audio.hpp"
 #include "core/shortcut.hpp"
-#include "widgets/parts/iconbutton.hpp"
-#include "widgets/parts/lockableiconbutton.hpp"
-#include "widgets/parts/playpausebutton.hpp"
-#include "widgets/parts/slider.hpp"
-#include "widgets/parts/volumebutton.hpp"
+#include "widgets/iconbutton.hpp"
+#include "widgets/lockableiconbutton.hpp"
+#include "widgets/playpausebutton.hpp"
+#include "widgets/slider.hpp"
+#include "widgets/volumebutton.hpp"
 
 class BarWidget : public QWidget
 {

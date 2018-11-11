@@ -1,7 +1,7 @@
 #include "player.hpp"
 
+#include "core/config.hpp"
 #include "core/macros.hpp"
-#include "core/config/config.hpp"
 
 Player::Player(QObject *parent)
     : QObject(parent)

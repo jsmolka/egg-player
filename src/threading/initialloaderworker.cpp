@@ -2,7 +2,7 @@
 
 #include <QApplication>
 
-#include "core/database/cache.hpp"
+#include "core/cache.hpp"
 
 InitialLoaderWorker::InitialLoaderWorker(const QStrings &files)
     : m_files(files)

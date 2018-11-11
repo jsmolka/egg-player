@@ -6,7 +6,7 @@
 #include "core/types.hpp"
 #include "widgets/barwidget.hpp"
 #include "widgets/librarywidget.hpp"
-#include "widgets/parts/mainwindow.hpp"
+#include "widgets/mainwindow.hpp"
 
 class EggWidget : public MainWindow
 {

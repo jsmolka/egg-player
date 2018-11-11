@@ -1,6 +1,6 @@
 #include "coverloaderworker.hpp"
 
-#include "core/database/cache.hpp"
+#include "core/cache.hpp"
 
 CoverLoaderWorker::CoverLoaderWorker(const Audio::vector &audios)
     : m_audios(audios)

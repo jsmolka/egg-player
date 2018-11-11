@@ -3,7 +3,7 @@
 
 #include "core/audio.hpp"
 #include "core/macros.hpp"
-#include "threading/core/controller.hpp"
+#include "threading/controller.hpp"
 
 class CoverLoader : public Controller
 {

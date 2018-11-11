@@ -5,8 +5,8 @@
 #include <QVector>
 
 #include "core/audio.hpp"
+#include "core/audios.hpp"
 #include "core/macros.hpp"
-#include "core/audios/audios.hpp"
 
 class Playlist : public QObject
 {

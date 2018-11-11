@@ -4,7 +4,7 @@
 #include "core/audio.hpp"
 #include "core/macros.hpp"
 #include "core/types.hpp"
-#include "threading/core/runnable.hpp"
+#include "threading/runnable.hpp"
 
 class InitialLoaderWorker : public Runnable
 {

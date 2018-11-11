@@ -1,6 +1,6 @@
 #include "audioupdater.hpp"
 
-#include "core/database/cache.hpp"
+#include "core/cache.hpp"
 
 void AudioUpdater::update(Audio *audio)
 {

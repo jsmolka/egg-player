@@ -4,14 +4,14 @@
 #include <QDropEvent>
 #include <QFileInfo>
 
+#include "core/config.hpp"
 #include "core/constants.hpp"
 #include "core/library.hpp"
 #include "core/logger.hpp"
 #include "core/player.hpp"
 #include "core/utils.hpp"
-#include "core/config/config.hpp"
-#include "threading/core/threadpool.hpp"
-#include "widgets/parts/borderlayout.hpp"
+#include "threading/threadpool.hpp"
+#include "widgets/borderlayout.hpp"
 
 EggWidget::EggWidget(QWidget *parent)
     : MainWindow(parent)

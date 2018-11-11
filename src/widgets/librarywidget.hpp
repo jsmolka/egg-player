@@ -1,7 +1,7 @@
 #ifndef LIBRARYWIDGET_HPP
 #define LIBRARYWIDGET_HPP
 
-#include "widgets/parts/audioswidget.hpp"
+#include "widgets/audioswidget.hpp"
 
 class LibraryWidget : public AudiosWidget
 {

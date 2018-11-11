@@ -9,9 +9,9 @@
 #include <taglib/id3v2tag.h>
 #include <taglib/mpegfile.h>
 
+#include "core/cache.hpp"
 #include "core/logger.hpp"
 #include "core/utils.hpp"
-#include "core/database/cache.hpp"
 
 Cover::Cover()
     : Cover(0)

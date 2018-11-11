@@ -2,10 +2,10 @@
 #include <QFont>
 #include <QFontDatabase>
 
+#include "core/config.hpp"
 #include "core/constants.hpp"
 #include "core/player.hpp"
-#include "core/config/config.hpp"
-#include "core/database/dbinitializer.hpp"
+#include "core/database/initializer.hpp"
 #include "widgets/eggwidget.hpp"
 
 QFont font()

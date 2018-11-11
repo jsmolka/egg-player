@@ -1,6 +1,6 @@
 #include "audioloader.hpp"
 
-#include "core/database/cache.hpp"
+#include "core/cache.hpp"
 
 void AudioLoader::load(const QString &file)
 {

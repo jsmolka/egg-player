@@ -5,11 +5,11 @@
 #include <QPalette>
 #include <QPropertyAnimation>
 
+#include "core/config.hpp"
 #include "core/constants.hpp"
 #include "core/player.hpp"
 #include "core/utils.hpp"
-#include "core/config/config.hpp"
-#include "widgets/parts/iconfactory.hpp"
+#include "widgets/iconfactory.hpp"
 
 BarWidget::BarWidget(QWidget *parent)
     : QWidget(parent)

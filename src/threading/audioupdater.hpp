@@ -2,7 +2,7 @@
 #define AUDIOUPDATER_HPP
 
 #include "core/audio.hpp"
-#include "threading/core/callable.hpp"
+#include "threading/callable.hpp"
 
 class AudioUpdater : public Callable
 {

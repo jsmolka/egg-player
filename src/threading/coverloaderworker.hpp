@@ -3,7 +3,7 @@
 
 #include "core/audio.hpp"
 #include "core/macros.hpp"
-#include "threading/core/runnable.hpp"
+#include "threading/runnable.hpp"
 
 class CoverLoaderWorker : public Runnable
 {

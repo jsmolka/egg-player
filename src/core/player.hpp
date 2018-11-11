@@ -5,9 +5,9 @@
 #include <QTimer>
 
 #include "core/audio.hpp"
+#include "core/bass.hpp"
 #include "core/playlist.hpp"
 #include "core/singleton.hpp"
-#include "core/bass/bass.hpp"
 
 #define egg_player (Player::instance())
 
