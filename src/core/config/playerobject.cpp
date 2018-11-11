@@ -1,16 +1,16 @@
-#include "cfgplayer.hpp"
+#include "playerobject.hpp"
 
-void cfg::Player::loadObject(const QJsonObject &object)
+void cfg::PlayerObject::loadObject(const QJsonObject &object)
 {
     setObject(object);
 }
 
-QJsonObject cfg::Player::toObject() const
+QJsonObject cfg::PlayerObject::toObject() const
 {
     return object();
 }
 
-void cfg::Player::setDefaults()
+void cfg::PlayerObject::setDefaults()
 {
     setDefault("loop", false);
     setDefault("previousLimit", 3);
@@ -20,62 +20,62 @@ void cfg::Player::setDefaults()
     setDefault("volumeQuotient", 1000);
 }
 
-void cfg::Player::setLoop(bool loop)
+void cfg::PlayerObject::setLoop(bool loop)
 {
     set("loop", loop);
 }
 
-bool cfg::Player::loop() const
+bool cfg::PlayerObject::loop() const
 {
     return get("loop").toBool();
 }
 
-void cfg::Player::setPreviousLimit(int limit)
+void cfg::PlayerObject::setPreviousLimit(int limit)
 {
     set("previousLimit", limit);
 }
 
-int cfg::Player::previousLimit() const
+int cfg::PlayerObject::previousLimit() const
 {
     return get("previousLimit").toInt();
 }
 
-void cfg::Player::setShuffle(bool shuffle)
+void cfg::PlayerObject::setShuffle(bool shuffle)
 {
     set("shuffle", shuffle);
 }
 
-bool cfg::Player::shuffle() const
+bool cfg::PlayerObject::shuffle() const
 {
     return get("shuffle").toBool();
 }
 
-void cfg::Player::setUpdateInterval(int interval)
+void cfg::PlayerObject::setUpdateInterval(int interval)
 {
     set("updateInterval", interval);
 }
 
-int cfg::Player::updateInterval() const
+int cfg::PlayerObject::updateInterval() const
 {
     return get("updateInterval").toInt();
 }
 
-void cfg::Player::setVolume(int volume)
+void cfg::PlayerObject::setVolume(int volume)
 {
     set("volume", volume);
 }
 
-int cfg::Player::volume() const
+int cfg::PlayerObject::volume() const
 {
     return get("volume").toInt();
 }
 
-void cfg::Player::setVolumeQuotient(int quotient)
+void cfg::PlayerObject::setVolumeQuotient(int quotient)
 {
     set("volumeQuotient", quotient);
 }
 
-int cfg::Player::volumeQuotient() const
+int cfg::PlayerObject::volumeQuotient() const
 {
     return get("volumeQuotient").toInt();
 }

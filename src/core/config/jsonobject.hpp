@@ -1,5 +1,5 @@
-#ifndef CFGBASE_HPP
-#define CFGBASE_HPP
+#ifndef CFG_JSONOBJECT_HPP
+#define CFG_JSONOBJECT_HPP
 
 #include <QJsonObject>
 #include <QJsonValue>
@@ -8,10 +8,11 @@
 
 namespace cfg
 {
-class Base
+
+class JsonObject
 {
 public:
-    virtual ~Base() = default;
+    virtual ~JsonObject() = default;
 
     static float scale(float value);
     static int scale(int value);
@@ -29,6 +30,7 @@ protected:
 
     void setDefault(const QString &key, const QJsonValue &value);
 };
+
 }
 
-#endif // CFGBASE_HPP
+#endif // CFG_JSONOBJECT_HPP

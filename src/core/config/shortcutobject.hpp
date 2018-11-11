@@ -1,11 +1,11 @@
 #ifndef CFGSHORTCUT_HPP
 #define CFGSHORTCUT_HPP
 
-#include "core/config/cfgbase.hpp"
+#include "core/config/jsonobject.hpp"
 
 namespace cfg
 {
-class Shortcut : public Base
+class ShortcutObject : public JsonObject
 {
 public:
     void loadObject(const QJsonObject &object) override;

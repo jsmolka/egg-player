@@ -41,15 +41,6 @@ HEADERS += \
     src/core/audios/staticvector.hpp \
     src/core/bass/error.hpp \
     src/core/bass/stream.hpp \
-    src/core/config/cfgapp.hpp \
-    src/core/config/cfgappminimalsize.hpp \
-    src/core/config/cfgbar.hpp \
-    src/core/config/cfgbarlabelwidth.hpp \
-    src/core/config/cfgbarslider.hpp \
-    src/core/config/cfgbase.hpp \
-    src/core/config/cfglibrary.hpp \
-    src/core/config/cfgplayer.hpp \
-    src/core/config/cfgshortcut.hpp \
     src/core/database/audioitem.hpp \
     src/core/database/coveritem.hpp \
     src/core/database/infoitem.hpp \
@@ -111,22 +102,19 @@ HEADERS += \
     src/widgets/slider.hpp \
     src/widgets/smoothtablewidget.hpp \
     src/widgets/tablewidget.hpp \
-    src/widgets/volumebutton.hpp
+    src/widgets/volumebutton.hpp \
+    src/core/config/jsonobject.hpp \
+    src/core/config/appobject.hpp \
+    src/core/config/barobject.hpp \
+    src/core/config/libraryobject.hpp \
+    src/core/config/playerobject.hpp \
+    src/core/config/shortcutobject.hpp
 
 SOURCES += \
     src/core/audios/state.cpp \
     src/core/audios/staticvector.cpp \
     src/core/bass/error.cpp \
     src/core/bass/stream.cpp \
-    src/core/config/cfgapp.cpp \
-    src/core/config/cfgappminimalsize.cpp \
-    src/core/config/cfgbar.cpp \
-    src/core/config/cfgbarlabelwidth.cpp \
-    src/core/config/cfgbarslider.cpp \
-    src/core/config/cfgbase.cpp \
-    src/core/config/cfglibrary.cpp \
-    src/core/config/cfgplayer.cpp \
-    src/core/config/cfgshortcut.cpp \
     src/core/database/audioitem.cpp \
     src/core/database/coveritem.cpp \
     src/core/database/infoitem.cpp \
@@ -183,4 +171,10 @@ SOURCES += \
     src/widgets/smoothtablewidget.cpp \
     src/widgets/tablewidget.cpp \
     src/widgets/volumebutton.cpp \
-    src/main.cpp
+    src/main.cpp \
+    src/core/config/jsonobject.cpp \
+    src/core/config/appobject.cpp \
+    src/core/config/barobject.cpp \
+    src/core/config/libraryobject.cpp \
+    src/core/config/playerobject.cpp \
+    src/core/config/shortcutobject.cpp

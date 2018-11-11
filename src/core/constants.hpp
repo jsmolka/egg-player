@@ -5,6 +5,7 @@
 
 namespace constants
 {
+
 namespace css
 {
 const extern QString bar;
@@ -62,6 +63,7 @@ namespace log
 {
 const extern QString file;
 }
+
 }
 
 #endif // CONSTANTS_HPP

@@ -1,12 +1,13 @@
-#ifndef CFGLIBRARY_HPP
-#define CFGLIBRARY_HPP
+#ifndef CFG_LIBRARYOBJECT_HPP
+#define CFG_LIBRARYOBJECT_HPP
 
 #include "core/types.hpp"
-#include "core/config/cfgbase.hpp"
+#include "core/config/jsonobject.hpp"
 
 namespace cfg
 {
-class Library : public Base
+
+class LibraryObject : public JsonObject
 {
 public:
     void loadObject(const QJsonObject &object) override;
@@ -26,6 +27,7 @@ public:
     void setScrollBarWidth(int width);
     int scrollBarWidth() const;
 };
+
 }
 
-#endif // CFGLIBRARY_HPP
+#endif // CFG_LIBRARYOBJECT_HPP

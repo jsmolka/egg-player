@@ -14,14 +14,14 @@ void db::Initializer::initialize()
     if (!QFileInfo::exists(constants::db::file))
         return init();
 
-    db::InfoItem dbInfo;
-    if (!dbInfo.getById(1))
+    InfoItem intoItem;
+    if (!intoItem.getById(1))
         EGG_LOG("Cannot get version of existing database");
 
-    if (dbInfo.version() == version())
+    if (intoItem.version() == version())
         return;
 
-    switch (dbInfo.version())
+    switch (intoItem.version())
     {
     }
 }
@@ -40,30 +40,30 @@ void db::Initializer::init()
 
 void db::Initializer::initTables()
 {
-    db::AudioItem().createTable();
-    db::CoverItem().createTable();
-    db::InfoItem().createTable();
+    AudioItem().createTable();
+    CoverItem().createTable();
+    InfoItem().createTable();
 }
 
 void db::Initializer::initDefaultCover()
 {
-    db::CoverItem dbCover;
-    if (!dbCover.getById(1))
+    CoverItem coverItem;
+    if (!coverItem.getById(1))
     {
         const QPixmap cover = ::Cover::scale(QPixmap(constants::img::cover), ::Cover::defaultSize());
-        dbCover.setId(1);
-        dbCover.setCover(cover);
-        dbCover.insert();
+        coverItem.setId(1);
+        coverItem.setCover(cover);
+        coverItem.insert();
     }
 }
 
 void db::Initializer::initInfo()
 {
-    db::InfoItem dbInfo;
-    if (!dbInfo.getById(1))
+    InfoItem infoItem;
+    if (!infoItem.getById(1))
     {
-        dbInfo.setId(1);
-        dbInfo.setVerion(version());
-        dbInfo.insert();
+        infoItem.setId(1);
+        infoItem.setVerion(version());
+        infoItem.insert();
     }
 }

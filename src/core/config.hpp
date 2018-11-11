@@ -2,19 +2,17 @@
 #define CONFIG_HPP
 
 #include "core/singleton.hpp"
-#include "core/config/cfgapp.hpp"
-#include "core/config/cfgbar.hpp"
-#include "core/config/cfglibrary.hpp"
-#include "core/config/cfgplayer.hpp"
-#include "core/config/cfgshortcut.hpp"
+#include "core/config/appobject.hpp"
+#include "core/config/barobject.hpp"
+#include "core/config/libraryobject.hpp"
+#include "core/config/playerobject.hpp"
+#include "core/config/shortcutobject.hpp"
 
-#define egg_cfg (Config::instance())
-
-#define cfg_app (egg_cfg.app())
-#define cfg_bar (egg_cfg.bar())
-#define cfg_library (egg_cfg.library())
-#define cfg_player (egg_cfg.player())
-#define cfg_shortcut (egg_cfg.shortcut())
+#define cfg_app (Config::instance().app())
+#define cfg_bar (Config::instance().bar())
+#define cfg_library (Config::instance().library())
+#define cfg_player (Config::instance().player())
+#define cfg_shortcut (Config::instance().shortcut())
 
 class Config : public Singleton<Config>
 {
@@ -22,28 +20,28 @@ public:
     Config();
     ~Config();
 
-    const cfg::App &app() const;
-    const cfg::Bar &bar() const;
-    const cfg::Library &library() const;
-    const cfg::Player &player() const;
-    const cfg::Shortcut &shortcut() const;
+    const cfg::AppObject &app() const;
+    const cfg::BarObject &bar() const;
+    const cfg::LibraryObject &library() const;
+    const cfg::PlayerObject &player() const;
+    const cfg::ShortcutObject &shortcut() const;
 
-    cfg::App &app();
-    cfg::Bar &bar();
-    cfg::Library &library();
-    cfg::Player &player();
-    cfg::Shortcut &shortcut();
+    cfg::AppObject &app();
+    cfg::BarObject &bar();
+    cfg::LibraryObject &library();
+    cfg::PlayerObject &player();
+    cfg::ShortcutObject &shortcut();
 
 private:
     void load();
     void save();
     void setDefaults();
 
-    cfg::App m_app;
-    cfg::Bar m_bar;
-    cfg::Library m_library;
-    cfg::Player m_player;
-    cfg::Shortcut m_shortcut;
+    cfg::AppObject m_app;
+    cfg::BarObject m_bar;
+    cfg::LibraryObject m_library;
+    cfg::PlayerObject m_player;
+    cfg::ShortcutObject m_shortcut;
 };
 
 #endif // CONFIG_HPP

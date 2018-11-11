@@ -1,21 +1,21 @@
-#include "cfglibrary.hpp"
+#include "libraryobject.hpp"
 
 #include <QJsonArray>
 #include <QStandardPaths>
 #include <QVariant>
 #include <QVector>
 
-void cfg::Library::loadObject(const QJsonObject &object)
+void cfg::LibraryObject::loadObject(const QJsonObject &object)
 {
     setObject(object);
 }
 
-QJsonObject cfg::Library::toObject() const
+QJsonObject cfg::LibraryObject::toObject() const
 {
     return object();
 }
 
-void cfg::Library::setDefaults()
+void cfg::LibraryObject::setDefaults()
 {
     setDefault("cellPadding", 10);
     setDefault("itemHeight", 50);
@@ -23,27 +23,27 @@ void cfg::Library::setDefaults()
     setDefault("scrollBarWidth", 12);
 }
 
-void cfg::Library::setCellPadding(int padding)
+void cfg::LibraryObject::setCellPadding(int padding)
 {
     set("cellPadding", padding);
 }
 
-int cfg::Library::cellPadding() const
+int cfg::LibraryObject::cellPadding() const
 {
     return scale(get("cellPadding").toInt());
 }
 
-void cfg::Library::setItemHeight(int height)
+void cfg::LibraryObject::setItemHeight(int height)
 {
     set("itemHeight", height);
 }
 
-int cfg::Library::itemHeight() const
+int cfg::LibraryObject::itemHeight() const
 {
     return scale(get("itemHeight").toInt());
 }
 
-void cfg::Library::setPaths(const QStrings &paths)
+void cfg::LibraryObject::setPaths(const QStrings &paths)
 {
     QJsonArray array;
     for (const QString &path : paths)
@@ -52,7 +52,7 @@ void cfg::Library::setPaths(const QStrings &paths)
     set("paths", QJsonValue(array));
 }
 
-QStrings cfg::Library::paths() const
+QStrings cfg::LibraryObject::paths() const
 {
     QStrings paths;
     for (const QJsonValue &value : get("paths").toArray())
@@ -61,12 +61,12 @@ QStrings cfg::Library::paths() const
     return paths;
 }
 
-void cfg::Library::setScrollBarWidth(int width)
+void cfg::LibraryObject::setScrollBarWidth(int width)
 {
     set("scrollBarWidth", width);
 }
 
-int cfg::Library::scrollBarWidth() const
+int cfg::LibraryObject::scrollBarWidth() const
 {
     return scale(get("scrollBarWidth").toInt());
 }

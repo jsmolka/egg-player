@@ -2,7 +2,7 @@
 
 #include <QResizeEvent>
 
-#include "core/config/cfgbase.hpp"
+#include "core/config/jsonobject.hpp"
 
 LibraryWidget::LibraryWidget(QWidget *parent)
     : AudiosWidget(parent)
@@ -25,9 +25,9 @@ void LibraryWidget::resizeEvent(QResizeEvent *event)
 void LibraryWidget::adjustToWidth(int width)
 {
 
-    const bool hideAlbum = width < cfg::Base::scale(675);
-    const bool hideGenre = width < cfg::Base::scale(875);
-    const bool hideYear = width < cfg::Base::scale(975);
+    const bool hideAlbum = width < cfg::JsonObject::scale(675);
+    const bool hideGenre = width < cfg::JsonObject::scale(875);
+    const bool hideYear = width < cfg::JsonObject::scale(975);
 
     setColumnHidden(2, hideAlbum);
     setColumnHidden(3, hideYear);

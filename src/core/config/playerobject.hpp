@@ -1,11 +1,12 @@
-#ifndef CFGPLAYER_HPP
-#define CFGPLAYER_HPP
+#ifndef CFG_PLAYEROBJECT_HPP
+#define CFG_PLAYEROBJECT_HPP
 
-#include "core/config/cfgbase.hpp"
+#include "core/config/jsonobject.hpp"
 
 namespace cfg
 {
-class Player : public Base
+
+class PlayerObject : public JsonObject
 {
 public:
     void loadObject(const QJsonObject &object) override;
@@ -31,6 +32,7 @@ public:
     void setVolumeQuotient(int quotient);
     int volumeQuotient() const;
 };
+
 }
 
-#endif // CFGPLAYER_HPP
+#endif // CFG_PLAYEROBJECT_HPP
