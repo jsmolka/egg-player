@@ -27,7 +27,7 @@ public:
     Audio *audioAt(int index);
     Audio *currentAudio();
 
-    void create(audios::State *state);
+    void create(audios::CurrentState *state);
 
 public slots:
     void setLoop(bool loop);
@@ -43,7 +43,7 @@ private slots:
     void onAudiosRemoved(int index);
 
 private:
-    void createAudios(audios::State *state);
+    void createAudios(audios::CurrentState *state);
     void createIndices(int size);
 
     bool isValidIndex(int index);
@@ -53,7 +53,7 @@ private:
     void shuffle();
     void unshuffle();
 
-    audios::State *m_state;
+    audios::CurrentState *m_state;
     QVector<int> m_indices;
     bool m_loop;
     bool m_shuffle;

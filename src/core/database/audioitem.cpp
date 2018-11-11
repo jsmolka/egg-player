@@ -257,7 +257,6 @@ bool db::AudioItem::update(const QString &column, const QVariant &value)
         "WHERE file = :file"
     );
     query().bindValue(":file", m_file);
-    query().bindValue(":column", column);
     query().bindValue(":value", value);
 
     return query().exec();

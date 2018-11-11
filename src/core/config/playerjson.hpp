@@ -1,12 +1,12 @@
-#ifndef CFG_PLAYEROBJECT_HPP
-#define CFG_PLAYEROBJECT_HPP
+#ifndef CFG_PLAYERJSON_HPP
+#define CFG_PLAYERJSON_HPP
 
 #include "core/config/jsonobject.hpp"
 
 namespace cfg
 {
 
-class PlayerObject : public JsonObject
+class PlayerJson : public JsonObject
 {
 public:
     void loadObject(const QJsonObject &object) override;
@@ -35,4 +35,4 @@ public:
 
 }
 
-#endif // CFG_PLAYEROBJECT_HPP
+#endif // CFG_PLAYERJSON_HPP

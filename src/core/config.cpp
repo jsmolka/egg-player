@@ -18,54 +18,54 @@ Config::~Config()
     save();
 }
 
-const cfg::AppObject &Config::app() const
+const cfg::AppJson &Config::app() const
 {
     return m_app;
 }
 
-const cfg::BarObject &Config::bar() const
+const cfg::BarJson &Config::bar() const
 {
     return m_bar;
 }
 
-const cfg::LibraryObject &Config::library() const
+const cfg::LibraryJson &Config::library() const
 {
     return m_library;
 }
 
-const cfg::PlayerObject &Config::player() const
+const cfg::PlayerJson &Config::player() const
 {
     return m_player;
 }
 
-const cfg::ShortcutObject &Config::shortcut() const
+const cfg::ShortcutJson &Config::shortcut() const
 {
     return m_shortcut;
 }
 
-cfg::AppObject &Config::app()
+cfg::AppJson &Config::app()
 {
-    return EGG_REF_CAST(Config, cfg::AppObject, app);
+    return EGG_REF_CAST(Config, cfg::AppJson, app);
 }
 
-cfg::BarObject &Config::bar()
+cfg::BarJson &Config::bar()
 {
-    return EGG_REF_CAST(Config, cfg::BarObject, bar);
+    return EGG_REF_CAST(Config, cfg::BarJson, bar);
 }
 
-cfg::LibraryObject &Config::library()
+cfg::LibraryJson &Config::library()
 {
-    return EGG_REF_CAST(Config, cfg::LibraryObject, library);
+    return EGG_REF_CAST(Config, cfg::LibraryJson, library);
 }
 
-cfg::PlayerObject &Config::player()
+cfg::PlayerJson &Config::player()
 {
-    return EGG_REF_CAST(Config, cfg::PlayerObject, player);
+    return EGG_REF_CAST(Config, cfg::PlayerJson, player);
 }
 
-cfg::ShortcutObject &Config::shortcut()
+cfg::ShortcutJson &Config::shortcut()
 {
-    return EGG_REF_CAST(Config,  cfg::ShortcutObject, shortcut);
+    return EGG_REF_CAST(Config,  cfg::ShortcutJson, shortcut);
 }
 
 void Config::load()

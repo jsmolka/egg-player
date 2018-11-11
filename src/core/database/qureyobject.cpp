@@ -13,7 +13,7 @@ db::QueryObject::~QueryObject()
 
 }
 
-SqlQuery &db::QueryObject::query()
+db::SqlQuery &db::QueryObject::query()
 {
     return m_query;
 }

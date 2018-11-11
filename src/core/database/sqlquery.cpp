@@ -5,17 +5,17 @@
 
 #include "core/logger.hpp"
 
-bool SqlQuery::exec()
+bool db::SqlQuery::exec()
 {
     return check(QSqlQuery::exec());
 }
 
-bool SqlQuery::exec(const QString &query)
+bool db::SqlQuery::exec(const QString &query)
 {
     return check(QSqlQuery::exec(query));
 }
 
-QString SqlQuery::lastQuery() const
+QString db::SqlQuery::lastQuery() const
 {
     QString query = QSqlQuery::lastQuery();
     QMapIterator<QString, QVariant> iter(boundValues());
@@ -27,7 +27,7 @@ QString SqlQuery::lastQuery() const
     return query;
 }
 
-bool SqlQuery::check(bool success) const
+bool db::SqlQuery::check(bool success) const
 {
    if (!success)
        error();
@@ -35,7 +35,7 @@ bool SqlQuery::check(bool success) const
    return success;
 }
 
-void SqlQuery::error() const
+void db::SqlQuery::error() const
 {
     const QSqlError error = lastError();
     if (!error.isValid() || error.type() == QSqlError::NoError)

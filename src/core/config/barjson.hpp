@@ -1,5 +1,5 @@
-#ifndef CFG_BAROBJECT_HPP
-#define CFG_BAROBJECT_HPP
+#ifndef CFG_BARJSON_HPP
+#define CFG_BARJSON_HPP
 
 #include "core/config/jsonobject.hpp"
 
@@ -9,7 +9,7 @@ namespace cfg
 namespace bar
 {
 
-class LabelWidthObject : public JsonObject
+class LabelWidthJson : public JsonObject
 {
 public:
     void loadObject(const QJsonObject &object) override;
@@ -41,7 +41,7 @@ public:
 
 }
 
-class BarObject : public JsonObject
+class BarJson : public JsonObject
 {
 public:
     void loadObject(const QJsonObject &object) override;
@@ -49,10 +49,10 @@ public:
 
     void setDefaults() override;
 
-    const bar::LabelWidthObject &labelWidth() const;
+    const bar::LabelWidthJson &labelWidth() const;
     const bar::SliderObject &slider() const;
 
-    bar::LabelWidthObject &labelWidth();
+    bar::LabelWidthJson &labelWidth();
     bar::SliderObject &slider();
 
     void setHeight(int height);
@@ -70,10 +70,10 @@ public:
     int coverSize() const;
 
 private:
-    bar::LabelWidthObject m_labelWidth;
+    bar::LabelWidthJson m_labelWidth;
     bar::SliderObject m_slider;
 };
 
 }
 
-#endif // CFG_BAROBJECT_HPP
+#endif // CFG_BARJSON_HPP

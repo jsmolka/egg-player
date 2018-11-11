@@ -1,5 +1,5 @@
-#ifndef CFG_APPOBJECT_HPP
-#define CFG_APPOBJECT_HPP
+#ifndef CFG_APPJSON_HPP
+#define CFG_APPJSON_HPP
 
 #include "core/config/jsonobject.hpp"
 
@@ -9,7 +9,7 @@ namespace cfg
 namespace app
 {
 
-class MinimalSizeObject : public JsonObject
+class MinimalSizeJson : public JsonObject
 {
 public:
     void loadObject(const QJsonObject &object) override;
@@ -26,7 +26,7 @@ public:
 
 }
 
-class AppObject : public JsonObject
+class AppJson : public JsonObject
 {
 public:
     void loadObject(const QJsonObject &object) override;
@@ -34,9 +34,9 @@ public:
 
     void setDefaults() override;
 
-    const app::MinimalSizeObject &minimalSize() const;
+    const app::MinimalSizeJson &minimalSize() const;
 
-    app::MinimalSizeObject &minimalSize();
+    app::MinimalSizeJson &minimalSize();
 
     void setFontSize(double size);
     double fontSize() const;
@@ -45,9 +45,9 @@ public:
     bool log() const;
 
 private:
-    app::MinimalSizeObject m_minimalSize;
+    app::MinimalSizeJson m_minimalSize;
 };
 
 }
 
-#endif // CFG_APPOBJECT_HPP
+#endif // CFG_APPJSON_HPP

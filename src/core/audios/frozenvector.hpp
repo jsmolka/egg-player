@@ -1,5 +1,5 @@
-#ifndef AUDIOS_STATICVECTOR_HPP
-#define AUDIOS_STATICVECTOR_HPP
+#ifndef AUDIOS_FROZENVECTOR_HPP
+#define AUDIOS_FROZENVECTOR_HPP
 
 #include <QObject>
 
@@ -8,14 +8,14 @@
 namespace audios
 {
 
-class StaticVector : public QObject, protected Audio::vector
+class FrozenVector : public QObject, protected Audio::vector
 {
     Q_OBJECT
 
 public:
-    explicit StaticVector(QObject *parent = nullptr);
-    explicit StaticVector(const Audio::vector &vector, QObject *parent = nullptr);
-    virtual ~StaticVector() = 0;
+    explicit FrozenVector(QObject *parent = nullptr);
+    explicit FrozenVector(const Audio::vector &vector, QObject *parent = nullptr);
+    virtual ~FrozenVector() = 0;
 
     Audio::vector vector() const;
 
@@ -42,4 +42,4 @@ signals:
 
 }
 
-#endif // AUDIOS_STATICVECTOR_HPP
+#endif // AUDIOS_FROZENVECTOR_HPP

@@ -43,7 +43,7 @@ Audio *Playlist::currentAudio()
     return audioAt(m_index);
 }
 
-void Playlist::create(audios::State *state)
+void Playlist::create(audios::CurrentState *state)
 {
     createAudios(state);
     createIndices(state->size());
@@ -100,7 +100,7 @@ void Playlist::onAudiosRemoved(int index)
         --m_index;
 }
 
-void Playlist::createAudios(audios::State *state)
+void Playlist::createAudios(audios::CurrentState *state)
 {
     if (m_state)
     {

@@ -1,15 +1,15 @@
 #ifndef AUDIOS_HPP
 #define AUDIOS_HPP
 
-#include "core/audios/staticvector.hpp"
-#include "core/audios/state.hpp"
+#include "core/audios/frozenvector.hpp"
+#include "core/audios/currentstate.hpp"
 
-class Audios : public audios::StaticVector
+class Audios : public audios::FrozenVector
 {
     Q_OBJECT
 
 public:
-    using audios::StaticVector::StaticVector;
+    using audios::FrozenVector::FrozenVector;
     ~Audios();
 
     void insert(int index, Audio *audio);
@@ -21,7 +21,7 @@ public:
 
     int lowerBound(Audio *audio);
 
-    audios::State *currentState();
+    audios::CurrentState *currentState();
 
     Audios &operator<<(Audio *audio);
 

@@ -1,21 +1,21 @@
-#include "libraryobject.hpp"
+#include "libraryjson.hpp"
 
 #include <QJsonArray>
 #include <QStandardPaths>
 #include <QVariant>
 #include <QVector>
 
-void cfg::LibraryObject::loadObject(const QJsonObject &object)
+void cfg::LibraryJson::loadObject(const QJsonObject &object)
 {
     setObject(object);
 }
 
-QJsonObject cfg::LibraryObject::toObject() const
+QJsonObject cfg::LibraryJson::toObject() const
 {
     return object();
 }
 
-void cfg::LibraryObject::setDefaults()
+void cfg::LibraryJson::setDefaults()
 {
     setDefault("cellPadding", 10);
     setDefault("itemHeight", 50);
@@ -23,27 +23,27 @@ void cfg::LibraryObject::setDefaults()
     setDefault("scrollBarWidth", 12);
 }
 
-void cfg::LibraryObject::setCellPadding(int padding)
+void cfg::LibraryJson::setCellPadding(int padding)
 {
     set("cellPadding", padding);
 }
 
-int cfg::LibraryObject::cellPadding() const
+int cfg::LibraryJson::cellPadding() const
 {
     return scale(get("cellPadding").toInt());
 }
 
-void cfg::LibraryObject::setItemHeight(int height)
+void cfg::LibraryJson::setItemHeight(int height)
 {
     set("itemHeight", height);
 }
 
-int cfg::LibraryObject::itemHeight() const
+int cfg::LibraryJson::itemHeight() const
 {
     return scale(get("itemHeight").toInt());
 }
 
-void cfg::LibraryObject::setPaths(const QStrings &paths)
+void cfg::LibraryJson::setPaths(const QStrings &paths)
 {
     QJsonArray array;
     for (const QString &path : paths)
@@ -52,7 +52,7 @@ void cfg::LibraryObject::setPaths(const QStrings &paths)
     set("paths", QJsonValue(array));
 }
 
-QStrings cfg::LibraryObject::paths() const
+QStrings cfg::LibraryJson::paths() const
 {
     QStrings paths;
     for (const QJsonValue &value : get("paths").toArray())
@@ -61,12 +61,12 @@ QStrings cfg::LibraryObject::paths() const
     return paths;
 }
 
-void cfg::LibraryObject::setScrollBarWidth(int width)
+void cfg::LibraryJson::setScrollBarWidth(int width)
 {
     set("scrollBarWidth", width);
 }
 
-int cfg::LibraryObject::scrollBarWidth() const
+int cfg::LibraryJson::scrollBarWidth() const
 {
     return scale(get("scrollBarWidth").toInt());
 }

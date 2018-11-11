@@ -1,11 +1,12 @@
-#ifndef CFGSHORTCUT_HPP
-#define CFGSHORTCUT_HPP
+#ifndef CFG_SHORTCUTJSON_HPP
+#define CFG_SHORTCUTJSON_HPP
 
 #include "core/config/jsonobject.hpp"
 
 namespace cfg
 {
-class ShortcutObject : public JsonObject
+
+class ShortcutJson : public JsonObject
 {
 public:
     void loadObject(const QJsonObject &object) override;
@@ -28,6 +29,7 @@ public:
     void setVolumeUp(const QString &shortcut);
     QString volumeUp() const;
 };
+
 }
 
-#endif // CFGSHORTCUT_HPP
+#endif // CFG_SHORTCUTJSON_HPP

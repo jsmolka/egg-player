@@ -1,7 +1,6 @@
 # Things to do
 
 ## Rework
-- process ThreadObject events differently
 - BarWidget
   - update name if the current audio changes
   - properly split into subclasses
@@ -11,6 +10,9 @@
     - [hover implementation 1](https://stackoverflow.com/questions/20565930/qtableview-how-can-i-highlight-the-entire-row-for-mouse-hover)
     - [hover implementation 2](https://stackoverflow.com/questions/23111075/how-to-highlight-the-entire-row-on-mouse-hover-in-qtablewidget-qt5)
 - create thin and thick bass wrapper
+  - use different names for stream / error
+- use different names for database provider and initializer
+- create shortscuts in eggwidget instead of bar
 
 ## Database
 - properly fix "database is locked"

@@ -37,8 +37,6 @@ RESOURCES = egg-player.qrc
 DEFINES *= QT_USE_QSTRINGBUILDER
 
 HEADERS += \
-    src/core/audios/state.hpp \
-    src/core/audios/staticvector.hpp \
     src/core/bass/error.hpp \
     src/core/bass/stream.hpp \
     src/core/database/audioitem.hpp \
@@ -104,15 +102,15 @@ HEADERS += \
     src/widgets/tablewidget.hpp \
     src/widgets/volumebutton.hpp \
     src/core/config/jsonobject.hpp \
-    src/core/config/appobject.hpp \
-    src/core/config/barobject.hpp \
-    src/core/config/libraryobject.hpp \
-    src/core/config/playerobject.hpp \
-    src/core/config/shortcutobject.hpp
+    src/core/config/appjson.hpp \
+    src/core/config/barjson.hpp \
+    src/core/config/libraryjson.hpp \
+    src/core/config/playerjson.hpp \
+    src/core/config/shortcutjson.hpp \
+    src/core/audios/frozenvector.hpp \
+    src/core/audios/currentstate.hpp
 
 SOURCES += \
-    src/core/audios/state.cpp \
-    src/core/audios/staticvector.cpp \
     src/core/bass/error.cpp \
     src/core/bass/stream.cpp \
     src/core/database/audioitem.cpp \
@@ -173,8 +171,10 @@ SOURCES += \
     src/widgets/volumebutton.cpp \
     src/main.cpp \
     src/core/config/jsonobject.cpp \
-    src/core/config/appobject.cpp \
-    src/core/config/barobject.cpp \
-    src/core/config/libraryobject.cpp \
-    src/core/config/playerobject.cpp \
-    src/core/config/shortcutobject.cpp
+    src/core/config/appjson.cpp \
+    src/core/config/barjson.cpp \
+    src/core/config/libraryjson.cpp \
+    src/core/config/playerjson.cpp \
+    src/core/config/shortcutjson.cpp \
+    src/core/audios/frozenvector.cpp \
+    src/core/audios/currentstate.cpp

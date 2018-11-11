@@ -1,5 +1,5 @@
-#ifndef CFG_LIBRARYOBJECT_HPP
-#define CFG_LIBRARYOBJECT_HPP
+#ifndef CFG_LIBRARYJSON_HPP
+#define CFG_LIBRARYJSON_HPP
 
 #include "core/types.hpp"
 #include "core/config/jsonobject.hpp"
@@ -7,7 +7,7 @@
 namespace cfg
 {
 
-class LibraryObject : public JsonObject
+class LibraryJson : public JsonObject
 {
 public:
     void loadObject(const QJsonObject &object) override;
@@ -30,4 +30,4 @@ public:
 
 }
 
-#endif // CFG_LIBRARYOBJECT_HPP
+#endif // CFG_LIBRARYJSON_HPP

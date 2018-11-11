@@ -1,7 +1,10 @@
-#ifndef SQLQUERY_HPP
-#define SQLQUERY_HPP
+#ifndef DB_SQLQUERY_HPP
+#define DB_SQLQUERY_HPP
 
 #include <QSqlQuery>
+
+namespace db
+{
 
 class SqlQuery : public QSqlQuery
 {
@@ -18,4 +21,6 @@ private:
     void error() const;
 };
 
-#endif // SQLQUERY_HPP
+}
+
+#endif // DB_SQLQUERY_HPP

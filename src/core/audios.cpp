@@ -61,9 +61,9 @@ int Audios::lowerBound(Audio *audio)
     return low;
 }
 
-audios::State *Audios::currentState()
+audios::CurrentState *Audios::currentState()
 {
-    return new audios::State(*this, this);
+    return new audios::CurrentState(*this, this);
 }
 
 Audios &Audios::operator<<(Audio *audio)

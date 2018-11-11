@@ -1,37 +1,37 @@
-#include "barobject.hpp"
+#include "barjson.hpp"
 
-void cfg::bar::LabelWidthObject::loadObject(const QJsonObject &object)
+void cfg::bar::LabelWidthJson::loadObject(const QJsonObject &object)
 {
     setObject(object);
 }
 
-QJsonObject cfg::bar::LabelWidthObject::toObject() const
+QJsonObject cfg::bar::LabelWidthJson::toObject() const
 {
     return object();
 }
 
-void cfg::bar::LabelWidthObject::setDefaults()
+void cfg::bar::LabelWidthJson::setDefaults()
 {
     setDefault("time", 50);
     setDefault("track", 240);
 }
 
-void cfg::bar::LabelWidthObject::setTime(int width)
+void cfg::bar::LabelWidthJson::setTime(int width)
 {
     set("time", width);
 }
 
-int cfg::bar::LabelWidthObject::time() const
+int cfg::bar::LabelWidthJson::time() const
 {
     return scale(get("time").toInt());
 }
 
-void cfg::bar::LabelWidthObject::setTrack(int width)
+void cfg::bar::LabelWidthJson::setTrack(int width)
 {
     set("time", width);
 }
 
-int cfg::bar::LabelWidthObject::track() const
+int cfg::bar::LabelWidthJson::track() const
 {
     return scale(get("track").toInt());
 }
@@ -72,7 +72,7 @@ int cfg::bar::SliderObject::handleSize() const
     return scale(get("handleSize").toInt());
 }
 
-void cfg::BarObject::loadObject(const QJsonObject &object)
+void cfg::BarJson::loadObject(const QJsonObject &object)
 {
     setObject(object);
 
@@ -80,7 +80,7 @@ void cfg::BarObject::loadObject(const QJsonObject &object)
     m_slider.loadObject(object.value("slider").toObject());
 }
 
-QJsonObject cfg::BarObject::toObject() const
+QJsonObject cfg::BarJson::toObject() const
 {
     QJsonObject object = this->object();
     object.insert("labelWidth", m_labelWidth.toObject());
@@ -89,7 +89,7 @@ QJsonObject cfg::BarObject::toObject() const
     return object;
 }
 
-void cfg::BarObject::setDefaults()
+void cfg::BarJson::setDefaults()
 {
     setDefault("height", 68);
     setDefault("iconSize", 32);
@@ -100,67 +100,67 @@ void cfg::BarObject::setDefaults()
     m_slider.setDefaults();
 }
 
-const cfg::bar::LabelWidthObject &cfg::BarObject::labelWidth() const
+const cfg::bar::LabelWidthJson &cfg::BarJson::labelWidth() const
 {
     return m_labelWidth;
 }
 
-const cfg::bar::SliderObject &cfg::BarObject::slider() const
+const cfg::bar::SliderObject &cfg::BarJson::slider() const
 {
     return m_slider;
 }
 
-cfg::bar::LabelWidthObject &cfg::BarObject::labelWidth()
+cfg::bar::LabelWidthJson &cfg::BarJson::labelWidth()
 {
-    return EGG_REF_CAST(cfg::BarObject, cfg::bar::LabelWidthObject, labelWidth);
+    return EGG_REF_CAST(cfg::BarJson, cfg::bar::LabelWidthJson, labelWidth);
 }
 
-cfg::bar::SliderObject &cfg::BarObject::slider()
+cfg::bar::SliderObject &cfg::BarJson::slider()
 {
-    return EGG_REF_CAST(cfg::BarObject, cfg::bar::SliderObject, slider);
+    return EGG_REF_CAST(cfg::BarJson, cfg::bar::SliderObject, slider);
 }
 
-void cfg::BarObject::setHeight(int height)
+void cfg::BarJson::setHeight(int height)
 {
     set("height", height);
 }
 
-int cfg::BarObject::height() const
+int cfg::BarJson::height() const
 {
     return scale(get("height").toInt());
 }
 
-void cfg::BarObject::setIconSize(int size)
+void cfg::BarJson::setIconSize(int size)
 {
     set("iconSize", size);
 }
 
-int cfg::BarObject::iconSize() const
+int cfg::BarJson::iconSize() const
 {
     return scale(get("iconSize").toInt());
 }
 
-void cfg::BarObject::setMargin(int margin)
+void cfg::BarJson::setMargin(int margin)
 {
     set("margin", margin);
 }
 
-int cfg::BarObject::margin() const
+int cfg::BarJson::margin() const
 {
     return scale(get("margin").toInt());
 }
 
-void cfg::BarObject::setSpacing(int spacing)
+void cfg::BarJson::setSpacing(int spacing)
 {
     set("spacing", spacing);
 }
 
-int cfg::BarObject::spacing() const
+int cfg::BarJson::spacing() const
 {
     return scale(get("spacing").toInt());
 }
 
-int cfg::BarObject::coverSize() const
+int cfg::BarJson::coverSize() const
 {
     return height() - 2 * margin();
 }
