@@ -22,6 +22,8 @@ void RowHoverDelegate::paint(QPainter *painter, const QStyleOptionViewItem &opti
     QStyleOptionViewItem opt = option;
     if (index.row() == m_hoverRow)
         opt.state |= QStyle::State_MouseOver;
+    else
+        opt.state &= ~QStyle::State_MouseOver;
 
     QStyledItemDelegate::paint(painter, opt, index);
 }

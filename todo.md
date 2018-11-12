@@ -4,22 +4,10 @@
 - BarWidget
   - update name if the current audio changes
   - properly split into subclasses
-- TableWidget
-  - consider the following changes
-    - [replace hover with select](https://stackoverflow.com/questions/8644367/how-to-highlight-a-row-in-qtablewidget)
-    - [hover implementation 1](https://stackoverflow.com/questions/20565930/qtableview-how-can-i-highlight-the-entire-row-for-mouse-hover)
-    - [hover implementation 2](https://stackoverflow.com/questions/23111075/how-to-highlight-the-entire-row-on-mouse-hover-in-qtablewidget-qt5)
 - create thin and thick bass wrapper
   - use different names for stream / error
-- use different names for database provider and initializer
-- create shortscuts in eggwidget instead of bar
 
 ## Database
-- properly fix "database is locked"
-  - maybe create a DatabasePool singleton
-    - assign db reference to base, save in provider
-  - loads and opens the database for a connection
-  - properly closes and removes them at destruction
 - proper query binding
 
 ## Filesystem Rework

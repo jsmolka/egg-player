@@ -8,6 +8,7 @@
 #include "core/config.hpp"
 #include "core/constants.hpp"
 #include "core/player.hpp"
+#include "core/shortcutprocessor.hpp"
 #include "core/utils.hpp"
 #include "widgets/iconfactory.hpp"
 
@@ -25,11 +26,6 @@ BarWidget::BarWidget(QWidget *parent)
     , m_volumeButton(this)
     , m_durationSlider(this)
     , m_volumeSlider(this)
-    , m_scPlayPause(cfg_shortcut.playPause(), Shortcut::NoRepeat, this)
-    , m_scNext(cfg_shortcut.next(), Shortcut::NoRepeat, this)
-    , m_scPrevious(cfg_shortcut.previous(), Shortcut::NoRepeat, this)
-    , m_scVolumeUp(cfg_shortcut.volumeUp(), Shortcut::Repeat, this)
-    , m_scVolumeDown(cfg_shortcut.volumeDown(), Shortcut::Repeat, this)
 {
     init();
 
@@ -37,9 +33,9 @@ BarWidget::BarWidget(QWidget *parent)
     connect(&egg_player, &Player::positionChanged, this, &BarWidget::onPlayerPositionChanged);
     connect(&egg_player, &Player::volumeChanged, &m_volumeSlider, &Slider::setValue);
 
-    connect(&m_nextButton, &IconButton::pressed, &egg_player.playlist(), &Playlist::next);
-    connect(&m_playPauseButton, &IconButton::pressed, &egg_player, &Player::toggleState);
-    connect(&m_previousButton, &IconButton::pressed, this, &BarWidget::onPlayerPrevious);
+    connect(&m_playPauseButton, &IconButton::pressed, &ShortcutProcessor::onPlayPausePressed);
+    connect(&m_nextButton, &IconButton::pressed, &ShortcutProcessor::onNextPressed);
+    connect(&m_previousButton, &IconButton::pressed, &ShortcutProcessor::onPreviousPressed);
     connect(&m_shuffleButton, &LockableIconButton::locked, &egg_player.playlist(), &Playlist::setShuffle);
     connect(&m_loopButton, &LockableIconButton::locked, &egg_player.playlist(), &Playlist::setLoop);
     connect(&m_volumeButton, &IconButton::pressed, this, &BarWidget::onVolumeButtonPressed);
@@ -47,12 +43,6 @@ BarWidget::BarWidget(QWidget *parent)
     connect(&m_durationSlider, &Slider::sliderMoved, this, &BarWidget::onDurationSliderMoved);
     connect(&m_durationSlider, &Slider::sliderValueChanged, &egg_player, &Player::setPosition);
     connect(&m_volumeSlider, &Slider::sliderMoved, &egg_player, &Player::setVolume);
-
-    connect(&m_scPlayPause, &Shortcut::pressed, &egg_player, &Player::toggleState);
-    connect(&m_scNext, &Shortcut::pressed, &egg_player.playlist(), &Playlist::next);
-    connect(&m_scPrevious, &Shortcut::pressed, this, &BarWidget::onPlayerPrevious);
-    connect(&m_scVolumeUp, &Shortcut::pressed, &egg_player, &Player::increaseVolume);
-    connect(&m_scVolumeDown, &Shortcut::pressed, &egg_player, &Player::decreaseVolume);
 }
 
 void BarWidget::setColor(const QColor &color)
@@ -83,21 +73,12 @@ void BarWidget::onPlayerAudioChanged(Audio *audio)
 
 void BarWidget::onPlayerPositionChanged(int position)
 {
-    if (egg_player.playlist().isEmpty()
-            || m_durationSlider.isPressed()
+    if (m_durationSlider.isPressed()
             || m_durationSlider.maximum() < position)
         return;
 
     m_durationSlider.setValue(position);
     m_currentTimeLabel.setText(Duration(position).toString());
-}
-
-void BarWidget::onPlayerPrevious()
-{
-    if (cfg_player.previousLimit() < m_durationSlider.value())
-        egg_player.setPosition(0);
-    else
-        egg_player.playlist().previous();
 }
 
 void BarWidget::onVolumeButtonPressed()

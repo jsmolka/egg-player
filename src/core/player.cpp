@@ -47,6 +47,26 @@ int Player::position()
     return m_bass.stream().isHandleValid() ? m_bass.stream().position() : -1;
 }
 
+void Player::play()
+{
+    if (m_bass.stream().isHandleValid())
+        if (!m_bass.stream().play())
+            return;
+
+    m_playing = true;
+    emit stateChanged();
+}
+
+void Player::pause()
+{
+    if (m_bass.stream().isHandleValid())
+        if (!m_bass.stream().pause())
+            return;
+
+    m_playing = false;
+    emit stateChanged();
+}
+
 void Player::createPlaylist(audios::CurrentState *state, int index)
 {
     m_playlist.setIndex(index);
@@ -73,47 +93,6 @@ void Player::setPosition(int position)
             return;
 
     emit positionChanged(position);
-}
-
-void Player::increaseVolume()
-{
-    setVolume(m_volume + 1);
-}
-
-void Player::decreaseVolume()
-{
-    setVolume(m_volume - 1);
-}
-
-void Player::play()
-{
-    if (m_bass.stream().isHandleValid())
-        if (!m_bass.stream().play())
-            return;
-
-    m_playing = true;
-    emit stateChanged();
-}
-
-void Player::pause()
-{
-    if (m_bass.stream().isHandleValid())
-        if (!m_bass.stream().pause())
-            return;
-
-    m_playing = false;
-    emit stateChanged();
-}
-
-void Player::toggleState()
-{
-    if (m_playlist.isEmpty())
-        return;
-
-    if (m_playing)
-        pause();
-    else
-        play();
 }
 
 void Player::onPlaylistIndexChanged(int index)

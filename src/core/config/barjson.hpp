@@ -24,7 +24,7 @@ public:
     int track() const;
 };
 
-class SliderObject : public JsonObject
+class SliderJson : public JsonObject
 {
 public:
     void loadObject(const QJsonObject &object) override;
@@ -50,10 +50,10 @@ public:
     void setDefaults() override;
 
     const bar::LabelWidthJson &labelWidth() const;
-    const bar::SliderObject &slider() const;
+    const bar::SliderJson &slider() const;
 
     bar::LabelWidthJson &labelWidth();
-    bar::SliderObject &slider();
+    bar::SliderJson &slider();
 
     void setHeight(int height);
     int height() const;
@@ -71,7 +71,7 @@ public:
 
 private:
     bar::LabelWidthJson m_labelWidth;
-    bar::SliderObject m_slider;
+    bar::SliderJson m_slider;
 };
 
 }

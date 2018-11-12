@@ -43,6 +43,16 @@ Audio *Playlist::currentAudio()
     return audioAt(m_index);
 }
 
+void Playlist::next()
+{
+    changeIndex(nextIndex());
+}
+
+void Playlist::previous()
+{
+    changeIndex(previousIndex());
+}
+
 void Playlist::create(audios::CurrentState *state)
 {
     createAudios(state);
@@ -67,16 +77,6 @@ void Playlist::setShuffle(bool shuffle)
         this->shuffle();
     else
         this->unshuffle();
-}
-
-void Playlist::next()
-{
-    changeIndex(nextIndex());
-}
-
-void Playlist::previous()
-{
-    changeIndex(previousIndex());
 }
 
 void Playlist::onAudiosRemoved(int index)

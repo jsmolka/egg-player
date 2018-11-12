@@ -17,6 +17,7 @@ EggWidget::EggWidget(QWidget *parent)
     : MainWindow(parent)
     , m_bar(this)
     , m_library(this)
+    , m_shortcuts(this)
 {
     init();
 

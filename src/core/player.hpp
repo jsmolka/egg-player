@@ -28,18 +28,14 @@ public:
     int volume() const;
     int position();
 
+    void play();
+    void pause();
+
     void createPlaylist(audios::CurrentState *state, int index = 0);
 
 public slots:
     void setVolume(int volume);
     void setPosition(int position);
-
-    void increaseVolume();
-    void decreaseVolume();
-
-    void play();
-    void pause();
-    void toggleState();
 
 signals:
     void stateChanged();

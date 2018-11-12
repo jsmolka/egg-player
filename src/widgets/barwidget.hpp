@@ -5,7 +5,6 @@
 #include <QWidget>
 
 #include "core/audio.hpp"
-#include "core/shortcut.hpp"
 #include "widgets/iconbutton.hpp"
 #include "widgets/lockableiconbutton.hpp"
 #include "widgets/playpausebutton.hpp"
@@ -27,7 +26,6 @@ public:
 private slots:
     void onPlayerAudioChanged(Audio *audio);
     void onPlayerPositionChanged(int position);
-    void onPlayerPrevious();
     void onVolumeButtonPressed();
     void onDurationSliderMoved(int value);
 
@@ -54,12 +52,6 @@ private:
 
     Slider m_durationSlider;
     Slider m_volumeSlider;
-
-    Shortcut m_scPlayPause;
-    Shortcut m_scNext;
-    Shortcut m_scPrevious;
-    Shortcut m_scVolumeUp;
-    Shortcut m_scVolumeDown;
 };
 
 #endif // BARWIDGET_HPP

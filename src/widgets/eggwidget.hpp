@@ -4,6 +4,7 @@
 #include <QMimeData>
 
 #include "core/types.hpp"
+#include "core/shortcutprocessor.hpp"
 #include "widgets/barwidget.hpp"
 #include "widgets/librarywidget.hpp"
 #include "widgets/mainwindow.hpp"
@@ -34,6 +35,7 @@ private:
 
     BarWidget m_bar;
     LibraryWidget m_library;
+    ShortcutProcessor m_shortcuts;
 };
 
 #endif // EGGWIDGET_HPP

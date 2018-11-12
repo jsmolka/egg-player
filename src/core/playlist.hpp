@@ -27,14 +27,14 @@ public:
     Audio *audioAt(int index);
     Audio *currentAudio();
 
+    void next();
+    void previous();
+
     void create(audios::CurrentState *state);
 
 public slots:
     void setLoop(bool loop);
     void setShuffle(bool shuffle);
-
-    void next();
-    void previous();
 
 signals:
     void indexChanged(int index);

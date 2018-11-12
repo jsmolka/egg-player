@@ -107,7 +107,8 @@ HEADERS += \
     src/core/config/shortcutjson.hpp \
     src/core/audios/frozenvector.hpp \
     src/core/audios/currentstate.hpp \
-    src/core/database/dbinitializer.hpp
+    src/core/database/dbinitializer.hpp \
+    src/core/shortcutprocessor.hpp
 
 SOURCES += \
     src/core/bass/error.cpp \
@@ -175,4 +176,5 @@ SOURCES += \
     src/core/audios/frozenvector.cpp \
     src/core/audios/currentstate.cpp \
     src/core/database/dbinitializer.cpp \
-    src/core/database/queryobject.cpp
+    src/core/database/queryobject.cpp \
+    src/core/shortcutprocessor.cpp
