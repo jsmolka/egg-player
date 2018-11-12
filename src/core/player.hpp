@@ -52,6 +52,7 @@ private:
     Bass m_bass;
     Playlist m_playlist;
     QTimer m_updateTimer;
+    bool m_playing;
     int m_volume;
     int m_position;
 };

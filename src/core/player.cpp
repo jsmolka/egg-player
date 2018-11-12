@@ -7,6 +7,7 @@ Player::Player(QObject *parent)
     : QObject(parent)
     , m_playlist(this)
     , m_updateTimer(this)
+    , m_playing(false)
     , m_volume(0)
     , m_position(-1)
 {
@@ -34,7 +35,7 @@ Playlist &Player::playlist()
 
 bool Player::isPlaying() const
 {
-    return m_bass.stream().isPlaying();
+    return m_playing;
 }
 
 int Player::volume() const
@@ -50,13 +51,19 @@ int Player::position()
 void Player::play()
 {
     if (m_bass.stream().play())
+    {
+        m_playing = true;
         emit stateChanged();
+    }
 }
 
 void Player::pause()
 {
     if (m_bass.stream().pause())
+    {
+        m_playing = false;
         emit stateChanged();
+    }
 }
 
 void Player::createPlaylist(audios::CurrentState *state, int index)
@@ -72,10 +79,11 @@ void Player::setVolume(int volume)
     volume = qBound(0, volume, 100);
     float volf = static_cast<float>(volume);
     float quof = static_cast<float>(cfg_player.volumeQuotient());
+    m_volume = volume;
+
     if (!m_bass.stream().setVolume(volf / quof))
         return;
 
-    m_volume = volume;
     emit volumeChanged(volume);
 }
 
@@ -113,15 +121,13 @@ void Player::update()
 
 void Player::setAudio(Audio *audio)
 {
-    const bool playing = isPlaying();
-
     if (!audio || !m_bass.stream().create(audio))
         return;
 
     m_bass.sync().setSync(m_bass.stream().handle());
     setVolume(m_volume);
 
-    if (playing)
+    if (m_playing)
         play();
     else
         pause();
