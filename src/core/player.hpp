@@ -23,7 +23,6 @@ public:
     Playlist &playlist();
 
     bool isPlaying() const;
-    bool isPaused() const;
 
     int volume() const;
     int position();
@@ -48,8 +47,6 @@ private slots:
     void update();
 
 private:
-    static void CALLBACK callback(HSYNC handle, DWORD channel, DWORD data, void *user);
-
     void setAudio(Audio *audio);
 
     Bass m_bass;
@@ -57,7 +54,6 @@ private:
     QTimer m_updateTimer;
     int m_volume;
     int m_position;
-    bool m_playing;
 };
 
 #endif // PLAYER_HPP

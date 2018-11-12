@@ -1,10 +1,9 @@
 #ifndef BASS_HPP
 #define BASS_HPP
 
-#include <bass/bass.h>
-
 #include "core/bass/error.hpp"
-#include "core/bass/stream.hpp"
+#include "core/bass/streamwrapper.hpp"
+#include "core/bass/syncwrapper.hpp"
 
 class Bass : private bass::Error
 {
@@ -12,21 +11,11 @@ public:
     Bass();
     ~Bass();
 
-    const bass::Stream &stream() const;
+    const bass::StreamWrapper &stream() const;
+    const bass::SyncWrapper &sync() const;
 
-    bass::Stream &stream();
-
-    static bool start();
-    static bool pause();
-    static bool stop();
-
-    static bool setVolume(float volume);
-    static float volume();
-
-    static bool setDevice(DWORD device);
-    static DWORD device();
-
-    static BASS_DEVICEINFO deviceInfo();
+    bass::StreamWrapper &stream();
+    bass::SyncWrapper &sync();
 
 private:
     static bool isValidVersion();
@@ -34,7 +23,8 @@ private:
     static bool init();
     static bool free();
 
-    bass::Stream m_stream;
+    bass::StreamWrapper m_stream;
+    bass::SyncWrapper m_sync;
 };
 
 #endif // BASS_HPP

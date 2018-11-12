@@ -14,63 +14,24 @@ Bass::~Bass()
     free();
 }
 
-const bass::Stream &Bass::stream() const
+const bass::StreamWrapper &Bass::stream() const
 {
     return m_stream;
 }
 
-bass::Stream &Bass::stream()
+const bass::SyncWrapper &Bass::sync() const
 {
-    return EGG_REF_CAST(Bass, bass::Stream, stream);
+    return m_sync;
 }
 
-bool Bass::start()
+bass::StreamWrapper &Bass::stream()
 {
-    return check(BASS_Start());
+    return EGG_REF_CAST(Bass, bass::StreamWrapper, stream);
 }
 
-bool Bass::pause()
+bass::SyncWrapper &Bass::sync()
 {
-    return check(BASS_Pause());
-}
-
-bool Bass::stop()
-{
-    return check(BASS_Stop());
-}
-
-bool Bass::setVolume(float volume)
-{
-    return check(BASS_SetVolume(volume));
-}
-
-float Bass::volume()
-{
-    const float volume = BASS_GetVersion();
-    check(!qFuzzyCompare(volume, -1));
-
-    return volume;
-}
-
-bool Bass::setDevice(DWORD device)
-{
-    return check(BASS_SetDevice(device));
-}
-
-DWORD Bass::device()
-{
-    const DWORD device = BASS_GetDevice();
-    check(device != 0);
-
-    return device;
-}
-
-BASS_DEVICEINFO Bass::deviceInfo()
-{
-    BASS_DEVICEINFO info;
-    check(BASS_GetDeviceInfo(device(), &info));
-
-    return info;
+    return EGG_REF_CAST(Bass, bass::SyncWrapper, sync);
 }
 
 bool Bass::isValidVersion()

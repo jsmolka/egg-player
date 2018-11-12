@@ -37,8 +37,6 @@ RESOURCES = egg-player.qrc
 DEFINES *= QT_USE_QSTRINGBUILDER
 
 HEADERS += \
-    src/core/bass/error.hpp \
-    src/core/bass/stream.hpp \
     src/core/database/audioitem.hpp \
     src/core/database/coveritem.hpp \
     src/core/database/infoitem.hpp \
@@ -108,11 +106,12 @@ HEADERS += \
     src/core/audios/frozenvector.hpp \
     src/core/audios/currentstate.hpp \
     src/core/database/dbinitializer.hpp \
-    src/core/shortcutprocessor.hpp
+    src/core/shortcutprocessor.hpp \
+    src/core/bass/streamwrapper.hpp \
+    src/core/bass/syncwrapper.hpp \
+    src/core/bass/error.hpp
 
 SOURCES += \
-    src/core/bass/error.cpp \
-    src/core/bass/stream.cpp \
     src/core/database/audioitem.cpp \
     src/core/database/coveritem.cpp \
     src/core/database/infoitem.cpp \
@@ -177,4 +176,7 @@ SOURCES += \
     src/core/audios/currentstate.cpp \
     src/core/database/dbinitializer.cpp \
     src/core/database/queryobject.cpp \
-    src/core/shortcutprocessor.cpp
+    src/core/shortcutprocessor.cpp \
+    src/core/bass/streamwrapper.cpp \
+    src/core/bass/syncwrapper.cpp \
+    src/core/bass/error.cpp
