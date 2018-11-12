@@ -42,8 +42,6 @@ HEADERS += \
     src/core/database/audioitem.hpp \
     src/core/database/coveritem.hpp \
     src/core/database/infoitem.hpp \
-    src/core/database/initializer.hpp \
-    src/core/database/provider.hpp \
     src/core/database/queryobject.hpp \
     src/core/database/sqlquery.hpp \
     src/core/database/tableitem.hpp \
@@ -108,7 +106,8 @@ HEADERS += \
     src/core/config/playerjson.hpp \
     src/core/config/shortcutjson.hpp \
     src/core/audios/frozenvector.hpp \
-    src/core/audios/currentstate.hpp
+    src/core/audios/currentstate.hpp \
+    src/core/database/dbinitializer.hpp
 
 SOURCES += \
     src/core/bass/error.cpp \
@@ -116,9 +115,6 @@ SOURCES += \
     src/core/database/audioitem.cpp \
     src/core/database/coveritem.cpp \
     src/core/database/infoitem.cpp \
-    src/core/database/initializer.cpp \
-    src/core/database/provider.cpp \
-    src/core/database/qureyobject.cpp \
     src/core/database/sqlquery.cpp \
     src/core/filesystem/directory.cpp \
     src/core/filesystem/filesystemwatcher.cpp \
@@ -177,4 +173,6 @@ SOURCES += \
     src/core/config/playerjson.cpp \
     src/core/config/shortcutjson.cpp \
     src/core/audios/frozenvector.cpp \
-    src/core/audios/currentstate.cpp
+    src/core/audios/currentstate.cpp \
+    src/core/database/dbinitializer.cpp \
+    src/core/database/queryobject.cpp

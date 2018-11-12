@@ -53,16 +53,16 @@ QPixmap Cache::loadCover(int id)
 Audio *Cache::loadAudioFromCache(const QString &file)
 {
     db::AudioItem audioItem;
-    if (audioItem.getByFile(file))
-    {
-        Audio *audio = new Audio;
-        audioItem.assignTo(audio);
-        audio->setValid(true);
-        audio->setCached(true);
-        audio->setOutdated(audio->modified() !=  QFileInfo(file).lastModified().toSecsSinceEpoch());
-        return audio;
-    }
-    return nullptr;
+    if (!audioItem.getByFile(file))
+        return nullptr;
+
+    Audio *audio = new Audio;
+    audioItem.assignTo(audio);
+    audio->setValid(true);
+    audio->setCached(true);
+    audio->setOutdated(audio->modified() !=  QFileInfo(file).lastModified().toSecsSinceEpoch());
+
+    return audio;
 }
 
 bool Cache::updateAudioCoverId(Audio *audio, int coverId)

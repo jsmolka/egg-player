@@ -1,5 +1,8 @@
 #include "library.hpp"
 
+#include <QDir>
+
+#include "core/logger.hpp"
 #include "core/macros.hpp"
 
 Library::Library(QObject *parent)
@@ -42,7 +45,12 @@ FileSystem &Library::fileSystem()
 void Library::initialLoad(const QStrings &paths)
 {
     for (const QString &path : paths)
-        m_fileSystem.addPath(path);
+    {
+        if (QDir(path).exists())
+            m_fileSystem.addPath(path);
+        else
+            EGG_LOG("Library path does not exist %1", path);
+    }
 
     m_initialLoader.setFiles(m_fileSystem.globFiles());
     m_initialLoader.start();

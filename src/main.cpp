@@ -5,7 +5,7 @@
 #include "core/config.hpp"
 #include "core/constants.hpp"
 #include "core/player.hpp"
-#include "core/database/initializer.hpp"
+#include "core/database/dbinitializer.hpp"
 #include "widgets/eggwidget.hpp"
 
 QFont font()
@@ -32,7 +32,7 @@ void setup(QApplication &app)
     egg_player.playlist().setLoop(cfg_player.loop());
     egg_player.playlist().setShuffle(cfg_player.shuffle());
 
-    db::Initializer::initialize();
+    db::DbInitializer::init();
 }
 
 int main(int argc, char *argv[])

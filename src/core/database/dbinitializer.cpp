@@ -1,4 +1,4 @@
-#include "initializer.hpp"
+#include "dbinitializer.hpp"
 
 #include <QFileInfo>
 
@@ -9,43 +9,33 @@
 #include "core/database/coveritem.hpp"
 #include "core/database/infoitem.hpp"
 
-void db::Initializer::initialize()
+void db::DbInitializer::init()
 {
     if (!QFileInfo::exists(constants::db::file))
-        return init();
-
-    InfoItem intoItem;
-    if (!intoItem.getById(1))
-        EGG_LOG("Cannot get version of existing database");
-
-    if (intoItem.version() == version())
-        return;
-
-    switch (intoItem.version())
     {
+        initTables();
+        initDefaultCover();
+        initInfo();
+    }
+    else
+    {
+        update();
     }
 }
 
-int db::Initializer::version()
+int db::DbInitializer::version()
 {
     return 1;
 }
 
-void db::Initializer::init()
-{
-    initTables();
-    initDefaultCover();
-    initInfo();
-}
-
-void db::Initializer::initTables()
+void db::DbInitializer::initTables()
 {
     AudioItem().createTable();
     CoverItem().createTable();
     InfoItem().createTable();
 }
 
-void db::Initializer::initDefaultCover()
+void db::DbInitializer::initDefaultCover()
 {
     CoverItem coverItem;
     if (!coverItem.getById(1))
@@ -57,7 +47,7 @@ void db::Initializer::initDefaultCover()
     }
 }
 
-void db::Initializer::initInfo()
+void db::DbInitializer::initInfo()
 {
     InfoItem infoItem;
     if (!infoItem.getById(1))
@@ -66,4 +56,14 @@ void db::Initializer::initInfo()
         infoItem.setVerion(version());
         infoItem.insert();
     }
+}
+
+void db::DbInitializer::update()
+{
+    InfoItem infoItem;
+    if (!infoItem.getById(1))
+        EGG_LOG("Cannot get version of existing database");
+
+    if (infoItem.version() == version())
+        return;
 }

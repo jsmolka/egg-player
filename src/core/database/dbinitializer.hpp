@@ -1,23 +1,24 @@
-#ifndef DB_INITIALIZER_HPP
-#define DB_INITIALIZER_HPP
+#ifndef DB_DBINITIALIZER_HPP
+#define DB_DBINITIALIZER_HPP
 
 namespace db
 {
 
-class Initializer
+class DbInitializer
 {
 public:
-    static void initialize();
+    static void init();
 
 private:
     static int version();
 
-    static void init();
     static void initTables();
     static void initDefaultCover();
     static void initInfo();
+
+    static void update();
 };
 
 }
 
-#endif // DB_INITIALIZER_HPP
+#endif // DB_DBINITIALIZER_HPP

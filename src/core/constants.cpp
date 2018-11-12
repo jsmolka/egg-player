@@ -6,18 +6,10 @@
 
 #include "core/logger.hpp"
 
-QString checkResource(const QString &file)
-{
-    if (!QFileInfo::exists(file))
-        EGG_LOG("Resource file does not exist %1", file);
-
-    return file;
-}
-
 QString resource(const QString &file)
 {
 #ifdef QT_DEBUG
-    return checkResource("resource/" + file);
+    return "resource/" + file;
 #else
     return ":/resource/" + file;
 #endif
