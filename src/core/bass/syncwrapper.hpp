@@ -11,7 +11,7 @@
 namespace bass
 {
 
-class SyncWrapper : private BassError
+class SyncWrapper : protected BassError
 {
 public:
     SyncWrapper();

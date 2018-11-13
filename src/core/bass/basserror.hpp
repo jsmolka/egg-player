@@ -6,7 +6,7 @@ namespace bass
 
 class BassError
 {
-public:
+protected:
     static bool check(bool value);
 
 private:

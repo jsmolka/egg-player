@@ -1,16 +1,17 @@
 #include "bass.hpp"
 
+#include "core/logger.hpp"
 #include "core/macros.hpp"
-#include "core/bass/bassinitializer.hpp"
 
 Bass::Bass()
 {
-    bass::BassInitializer::init();
+    if (isValidVersion() && setConfig())
+        init();
 }
 
 Bass::~Bass()
 {
-    bass::BassInitializer::free();
+    free();
 }
 
 const bass::SyncWrapper &Bass::sync() const
@@ -26,4 +27,29 @@ bass::SyncWrapper &Bass::sync()
 bool Bass::applySync()
 {
     return m_sync.setSync(handle());
+}
+
+bool Bass::init()
+{
+    return check(BASS_Init(-1, 44100, 0, nullptr, nullptr));
+}
+
+bool Bass::free()
+{
+    return check(BASS_Free());
+}
+
+bool Bass::isValidVersion()
+{
+    if (HIWORD(BASS_GetVersion()) != BASSVERSION)
+    {
+        EGG_LOG("Different BASS versions");
+        return false;
+    }
+    return true;
+}
+
+bool Bass::setConfig()
+{
+    return check(BASS_SetConfig(BASS_CONFIG_DEV_DEFAULT, 1));
 }

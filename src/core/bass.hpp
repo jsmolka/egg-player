@@ -17,6 +17,11 @@ public:
     bool applySync();
 
 private:
+    static bool init();
+    static bool free();
+    static bool isValidVersion();
+    static bool setConfig();
+
     bass::SyncWrapper m_sync;
 };
 

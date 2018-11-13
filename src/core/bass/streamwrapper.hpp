@@ -9,7 +9,7 @@
 namespace bass
 {
 
-class StreamWrapper : private BassError
+class StreamWrapper : protected BassError
 {
 public:
     StreamWrapper();
