@@ -6,12 +6,12 @@
 #include <bass/bass.h>
 
 #include "core/macros.hpp"
-#include "core/bass/error.hpp"
+#include "core/bass/basserror.hpp"
 
 namespace bass
 {
 
-class SyncWrapper : private Error
+class SyncWrapper : private BassError
 {
 public:
     SyncWrapper();

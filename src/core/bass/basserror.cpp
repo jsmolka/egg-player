@@ -1,4 +1,4 @@
-#include "error.hpp"
+#include "basserror.hpp"
 
 #include <QHash>
 #include <QString>
@@ -7,7 +7,7 @@
 
 #include "core/logger.hpp"
 
-bool bass::Error::check(bool value)
+bool bass::BassError::check(bool value)
 {
     if (!value)
         error();
@@ -15,7 +15,7 @@ bool bass::Error::check(bool value)
     return value;
 }
 
-void bass::Error::error()
+void bass::BassError::error()
 {
     static const QHash<int, QString> errors =
     {

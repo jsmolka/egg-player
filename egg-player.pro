@@ -109,7 +109,8 @@ HEADERS += \
     src/core/shortcutprocessor.hpp \
     src/core/bass/streamwrapper.hpp \
     src/core/bass/syncwrapper.hpp \
-    src/core/bass/error.hpp
+    src/core/bass/basserror.hpp \
+    src/core/bass/bassinitializer.hpp
 
 SOURCES += \
     src/core/database/audioitem.cpp \
@@ -179,4 +180,5 @@ SOURCES += \
     src/core/shortcutprocessor.cpp \
     src/core/bass/streamwrapper.cpp \
     src/core/bass/syncwrapper.cpp \
-    src/core/bass/error.cpp
+    src/core/bass/basserror.cpp \
+    src/core/bass/bassinitializer.cpp

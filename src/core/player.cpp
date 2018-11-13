@@ -45,12 +45,12 @@ int Player::volume() const
 
 int Player::position()
 {
-    return m_bass.stream().position();
+    return m_bass.position();
 }
 
 void Player::play()
 {
-    if (m_bass.stream().play())
+    if (m_bass.play())
     {
         m_playing = true;
         emit stateChanged();
@@ -59,7 +59,7 @@ void Player::play()
 
 void Player::pause()
 {
-    if (m_bass.stream().pause())
+    if (m_bass.pause())
     {
         m_playing = false;
         emit stateChanged();
@@ -77,19 +77,17 @@ void Player::createPlaylist(audios::CurrentState *state, int index)
 void Player::setVolume(int volume)
 {
     volume = qBound(0, volume, 100);
-    float volf = static_cast<float>(volume);
-    float quof = static_cast<float>(cfg_player.volumeQuotient());
+    const float volf = static_cast<float>(volume);
+    const float quof = static_cast<float>(cfg_player.volumeQuotient());
+
     m_volume = volume;
-
-    if (!m_bass.stream().setVolume(volf / quof))
-        return;
-
+    m_bass.setVolume(volf / quof);
     emit volumeChanged(volume);
 }
 
 void Player::setPosition(int position)
 {
-    if (m_bass.stream().setPosition(position))
+    if (m_bass.setPosition(position))
         emit positionChanged(position);
 }
 
@@ -121,10 +119,10 @@ void Player::update()
 
 void Player::setAudio(Audio *audio)
 {
-    if (!audio || !m_bass.stream().create(audio))
+    if (!audio || !m_bass.create(audio))
         return;
 
-    m_bass.sync().setSync(m_bass.stream().handle());
+    m_bass.applySync();
     setVolume(m_volume);
 
     if (m_playing)

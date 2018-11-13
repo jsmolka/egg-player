@@ -4,12 +4,12 @@
 #include <bass/bass.h>
 
 #include "core/audio.hpp"
-#include "core/bass/error.hpp"
+#include "core/bass/basserror.hpp"
 
 namespace bass
 {
 
-class StreamWrapper : private Error
+class StreamWrapper : private BassError
 {
 public:
     StreamWrapper();

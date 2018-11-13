@@ -21,9 +21,6 @@ bool bass::StreamWrapper::isValid() const
 
 bool bass::StreamWrapper::isPlaying() const
 {
-    if (!isValid())
-        return false;
-
     return BASS_ChannelIsActive(m_handle) == BASS_ACTIVE_PLAYING;
 }
 
@@ -32,7 +29,7 @@ bool bass::StreamWrapper::setPosition(int position) const
     if (!isValid())
         return false;
 
-    const QWORD bytes = BASS_ChannelSeconds2Bytes(m_handle, static_cast<int>(position));
+    const QWORD bytes = BASS_ChannelSeconds2Bytes(m_handle, static_cast<double>(position));
 
     return check(BASS_ChannelSetPosition(m_handle, bytes, BASS_POS_BYTE));
 }
@@ -43,9 +40,9 @@ int bass::StreamWrapper::position() const
         return -1;
 
     const QWORD bytes = BASS_ChannelGetPosition(m_handle, BASS_POS_BYTE);
-    const double position = BASS_ChannelBytes2Seconds(m_handle, bytes);
+    const int position = static_cast<int>(BASS_ChannelBytes2Seconds(m_handle, bytes));
 
-    return check(position >= 0) ? qRound(position) : -1;
+    return check(position >= 0) ? position : -1;
 }
 
 bool bass::StreamWrapper::setVolume(float volume) const
