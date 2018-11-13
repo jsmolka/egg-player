@@ -6,6 +6,7 @@
 - rework / improve tablewidgets
 - add config option to disable smooth scrolling
 - before release: check / improve all classes
+- remove qobject macro from objects without signals / slots
 
 ## User Interface
 ### Bar

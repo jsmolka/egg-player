@@ -21,6 +21,7 @@ void cfg::LibraryJson::setDefaults()
     setDefault("itemHeight", 50);
     setDefault("paths", QJsonArray({QStandardPaths::writableLocation(QStandardPaths::MusicLocation)}));
     setDefault("scrollBarWidth", 12);
+    setDefault("smoothScrolling", true);
 }
 
 void cfg::LibraryJson::setCellPadding(int padding)
@@ -69,4 +70,14 @@ void cfg::LibraryJson::setScrollBarWidth(int width)
 int cfg::LibraryJson::scrollBarWidth() const
 {
     return scale(get("scrollBarWidth").toInt());
+}
+
+void cfg::LibraryJson::setSmoothScrolling(bool smooth)
+{
+    set("smoothScrolling", smooth);
+}
+
+bool cfg::LibraryJson::smoothScrolling() const
+{
+    return get("smoothScrolling").toBool();
 }

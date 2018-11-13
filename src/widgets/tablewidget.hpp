@@ -12,19 +12,17 @@ class TableWidget : public SmoothTableWidget
 public:
     explicit TableWidget(QWidget *parent = nullptr);
 
-signals:
-    void hoverRowChanged(int row);
-
 protected:
     void leaveEvent(QEvent *event);
     void resizeEvent(QResizeEvent *event);
 
 private slots:
     void onEntered(const QModelIndex &index);
-    void onHoverRowChanged(int row);
 
 private:
     void init();
+
+    void setHoverRow(int row);
 
     RowHoverDelegate m_delegate;
     ClickableStyle m_style;

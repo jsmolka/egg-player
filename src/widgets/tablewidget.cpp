@@ -10,34 +10,25 @@ TableWidget::TableWidget(QWidget *parent)
     init();
 
     connect(this, &TableWidget::entered, this, &TableWidget::onEntered);
-    connect(this, &TableWidget::hoverRowChanged, this, &TableWidget::onHoverRowChanged);
-    connect(this, &TableWidget::hoverRowChanged, &m_delegate, &RowHoverDelegate::setHoverRow);
 }
 
 void TableWidget::leaveEvent(QEvent *event)
 {
-    emit hoverRowChanged(-1);
+    setHoverRow(-1);
 
-    QTableWidget::leaveEvent(event);
+    SmoothTableWidget::leaveEvent(event);
 }
 
 void TableWidget::resizeEvent(QResizeEvent *event)
 {
-    QTableWidget::resizeEvent(event);
+    SmoothTableWidget::resizeEvent(event);
 
-    emit hoverRowChanged(indexAt(mapFromGlobal(QCursor::pos())).row());
+    setHoverRow(indexAt(mapFromGlobal(QCursor::pos())).row());
 }
 
 void TableWidget::onEntered(const QModelIndex &index)
 {
-    emit hoverRowChanged(index.row());
-}
-
-void TableWidget::onHoverRowChanged(int row)
-{
-    Q_UNUSED(row);
-
-    viewport()->update();
+    setHoverRow(index.row());
 }
 
 void TableWidget::init()
@@ -57,4 +48,14 @@ void TableWidget::init()
     verticalHeader()->hide();
 
     verticalScrollBar()->setStyle(&m_style);
+}
+
+void TableWidget::setHoverRow(int row)
+{
+    if (row == m_delegate.hoverRow())
+        return;
+
+    m_delegate.setHoverRow(row);
+
+    viewport()->update();
 }

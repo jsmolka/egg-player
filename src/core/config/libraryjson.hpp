@@ -26,6 +26,9 @@ public:
 
     void setScrollBarWidth(int width);
     int scrollBarWidth() const;
+
+    void setSmoothScrolling(bool smooth);
+    bool smoothScrolling() const;
 };
 
 }

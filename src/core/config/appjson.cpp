@@ -47,7 +47,7 @@ void cfg::AppJson::loadObject(const QJsonObject &object)
 
 QJsonObject cfg::AppJson::toObject() const
 {
-    QJsonObject object = this->object();
+    QJsonObject object(this->object());
     object.insert("minimalSize", m_minimalSize.toObject());
 
     return object;

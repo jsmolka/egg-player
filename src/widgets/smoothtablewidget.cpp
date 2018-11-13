@@ -6,6 +6,8 @@
 #include <QtMath>
 #include <QWheelEvent>
 
+#include "core/config.hpp"
+
 SmoothTableWidget::SmoothTableWidget(QWidget *parent)
     : QTableWidget(parent)
     , m_fps(144)
@@ -27,6 +29,9 @@ SmoothTableWidget::SmoothTableWidget(QWidget *parent)
 
 void SmoothTableWidget::wheelEvent(QWheelEvent *event)
 {
+    if (!cfg_library.smoothScrolling())
+        return QTableWidget::wheelEvent(event);
+
     static QQueue<qint64> scrollStamps;
     const qint64 now = QDateTime::currentDateTime().toMSecsSinceEpoch();
     scrollStamps.enqueue(now);

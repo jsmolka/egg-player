@@ -7,19 +7,10 @@ RowHoverDelegate::RowHoverDelegate(QObject *parent)
 
 }
 
-int RowHoverDelegate::hoverRow() const
-{
-    return m_hoverRow;
-}
-
-void RowHoverDelegate::setHoverRow(int row)
-{
-    m_hoverRow = row;
-}
-
 void RowHoverDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
-    QStyleOptionViewItem opt = option;
+    QStyleOptionViewItem opt(option);
+
     if (index.row() == m_hoverRow)
         opt.state |= QStyle::State_MouseOver;
     else
