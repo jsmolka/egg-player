@@ -1,8 +1,6 @@
 # Things to do
 
 ## Rework
-- create thin and thick bass wrapper
-  - use different names for stream / error
 - proper query binding in database queries
 - prevent filesystem from crashing when adding lots of files
 - rework / improve tablewidgets

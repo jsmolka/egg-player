@@ -6,21 +6,17 @@
 Player::Player(QObject *parent)
     : QObject(parent)
     , m_playlist(this)
-    , m_updateTimer(this)
+    , m_timer(this)
     , m_playing(false)
     , m_volume(0)
     , m_position(-1)
 {
-    connect(&m_updateTimer, &QTimer::timeout, this, &Player::update);
-    connect(&m_playlist, &Playlist::indexChanged, this, &Player::onPlaylistIndexChanged);
+    init();
 
-    m_updateTimer.start(cfg_player.updateInterval());
-
-    m_bass.sync().setFunction([](void *data) {
-        Player *player = static_cast<Player *>(data);
-        player->playlist().next();
-    });
-    m_bass.sync().setFunctionData(this);
+    connect(&m_timer, &QTimer::timeout, this, &Player::update);
+    connect(&m_playlist, &Playlist::audioChanged, this, &Player::audioChanged);
+    connect(&m_playlist, &Playlist::audioChanged, this, &Player::onPlaylistAudioChanged);
+    connect(&m_playlist, &Playlist::endReached, this, &Player::onPlaylistEndReached);
 }
 
 const Playlist &Player::playlist() const
@@ -43,45 +39,40 @@ int Player::volume() const
     return m_volume;
 }
 
-int Player::position()
+int Player::position() const
 {
-    return m_bass.position();
+    return m_position;
 }
 
 void Player::play()
 {
-    if (m_bass.play())
-    {
-        m_playing = true;
-        emit stateChanged();
-    }
+    if (!m_bass.play())
+        return;
+
+    m_timer.start(cfg_player.updateInterval());
+    m_playing = true;
+    emit stateChanged();
 }
 
 void Player::pause()
 {
-    if (m_bass.pause())
-    {
-        m_playing = false;
-        emit stateChanged();
-    }
-}
+    if (!m_bass.pause())
+        return;
 
-void Player::createPlaylist(audios::CurrentState *state, int index)
-{
-    m_playlist.setIndex(index);
-    m_playlist.create(state);
-
-    setAudio(m_playlist.currentAudio());
+    m_timer.stop();
+    m_playing = false;
+    emit stateChanged();
 }
 
 void Player::setVolume(int volume)
 {
     volume = qBound(0, volume, 100);
-    const float volf = static_cast<float>(volume);
-    const float quof = static_cast<float>(cfg_player.volumeQuotient());
+    const float vol = static_cast<float>(volume);
+    const float quo = static_cast<float>(cfg_player.volumeQuotient());
+
+    m_bass.setVolume(vol / quo);
 
     m_volume = volume;
-    m_bass.setVolume(volf / quof);
     emit volumeChanged(volume);
 }
 
@@ -91,45 +82,51 @@ void Player::setPosition(int position)
         emit positionChanged(position);
 }
 
-void Player::onPlaylistIndexChanged(int index)
-{
-    if (index == -1)
-    {
-        pause();
-        setPosition(0);
-    }
-    else
-    {
-        setAudio(m_playlist.audioAt(index));
-    }
-}
-
 void Player::update()
 {
-    if (!isPlaying())
+    const int position = m_bass.position();
+    if (position == m_position)
         return;
 
-    const int position = this->position();
-    if (position != m_position)
-    {
-        m_position = position;
-        emit positionChanged(position);
-    }
+    m_position = position;
+    emit positionChanged(position);
+}
+
+void Player::onPlaylistAudioChanged(Audio *audio)
+{
+    setAudio(audio);
+}
+
+void Player::onPlaylistEndReached()
+{
+    pause();
+    setPosition(0);
+}
+
+void Player::syncFunction(void *data)
+{
+    Player *player = static_cast<Player *>(data);
+    player->playlist().next();
+}
+
+void Player::init()
+{
+    m_bass.sync().setFunction(syncFunction);
+    m_bass.sync().setFunctionData(this);
 }
 
 void Player::setAudio(Audio *audio)
 {
-    if (!audio || !m_bass.create(audio))
+    if (!m_bass.create(audio))
         return;
 
-    m_bass.applySync();
     setVolume(m_volume);
+    m_bass.applySync();
 
     if (m_playing)
         play();
     else
         pause();
 
-    emit audioChanged(audio);
     emit positionChanged(0);
 }

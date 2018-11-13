@@ -1,9 +1,12 @@
 #include "playlist.hpp"
 
+#include <algorithm>
+#include <random>
+
 Playlist::Playlist(QObject *parent)
     : QObject(parent)
-    , m_index(-1)
     , m_state(nullptr)
+    , m_index(-1)
     , m_loop(false)
     , m_shuffle(false)
 {
@@ -25,17 +28,19 @@ bool Playlist::isEmpty() const
     return m_indices.isEmpty();
 }
 
-void Playlist::changeIndex(int index)
+int Playlist::index() const
 {
-    if (isValidIndex(index))
-        setIndex(index);
+    return m_index;
+}
 
-    emit indexChanged(index);
+int Playlist::size() const
+{
+    return m_indices.size();
 }
 
 Audio *Playlist::audioAt(int index)
 {
-    return isValidIndex(index) ? m_state->at(m_indices.at(index)) : nullptr;
+    return m_state->at(m_indices.at(index));
 }
 
 Audio *Playlist::currentAudio()
@@ -53,12 +58,16 @@ void Playlist::previous()
     changeIndex(previousIndex());
 }
 
-void Playlist::create(audios::CurrentState *state)
+void Playlist::loadFromState(audios::CurrentState *state, int index)
 {
-    createAudios(state);
+    m_index = index;
+
+    setState(state);
     createIndices(state->size());
 
     setShuffle(m_shuffle);
+
+    emit audioChanged(currentAudio());
 }
 
 void Playlist::setLoop(bool loop)
@@ -70,7 +79,7 @@ void Playlist::setShuffle(bool shuffle)
 {
     m_shuffle = shuffle;
 
-    if (isEmpty())
+    if (size() <= 1)
         return;
 
     if (shuffle)
@@ -79,7 +88,7 @@ void Playlist::setShuffle(bool shuffle)
         this->unshuffle();
 }
 
-void Playlist::onAudiosRemoved(int index)
+void Playlist::onStateRemoved(int index)
 {
     auto iter = m_indices.begin();
     while (iter != m_indices.end())
@@ -91,16 +100,16 @@ void Playlist::onAudiosRemoved(int index)
         else
         {
             if (*iter > index)
-                --(*iter);
+                (*iter)--;
             ++iter;
         }
     }
 
     if (m_index >= index)
-        --m_index;
+        m_index--;
 }
 
-void Playlist::createAudios(audios::CurrentState *state)
+void Playlist::setState(audios::CurrentState *state)
 {
     if (m_state)
     {
@@ -109,54 +118,50 @@ void Playlist::createAudios(audios::CurrentState *state)
     }
     m_state = state;
 
-    connect(m_state, &Audios::removed, this, &Playlist::onAudiosRemoved);
+    connect(state, &audios::CurrentState::removed, this, &Playlist::onStateRemoved);
 }
 
 void Playlist::createIndices(int size)
 {
-    m_indices = QVector<int>(size);
+    m_indices = Indices(size);
     std::iota(m_indices.begin(), m_indices.end(), 0);
 }
 
-bool Playlist::isValidIndex(int index)
+void Playlist::changeIndex(int index)
 {
-    return index >= 0 && index < m_indices.size();
+    if (index != -1)
+    {
+        m_index = index;
+        emit audioChanged(currentAudio());
+    }
+    else
+    {
+        emit endReached();
+    }
 }
 
 int Playlist::nextIndex()
 {
-    if (!isValidIndex(m_index))
-        return -1;
-
-    if (m_index == m_indices.size() - 1)
+    if (m_index == size() - 1)
         return m_loop ? 0 : -1;
 
-    return ++m_index;
+    return m_index + 1;
 }
 
 int Playlist::previousIndex()
 {
-    if (!isValidIndex(m_index))
-        return -1;
-
-    if (m_index == 0)
-        return m_loop ? m_indices.size() - 1 : -1;
-
-    return --m_index;
+    return (m_index == 0 && m_loop ? size() : m_index) - 1;
 }
 
 void Playlist::shuffle()
 {
-    const int old = m_index;
     std::random_shuffle(m_indices.begin(), m_indices.end());
-    const int current = m_indices.indexOf(old);
-    std::swap(m_indices[0], m_indices[current]);
+    std::swap(m_indices[0], m_indices[m_indices.indexOf(m_index)]);
     m_index = 0;
 }
 
 void Playlist::unshuffle()
 {
-    const int current = m_indices.at(m_index);
+    m_index = m_indices.at(m_index);
     createIndices(m_indices.size());
-    m_index = current;
 }

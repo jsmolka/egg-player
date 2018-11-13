@@ -25,12 +25,10 @@ public:
     bool isPlaying() const;
 
     int volume() const;
-    int position();
+    int position() const;
 
     void play();
     void pause();
-
-    void createPlaylist(audios::CurrentState *state, int index = 0);
 
 public slots:
     void setVolume(int volume);
@@ -43,15 +41,19 @@ signals:
     void audioChanged(Audio *audio);
 
 private slots:
-    void onPlaylistIndexChanged(int index);
     void update();
+    void onPlaylistAudioChanged(Audio *audio);
+    void onPlaylistEndReached();
 
 private:
+    static void syncFunction(void *data);
+
+    void init();
     void setAudio(Audio *audio);
 
     Bass m_bass;
     Playlist m_playlist;
-    QTimer m_updateTimer;
+    QTimer m_timer;
     bool m_playing;
     int m_volume;
     int m_position;

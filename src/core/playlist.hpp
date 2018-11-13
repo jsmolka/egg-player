@@ -5,8 +5,7 @@
 #include <QVector>
 
 #include "core/audio.hpp"
-#include "core/audios.hpp"
-#include "core/macros.hpp"
+#include "core/audios/currentstate.hpp"
 
 class Playlist : public QObject
 {
@@ -15,14 +14,12 @@ class Playlist : public QObject
 public:
     explicit Playlist(QObject *parent = nullptr);
 
-    EGG_PPROP(int, index, setIndex, index)
-
     bool isLoop() const;
     bool isShuffle() const;
-
     bool isEmpty() const;
 
-    void changeIndex(int index);
+    int index() const;
+    int size() const;
 
     Audio *audioAt(int index);
     Audio *currentAudio();
@@ -30,23 +27,26 @@ public:
     void next();
     void previous();
 
-    void create(audios::CurrentState *state);
+    void loadFromState(audios::CurrentState *state, int index = 0);
 
 public slots:
     void setLoop(bool loop);
     void setShuffle(bool shuffle);
 
 signals:
-    void indexChanged(int index);
+    void audioChanged(Audio *audio);
+    void endReached();
 
 private slots:
-    void onAudiosRemoved(int index);
+    void onStateRemoved(int index);
 
 private:
-    void createAudios(audios::CurrentState *state);
+    using Indices = QVector<int>;
+
+    void setState(audios::CurrentState *state);
     void createIndices(int size);
 
-    bool isValidIndex(int index);
+    void changeIndex(int index);
     int nextIndex();
     int previousIndex();
 
@@ -54,7 +54,8 @@ private:
     void unshuffle();
 
     audios::CurrentState *m_state;
-    QVector<int> m_indices;
+    Indices m_indices;
+    int m_index;
     bool m_loop;
     bool m_shuffle;
 };

@@ -57,7 +57,7 @@ void EggWidget::onLibraryDoubleClicked(const QModelIndex &index)
 {
     audios::CurrentState *state = egg_library.audios().currentState();
 
-    egg_player.createPlaylist(state, index.row());
+    egg_player.playlist().loadFromState(state, index.row());
     egg_player.play();
 }
 
