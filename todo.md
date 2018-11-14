@@ -3,6 +3,7 @@
 ## Rework
 - proper query binding in database queries
 - prevent filesystem from crashing when adding lots of files
+- move filesystem classes into namespace
 - rework / improve tablewidgets
 - add config option to disable smooth scrolling
 - before release: check / improve all classes

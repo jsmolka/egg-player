@@ -13,8 +13,7 @@ Player::Player(QObject *parent)
 {
     init();
 
-    connect(&m_timer, &QTimer::timeout, this, &Player::update);
-    connect(&m_playlist, &Playlist::audioChanged, this, &Player::audioChanged);
+    connect(&m_timer, &QTimer::timeout, this, &Player::updatePosition);
     connect(&m_playlist, &Playlist::audioChanged, this, &Player::onPlaylistAudioChanged);
     connect(&m_playlist, &Playlist::endReached, this, &Player::onPlaylistEndReached);
 }
@@ -82,7 +81,7 @@ void Player::setPosition(int position)
         emit positionChanged(position);
 }
 
-void Player::update()
+void Player::updatePosition()
 {
     const int position = m_bass.position();
     if (position == m_position)
@@ -94,7 +93,7 @@ void Player::update()
 
 void Player::onPlaylistAudioChanged(Audio *audio)
 {
-    setAudio(audio);
+    changeAudio(audio);
 }
 
 void Player::onPlaylistEndReached()
@@ -115,18 +114,20 @@ void Player::init()
     m_bass.sync().setFunctionData(this);
 }
 
-void Player::setAudio(Audio *audio)
+void Player::changeAudio(Audio *audio)
 {
     if (!m_bass.create(audio))
         return;
 
-    setVolume(m_volume);
     m_bass.applySync();
+
+    setVolume(m_volume);
 
     if (m_playing)
         play();
     else
         pause();
 
+    emit audioChanged(audio);
     emit positionChanged(0);
 }

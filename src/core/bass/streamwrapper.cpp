@@ -101,6 +101,9 @@ bool bass::StreamWrapper::create(Audio *audio)
 
 bool bass::StreamWrapper::free()
 {
+    if (!isValid())
+        return true;
+
     if (check(BASS_StreamFree(m_handle)))
     {
         m_handle = 0;

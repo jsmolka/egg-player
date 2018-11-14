@@ -41,7 +41,8 @@ signals:
     void audioChanged(Audio *audio);
 
 private slots:
-    void update();
+    void updatePosition();
+
     void onPlaylistAudioChanged(Audio *audio);
     void onPlaylistEndReached();
 
@@ -49,7 +50,8 @@ private:
     static void syncFunction(void *data);
 
     void init();
-    void setAudio(Audio *audio);
+
+    void changeAudio(Audio *audio);
 
     Bass m_bass;
     Playlist m_playlist;

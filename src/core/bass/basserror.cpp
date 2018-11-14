@@ -59,10 +59,8 @@ void bass::BassError::error()
     };
 
     const int code = BASS_ErrorGetCode();
-    if (!errors.contains(code))
-    {
+    if (errors.contains(code))
+        EGG_LOG("%1", errors.value(code));
+    else
         EGG_LOG("Invalid error code %1", code);
-        return;
-    }
-    EGG_LOG("%1", errors.value(code));
 }
