@@ -4,7 +4,6 @@
 - proper query binding in database queries
 - prevent filesystem from crashing when adding lots of files
 - move filesystem classes into namespace
-- rework / improve tablewidgets
 - remove qobject macro from objects without signals / slots
 - before release: check / improve all classes
 

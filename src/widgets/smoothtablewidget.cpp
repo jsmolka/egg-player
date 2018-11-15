@@ -12,6 +12,10 @@ SmoothTableWidget::SmoothTableWidget(QWidget *parent)
     : QTableWidget(parent)
     , m_fps(175)
     , m_duration(175)
+    , m_slowMultiplier(0.33)
+    , m_fastMultiplier(3.33)
+    , m_slowModifier(Qt::ControlModifier)
+    , m_fastModifier(Qt::ShiftModifier)
     , m_timer(this)
     , m_event(nullptr)
     , m_total(0)
@@ -34,8 +38,14 @@ void SmoothTableWidget::wheelEvent(QWheelEvent *event)
     m_event = event;
     m_total = m_fps * m_duration / 1000;
 
+    double multiplier = 0.8;
+    if (QApplication::keyboardModifiers() & m_slowModifier)
+        multiplier *= m_slowMultiplier;
+    if (QApplication::keyboardModifiers() & m_fastModifier)
+        multiplier *= m_fastMultiplier;
+
     Step step;
-    step.delta = 0.8 * static_cast<double>(event->delta());;
+    step.delta = multiplier * static_cast<double>(event->delta());;
     step.total = m_total;
     m_steps << step;
 

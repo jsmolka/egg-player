@@ -16,6 +16,10 @@ public:
 
     EGG_PPROP(int, fps, setFps, fps)
     EGG_PPROP(int, duration, setDuration, duration)
+    EGG_PPROP(double, slowMultiplier, setSlowMultiplier, slowMultiplier)
+    EGG_PPROP(double, fastMultiplier, setFastMultiplier, fastMultiplier)
+    EGG_PPROP(Qt::KeyboardModifier, slowModifier, setSlowModifier, slowModifier)
+    EGG_PPROP(Qt::KeyboardModifier, fastModifier, setFastModifier, fastModifier)
 
 protected:
     void wheelEvent(QWheelEvent *event);
