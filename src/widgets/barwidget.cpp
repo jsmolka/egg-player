@@ -33,12 +33,12 @@ BarWidget::BarWidget(QWidget *parent)
     connect(&egg_player, &Player::positionChanged, this, &BarWidget::onPlayerPositionChanged);
     connect(&egg_player, &Player::volumeChanged, &m_volumeSlider, &Slider::setValue);
 
-    connect(&m_playPauseButton, &IconButton::pressed, &ShortcutProcessor::onPlayPausePressed);
-    connect(&m_nextButton, &IconButton::pressed, &ShortcutProcessor::onNextPressed);
-    connect(&m_previousButton, &IconButton::pressed, &ShortcutProcessor::onPreviousPressed);
+    connect(&m_playPauseButton, &IconButton::released, &ShortcutProcessor::playPauseAction);
+    connect(&m_nextButton, &IconButton::released, &ShortcutProcessor::nextAction);
+    connect(&m_previousButton, &IconButton::released, &ShortcutProcessor::previousAction);
     connect(&m_shuffleButton, &LockableIconButton::locked, &egg_player.playlist(), &Playlist::setShuffle);
     connect(&m_loopButton, &LockableIconButton::locked, &egg_player.playlist(), &Playlist::setLoop);
-    connect(&m_volumeButton, &IconButton::pressed, this, &BarWidget::onVolumeButtonPressed);
+    connect(&m_volumeButton, &IconButton::released, this, &BarWidget::onVolumeButtonPressed);
 
     connect(&m_durationSlider, &Slider::sliderMoved, this, &BarWidget::onDurationSliderMoved);
     connect(&m_durationSlider, &Slider::sliderValueChanged, &egg_player, &Player::setPosition);

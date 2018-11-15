@@ -11,11 +11,11 @@ public:
     explicit ShortcutProcessor(QObject *parent = nullptr);
 
 public slots:
-    static void onPlayPausePressed();
-    static void onNextPressed();
-    static void onPreviousPressed();
-    static void onVolumeUpPressed();
-    static void onVolumeDownPressed();
+    static void playPauseAction();
+    static void nextAction();
+    static void previousAction();
+    static void volumeUpAction();
+    static void volumeDownAction();
 
 private:
     Shortcut m_playPause;

@@ -21,7 +21,7 @@ public:
     bool isRegistered() const;
 
 signals:
-    void pressed();
+    void activated();
 
 protected:
     bool nativeEventFilter(const QByteArray &eventType, void *message, long *result) override;

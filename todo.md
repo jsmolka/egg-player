@@ -5,9 +5,8 @@
 - prevent filesystem from crashing when adding lots of files
 - move filesystem classes into namespace
 - rework / improve tablewidgets
-- add config option to disable smooth scrolling
-- before release: check / improve all classes
 - remove qobject macro from objects without signals / slots
+- before release: check / improve all classes
 
 ## User Interface
 ### Bar
@@ -16,13 +15,12 @@
   - improve the duration slider style (include some form of hover effect)
 - update name if the current audio changes
 - properly split into subclasses
+- fade to cover when changing
 
 ### Library
 - create an expandable scrollbar for the library
-  - show the current alphabet letter
 - adjust appearance of library items
   - consider using a less "bright" white for less contrast
+  - consider slightly smaller font size
 - improve smooth scrolling
   - maybe higher refresh rate
-  - make it work properly on mouse and touchpad
-- fix the bug where only one column is highlighted

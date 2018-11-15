@@ -16,6 +16,7 @@ void cfg::ShortcutJson::setDefaults()
     setDefault("playPause", "Ctrl + F11");
     setDefault("previous", "Ctrl + F10");
     setDefault("volumeDown", "Ctrl + F7");
+    setDefault("volumeStep", 2);
     setDefault("volumeUp", "Ctrl + F8");
 }
 
@@ -57,6 +58,16 @@ void cfg::ShortcutJson::setVolumeDown(const QString &shortcut)
 QString cfg::ShortcutJson::volumeDown() const
 {
     return get("volumeDown").toString();
+}
+
+void cfg::ShortcutJson::setVolumeStep(int step)
+{
+    set("volumeStep", step);
+}
+
+int cfg::ShortcutJson::volumeStep() const
+{
+    return get("volumeStep").toInt();
 }
 
 void cfg::ShortcutJson::setVolumeUp(const QString &shortcut)

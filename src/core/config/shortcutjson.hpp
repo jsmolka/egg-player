@@ -26,6 +26,9 @@ public:
     void setVolumeDown(const QString &shortcut);
     QString volumeDown() const;
 
+    void setVolumeStep(int step);
+    int volumeStep() const;
+
     void setVolumeUp(const QString &shortcut);
     QString volumeUp() const;
 };

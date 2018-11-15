@@ -1,11 +1,9 @@
 #ifndef SMOOTHTABLEWIDGET_HPP
 #define SMOOTHTABLEWIDGET_HPP
 
-#include <QPair>
-#include <QScrollBar>
+#include <QLinkedList>
 #include <QTableWidget>
 #include <QTimer>
-#include <QVector>
 
 #include "core/macros.hpp"
 
@@ -18,28 +16,27 @@ public:
 
     EGG_PPROP(int, fps, setFps, fps)
     EGG_PPROP(int, duration, setDuration, duration)
-    EGG_PPROP(double, acceleration, setAcceleration, acceleration)
-    EGG_PPROP(double, smallStepRatio, setSmallStepRatio, smallStepRatio)
-    EGG_PPROP(double, bigStepRatio, setBigStepRatio, bigStepRatio)
-    EGG_PPROP(Qt::KeyboardModifier, smallStepModifier, setSmallStepModifier, smallStepModifier)
-    EGG_PPROP(Qt::KeyboardModifier, bigStepModifier, bigSmallStepModifier, bigStepModifier)
 
 protected:
     void wheelEvent(QWheelEvent *event);
 
 private slots:
-    void onTimeout();
+    void sendEvent();
 
 private:
+    struct Step
+    {
+        double delta;
+        int total;
+    };
     void init();
 
-    double subDelta(double delta, int stepsLeft) const;
+    double subDelta(double delta, int left) const;
 
-    int m_totalSteps;
-    QVector<QPair<double, int>> m_stepsLeft;
-
-    QTimer m_smoothTimer;
-    QWheelEvent *m_lastEvent;
+    QLinkedList<Step> m_steps;
+    QTimer m_timer;
+    QWheelEvent *m_event;
+    int m_total;
 };
 
 #endif // SMOOTHTABLEWIDGET_HPP

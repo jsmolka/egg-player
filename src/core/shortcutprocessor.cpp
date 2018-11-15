@@ -11,14 +11,14 @@ ShortcutProcessor::ShortcutProcessor(QObject *parent)
     , m_volumeUp(cfg_shortcut.volumeUp(), Shortcut::Repeat, this)
     , m_volumeDown(cfg_shortcut.volumeDown(), Shortcut::Repeat, this)
 {
-    connect(&m_playPause, &Shortcut::pressed, &ShortcutProcessor::onPlayPausePressed);
-    connect(&m_next, &Shortcut::pressed, &ShortcutProcessor::onNextPressed);
-    connect(&m_previous, &Shortcut::pressed, &ShortcutProcessor::onPreviousPressed);
-    connect(&m_volumeUp, &Shortcut::pressed, &ShortcutProcessor::onVolumeUpPressed);
-    connect(&m_volumeDown, &Shortcut::pressed, &ShortcutProcessor::onVolumeDownPressed);
+    connect(&m_playPause, &Shortcut::activated, &ShortcutProcessor::playPauseAction);
+    connect(&m_next, &Shortcut::activated, &ShortcutProcessor::nextAction);
+    connect(&m_previous, &Shortcut::activated, &ShortcutProcessor::previousAction);
+    connect(&m_volumeUp, &Shortcut::activated, &ShortcutProcessor::volumeUpAction);
+    connect(&m_volumeDown, &Shortcut::activated, &ShortcutProcessor::volumeDownAction);
 }
 
-void ShortcutProcessor::onPlayPausePressed()
+void ShortcutProcessor::playPauseAction()
 {
     if (egg_player.playlist().isEmpty())
         return;
@@ -29,7 +29,7 @@ void ShortcutProcessor::onPlayPausePressed()
         egg_player.play();
 }
 
-void ShortcutProcessor::onNextPressed()
+void ShortcutProcessor::nextAction()
 {
     if (egg_player.playlist().isEmpty())
         return;
@@ -37,7 +37,7 @@ void ShortcutProcessor::onNextPressed()
     egg_player.playlist().next();
 }
 
-void ShortcutProcessor::onPreviousPressed()
+void ShortcutProcessor::previousAction()
 {
     if (egg_player.playlist().isEmpty())
         return;
@@ -48,12 +48,12 @@ void ShortcutProcessor::onPreviousPressed()
         egg_player.setPosition(0);
 }
 
-void ShortcutProcessor::onVolumeUpPressed()
+void ShortcutProcessor::volumeUpAction()
 {
-    egg_player.setVolume(egg_player.volume() + 1);
+    egg_player.setVolume(egg_player.volume() + cfg_shortcut.volumeStep());
 }
 
-void ShortcutProcessor::onVolumeDownPressed()
+void ShortcutProcessor::volumeDownAction()
 {
-    egg_player.setVolume(egg_player.volume() - 1);
+    egg_player.setVolume(egg_player.volume() - cfg_shortcut.volumeStep());
 }
