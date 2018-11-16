@@ -22,12 +22,9 @@ protected:
     void dropEvent(QDropEvent *event);
 
 private slots:
-    void onLibraryDoubleClicked(const QModelIndex &index);
+    void onLibraryDoubleClicked(const QModelIndex &index) const;
 
 private:
-    void processDroppedFile(const QString &file, QStrings &files);
-    void processDroppedDir(const QString &path, QStrings &files);
-
     void init();
     void initUi();
     void initStyle();

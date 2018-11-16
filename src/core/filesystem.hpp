@@ -6,6 +6,7 @@
 
 #include "core/audio.hpp"
 #include "core/bimap.hpp"
+#include "core/types.hpp"
 #include "core/filesystem/directory.hpp"
 #include "core/filesystem/filesystemwatcher.hpp"
 #include "core/filesystem/uniquefileinfo.hpp"
@@ -35,7 +36,7 @@ public:
 signals:
     void modified(Audio *audio);
     void renamed(Audio *audio, const QString &to);
-    void added(const QString &file);
+    void added(const QStrings &files);
     void removed(Audio *audio);
 
 private slots:

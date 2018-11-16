@@ -2,25 +2,24 @@
 #define AUDIOLOADER_HPP
 
 #include "core/audio.hpp"
-#include "threading/callable.hpp"
+#include "core/macros.hpp"
+#include "core/types.hpp"
+#include "threading/controller.hpp"
 
-class AudioLoader : public Callable
+class AudioLoader : public Controller
 {
     Q_OBJECT
 
 public:
-    using Callable::Callable;
+    using Controller::Controller;
+
+    EGG_CPROP(QStrings, files, setFiles, files)
 
 public slots:
-    void load(const QString &file);
+    void start() override;
 
 signals:
     void loaded(Audio *audio);
-
-private:
-    bool insertAudio(Audio *audio) const;
-    bool updateAudio(Audio *audio) const;
-    bool loadCover(Audio *audio) const;
 };
 
 #endif // AUDIOLOADER_HPP

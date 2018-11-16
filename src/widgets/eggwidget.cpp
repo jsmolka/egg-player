@@ -25,7 +25,7 @@ EggWidget::EggWidget(QWidget *parent)
 
     m_library.setAudios(&egg_library.audios());
 
-    egg_library.initialLoad(cfg_library.paths());
+    egg_library.init(cfg_library.paths());
 }
 
 void EggWidget::closeEvent(QCloseEvent *event)
@@ -56,39 +56,40 @@ void EggWidget::dropEvent(QDropEvent *event)
         const QFileInfo info(file);
 
         if (info.isFile())
-            processDroppedFile(file, files);
+        {
+            if (Util::isAudioFile(file))
+                files << file;
+        }
         if (info.isDir())
-            processDroppedDir(file, files);
+        {
+            egg_library.fileSystem().addPath(file);
+
+            fs::Directory *dir = egg_library.fileSystem().dirs().value(file, nullptr);
+            if (!dir)
+            {
+                EGG_LOG("Failed retrieving directory %1", file);
+                continue;
+            }
+            files << dir->globAudios();
+        }
     }
-    egg_library.loadFiles(files);
+
+    for (auto iter = files.begin(); iter != files.end(); )
+    {
+        if (egg_library.fileSystem().uniqueInfo().contains(*iter))
+            iter = files.erase(iter);
+        else
+            ++iter;
+    }
+    egg_library.load(files);
 }
 
-void EggWidget::onLibraryDoubleClicked(const QModelIndex &index)
+void EggWidget::onLibraryDoubleClicked(const QModelIndex &index) const
 {
     audios::CurrentState *state = egg_library.audios().currentState();
 
     egg_player.playlist().loadFromState(state, index.row());
     egg_player.play();
-}
-
-void EggWidget::processDroppedFile(const QString &file, QStrings &files)
-{
-    if (Util::isAudioFile(file))
-        files << file;
-}
-
-void EggWidget::processDroppedDir(const QString &path, QStrings &files)
-{
-    FileSystem &fileSystem = egg_library.fileSystem();
-    fileSystem.addPath(path);
-
-    fs::Directory *dir = fileSystem.dirs().value(path, nullptr);
-    if (!dir)
-    {
-        EGG_LOG("Failed retrieving directory %1", path);
-        return;
-    }
-    files << dir->globAudios();
 }
 
 void EggWidget::init()

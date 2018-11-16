@@ -10,7 +10,7 @@
 #include "threading/audioupdater.hpp"
 #include "threading/audioloader.hpp"
 #include "threading/coverloader.hpp"
-#include "threading/initialloader.hpp"
+#include "threading/audioloader.hpp"
 
 #define egg_library (Library::instance())
 
@@ -27,17 +27,18 @@ public:
     Audios &audios();
     FileSystem &fileSystem();
 
-    void initialLoad(const QStrings &paths);
-    void loadFiles(const QStrings &files);
+    void init(const QStrings &paths);
 
 public slots:
     void insert(Audio *audio);
+
+    void load(const QStrings &files);
 
 signals:
     void inserted(Audio *audio, int index);
 
 private slots:
-    void onInitialLoaderFinished();
+    void onAudioLoaderFinished();
     void onAudioUpdaterUpdated(Audio *audio);
 
     void onFileSystemRenamed(Audio *audio, const QString &file);
@@ -46,10 +47,9 @@ private slots:
 private:
     Audios m_audios;
     FileSystem m_fileSystem;
-    InitialLoader m_initialLoader;
+    AudioLoader m_audioLoader;
     CoverLoader m_coverLoader;
     AudioUpdater m_audioUpdater;
-    AudioLoader m_audioLoader;
 };
 
 #endif // LIBRARY_HPP

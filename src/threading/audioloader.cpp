@@ -1,62 +1,19 @@
 #include "audioloader.hpp"
 
-#include "core/cache.hpp"
+#include "threading/audioloaderworker.hpp"
 
-void AudioLoader::load(const QString &file)
+void AudioLoader::start()
 {
-    Audio *audio = Cache::loadAudio(file);
-    if (!audio)
-        return;
+#ifdef QT_DEBUG
+    const int threads = 1;
+#else
+    const int threads = QThread::idealThreadCount();
+#endif
 
-    if (!insertAudio(audio))
-        return;
-
-    if (!updateAudio(audio))
-        return;
-
-    if (!loadCover(audio))
-        return;
-
-    emit loaded(audio);
-}
-
-bool AudioLoader::insertAudio(Audio *audio) const
-{
-    if (isInterrupted())
-        return false;
-
-    if (audio->isCached())
-        return true;
-
-    return Cache::insertAudio(audio);
-}
-
-bool AudioLoader::updateAudio(Audio *audio) const
-{
-    if (isInterrupted())
-        return false;
-
-    if (!audio->isOutdated())
-        return true;
-
-    if (!audio->read())
-        return false;
-
-    audio->cover().invalidate();
-    return Cache::updateAudio(audio);
-}
-
-bool AudioLoader::loadCover(Audio *audio) const
-{
-    if (isInterrupted())
-        return false;
-
-    if (audio->cover().isValid())
-        return true;
-
-    const QPixmap cover = Cover::loadFromFile(audio->file());
-    if (cover.isNull())
-        return false;
-
-    return Cache::updateAudioCover(audio, cover);
+    for (const QStrings &chunk : chunk<QString>(m_files, threads))
+    {
+        AudioLoaderWorker *worker = new AudioLoaderWorker(chunk);
+        connect(worker, &AudioLoaderWorker::loaded, this, &AudioLoader::loaded);
+        runWorker(worker);
+    }
 }

@@ -1,16 +1,14 @@
-#include "initialloaderworker.hpp"
-
-#include <QApplication>
+#include "audioloaderworker.hpp"
 
 #include "core/cache.hpp"
 
-InitialLoaderWorker::InitialLoaderWorker(const QStrings &files)
+AudioLoaderWorker::AudioLoaderWorker(const QStrings &files)
     : m_files(files)
 {
 
 }
 
-void InitialLoaderWorker::work()
+void AudioLoaderWorker::work()
 {
     for (const QString &file : qAsConst(m_files))
     {
@@ -29,7 +27,7 @@ void InitialLoaderWorker::work()
     emit finished();
 }
 
-bool InitialLoaderWorker::insertAudio(Audio *audio) const
+bool AudioLoaderWorker::insertAudio(Audio *audio) const
 {
     if (isInterrupted())
         return false;
@@ -40,7 +38,7 @@ bool InitialLoaderWorker::insertAudio(Audio *audio) const
     return Cache::insertAudio(audio);
 }
 
-bool InitialLoaderWorker::updateAudio(Audio *audio) const
+bool AudioLoaderWorker::updateAudio(Audio *audio) const
 {
     if (isInterrupted())
         return false;

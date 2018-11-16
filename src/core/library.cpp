@@ -8,15 +8,14 @@
 Library::Library(QObject *parent)
     : QObject(parent)
     , m_audios(this)
-    , m_initialLoader(this)
+    , m_audioLoader(this)
     , m_coverLoader(this)
 {
-    connect(&m_initialLoader, &InitialLoader::loaded, this, &Library::insert);
-    connect(&m_initialLoader, &InitialLoader::finished, this, &Library::onInitialLoaderFinished);
     connect(&m_audioLoader, &AudioLoader::loaded, this, &Library::insert);
+    connect(&m_audioLoader, &AudioLoader::finished, this, &Library::onAudioLoaderFinished);
     connect(&m_audioUpdater, &AudioUpdater::updated, this, &Library::onAudioUpdaterUpdated);
 
-    connect(&m_fileSystem, &FileSystem::added, &m_audioLoader, &AudioLoader::load);
+    connect(&m_fileSystem, &FileSystem::added, this, &Library::load);
     connect(&m_fileSystem, &FileSystem::renamed, this, &Library::onFileSystemRenamed);
     connect(&m_fileSystem, &FileSystem::removed, this, &Library::onFileSystemRemoved);
     connect(&m_fileSystem, &FileSystem::modified, &m_audioUpdater, &AudioUpdater::update);
@@ -42,7 +41,7 @@ FileSystem &Library::fileSystem()
     return EGG_REF_CAST(Library, FileSystem, fileSystem);
 }
 
-void Library::initialLoad(const QStrings &paths)
+void Library::init(const QStrings &paths)
 {
     for (const QString &path : paths)
     {
@@ -51,18 +50,7 @@ void Library::initialLoad(const QStrings &paths)
         else
             EGG_LOG("Library path does not exist %1", path);
     }
-
-    m_initialLoader.setFiles(m_fileSystem.globFiles());
-    m_initialLoader.start();
-}
-
-void Library::loadFiles(const QStrings &files)
-{
-    for (const QString &file : files)
-    {
-        if (!m_fileSystem.audios().contains(file))
-            m_audioLoader.load(file);
-    }
+    load(m_fileSystem.globFiles());
 }
 
 void Library::insert(Audio *audio)
@@ -72,7 +60,13 @@ void Library::insert(Audio *audio)
     m_audios.insert(m_audios.lowerBound(audio), audio);
 }
 
-void Library::onInitialLoaderFinished()
+void Library::load(const QStrings &files)
+{
+    m_audioLoader.setFiles(files);
+    m_audioLoader.start();
+}
+
+void Library::onAudioLoaderFinished()
 {
     m_coverLoader.setAudios(m_audios.vector());
     m_coverLoader.start();

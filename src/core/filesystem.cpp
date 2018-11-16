@@ -135,17 +135,22 @@ void FileSystem::triggerEvents(InfoHash &oldInfos, InfoHash &newInfos)
         const fs::UniqueFileInfo info = iter.key();
         if (newInfos.contains(info))
         {
-            processRenamed(iter.value(), newInfos.value(info));
+            processRenamed(*iter, newInfos.value(info));
             newInfos.remove(info);
         }
         else
         {
-            processRemoved(iter.value());
+            processRemoved(*iter);
         }
     }
 
+    QStrings files;
     for (auto iter = newInfos.cbegin(); iter != newInfos.cend(); ++iter)
-        processAdded(iter.value(), iter.key());
+    {
+        processAdded(*iter, iter.key());
+        files << *iter;
+    }
+    emit added(files);
 }
 
 void FileSystem::processModified(const QString &file)
@@ -176,7 +181,6 @@ void FileSystem::processAdded(const QString &file, const fs::UniqueFileInfo &inf
 {
     m_watcher.addPath(file);
     m_unique.insert(file, info);
-    emit added(file);
 }
 
 void FileSystem::processRemoved(const QString &file)

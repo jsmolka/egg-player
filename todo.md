@@ -2,7 +2,6 @@
 
 ## Rework
 - proper query binding in database queries
-- prevent filesystem from crashing when adding lots of files
 
 ## User Interface
 ### Bar

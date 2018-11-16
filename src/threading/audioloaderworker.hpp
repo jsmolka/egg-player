@@ -1,17 +1,17 @@
-#ifndef INITIALLOADERWORKER_HPP
-#define INITIALLOADERWORKER_HPP
+#ifndef AUDIOLOADERWORKER_HPP
+#define AUDIOLOADERWORKER_HPP
 
 #include "core/audio.hpp"
 #include "core/macros.hpp"
 #include "core/types.hpp"
 #include "threading/runnable.hpp"
 
-class InitialLoaderWorker : public Runnable
+class AudioLoaderWorker : public Runnable
 {
     Q_OBJECT
 
 public:
-    explicit InitialLoaderWorker(const QStrings &files);
+    explicit AudioLoaderWorker(const QStrings &files);
 
     EGG_CPROP(QStrings, files, setFiles, files)
 
@@ -27,4 +27,4 @@ private:
 
 };
 
-#endif // INITIALLOADERWORKER_HPP
+#endif // AUDIOLOADERWORKER_HPP
