@@ -76,7 +76,7 @@ void EggWidget::dropEvent(QDropEvent *event)
 
     for (auto iter = files.begin(); iter != files.end(); )
     {
-        if (egg_library.fileSystem().uniqueInfo().contains(*iter))
+        if (egg_library.fileSystem().audios().contains(*iter))
             iter = files.erase(iter);
         else
             ++iter;

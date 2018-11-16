@@ -37,8 +37,20 @@ RESOURCES = egg-player.qrc
 DEFINES *= QT_USE_QSTRINGBUILDER
 
 HEADERS += \
+    src/core/audios/currentstate.hpp \
+    src/core/audios/frozenvector.hpp \
+    src/core/bass/basserror.hpp \
+    src/core/bass/streamwrapper.hpp \
+    src/core/bass/syncwrapper.hpp \
+    src/core/config/appjson.hpp \
+    src/core/config/barjson.hpp \
+    src/core/config/jsonobject.hpp \
+    src/core/config/libraryjson.hpp \
+    src/core/config/playerjson.hpp \
+    src/core/config/shortcutjson.hpp \
     src/core/database/audioitem.hpp \
     src/core/database/coveritem.hpp \
+    src/core/database/dbinitializer.hpp \
     src/core/database/infoitem.hpp \
     src/core/database/queryobject.hpp \
     src/core/database/sqlquery.hpp \
@@ -57,26 +69,27 @@ HEADERS += \
     src/core/cover.hpp \
     src/core/duration.hpp \
     src/core/filesystem.hpp \
+    src/core/iconcreator.hpp \
     src/core/library.hpp \
     src/core/logger.hpp \
     src/core/macros.hpp \
     src/core/player.hpp \
     src/core/playlist.hpp \
     src/core/shortcut.hpp \
+    src/core/shortcutprocessor.hpp \
     src/core/singleton.hpp \
     src/core/tag.hpp \
     src/core/types.hpp \
     src/core/uncopyable.hpp \
     src/core/utils.hpp \
     src/threading/audioloader.hpp \
+    src/threading/audioloaderworker.hpp \
     src/threading/audioupdater.hpp \
     src/threading/callable.hpp \
     src/threading/controller.hpp \
     src/threading/coverloader.hpp \
     src/threading/coverloaderworker.hpp \
     src/threading/expiringthread.hpp \
-    src/threading/initialloader.hpp \
-    src/threading/initialloaderworker.hpp \
     src/threading/runnable.hpp \
     src/threading/thread.hpp \
     src/threading/threadobject.hpp \
@@ -95,26 +108,25 @@ HEADERS += \
     src/widgets/slider.hpp \
     src/widgets/smoothtablewidget.hpp \
     src/widgets/tablewidget.hpp \
-    src/widgets/volumebutton.hpp \
-    src/core/config/jsonobject.hpp \
-    src/core/config/appjson.hpp \
-    src/core/config/barjson.hpp \
-    src/core/config/libraryjson.hpp \
-    src/core/config/playerjson.hpp \
-    src/core/config/shortcutjson.hpp \
-    src/core/audios/frozenvector.hpp \
-    src/core/audios/currentstate.hpp \
-    src/core/database/dbinitializer.hpp \
-    src/core/shortcutprocessor.hpp \
-    src/core/bass/streamwrapper.hpp \
-    src/core/bass/syncwrapper.hpp \
-    src/core/bass/basserror.hpp \
-    src/core/iconcreator.hpp
+    src/widgets/volumebutton.hpp
 
 SOURCES += \
+    src/core/audios/currentstate.cpp \
+    src/core/audios/frozenvector.cpp \
+    src/core/bass/basserror.cpp \
+    src/core/bass/streamwrapper.cpp \
+    src/core/bass/syncwrapper.cpp \
+    src/core/config/appjson.cpp \
+    src/core/config/barjson.cpp \
+    src/core/config/jsonobject.cpp \
+    src/core/config/libraryjson.cpp \
+    src/core/config/playerjson.cpp \
+    src/core/config/shortcutjson.cpp \
     src/core/database/audioitem.cpp \
     src/core/database/coveritem.cpp \
+    src/core/database/dbinitializer.cpp \
     src/core/database/infoitem.cpp \
+    src/core/database/queryobject.cpp \
     src/core/database/sqlquery.cpp \
     src/core/filesystem/directory.cpp \
     src/core/filesystem/filesystemwatcher.cpp \
@@ -129,22 +141,23 @@ SOURCES += \
     src/core/cover.cpp \
     src/core/duration.cpp \
     src/core/filesystem.cpp \
+    src/core/iconcreator.cpp \
     src/core/library.cpp \
     src/core/logger.cpp \
     src/core/player.cpp \
     src/core/playlist.cpp \
     src/core/shortcut.cpp \
+    src/core/shortcutprocessor.cpp \
     src/core/tag.cpp \
     src/core/utils.cpp \
     src/threading/audioloader.cpp \
+    src/threading/audioloaderworker.cpp \
     src/threading/audioupdater.cpp \
     src/threading/callable.cpp \
     src/threading/controller.cpp \
     src/threading/coverloader.cpp \
     src/threading/coverloaderworker.cpp \
     src/threading/expiringthread.cpp \
-    src/threading/initialloader.cpp \
-    src/threading/initialloaderworker.cpp \
     src/threading/runnable.cpp \
     src/threading/thread.cpp \
     src/threading/threadobject.cpp \
@@ -164,19 +177,4 @@ SOURCES += \
     src/widgets/smoothtablewidget.cpp \
     src/widgets/tablewidget.cpp \
     src/widgets/volumebutton.cpp \
-    src/main.cpp \
-    src/core/config/jsonobject.cpp \
-    src/core/config/appjson.cpp \
-    src/core/config/barjson.cpp \
-    src/core/config/libraryjson.cpp \
-    src/core/config/playerjson.cpp \
-    src/core/config/shortcutjson.cpp \
-    src/core/audios/frozenvector.cpp \
-    src/core/audios/currentstate.cpp \
-    src/core/database/dbinitializer.cpp \
-    src/core/database/queryobject.cpp \
-    src/core/shortcutprocessor.cpp \
-    src/core/bass/streamwrapper.cpp \
-    src/core/bass/syncwrapper.cpp \
-    src/core/bass/basserror.cpp \
-    src/core/iconcreator.cpp
+    src/main.cpp
