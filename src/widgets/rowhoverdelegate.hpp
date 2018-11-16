@@ -7,6 +7,8 @@
 
 class RowHoverDelegate : public QStyledItemDelegate
 {
+    Q_OBJECT
+
 public:
     RowHoverDelegate(QObject *parent = nullptr);
 

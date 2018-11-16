@@ -1,34 +1,34 @@
-#include "iconfactory.hpp"
+#include "iconcreator.hpp"
 
 #include <QPainter>
 
 #include "core/logger.hpp"
 
-QVector<QIcon> IconFactory::make(const QString &file)
+QVector<QIcon> IconCreator::create(const QString &file)
 {
     QIcon icon;
 
-    const QPixmap normal = QPixmap(file);
+    const QPixmap normal(file);
     if (normal.isNull())
         EGG_LOG("Cannot create pixmap %1", file);
 
     icon.addPixmap(normal, QIcon::Normal, QIcon::Off);
-    icon.addPixmap(makeActive(normal), QIcon::Active, QIcon::Off);
+    icon.addPixmap(createActive(normal), QIcon::Active, QIcon::Off);
 
     return QVector<QIcon>() << icon;
 }
 
-QVector<QIcon> IconFactory::make(const QStrings &files)
+QVector<QIcon> IconCreator::create(const QStrings &files)
 {
     QVector<QIcon> icons;
 
     for (const QString &file : files)
-        icons << make(file);
+        icons << create(file);
 
     return icons;
 }
 
-QPixmap IconFactory::makeActive(const QPixmap &pixmap)
+QPixmap IconCreator::createActive(const QPixmap &pixmap)
 {
     QPixmap active(pixmap.size());
     active.fill(Qt::transparent);

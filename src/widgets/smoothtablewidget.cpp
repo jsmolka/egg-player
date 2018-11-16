@@ -13,7 +13,7 @@ SmoothTableWidget::SmoothTableWidget(QWidget *parent)
     , m_fps(175)
     , m_duration(175)
     , m_slowMultiplier(0.33)
-    , m_fastMultiplier(3.33)
+    , m_fastMultiplier(3.00)
     , m_slowModifier(Qt::ControlModifier)
     , m_fastModifier(Qt::ShiftModifier)
     , m_timer(this)
@@ -23,6 +23,12 @@ SmoothTableWidget::SmoothTableWidget(QWidget *parent)
     init();
 
     connect(&m_timer, &QTimer::timeout, this, &SmoothTableWidget::sendEvent);
+}
+
+SmoothTableWidget::~SmoothTableWidget()
+{
+    if (m_event)
+        delete m_event;
 }
 
 void SmoothTableWidget::wheelEvent(QWheelEvent *event)
@@ -35,7 +41,11 @@ void SmoothTableWidget::wheelEvent(QWheelEvent *event)
     while (stamps.last() - stamps.first() > 600)
         stamps.removeFirst();
 
-    m_event = event;
+    if (m_event)
+        *m_event = *event;
+    else
+        m_event = new QWheelEvent(*event);
+
     m_total = m_fps * m_duration / 1000;
 
     double multiplier = 0.8;

@@ -32,7 +32,7 @@ private slots:
 private:
     QString trackLabelText(Audio *audio) const;
 
-    void startTransition(const QColor &color);
+    void colorTransition(const QColor &color);
 
     void init();
     void initUi();

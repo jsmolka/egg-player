@@ -13,6 +13,7 @@ class SmoothTableWidget : public QTableWidget
 
 public:
     explicit SmoothTableWidget(QWidget *parent = nullptr);
+    ~SmoothTableWidget();
 
     EGG_PPROP(int, fps, setFps, fps)
     EGG_PPROP(int, duration, setDuration, duration)

@@ -87,7 +87,6 @@ HEADERS += \
     src/widgets/clickablestyle.hpp \
     src/widgets/eggwidget.hpp \
     src/widgets/iconbutton.hpp \
-    src/widgets/iconfactory.hpp \
     src/widgets/librarywidget.hpp \
     src/widgets/lockableiconbutton.hpp \
     src/widgets/mainwindow.hpp \
@@ -109,7 +108,8 @@ HEADERS += \
     src/core/shortcutprocessor.hpp \
     src/core/bass/streamwrapper.hpp \
     src/core/bass/syncwrapper.hpp \
-    src/core/bass/basserror.hpp
+    src/core/bass/basserror.hpp \
+    src/core/iconcreator.hpp
 
 SOURCES += \
     src/core/database/audioitem.cpp \
@@ -155,7 +155,6 @@ SOURCES += \
     src/widgets/clickablestyle.cpp \
     src/widgets/eggwidget.cpp \
     src/widgets/iconbutton.cpp \
-    src/widgets/iconfactory.cpp \
     src/widgets/librarywidget.cpp \
     src/widgets/lockableiconbutton.cpp \
     src/widgets/mainwindow.cpp \
@@ -179,4 +178,5 @@ SOURCES += \
     src/core/shortcutprocessor.cpp \
     src/core/bass/streamwrapper.cpp \
     src/core/bass/syncwrapper.cpp \
-    src/core/bass/basserror.cpp
+    src/core/bass/basserror.cpp \
+    src/core/iconcreator.cpp

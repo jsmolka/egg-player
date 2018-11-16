@@ -5,6 +5,8 @@
 
 class ClickableStyle : public QProxyStyle
 {
+    Q_OBJECT
+
 public:
     using QProxyStyle::QProxyStyle;
 

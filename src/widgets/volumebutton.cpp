@@ -1,13 +1,13 @@
 #include "volumebutton.hpp"
 
 #include "core/constants.hpp"
+#include "core/iconcreator.hpp"
 #include "core/player.hpp"
-#include "widgets/iconfactory.hpp"
 
 VolumeButton::VolumeButton(QWidget *parent)
     : IconButton(parent)
 {
-    setIcons(IconFactory::make(
+    setIcons(IconCreator::create(
         QStrings()
             << constants::ico::volume::full
             << constants::ico::volume::medium

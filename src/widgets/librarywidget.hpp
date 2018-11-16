@@ -5,6 +5,8 @@
 
 class LibraryWidget : public AudiosWidget
 {
+    Q_OBJECT
+
 public:
     explicit LibraryWidget(QWidget *parent = nullptr);
 

@@ -5,6 +5,8 @@
 
 class VolumeButton : public IconButton
 {
+    Q_OBJECT
+
 public:
     enum Icon {VolumeFull, VolumeMedium, VolumeLow, VolumeMute};
 

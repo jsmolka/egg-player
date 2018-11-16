@@ -1,13 +1,13 @@
 #include "playpausebutton.hpp"
 
 #include "core/constants.hpp"
+#include "core/iconcreator.hpp"
 #include "core/player.hpp"
-#include "widgets/iconfactory.hpp"
 
 PlayPauseButton::PlayPauseButton(QWidget *parent)
     : IconButton(parent)
 {
-    setIcons(IconFactory::make(
+    setIcons(IconCreator::create(
         QStrings()
             << constants::ico::play
             << constants::ico::pause

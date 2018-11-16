@@ -7,10 +7,10 @@
 
 #include "core/config.hpp"
 #include "core/constants.hpp"
+#include "core/iconcreator.hpp"
 #include "core/player.hpp"
 #include "core/shortcutprocessor.hpp"
 #include "core/utils.hpp"
-#include "widgets/iconfactory.hpp"
 
 BarWidget::BarWidget(QWidget *parent)
     : QWidget(parent)
@@ -68,7 +68,7 @@ void BarWidget::onPlayerAudioChanged(Audio *audio)
     m_currentTimeLabel.setText(Duration(0).toString());
     m_totalTimeLabel.setText(audio->duration().toString());
 
-    startTransition(audio->cover().color());
+    colorTransition(audio->cover().color());
 }
 
 void BarWidget::onPlayerPositionChanged(int position)
@@ -106,7 +106,7 @@ QString BarWidget::trackLabelText(Audio *audio) const
     );
 }
 
-void BarWidget::startTransition(const QColor &color)
+void BarWidget::colorTransition(const QColor &color)
 {
     QPropertyAnimation *animation = new QPropertyAnimation(this, "color", this);
     animation->setStartValue(this->color());
@@ -147,10 +147,10 @@ void BarWidget::initUi()
     m_volumeSlider.setSizePolicy(QSizePolicy::Fixed, QSizePolicy::MinimumExpanding);
     m_volumeSlider.setFixedWidth(5 * cfg_bar.iconSize() + 4 * cfg_bar.spacing());
 
-    m_previousButton.setIcons(IconFactory::make(constants::ico::previous));
-    m_nextButton.setIcons(IconFactory::make(constants::ico::next));
-    m_shuffleButton.setIcons(IconFactory::make(constants::ico::shuffle));
-    m_loopButton.setIcons(IconFactory::make(constants::ico::loop));
+    m_previousButton.setIcons(IconCreator::create(constants::ico::previous));
+    m_nextButton.setIcons(IconCreator::create(constants::ico::next));
+    m_shuffleButton.setIcons(IconCreator::create(constants::ico::shuffle));
+    m_loopButton.setIcons(IconCreator::create(constants::ico::loop));
 
     const QSize iconSize = QSize(cfg_bar.iconSize(), cfg_bar.iconSize());
     m_playPauseButton.setSize(iconSize);

@@ -5,6 +5,8 @@
 
 class PlayPauseButton : public IconButton
 {
+    Q_OBJECT
+
 public:
     enum Icon {Play, Pause};
 
