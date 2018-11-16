@@ -3,7 +3,7 @@
 #include "core/logger.hpp"
 #include "core/utils.hpp"
 
-WindowsFile::WindowsFile(const QString &file)
+fs::WindowsFile::WindowsFile(const QString &file)
     : m_file(file)
     , m_handle(INVALID_HANDLE_VALUE)
     , m_fileIndexLow(0)
@@ -14,42 +14,42 @@ WindowsFile::WindowsFile(const QString &file)
     createHandle();
 }
 
-WindowsFile::~WindowsFile()
+fs::WindowsFile::~WindowsFile()
 {
     closeHandle();
 }
 
-QString WindowsFile::file() const
+QString fs::WindowsFile::file() const
 {
     return m_file;
 }
 
-HANDLE WindowsFile::handle() const
+HANDLE fs::WindowsFile::handle() const
 {
     return m_handle;
 }
 
-DWORD WindowsFile::fileIndexLow() const
+DWORD fs::WindowsFile::fileIndexLow() const
 {
     return m_fileIndexLow;
 }
 
-DWORD WindowsFile::fileIndexHigh() const
+DWORD fs::WindowsFile::fileIndexHigh() const
 {
     return m_fileIndexHigh;
 }
 
-DWORD WindowsFile::volume() const
+DWORD fs::WindowsFile::volume() const
 {
     return m_volume;
 }
 
-bool WindowsFile::isHandleValid() const
+bool fs::WindowsFile::isHandleValid() const
 {
     return m_handle != INVALID_HANDLE_VALUE;
 }
 
-bool WindowsFile::readFileInfo()
+bool fs::WindowsFile::readFileInfo()
 {
     BY_HANDLE_FILE_INFORMATION info;
     if (!GetFileInformationByHandle(m_handle, &info))
@@ -65,7 +65,7 @@ bool WindowsFile::readFileInfo()
     return true;
 }
 
-void WindowsFile::createHandle()
+void fs::WindowsFile::createHandle()
 {
     m_handle = CreateFileW(
         Util::toWString(m_file),
@@ -81,8 +81,11 @@ void WindowsFile::createHandle()
         EGG_LOG("Cannot create file handle %1", m_file);
 }
 
-void WindowsFile::closeHandle()
+void fs::WindowsFile::closeHandle()
 {
+    if (!isHandleValid())
+        return;
+
     if (!CloseHandle(m_handle))
         EGG_LOG("Cannot close file handle %1", m_file);
 }

@@ -90,8 +90,7 @@ void Playlist::setShuffle(bool shuffle)
 
 void Playlist::onStateRemoved(int index)
 {
-    auto iter = m_indices.begin();
-    while (iter != m_indices.end())
+    for (auto iter = m_indices.begin(); iter != m_indices.end(); )
     {
         if (*iter == index)
         {
@@ -101,6 +100,7 @@ void Playlist::onStateRemoved(int index)
         {
             if (*iter > index)
                 (*iter)--;
+
             ++iter;
         }
     }

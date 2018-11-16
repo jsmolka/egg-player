@@ -9,16 +9,16 @@ FileSystem::FileSystem(QObject *parent)
     : QObject(parent)
     , m_watcher(this)
 {
-    connect(&m_watcher, &FileSystemWatcher::fileChanged, this, &FileSystem::onFileChanged);
-    connect(&m_watcher, &FileSystemWatcher::directoryChanged, this, &FileSystem::onDirectoryChanged);
+    connect(&m_watcher, &fs::FileSystemWatcher::fileChanged, this, &FileSystem::onFileChanged);
+    connect(&m_watcher, &fs::FileSystemWatcher::directoryChanged, this, &FileSystem::onDirectoryChanged);
 }
 
-Bimap<QString, UniqueFileInfo> FileSystem::uniqueInfo() const
+Bimap<QString, fs::UniqueFileInfo> FileSystem::uniqueInfo() const
 {
     return m_unique;
 }
 
-QHash<QString, Directory *> FileSystem::dirs() const
+QHash<QString, fs::Directory *> FileSystem::dirs() const
 {
     return m_dirs;
 }
@@ -28,14 +28,14 @@ QHash<QString, Audio *> FileSystem::audios() const
     return m_audios;
 }
 
-const FileSystemWatcher &FileSystem::watcher() const
+const fs::FileSystemWatcher &FileSystem::watcher() const
 {
     return m_watcher;
 }
 
-FileSystemWatcher &FileSystem::watcher()
+fs::FileSystemWatcher &FileSystem::watcher()
 {
-    return EGG_REF_CAST(FileSystem, FileSystemWatcher, watcher);
+    return EGG_REF_CAST(FileSystem, fs::FileSystemWatcher, watcher);
 }
 
 void FileSystem::addPath(const QString &path)
@@ -43,18 +43,18 @@ void FileSystem::addPath(const QString &path)
     if (m_dirs.contains(path))
         return;
 
-    Directory *dir = new Directory(path, this);
-    connect(dir, &Directory::parsed, this, &FileSystem::onDirParsed);
-    connect(dir, &Directory::created, this, &FileSystem::onDirCreated);
-    connect(dir, &Directory::removed, this, &FileSystem::onDirRemoved);
+    fs::Directory *dir = new fs::Directory(path, this);
+    connect(dir, &fs::Directory::parsed, this, &FileSystem::onDirParsed);
+    connect(dir, &fs::Directory::created, this, &FileSystem::onDirCreated);
+    connect(dir, &fs::Directory::removed, this, &FileSystem::onDirRemoved);
     dir->parse();
 }
 
 QStrings FileSystem::globFiles() const
 {
     QStrings files;
-    for (Directory *dir : qAsConst(m_dirs))
-        files << dir->globAudios(Directory::GlobPolicy::Shallow);
+    for (fs::Directory *dir : qAsConst(m_dirs))
+        files << dir->globAudios(fs::Directory::GlobPolicy::Shallow);
 
     return files;
 }
@@ -69,26 +69,26 @@ void FileSystem::unwatchAudio(Audio *audio)
     m_audios.remove(audio->file());
 }
 
-void FileSystem::onDirParsed(Directory *dir)
+void FileSystem::onDirParsed(fs::Directory *dir)
 {
     QStringList paths;
     paths << dir->path();
     for (const QString &file : dir->files())
     {
         paths << file;
-        m_unique.insert(file, UniqueFileInfo(file));
+        m_unique.insert(file, fs::UniqueFileInfo(file));
     }
     m_watcher.addPaths(paths);
     m_dirs.insert(dir->path(), dir);
 }
 
-void FileSystem::onDirCreated(Directory *dir)
+void FileSystem::onDirCreated(fs::Directory *dir)
 {
     m_watcher.addPath(dir->path());
     m_dirs.insert(dir->path(), dir);
 }
 
-void FileSystem::onDirRemoved(Directory *dir)
+void FileSystem::onDirRemoved(fs::Directory *dir)
 {
     m_watcher.removePath(dir->path());
     m_dirs.remove(dir->path());
@@ -97,12 +97,12 @@ void FileSystem::onDirRemoved(Directory *dir)
 
 void FileSystem::onFileChanged(const QString &file)
 {
-    eventModified(file);
+    processModified(file);
 }
 
 void FileSystem::onDirectoryChanged(const QString &path)
 {
-    Directory *dir = m_dirs.value(path, nullptr);
+    fs::Directory *dir = m_dirs.value(path, nullptr);
     if (!dir)
     {
         EGG_LOG("Changed directory does not exist %1", path);
@@ -124,7 +124,7 @@ void FileSystem::processChanges(const QStrings &changes, InfoHash &oldInfos, Inf
         if (m_unique.contains(file))
             oldInfos.insert(m_unique.value(file), file);
         else
-            newInfos.insert(UniqueFileInfo(file), file);
+            newInfos.insert(fs::UniqueFileInfo(file), file);
     }
 }
 
@@ -132,34 +132,34 @@ void FileSystem::triggerEvents(InfoHash &oldInfos, InfoHash &newInfos)
 {
     for (auto iter = oldInfos.cbegin(); iter != oldInfos.cend(); ++iter)
     {
-        const UniqueFileInfo info = iter.key();
+        const fs::UniqueFileInfo info = iter.key();
         if (newInfos.contains(info))
         {
-            eventRenamed(iter.value(), newInfos.value(info));
+            processRenamed(iter.value(), newInfos.value(info));
             newInfos.remove(info);
         }
         else
         {
-            eventRemoved(iter.value());
+            processRemoved(iter.value());
         }
     }
 
     for (auto iter = newInfos.cbegin(); iter != newInfos.cend(); ++iter)
-        eventAdded(iter.value(), iter.key());
+        processAdded(iter.value(), iter.key());
 }
 
-void FileSystem::eventModified(const QString &file)
+void FileSystem::processModified(const QString &file)
 {
     if (m_audios.contains(file))
         emit modified(m_audios.value(file));
 }
 
-void FileSystem::eventRenamed(const QString &from, const QString &to)
+void FileSystem::processRenamed(const QString &from, const QString &to)
 {
     m_watcher.removePath(from);
     m_watcher.addPath(to);
 
-    const UniqueFileInfo info = m_unique.value(from);
+    const fs::UniqueFileInfo info = m_unique.value(from);
     m_unique.remove(from);
     m_unique.insert(to, info);
 
@@ -172,14 +172,14 @@ void FileSystem::eventRenamed(const QString &from, const QString &to)
     }
 }
 
-void FileSystem::eventAdded(const QString &file, const UniqueFileInfo &info)
+void FileSystem::processAdded(const QString &file, const fs::UniqueFileInfo &info)
 {
     m_watcher.addPath(file);
     m_unique.insert(file, info);
     emit added(file);
 }
 
-void FileSystem::eventRemoved(const QString &file)
+void FileSystem::processRemoved(const QString &file)
 {
     m_watcher.removePath(file);
     m_unique.remove(file);

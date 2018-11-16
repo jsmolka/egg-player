@@ -49,7 +49,17 @@ void EggWidget::dropEvent(QDropEvent *event)
     if (!event->mimeData()->hasUrls())
         return;
 
-    const QStrings files = processDropEvent(event->mimeData());
+    QStrings files;
+    for (const QUrl &url : event->mimeData()->urls())
+    {
+        const QString file = url.toLocalFile();
+        const QFileInfo info(file);
+
+        if (info.isFile())
+            processDroppedFile(file, files);
+        if (info.isDir())
+            processDroppedDir(file, files);
+    }
     egg_library.loadFiles(files);
 }
 
@@ -61,34 +71,18 @@ void EggWidget::onLibraryDoubleClicked(const QModelIndex &index)
     egg_player.play();
 }
 
-QStrings EggWidget::processDropEvent(const QMimeData *data)
+void EggWidget::processDroppedFile(const QString &file, QStrings &files)
 {
-    QStrings files;
-    for (const QUrl &url : data->urls())
-    {
-        const QString file = url.toLocalFile();
-        const QFileInfo info(file);
-
-        if (info.isFile())
-            processDropEventFile(files, file);
-        else if (info.isDir())
-            processDropEventDir(files, file);
-    }
-    return files;
-}
-
-void EggWidget::processDropEventFile(QStrings &files, const QString &file)
-{
-    if (file.endsWith(".mp3", Qt::CaseInsensitive))
+    if (Util::isAudioFile(file))
         files << file;
 }
 
-void EggWidget::processDropEventDir(QStrings &files, const QString &path)
+void EggWidget::processDroppedDir(const QString &path, QStrings &files)
 {
     FileSystem &fileSystem = egg_library.fileSystem();
     fileSystem.addPath(path);
 
-    Directory *dir = fileSystem.dirs().value(path, nullptr);
+    fs::Directory *dir = fileSystem.dirs().value(path, nullptr);
     if (!dir)
     {
         EGG_LOG("Failed retrieving directory %1", path);

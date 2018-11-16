@@ -5,6 +5,9 @@
 
 #include <QString>
 
+namespace fs
+{
+
 class WindowsFile
 {
 public:
@@ -31,5 +34,7 @@ private:
     DWORD m_fileIndexHigh;
     DWORD m_volume;
 };
+
+}
 
 #endif // WINDOWSFILE_HPP

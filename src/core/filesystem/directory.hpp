@@ -7,6 +7,9 @@
 
 #include "core/types.hpp"
 
+namespace fs
+{
+
 class Directory : public QObject
 {
     Q_OBJECT
@@ -42,5 +45,7 @@ private:
     QSet<QString> m_files;
     QHash<QString, Directory *> m_dirs;
 };
+
+}
 
 #endif // DIRECTORY_HPP

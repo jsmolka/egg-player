@@ -4,6 +4,9 @@
 #include <QFileSystemWatcher>
 #include <QTimer>
 
+namespace fs
+{
+
 class FileSystemWatcher : public QObject
 {
     Q_OBJECT
@@ -35,5 +38,7 @@ private:
     bool m_ignoreDir;
     qint64 m_lastSize;
 };
+
+}
 
 #endif // FILESYSTEMWATCHER_HPP

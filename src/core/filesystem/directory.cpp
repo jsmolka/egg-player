@@ -2,53 +2,55 @@
 
 #include <QDirIterator>
 
-Directory::Directory(QObject *parent)
+#include "core/utils.hpp"
+
+fs::Directory::Directory(QObject *parent)
     : Directory(QString(), parent)
 {
 
 }
 
-Directory::Directory(const QString &path, QObject *parent)
+fs::Directory::Directory(const QString &path, QObject *parent)
     : QObject(parent)
     , m_path(path)
 {
 
 }
 
-QString Directory::path() const
+QString fs::Directory::path() const
 {
     return m_path;
 }
 
-QSet<QString> Directory::files() const
+QSet<QString> fs::Directory::files() const
 {
     return m_files;
 }
 
-QHash<QString, Directory *> Directory::dirs() const
+QHash<QString, fs::Directory *> fs::Directory::dirs() const
 {
     return m_dirs;
 }
 
-bool Directory::exists() const
+bool fs::Directory::exists() const
 {
     return QDir(m_path).exists();
 }
 
-void Directory::parse()
+void fs::Directory::parse()
 {
-    QDirIterator dirIter(m_path, QDir::Files | QDir::Dirs | QDir::NoDotAndDotDot);
-    while (dirIter.hasNext())
+    QDirIterator iter(m_path, QDir::Files | QDir::Dirs | QDir::NoDotAndDotDot);
+    while (iter.hasNext())
     {
-        const QString file = dirIter.next();
-        const QFileInfo info = dirIter.fileInfo();
+        const QString file = iter.next();
+        const QFileInfo info = iter.fileInfo();
 
         if (info.isFile())
         {
-            if (file.endsWith(".mp3", Qt::CaseInsensitive))
+            if (Util::isAudioFile(file))
                 m_files << file;
         }
-        else if (info.isDir())
+        if (info.isDir())
         {
             Directory *dir = new Directory(file, this);
             connect(dir, &Directory::parsed, this, &Directory::parsed);
@@ -62,7 +64,7 @@ void Directory::parse()
     emit parsed(this);
 }
 
-QStrings Directory::globAudios(GlobPolicy policy) const
+QStrings fs::Directory::globAudios(GlobPolicy policy) const
 {
     QStrings files;
     for (const QString &file : qAsConst(m_files))
@@ -76,7 +78,7 @@ QStrings Directory::globAudios(GlobPolicy policy) const
     return files;
 }
 
-QStrings Directory::processChanges()
+QStrings fs::Directory::processChanges()
 {
     QStrings changes;
 
@@ -87,10 +89,9 @@ QStrings Directory::processChanges()
     return changes;
 }
 
-void Directory::processRemovedDirChanges(QStrings &changes)
+void fs::Directory::processRemovedDirChanges(QStrings &changes)
 {
-    auto iter = m_dirs.begin();
-    while (iter != m_dirs.end())
+    for (auto iter = m_dirs.begin(); iter != m_dirs.end(); )
     {
         Directory *dir = iter.value();
         if (!dir->exists())
@@ -106,12 +107,12 @@ void Directory::processRemovedDirChanges(QStrings &changes)
     }
 }
 
-void Directory::processExistingDirChanges(QStrings &changes)
+void fs::Directory::processExistingDirChanges(QStrings &changes)
 {
-    QDirIterator dirIter(m_path, QDir::Dirs | QDir::NoDotAndDotDot);
-    while (dirIter.hasNext())
+    QDirIterator iter(m_path, QDir::Dirs | QDir::NoDotAndDotDot);
+    while (iter.hasNext())
     {
-        const QString path = dirIter.next();
+        const QString path = iter.next();
         Directory *dir = m_dirs.value(path, nullptr);
         if (!dir)
         {
@@ -126,7 +127,7 @@ void Directory::processExistingDirChanges(QStrings &changes)
     }
 }
 
-void Directory::processFileChanges(QStrings &changes)
+void fs::Directory::processFileChanges(QStrings &changes)
 {
     if (!exists())
     {
@@ -135,8 +136,7 @@ void Directory::processFileChanges(QStrings &changes)
         return;
     }
 
-    auto iter = m_files.begin();
-    while (iter != m_files.end())
+    for (auto iter = m_files.begin(); iter != m_files.end(); )
     {
         if (!QFileInfo::exists(*iter))
         {
@@ -149,10 +149,10 @@ void Directory::processFileChanges(QStrings &changes)
         }
     }
 
-    QDirIterator dirIter(m_path, QStringList() << "*.mp3", QDir::Files);
-    while (dirIter.hasNext())
+    QDirIterator iter(m_path, QStringList() << "*.mp3", QDir::Files);
+    while (iter.hasNext())
     {
-        const QString file = dirIter.next();
+        const QString file = iter.next();
         if (!m_files.contains(file))
         {
             changes << file;

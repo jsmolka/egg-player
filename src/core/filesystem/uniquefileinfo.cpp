@@ -2,14 +2,14 @@
 
 #include "core/filesystem/windowsfile.hpp"
 
-UniqueFileInfo::UniqueFileInfo()
+fs::UniqueFileInfo::UniqueFileInfo()
     : m_index(0)
     , m_volume(0)
 {
 
 }
 
-UniqueFileInfo::UniqueFileInfo(const QString &file)
+fs::UniqueFileInfo::UniqueFileInfo(const QString &file)
     : UniqueFileInfo()
 {
     m_file = file;
@@ -17,35 +17,35 @@ UniqueFileInfo::UniqueFileInfo(const QString &file)
     readFileInfo();
 }
 
-QString UniqueFileInfo::file() const
+QString fs::UniqueFileInfo::file() const
 {
     return m_file;
 }
 
-quint64 UniqueFileInfo::index() const
+quint64 fs::UniqueFileInfo::index() const
 {
     return m_index;
 }
 
-quint64 UniqueFileInfo::volume() const
+quint64 fs::UniqueFileInfo::volume() const
 {
     return m_volume;
 }
 
-bool UniqueFileInfo::isValid() const
+bool fs::UniqueFileInfo::isValid() const
 {
     return m_index != 0 && m_volume != 0;
 }
 
-void UniqueFileInfo::readFileInfo()
+void fs::UniqueFileInfo::readFileInfo()
 {
-    WindowsFile wFile(m_file);
+    WindowsFile file(m_file);
 
-    if (!wFile.readFileInfo())
+    if (!file.readFileInfo())
         return;
 
-    m_index = wFile.fileIndexHigh();
+    m_index = file.fileIndexHigh();
     m_index <<= 32;
-    m_index += wFile.fileIndexLow();
-    m_volume = wFile.volume();
+    m_index += file.fileIndexLow();
+    m_volume = file.volume();
 }

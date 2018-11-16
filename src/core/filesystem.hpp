@@ -17,13 +17,13 @@ class FileSystem : public QObject
 public:
     explicit FileSystem(QObject *parent = nullptr);
 
-    Bimap<QString, UniqueFileInfo> uniqueInfo() const;
-    QHash<QString, Directory *> dirs() const;
+    Bimap<QString, fs::UniqueFileInfo> uniqueInfo() const;
+    QHash<QString, fs::Directory *> dirs() const;
     QHash<QString, Audio *> audios() const;
 
-    const FileSystemWatcher &watcher() const;
+    const fs::FileSystemWatcher &watcher() const;
 
-    FileSystemWatcher &watcher();
+    fs::FileSystemWatcher &watcher();
 
     void addPath(const QString &path);
 
@@ -39,28 +39,28 @@ signals:
     void removed(Audio *audio);
 
 private slots:
-    void onDirParsed(Directory *dir);
-    void onDirCreated(Directory *dir);
-    void onDirRemoved(Directory *dir);
+    void onDirParsed(fs::Directory *dir);
+    void onDirCreated(fs::Directory *dir);
+    void onDirRemoved(fs::Directory *dir);
 
     void onFileChanged(const QString &file);
     void onDirectoryChanged(const QString &path);
 
 private:
-    using InfoHash = QHash<UniqueFileInfo, QString>;
+    using InfoHash = QHash<fs::UniqueFileInfo, QString>;
 
     void processChanges(const QStrings &changes, InfoHash &oldInfos, InfoHash &newInfos);
     void triggerEvents(InfoHash &oldInfos, InfoHash &newInfos);
 
-    void eventModified(const QString &file);
-    void eventRenamed(const QString &from, const QString &to);
-    void eventAdded(const QString &file, const UniqueFileInfo &info);
-    void eventRemoved(const QString &file);
+    void processModified(const QString &file);
+    void processRenamed(const QString &from, const QString &to);
+    void processAdded(const QString &file, const fs::UniqueFileInfo &info);
+    void processRemoved(const QString &file);
 
-    Bimap<QString, UniqueFileInfo> m_unique;
-    QHash<QString, Directory *> m_dirs;
+    Bimap<QString, fs::UniqueFileInfo> m_unique;
+    QHash<QString, fs::Directory *> m_dirs;
     QHash<QString, Audio *> m_audios;
-    FileSystemWatcher m_watcher;
+    fs::FileSystemWatcher m_watcher;
 };
 
 #endif // FILESYSTEM_HPP

@@ -3,6 +3,9 @@
 
 #include <QHashFunctions>
 
+namespace fs
+{
+
 class UniqueFileInfo
 {
 public:
@@ -23,12 +26,14 @@ private:
     quint64 m_volume;
 };
 
-inline bool operator==(const UniqueFileInfo &lhs, const UniqueFileInfo &rhs)
+}
+
+inline bool operator==(const fs::UniqueFileInfo &lhs, const fs::UniqueFileInfo &rhs)
 {
     return lhs.index() == rhs.index() && lhs.volume() == rhs.volume();
 }
 
-inline uint qHash(const UniqueFileInfo &key, uint seed)
+inline uint qHash(const fs::UniqueFileInfo &key, uint seed)
 {
     return qHash(key.index() ^ key.volume(), seed);
 }

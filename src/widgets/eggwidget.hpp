@@ -25,9 +25,8 @@ private slots:
     void onLibraryDoubleClicked(const QModelIndex &index);
 
 private:
-    QStrings processDropEvent(const QMimeData *data);
-    void processDropEventFile(QStrings &files, const QString &file);
-    void processDropEventDir(QStrings &files, const QString &path);
+    void processDroppedFile(const QString &file, QStrings &files);
+    void processDroppedDir(const QString &path, QStrings &files);
 
     void init();
     void initUi();

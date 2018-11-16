@@ -8,6 +8,8 @@
 class Util
 {
 public:
+    static bool isAudioFile(const QString &file);
+
     static const wchar_t *toWString(const QString &string);
     static QString toQString(const TagLib::String &string);
     static QString toQString(const TagLib::FileName &string);

@@ -3,6 +3,11 @@
 #include <QFile>
 #include <QTextStream>
 
+bool Util::isAudioFile(const QString &file)
+{
+    return file.endsWith(".mp3", Qt::CaseInsensitive);
+}
+
 const wchar_t *Util::toWString(const QString &string)
 {
     return reinterpret_cast<const wchar_t *>(string.constData());
