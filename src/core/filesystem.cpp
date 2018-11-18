@@ -36,11 +36,8 @@ void FileSystem::addFile(const QString &file)
         ignoreDirAdds(dir);
         ignoreDirFiles(dir);
     }
-    else
-    {
-        m_watcher.addPath(file);
-    }
     m_ignored.remove(file);
+    m_watcher.addPath(file);
 }
 
 QStrings FileSystem::globFiles() const

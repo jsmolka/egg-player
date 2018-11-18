@@ -6,7 +6,7 @@
 
 fs::Directory::Directory(const QString &path, QObject *parent)
     : QObject(parent)
-    , m_addPolicy(AddPolicy::Process)
+    , m_addPolicy(AddPolicy::Allow)
     , m_path(path)
 {
 
@@ -59,27 +59,18 @@ QStrings fs::Directory::update()
 {
     QStrings changes;
 
-    processRemovedDirChanges(changes);
-    processExistingDirChanges(changes);
-    processFileChanges(changes);
-
-    return changes;
-}
-
-QStrings fs::Directory::deleteRecursive(fs::Directory *dir)
-{
-    QStrings files;
-
-    for (Directory *subdir : dir->subdirs())
+    if (exists())
     {
-        files << deleteRecursive(subdir);
-        emit removed(subdir);
+        processRemovedDirChanges(changes);
+        processExistingDirChanges(changes);
+        processFileChanges(changes);
+    }
+    else
+    {
+        changes << deleteRecursive(this);
     }
 
-    for (const QString &file : dir->files())
-        files << file;
-
-    return files;
+    return changes;
 }
 
 void fs::Directory::processRemovedDirChanges(QStrings &changes)
@@ -89,8 +80,6 @@ void fs::Directory::processRemovedDirChanges(QStrings &changes)
         if (!(*iter)->exists())
         {
             changes << deleteRecursive(*iter);
-
-            emit removed(*iter);
             iter = m_subdirs.erase(iter);
         }
         else
@@ -106,32 +95,23 @@ void fs::Directory::processExistingDirChanges(QStrings &changes)
     while (iter.hasNext())
     {
         const QString path = iter.next();
+
         Directory *dir = m_subdirs.value(path, nullptr);
         if (!dir)
         {
-            if (m_addPolicy == AddPolicy::Process)
-            {
-                dir = new Directory(path, this);
+            if (m_addPolicy == AddPolicy::Ignore)
+                continue;
 
-                m_subdirs.insert(path, dir);
-                emit added(dir);
-            }
+            dir = new Directory(path, this);
+            m_subdirs.insert(path, dir);
+            emit added(dir);
         }
-        if (m_addPolicy == AddPolicy::Process)
-            changes << dir->update();
+        changes << dir->update();
     }
 }
 
 void fs::Directory::processFileChanges(QStrings &changes)
 {
-    if (!exists())
-    {
-        for (const QString &file : m_files)
-            changes << file;
-        emit removed(this);
-        return;
-    }
-
     for (auto iter = m_files.begin(); iter != m_files.end(); )
     {
         if (!QFileInfo::exists(*iter))
@@ -155,4 +135,19 @@ void fs::Directory::processFileChanges(QStrings &changes)
             m_files.insert(file);
         }
     }
+}
+
+QStrings fs::Directory::deleteRecursive(fs::Directory *dir)
+{
+    QStrings files;
+
+    for (Directory *subdir : dir->subdirs())
+        files << deleteRecursive(subdir);
+
+    for (const QString &file : dir->files())
+        files << file;
+
+    emit removed(dir);
+
+    return files;
 }

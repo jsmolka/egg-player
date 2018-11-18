@@ -1,6 +1,8 @@
 #ifndef AUDIOS_HPP
 #define AUDIOS_HPP
 
+#include <QSet>
+
 #include "core/audios/frozenvector.hpp"
 #include "core/audios/currentstate.hpp"
 
@@ -33,7 +35,7 @@ signals:
     void updated(int index);
 
 private:
-    Audio::vector m_removed;
+    QSet<Audio *> m_removed;
 };
 
 #endif // AUDIOS_HPP

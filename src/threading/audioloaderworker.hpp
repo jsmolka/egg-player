@@ -13,8 +13,6 @@ class AudioLoaderWorker : public Runnable
 public:
     explicit AudioLoaderWorker(const QStrings &files);
 
-    EGG_CPROP(QStrings, files, setFiles, files)
-
 signals:
     void loaded(Audio *audio);
 
@@ -25,6 +23,7 @@ private:
     bool insertAudio(Audio *audio) const;
     bool updateAudio(Audio *audio) const;
 
+    QStrings m_files;
 };
 
 #endif // AUDIOLOADERWORKER_HPP

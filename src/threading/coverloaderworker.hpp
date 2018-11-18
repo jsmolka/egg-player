@@ -12,13 +12,13 @@ class CoverLoaderWorker : public Runnable
 public:
     explicit CoverLoaderWorker(const Audio::vector &audios);
 
-    EGG_CPROP(Audio::vector, audios, setAudios, audios)
-
 private slots:
     void work() override;
 
 private:
     bool loadCover(Audio *audio);
+
+    Audio::vector m_audios;
 };
 
 #endif // COVERLOADERWORKER_HPP

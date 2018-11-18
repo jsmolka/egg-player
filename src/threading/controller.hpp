@@ -14,8 +14,6 @@ class Controller : public QObject
 public:
     explicit Controller(QObject *parent = nullptr);
 
-    EGG_PPROP(int, activeWorker, setActiveWorker, activeWorker)
-
     void runWorker(Runnable *worker);
 
 public slots:
@@ -30,6 +28,9 @@ protected:
 
 private slots:
     void onWorkerFinished();
+
+private:
+    int m_activeWorker;
 };
 
 template <typename T>

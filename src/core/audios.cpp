@@ -13,12 +13,14 @@ void Audios::insert(int index, Audio *audio)
 {
     Audio::vector::insert(index, audio);
     emit inserted(index);
+    m_removed.remove(audio);
 }
 
 void Audios::append(Audio *audio)
 {
     Audio::vector::append(audio);
     emit inserted(size() - 1);
+    m_removed.remove(audio);
 }
 
 void Audios::remove(int index)
@@ -34,6 +36,7 @@ Audios::iterator Audios::insert(Audios::iterator before, Audio *audio)
 {
     auto position = Audio::vector::insert(before, audio);
     emit inserted(static_cast<int>(position - begin()));
+    m_removed.remove(*position);
 
     return position;
 }

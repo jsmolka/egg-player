@@ -1,5 +1,5 @@
-#ifndef UNIQUEFILEINFO_HPP
-#define UNIQUEFILEINFO_HPP
+#ifndef FS_UNIQUEFILEINFO_HPP
+#define FS_UNIQUEFILEINFO_HPP
 
 #include <QHashFunctions>
 
@@ -38,4 +38,4 @@ inline uint qHash(const fs::UniqueFileInfo &key, uint seed)
     return qHash(key.index() ^ key.volume(), seed);
 }
 
-#endif // UNIQUEFILEINFO_HPP
+#endif // FS_UNIQUEFILEINFO_HPP

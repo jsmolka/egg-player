@@ -63,8 +63,6 @@ void EggWidget::dropEvent(QDropEvent *event)
             if (fileSystem.containsFile(file) && !fileSystem.isIgnored(file))
                 continue;
 
-            const QString dir = info.dir().absolutePath();
-
             fileSystem.addFile(file);
             files << file;
         }

@@ -1,5 +1,5 @@
-#ifndef FILESYSTEM2_HPP
-#define FILESYSTEM2_HPP
+#ifndef FILESYSTEM_HPP
+#define FILESYSTEM_HPP
 
 #include <QHash>
 #include <QObject>
@@ -67,4 +67,4 @@ private:
     QSet<QString> m_ignored;
 };
 
-#endif // FILESYSTEM2_HPP
+#endif // FILESYSTEM_HPP

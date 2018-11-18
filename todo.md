@@ -2,8 +2,6 @@
 
 ## Rework
 - proper query binding in database queries
-- update header guards for new filesystem classes
-- queue controller calls if necessary
 
 ## User Interface
 ### Bar
@@ -20,4 +18,3 @@
   - consider using a less "bright" white for less contrast
   - consider slightly smaller font size
 - improve smooth scrolling
-  - maybe higher refresh rate

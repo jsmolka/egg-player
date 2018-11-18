@@ -1,5 +1,5 @@
-#ifndef WINDOWSFILE_HPP
-#define WINDOWSFILE_HPP
+#ifndef FS_WINDOWSFILE_HPP
+#define FS_WINDOWSFILE_HPP
 
 #include <Windows.h>
 
@@ -38,4 +38,4 @@ private:
 
 }
 
-#endif // WINDOWSFILE_HPP
+#endif // FS_WINDOWSFILE_HPP

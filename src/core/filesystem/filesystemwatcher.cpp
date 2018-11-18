@@ -24,7 +24,8 @@ void fs::FileSystemWatcher::addPath(const QString &path)
 
 void fs::FileSystemWatcher::addPaths(const QStringList &paths)
 {
-    m_watcher.addPaths(paths);
+    if (!paths.isEmpty())
+        m_watcher.addPaths(paths);
 }
 
 void fs::FileSystemWatcher::removePath(const QString &path)
@@ -34,7 +35,8 @@ void fs::FileSystemWatcher::removePath(const QString &path)
 
 void fs::FileSystemWatcher::removePaths(const QStringList &paths)
 {
-    m_watcher.removePaths(paths);
+    if (!paths.isEmpty())
+        m_watcher.removePaths(paths);
 }
 
 void fs::FileSystemWatcher::onFileChanged(const QString &file)

@@ -1,5 +1,5 @@
-#ifndef FILESYSTEMWATCHER_HPP
-#define FILESYSTEMWATCHER_HPP
+#ifndef FS_FILESYSTEMWATCHER_HPP
+#define FS_FILESYSTEMWATCHER_HPP
 
 #include <QFileSystemWatcher>
 #include <QTimer>
@@ -41,4 +41,4 @@ private:
 
 }
 
-#endif // FILESYSTEMWATCHER_HPP
+#endif // FS_FILESYSTEMWATCHER_HPP

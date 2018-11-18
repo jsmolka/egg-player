@@ -1,5 +1,5 @@
-#ifndef DIRECTORY2_HPP
-#define DIRECTORY2_HPP
+#ifndef FS_DIRECTORY_HPP
+#define FS_DIRECTORY_HPP
 
 #include <QHash>
 #include <QObject>
@@ -16,7 +16,7 @@ class Directory : public QObject
     Q_OBJECT
 
 public:
-    enum AddPolicy {Process, Ignore};
+    enum AddPolicy {Allow, Ignore};
 
     explicit Directory(const QString &path, QObject *parent = nullptr);
 
@@ -37,11 +37,11 @@ signals:
     void removed(Directory *dir);
 
 private:
-    QStrings deleteRecursive(Directory *dir);
-
     void processRemovedDirChanges(QStrings &changes);
     void processExistingDirChanges(QStrings &changes);
     void processFileChanges(QStrings &changes);
+
+    QStrings deleteRecursive(Directory *dir);
 
     QString m_path;
     QSet<QString> m_files;
@@ -50,4 +50,4 @@ private:
 
 }
 
-#endif // DIRECTORY2_HPP
+#endif // FS_DIRECTORY_HPP
