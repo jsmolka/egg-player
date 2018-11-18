@@ -22,7 +22,7 @@ public:
 
 signals:
     void fileChanged(const QString &file);
-    void directoryChanged(const QString &dir);
+    void dirChanged(const QString &dir);
 
 private slots:
     void onFileChanged(const QString &file);

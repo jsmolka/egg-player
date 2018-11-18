@@ -16,6 +16,7 @@ public:
 
     QString file() const;
     HANDLE handle() const;
+
     DWORD fileIndexLow() const;
     DWORD fileIndexHigh() const;
     DWORD volume() const;

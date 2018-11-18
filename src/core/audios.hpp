@@ -31,6 +31,9 @@ public slots:
 signals:
     void inserted(int index);
     void updated(int index);
+
+private:
+    Audio::vector m_removed;
 };
 
 #endif // AUDIOS_HPP

@@ -86,9 +86,9 @@ void Library::onAudioUpdaterUpdated(Audio *audio)
     }
 }
 
-void Library::onFileSystemRenamed(Audio *audio, const QString &file)
+void Library::onFileSystemRenamed(Audio *audio, const QString &name)
 {
-    audio->setFile(file);
+    audio->setFile(name);
 }
 
 void Library::onFileSystemRemoved(Audio *audio)

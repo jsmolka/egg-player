@@ -1,10 +1,11 @@
-#ifndef DIRECTORY_HPP
-#define DIRECTORY_HPP
+#ifndef DIRECTORY2_HPP
+#define DIRECTORY2_HPP
 
 #include <QHash>
 #include <QObject>
 #include <QSet>
 
+#include "core/macros.hpp"
 #include "core/types.hpp"
 
 namespace fs
@@ -15,37 +16,38 @@ class Directory : public QObject
     Q_OBJECT
 
 public:
-    enum GlobPolicy {Recursive, Shallow};
+    enum AddPolicy {Process, Ignore};
 
-    explicit Directory(QObject *parent = nullptr);
     explicit Directory(const QString &path, QObject *parent = nullptr);
+
+    EGG_PPROP(AddPolicy, addPolicy, setAddPolicy, addPolicy)
 
     QString path() const;
     QSet<QString> files() const;
-    QHash<QString, Directory *> dirs() const;
+    QHash<QString, Directory *> subdirs() const;
 
     bool exists() const;
 
-    void parse();
+    void init();
 
-    QStrings globAudios(GlobPolicy policy = GlobPolicy::Recursive) const;
-    QStrings processChanges();
+    QStrings update();
 
 signals:
-    void parsed(Directory *dir);
-    void created(Directory *dir);
+    void added(Directory *dir);
     void removed(Directory *dir);
 
 private:
+    QStrings deleteRecursive(Directory *dir);
+
     void processRemovedDirChanges(QStrings &changes);
     void processExistingDirChanges(QStrings &changes);
     void processFileChanges(QStrings &changes);
 
     QString m_path;
     QSet<QString> m_files;
-    QHash<QString, Directory *> m_dirs;
+    QHash<QString, Directory *> m_subdirs;
 };
 
 }
 
-#endif // DIRECTORY_HPP
+#endif // DIRECTORY2_HPP

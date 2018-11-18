@@ -1,8 +1,9 @@
-#ifndef FILESYSTEM_HPP
-#define FILESYSTEM_HPP
+#ifndef FILESYSTEM2_HPP
+#define FILESYSTEM2_HPP
 
 #include <QHash>
 #include <QObject>
+#include <QSet>
 
 #include "core/audio.hpp"
 #include "core/bimap.hpp"
@@ -16,52 +17,54 @@ class FileSystem : public QObject
     Q_OBJECT
 
 public:
+    enum GlobPolicy {Recursive, Shallow};
+
     explicit FileSystem(QObject *parent = nullptr);
 
-    Bimap<QString, fs::UniqueFileInfo> uniqueInfo() const;
-    QHash<QString, fs::Directory *> dirs() const;
-    QHash<QString, Audio *> audios() const;
-
-    const fs::FileSystemWatcher &watcher() const;
-
-    fs::FileSystemWatcher &watcher();
-
     void addPath(const QString &path);
+    void addFile(const QString &file);
 
     QStrings globFiles() const;
+    QStrings globDirFiles(const QString &path, GlobPolicy policy = Shallow) const;
 
     void watchAudio(Audio *audio);
     void unwatchAudio(Audio *audio);
 
+    bool containsFile(const QString &file) const;
+    bool containsDir(const QString &dir) const;
+
+    bool isIgnored(const QString &file) const;
+
 signals:
-    void modified(Audio *audio);
-    void renamed(Audio *audio, const QString &to);
     void added(const QStrings &files);
     void removed(Audio *audio);
+    void modified(Audio *audio);
+    void renamed(Audio *audio, const QString &name);
 
 private slots:
-    void onDirParsed(fs::Directory *dir);
-    void onDirCreated(fs::Directory *dir);
+    void onDirAdded(fs::Directory *dir);
     void onDirRemoved(fs::Directory *dir);
 
     void onFileChanged(const QString &file);
-    void onDirectoryChanged(const QString &path);
+    void onDirChanged(const QString &path);
 
 private:
-    using InfoHash = QHash<fs::UniqueFileInfo, QString>;
+    void addDir(fs::Directory *dir);
 
-    void processChanges(const QStrings &changes, InfoHash &oldInfos, InfoHash &newInfos);
-    void triggerEvents(InfoHash &oldInfos, InfoHash &newInfos);
+    QStrings globDirFiles(fs::Directory *dir, GlobPolicy policy) const;
+    void ignoreDirFiles(fs::Directory *dir);
+    void ignoreDirAdds(fs::Directory *dir);
 
-    void processModified(const QString &file);
-    void processRenamed(const QString &from, const QString &to);
     void processAdded(const QString &file, const fs::UniqueFileInfo &info);
     void processRemoved(const QString &file);
+    void processModified(const QString &file);
+    void processRenamed(const QString &from, const QString &to);
 
     Bimap<QString, fs::UniqueFileInfo> m_unique;
     QHash<QString, fs::Directory *> m_dirs;
-    QHash<QString, Audio *> m_audios;
+    QHash<QString, Audio *> m_watched;
     fs::FileSystemWatcher m_watcher;
+    QSet<QString> m_ignored;
 };
 
-#endif // FILESYSTEM_HPP
+#endif // FILESYSTEM2_HPP

@@ -1,5 +1,6 @@
 #include "eggwidget.hpp"
 
+#include <QDir>
 #include <QDragEnterEvent>
 #include <QDropEvent>
 #include <QFileInfo>
@@ -49,6 +50,8 @@ void EggWidget::dropEvent(QDropEvent *event)
     if (!event->mimeData()->hasUrls())
         return;
 
+    FileSystem &fileSystem = egg_library.fileSystem();
+
     QStrings files;
     for (const QUrl &url : event->mimeData()->urls())
     {
@@ -57,29 +60,22 @@ void EggWidget::dropEvent(QDropEvent *event)
 
         if (info.isFile())
         {
-            if (Util::isAudioFile(file))
-                files << file;
+            if (fileSystem.containsFile(file) && !fileSystem.isIgnored(file))
+                continue;
+
+            const QString dir = info.dir().absolutePath();
+
+            fileSystem.addFile(file);
+            files << file;
         }
         if (info.isDir())
         {
-            egg_library.fileSystem().addPath(file);
-
-            fs::Directory *dir = egg_library.fileSystem().dirs().value(file, nullptr);
-            if (!dir)
-            {
-                EGG_LOG("Failed retrieving directory %1", file);
+            if (fileSystem.containsDir(file))
                 continue;
-            }
-            files << dir->globAudios();
-        }
-    }
 
-    for (auto iter = files.begin(); iter != files.end(); )
-    {
-        if (egg_library.fileSystem().audios().contains(*iter))
-            iter = files.erase(iter);
-        else
-            ++iter;
+            fileSystem.addPath(file);
+            files << fileSystem.globDirFiles(file);
+        }
     }
     egg_library.load(files);
 }

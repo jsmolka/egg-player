@@ -2,6 +2,8 @@
 
 ## Rework
 - proper query binding in database queries
+- update header guards for new filesystem classes
+- queue controller calls if necessary
 
 ## User Interface
 ### Bar

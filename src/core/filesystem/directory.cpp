@@ -4,14 +4,9 @@
 
 #include "core/utils.hpp"
 
-fs::Directory::Directory(QObject *parent)
-    : Directory(QString(), parent)
-{
-
-}
-
 fs::Directory::Directory(const QString &path, QObject *parent)
     : QObject(parent)
+    , m_addPolicy(AddPolicy::Process)
     , m_path(path)
 {
 
@@ -27,9 +22,9 @@ QSet<QString> fs::Directory::files() const
     return m_files;
 }
 
-QHash<QString, fs::Directory *> fs::Directory::dirs() const
+QHash<QString, fs::Directory *> fs::Directory::subdirs() const
 {
-    return m_dirs;
+    return m_subdirs;
 }
 
 bool fs::Directory::exists() const
@@ -37,7 +32,7 @@ bool fs::Directory::exists() const
     return QDir(m_path).exists();
 }
 
-void fs::Directory::parse()
+void fs::Directory::init()
 {
     QDirIterator iter(m_path, QDir::Files | QDir::Dirs | QDir::NoDotAndDotDot);
     while (iter.hasNext())
@@ -53,32 +48,14 @@ void fs::Directory::parse()
         if (info.isDir())
         {
             Directory *dir = new Directory(file, this);
-            connect(dir, &Directory::parsed, this, &Directory::parsed);
-            connect(dir, &Directory::created, this, &Directory::created);
-            connect(dir, &Directory::removed, this, &Directory::removed);
-            dir->parse();
+            dir->init();
 
-            m_dirs.insert(file, dir);
+            m_subdirs.insert(file, dir);
         }
     }
-    emit parsed(this);
 }
 
-QStrings fs::Directory::globAudios(GlobPolicy policy) const
-{
-    QStrings files;
-    for (const QString &file : qAsConst(m_files))
-        files << file;
-
-    if (policy == GlobPolicy::Recursive)
-    {
-        for (Directory *dir : qAsConst(m_dirs))
-            files << dir->globAudios(policy);
-    }
-    return files;
-}
-
-QStrings fs::Directory::processChanges()
+QStrings fs::Directory::update()
 {
     QStrings changes;
 
@@ -89,16 +66,32 @@ QStrings fs::Directory::processChanges()
     return changes;
 }
 
+QStrings fs::Directory::deleteRecursive(fs::Directory *dir)
+{
+    QStrings files;
+
+    for (Directory *subdir : dir->subdirs())
+    {
+        files << deleteRecursive(subdir);
+        emit removed(subdir);
+    }
+
+    for (const QString &file : dir->files())
+        files << file;
+
+    return files;
+}
+
 void fs::Directory::processRemovedDirChanges(QStrings &changes)
 {
-    for (auto iter = m_dirs.begin(); iter != m_dirs.end(); )
+    for (auto iter = m_subdirs.begin(); iter != m_subdirs.end(); )
     {
-        Directory *dir = iter.value();
-        if (!dir->exists())
+        if (!(*iter)->exists())
         {
-            changes << dir->globAudios(GlobPolicy::Shallow);
-            iter = m_dirs.erase(iter);
-            emit removed(dir);
+            changes << deleteRecursive(*iter);
+
+            emit removed(*iter);
+            iter = m_subdirs.erase(iter);
         }
         else
         {
@@ -113,17 +106,19 @@ void fs::Directory::processExistingDirChanges(QStrings &changes)
     while (iter.hasNext())
     {
         const QString path = iter.next();
-        Directory *dir = m_dirs.value(path, nullptr);
+        Directory *dir = m_subdirs.value(path, nullptr);
         if (!dir)
         {
-            dir = new Directory(path, this);
-            connect(dir, &Directory::created, this, &Directory::created);
-            connect(dir, &Directory::removed, this, &Directory::removed);
+            if (m_addPolicy == AddPolicy::Process)
+            {
+                dir = new Directory(path, this);
 
-            m_dirs.insert(path, dir);
-            emit created(dir);
+                m_subdirs.insert(path, dir);
+                emit added(dir);
+            }
         }
-        changes << dir->processChanges();
+        if (m_addPolicy == AddPolicy::Process)
+            changes << dir->update();
     }
 }
 
@@ -131,7 +126,8 @@ void fs::Directory::processFileChanges(QStrings &changes)
 {
     if (!exists())
     {
-        changes << globAudios(GlobPolicy::Shallow);
+        for (const QString &file : m_files)
+            changes << file;
         emit removed(this);
         return;
     }

@@ -55,7 +55,6 @@ HEADERS += \
     src/core/database/queryobject.hpp \
     src/core/database/sqlquery.hpp \
     src/core/database/tableitem.hpp \
-    src/core/filesystem/directory.hpp \
     src/core/filesystem/filesystemwatcher.hpp \
     src/core/filesystem/uniquefileinfo.hpp \
     src/core/filesystem/windowsfile.hpp \
@@ -68,7 +67,6 @@ HEADERS += \
     src/core/constants.hpp \
     src/core/cover.hpp \
     src/core/duration.hpp \
-    src/core/filesystem.hpp \
     src/core/iconcreator.hpp \
     src/core/library.hpp \
     src/core/logger.hpp \
@@ -108,7 +106,9 @@ HEADERS += \
     src/widgets/slider.hpp \
     src/widgets/smoothtablewidget.hpp \
     src/widgets/tablewidget.hpp \
-    src/widgets/volumebutton.hpp
+    src/widgets/volumebutton.hpp \
+    src/core/filesystem/directory.hpp \
+    src/core/filesystem.hpp
 
 SOURCES += \
     src/core/audios/currentstate.cpp \
@@ -128,7 +128,6 @@ SOURCES += \
     src/core/database/infoitem.cpp \
     src/core/database/queryobject.cpp \
     src/core/database/sqlquery.cpp \
-    src/core/filesystem/directory.cpp \
     src/core/filesystem/filesystemwatcher.cpp \
     src/core/filesystem/uniquefileinfo.cpp \
     src/core/filesystem/windowsfile.cpp \
@@ -140,7 +139,6 @@ SOURCES += \
     src/core/constants.cpp \
     src/core/cover.cpp \
     src/core/duration.cpp \
-    src/core/filesystem.cpp \
     src/core/iconcreator.cpp \
     src/core/library.cpp \
     src/core/logger.cpp \
@@ -177,4 +175,6 @@ SOURCES += \
     src/widgets/smoothtablewidget.cpp \
     src/widgets/tablewidget.cpp \
     src/widgets/volumebutton.cpp \
-    src/main.cpp
+    src/main.cpp \
+    src/core/filesystem/directory.cpp \
+    src/core/filesystem.cpp

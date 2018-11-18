@@ -66,7 +66,7 @@ void fs::FileSystemWatcher::onTimerTimeout()
             m_timer.start(500);
             return;
         }
-        emit directoryChanged(m_bufferedDir);
+        emit dirChanged(m_bufferedDir);
     }
     m_bufferedDir = QString();
     m_ignoreDir = false;

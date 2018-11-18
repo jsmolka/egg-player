@@ -41,7 +41,7 @@ private slots:
     void onAudioLoaderFinished();
     void onAudioUpdaterUpdated(Audio *audio);
 
-    void onFileSystemRenamed(Audio *audio, const QString &file);
+    void onFileSystemRenamed(Audio *audio, const QString &name);
     void onFileSystemRemoved(Audio *audio);
 
 private:

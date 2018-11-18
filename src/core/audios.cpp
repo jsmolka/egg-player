@@ -4,6 +4,9 @@ Audios::~Audios()
 {
     for (Audio *audio : *this)
         delete audio;
+
+    for (Audio *audio : m_removed)
+        delete audio;
 }
 
 void Audios::insert(int index, Audio *audio)
@@ -24,7 +27,7 @@ void Audios::remove(int index)
     Audio::vector::remove(index);
     emit removed(index);
     emit removedAudio(audio);
-    delete audio;
+    m_removed << audio;
 }
 
 Audios::iterator Audios::insert(Audios::iterator before, Audio *audio)
@@ -40,7 +43,7 @@ Audios::iterator Audios::erase(Audios::iterator position)
     auto next = Audio::vector::erase(position);
     emit removed(static_cast<int>(position - begin()));
     emit removedAudio(*position);
-    delete *position;
+    m_removed << *position;
 
     return next;
 }
