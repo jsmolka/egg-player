@@ -31,6 +31,16 @@ void TableWidget::onEntered(const QModelIndex &index)
     setHoverRow(index.row());
 }
 
+void TableWidget::setHoverRow(int row)
+{
+    if (row == m_delegate.hoverRow())
+        return;
+
+    m_delegate.setHoverRow(row);
+
+    viewport()->update();
+}
+
 void TableWidget::init()
 {
     setAlternatingRowColors(true);
@@ -48,14 +58,4 @@ void TableWidget::init()
     verticalHeader()->hide();
 
     verticalScrollBar()->setStyle(&m_style);
-}
-
-void TableWidget::setHoverRow(int row)
-{
-    if (row == m_delegate.hoverRow())
-        return;
-
-    m_delegate.setHoverRow(row);
-
-    viewport()->update();
 }

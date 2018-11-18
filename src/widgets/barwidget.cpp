@@ -59,7 +59,6 @@ QColor BarWidget::color() const
 
 void BarWidget::onPlayerAudioChanged(Audio *audio)
 {
-    m_durationSlider.setEnabled(true);
     m_durationSlider.setRange(0, audio->duration().secs());
 
     m_trackLabel.setText(trackLabelText(audio));
@@ -139,18 +138,18 @@ void BarWidget::initUi()
     m_totalTimeLabel.setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Maximum);
     m_totalTimeLabel.setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
 
-    m_durationSlider.setEnabled(false);
     m_durationSlider.setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding);
+    m_durationSlider.setRange(0, 0);
     m_volumeSlider.setVisible(false);
     m_volumeSlider.setRange(0, 100);
     m_volumeSlider.setValue(cfg_player.volume());
     m_volumeSlider.setSizePolicy(QSizePolicy::Fixed, QSizePolicy::MinimumExpanding);
     m_volumeSlider.setFixedWidth(5 * cfg_bar.iconSize() + 4 * cfg_bar.spacing());
 
-    m_previousButton.setIcons(IconCreator::create(constants::ico::previous));
-    m_nextButton.setIcons(IconCreator::create(constants::ico::next));
-    m_shuffleButton.setIcons(IconCreator::create(constants::ico::shuffle));
-    m_loopButton.setIcons(IconCreator::create(constants::ico::loop));
+    m_previousButton.setIcons(IconCreator::create(constants::ico::Previous));
+    m_nextButton.setIcons(IconCreator::create(constants::ico::Next));
+    m_shuffleButton.setIcons(IconCreator::create(constants::ico::Shuffle));
+    m_loopButton.setIcons(IconCreator::create(constants::ico::Loop));
 
     const QSize iconSize = QSize(cfg_bar.iconSize(), cfg_bar.iconSize());
     m_playPauseButton.setSize(iconSize);
@@ -183,7 +182,7 @@ void BarWidget::initUi()
 
 void BarWidget::initStyle()
 {
-    setStyleSheet(FileUtil::read(constants::css::bar)
+    setStyleSheet(FileUtil::read(constants::css::Bar)
         .replace("groove-height", QString::number(cfg_bar.slider().grooveHeight()))
         .replace("handle-size-half", QString::number(cfg_bar.slider().handleSize() / 2))
         .replace("handle-size", QString::number(cfg_bar.slider().handleSize()))

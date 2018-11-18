@@ -45,7 +45,7 @@ void fs::Directory::init()
             if (Util::isAudioFile(file))
                 m_files << file;
         }
-        if (info.isDir())
+        else if (info.isDir())
         {
             Directory *dir = new Directory(file, this);
             dir->init();
@@ -58,23 +58,23 @@ void fs::Directory::init()
 QStrings fs::Directory::update()
 {
     QStrings changes;
-
     if (exists())
     {
-        processRemovedDirChanges(changes);
-        processExistingDirChanges(changes);
-        processFileChanges(changes);
+        changes << processRemovedSubdirs();
+        changes << processCurrentSubdirs();
+        changes << processRemovedFiles();
+        changes << processCurrentFiles();
     }
     else
     {
         changes << deleteRecursive(this);
     }
-
     return changes;
 }
 
-void fs::Directory::processRemovedDirChanges(QStrings &changes)
+QStrings fs::Directory::processRemovedSubdirs()
 {
+    QStrings changes;
     for (auto iter = m_subdirs.begin(); iter != m_subdirs.end(); )
     {
         if (!(*iter)->exists())
@@ -87,10 +87,12 @@ void fs::Directory::processRemovedDirChanges(QStrings &changes)
             ++iter;
         }
     }
+    return changes;
 }
 
-void fs::Directory::processExistingDirChanges(QStrings &changes)
+QStrings fs::Directory::processCurrentSubdirs()
 {
+    QStrings changes;
     QDirIterator iter(m_path, QDir::Dirs | QDir::NoDotAndDotDot);
     while (iter.hasNext())
     {
@@ -103,15 +105,18 @@ void fs::Directory::processExistingDirChanges(QStrings &changes)
                 continue;
 
             dir = new Directory(path, this);
+
             m_subdirs.insert(path, dir);
             emit added(dir);
         }
         changes << dir->update();
     }
+    return changes;
 }
 
-void fs::Directory::processFileChanges(QStrings &changes)
+QStrings fs::Directory::processRemovedFiles()
 {
+    QStrings changes;
     for (auto iter = m_files.begin(); iter != m_files.end(); )
     {
         if (!QFileInfo::exists(*iter))
@@ -124,17 +129,24 @@ void fs::Directory::processFileChanges(QStrings &changes)
             ++iter;
         }
     }
+    return changes;
+}
 
+QStrings fs::Directory::processCurrentFiles()
+{
+    QStrings changes;
     QDirIterator iter(m_path, QStringList() << "*.mp3", QDir::Files);
     while (iter.hasNext())
     {
         const QString file = iter.next();
+
         if (!m_files.contains(file))
         {
             changes << file;
             m_files.insert(file);
         }
     }
+    return changes;
 }
 
 QStrings fs::Directory::deleteRecursive(fs::Directory *dir)

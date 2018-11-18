@@ -89,15 +89,15 @@ void SmoothTableWidget::sendEvent()
     QApplication::sendEvent(verticalScrollBar(), &event);
 }
 
-void SmoothTableWidget::init()
-{
-    setVerticalScrollMode(QAbstractItemView::ScrollPerPixel);
-}
-
 double SmoothTableWidget::subDelta(double delta, int left) const
 {
     const double m = m_total / 2.0;
     const double x = abs(m_total - left - m);
 
     return (cos(x * M_PI / m) + 1.0) / (2.0 * m) * delta;
+}
+
+void SmoothTableWidget::init()
+{
+    setVerticalScrollMode(QAbstractItemView::ScrollPerPixel);
 }

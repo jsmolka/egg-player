@@ -37,9 +37,10 @@ signals:
     void removed(Directory *dir);
 
 private:
-    void processRemovedDirChanges(QStrings &changes);
-    void processExistingDirChanges(QStrings &changes);
-    void processFileChanges(QStrings &changes);
+    QStrings processRemovedSubdirs();
+    QStrings processCurrentSubdirs();
+    QStrings processRemovedFiles();
+    QStrings processCurrentFiles();
 
     QStrings deleteRecursive(Directory *dir);
 

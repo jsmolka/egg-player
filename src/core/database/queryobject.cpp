@@ -24,7 +24,7 @@ db::SqlQuery &db::QueryObject::query()
 
 QString db::QueryObject::threadConnection()
 {
-    return constants::db::connection + QString::number(
+    return constants::db::Connection + QString::number(
         reinterpret_cast<quint64>(QThread::currentThread()), 16);
 }
 
@@ -38,7 +38,7 @@ QSqlDatabase db::QueryObject::threadDb()
         QSqlDatabase::addDatabase("QSQLITE", connection);
 
     QSqlDatabase db = QSqlDatabase::database(connection, false);
-    db.setDatabaseName(constants::db::file);
+    db.setDatabaseName(constants::db::File);
     if (!db.open())
         EGG_LOG("Cannot open database");
 

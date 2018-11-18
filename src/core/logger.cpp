@@ -25,7 +25,7 @@ void Logger::log(const char *msg, const char *func, const QVector<QVariant> &arg
     const QString time = QDateTime::currentDateTime().toString("dd-MM-yy hh:mm");
     message = QString("[%1] %2: %3").arg(time, function, message);
 
-    QFile file(constants::log::file);
+    QFile file(constants::log::File);
     if (file.open(QIODevice::Append))
     {
         QTextStream stream(&file);

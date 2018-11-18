@@ -66,13 +66,13 @@ void EggWidget::dropEvent(QDropEvent *event)
             fileSystem.addFile(file);
             files << file;
         }
-        if (info.isDir())
+        else if (info.isDir())
         {
             if (fileSystem.containsDir(file))
                 continue;
 
             fileSystem.addPath(file);
-            files << fileSystem.globDirFiles(file);
+            files << fileSystem.globDirFiles(file, FileSystem::GlobPolicy::Recursive);
         }
     }
     egg_library.load(files);
@@ -111,5 +111,5 @@ void EggWidget::initUi()
 
 void EggWidget::initStyle()
 {
-    setStyleSheet(FileUtil::read(constants::css::egg));
+    setStyleSheet(FileUtil::read(constants::css::Egg));
 }

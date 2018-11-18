@@ -6,7 +6,7 @@ IconButton::IconButton(QWidget *parent)
     : QPushButton(parent)
     , m_iconIndex(0)
 {
-    setup();
+    init();
 }
 
 void IconButton::setIcons(const QVector<QIcon> &icons)
@@ -57,7 +57,7 @@ bool IconButton::event(QEvent *event)
     return QPushButton::event(event);
 }
 
-void IconButton::setup()
+void IconButton::init()
 {
     setFocusPolicy(Qt::NoFocus);
     setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);

@@ -70,30 +70,15 @@ void AudiosWidget::onAudiosRemoved(int row)
 void AudiosWidget::onAudiosUpdated(int row)
 {
     Audio *audio = m_audios->at(row);
-    for (int col = 0; col < m_columns.size(); ++col)
+
+    int col = 0;
+    for (const Column &column : m_columns)
     {
-        const Column column = m_columns.at(col);
         QTableWidgetItem *item = takeItem(row, col);
         item->setText(audioInfo(audio, column.info));
         setItem(row, col, item);
+        col++;
     }
-}
-
-void AudiosWidget::init()
-{
-    horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
-    verticalHeader()->setSectionResizeMode(QHeaderView::Fixed);
-    verticalHeader()->setDefaultSectionSize(cfg_library.itemHeight());
-
-    initStyle();
-}
-
-void AudiosWidget::initStyle()
-{
-    setStyleSheet(FileUtil::read(constants::css::library)
-        .replace("cell-padding", QString::number(cfg_library.cellPadding()))
-        .replace("scrollbar-width", QString::number(cfg_library.scrollBarWidth()))
-    );
 }
 
 QString AudiosWidget::audioInfo(Audio *audio, AudioInfo info)
@@ -131,12 +116,31 @@ QString AudiosWidget::audioInfo(Audio *audio, AudioInfo info)
 void AudiosWidget::insert(int row, Audio *audio)
 {
     insertRow(row);
-    for (int col = 0; col < m_columns.size(); ++col)
+
+    int col = 0;
+    for (const Column &column : m_columns)
     {
-        const Column column = m_columns.at(col);
         QTableWidgetItem *item = new QTableWidgetItem;
         item->setText(audioInfo(audio, column.info));
         item->setTextAlignment(column.align);
         setItem(row, col, item);
+        col++;
     }
+}
+
+void AudiosWidget::init()
+{
+    horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+    verticalHeader()->setSectionResizeMode(QHeaderView::Fixed);
+    verticalHeader()->setDefaultSectionSize(cfg_library.itemHeight());
+
+    initStyle();
+}
+
+void AudiosWidget::initStyle()
+{
+    setStyleSheet(FileUtil::read(constants::css::Library)
+        .replace("cell-padding", QString::number(cfg_library.cellPadding()))
+        .replace("scrollbar-width", QString::number(cfg_library.scrollBarWidth()))
+    );
 }

@@ -20,9 +20,9 @@ private slots:
     void onEntered(const QModelIndex &index);
 
 private:
-    void init();
-
     void setHoverRow(int row);
+
+    void init();
 
     RowHoverDelegate m_delegate;
     ClickableStyle m_style;

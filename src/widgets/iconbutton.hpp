@@ -24,7 +24,7 @@ protected:
     bool event(QEvent *event);
 
 private:
-    void setup();
+    void init();
 
     QVector<QIcon> m_icons;
     int m_iconIndex;

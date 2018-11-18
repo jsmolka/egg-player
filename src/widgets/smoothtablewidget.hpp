@@ -34,9 +34,9 @@ private:
         double delta;
         int total;
     };
-    void init();
-
     double subDelta(double delta, int left) const;
+
+    void init();
 
     QLinkedList<Step> m_steps;
     QTimer m_timer;

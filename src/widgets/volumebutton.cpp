@@ -9,10 +9,10 @@ VolumeButton::VolumeButton(QWidget *parent)
 {
     setIcons(IconCreator::create(
         QStrings()
-            << constants::ico::volume::full
-            << constants::ico::volume::medium
-            << constants::ico::volume::low
-            << constants::ico::volume::mute
+            << constants::ico::volume::Full
+            << constants::ico::volume::Medium
+            << constants::ico::volume::Low
+            << constants::ico::volume::Mute
     ));
     updateIcon(egg_player.volume());
 

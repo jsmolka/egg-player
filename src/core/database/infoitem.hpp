@@ -13,7 +13,7 @@ public:
     InfoItem();
 
     EGG_PPROP(int, id, setId, id)
-    EGG_PPROP(int, version, setVerion, version)
+    EGG_PPROP(int, version, setVersion, version)
 
     bool exists();
     bool insert();

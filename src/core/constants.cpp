@@ -26,61 +26,64 @@ QString document(const QString &file)
 
 namespace constants
 {
+
 namespace css
 {
-const QString bar = resource("css/bar.css");
-const QString egg = resource("css/egg.css");
-const QString library = resource("css/library.css");
+const QString Bar = resource("css/bar.css");
+const QString Egg = resource("css/egg.css");
+const QString Library = resource("css/library.css");
 }
 
 namespace font
 {
-const QString lato = resource("fonts/Lato.ttf");
+const QString Lato = resource("fonts/Lato.ttf");
 }
 
 namespace ico
 {
-const QString loop = resource("images/icons/loop.png");
-const QString next = resource("images/icons/next.png");
-const QString pause = resource("images/icons/pause.png");
-const QString play = resource("images/icons/play.png");
-const QString previous = resource("images/icons/previous.png");
-const QString shuffle = resource("images/icons/shuffle.png");
+const QString Loop = resource("images/icons/loop.png");
+const QString Next = resource("images/icons/next.png");
+const QString Pause = resource("images/icons/pause.png");
+const QString Play = resource("images/icons/play.png");
+const QString Previous = resource("images/icons/previous.png");
+const QString Shuffle = resource("images/icons/shuffle.png");
 
 namespace volume
 {
-const QString full = resource("images/icons/volume-full.png");
-const QString low = resource("images/icons/volume-low.png");
-const QString medium = resource("images/icons/volume-medium.png");
-const QString mute = resource("images/icons/volume-mute.png");
+const QString Full = resource("images/icons/volume-full.png");
+const QString Low = resource("images/icons/volume-low.png");
+const QString Medium = resource("images/icons/volume-medium.png");
+const QString Mute = resource("images/icons/volume-mute.png");
 }
+
 }
 
 namespace img
 {
-const QString cover = resource("images/default-cover.png");
-const QString egg = resource("images/egg/egg.png");
+const QString Cover = resource("images/default-cover.png");
+const QString Egg = resource("images/egg/egg.png");
 }
 
 namespace app
 {
-const QString name = "Egg Player";
-const QString org  = "Egg Inc.";
+const QString Name = "Egg Player";
+const QString Org  = "Egg Inc.";
 }
 
 namespace db
 {
-const QString connection = "cache";
-const QString file = document("cache.db");
+const QString Connection = "cache";
+const QString File = document("cache.db");
 }
 
 namespace cfg
 {
-const QString file = document("config.json");
+const QString File = document("config.json");
 }
 
 namespace log
 {
-const QString file = document("egg.log");
+const QString File = document("egg.log");
 }
+
 }

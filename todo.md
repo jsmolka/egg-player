@@ -11,6 +11,7 @@
 - update name if the current audio changes
 - properly split into subclasses
 - fade to cover when changing
+- type characters and go to song
 
 ### Library
 - create an expandable scrollbar for the library

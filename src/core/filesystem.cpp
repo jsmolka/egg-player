@@ -102,24 +102,15 @@ void FileSystem::onFileChanged(const QString &file)
 
 void FileSystem::onDirChanged(const QString &path)
 {
-    fs::Directory *dir = m_dirs.value(path, nullptr);
-    if (!dir)
-    {
-        EGG_LOG("Changed directory does not exist %1", path);
-        return;
-    }
-    QStrings changes = dir->update();
-
     QStrings added;
     QSet<QString> deleted;
-
-    for (const QString &file : changes)
+    for (const QString &file : m_dirs.value(path)->update())
     {
         if (m_unique.contains(file))
         {
             deleted << file;
         }
-        else if (QFileInfo::exists(file))
+        else
         {
             const fs::UniqueFileInfo info(file);
             if (m_unique.contains(info))
@@ -168,7 +159,7 @@ QStrings FileSystem::globDirFiles(fs::Directory *dir, FileSystem::GlobPolicy pol
     if (policy == GlobPolicy::Recursive)
     {
         for (fs::Directory *subdir : dir->subdirs())
-            globDirFiles(subdir, policy);
+            files << globDirFiles(subdir, policy);
     }
 
     for (const QString &file : dir->files())

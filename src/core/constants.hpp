@@ -8,60 +8,60 @@ namespace constants
 
 namespace css
 {
-const extern QString bar;
-const extern QString egg;
-const extern QString library;
+const extern QString Bar;
+const extern QString Egg;
+const extern QString Library;
 }
 
 namespace font
 {
-const extern QString lato;
+const extern QString Lato;
 }
 
 namespace ico
 {
-const extern QString loop;
-const extern QString next;
-const extern QString pause;
-const extern QString play;
-const extern QString previous;
-const extern QString shuffle;
+const extern QString Loop;
+const extern QString Next;
+const extern QString Pause;
+const extern QString Play;
+const extern QString Previous;
+const extern QString Shuffle;
 
 namespace volume
 {
-const extern QString full;
-const extern QString medium;
-const extern QString low;
-const extern QString mute;
+const extern QString Full;
+const extern QString Medium;
+const extern QString Low;
+const extern QString Mute;
 }
 }
 
 namespace img
 {
-const extern QString cover;
-const extern QString egg;
+const extern QString Cover;
+const extern QString Egg;
 }
 
 namespace app
 {
-const extern QString name;
-const extern QString org;
+const extern QString Name;
+const extern QString Org;
 }
 
 namespace db
 {
-const extern QString connection;
-const extern QString file;
+const extern QString Connection;
+const extern QString File;
 }
 
 namespace cfg
 {
-const extern QString file;
+const extern QString File;
 }
 
 namespace log
 {
-const extern QString file;
+const extern QString File;
 }
 
 }

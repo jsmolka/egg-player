@@ -10,7 +10,7 @@
 
 QFont font()
 {
-    const int id = QFontDatabase::addApplicationFont(constants::font::lato);
+    const int id = QFontDatabase::addApplicationFont(constants::font::Lato);
     const QString family = QFontDatabase::applicationFontFamilies(id).at(0);
 
     QFont font(family);
@@ -24,8 +24,8 @@ void setup(QApplication &app)
 {
     qsrand(time(0));
 
-    app.setApplicationName(constants::app::name);
-    app.setOrganizationName(constants::app::org);
+    app.setApplicationName(constants::app::Name);
+    app.setOrganizationName(constants::app::Org);
     app.setFont(font());
 
     egg_player.setVolume(cfg_player.volume());

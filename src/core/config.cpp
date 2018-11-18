@@ -70,7 +70,7 @@ cfg::ShortcutJson &Config::shortcut()
 
 void Config::load()
 {
-    const QJsonDocument json = QJsonDocument::fromJson(FileUtil::readBytes(constants::cfg::file, "{}"));
+    const QJsonDocument json = QJsonDocument::fromJson(FileUtil::readBytes(constants::cfg::File, "{}"));
     const QJsonObject object = json.object();
 
     m_app.loadObject(object.value("app").toObject());
@@ -89,10 +89,7 @@ void Config::save()
     object.insert("player", m_player.toObject());
     object.insert("shortcut", m_shortcut.toObject());
 
-    QJsonDocument json;
-    json.setObject(object);
-
-    FileUtil::write(constants::cfg::file, json.toJson());
+    FileUtil::write(constants::cfg::File, QJsonDocument(object).toJson());
 }
 
 void Config::setDefaults()

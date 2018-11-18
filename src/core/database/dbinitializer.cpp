@@ -11,7 +11,7 @@
 
 void db::DbInitializer::init()
 {
-    if (!QFileInfo::exists(constants::db::file))
+    if (!QFileInfo::exists(constants::db::File))
     {
         initTables();
         initDefaultCover();
@@ -40,7 +40,7 @@ void db::DbInitializer::initDefaultCover()
     CoverItem coverItem;
     if (!coverItem.getById(1))
     {
-        const QPixmap cover = ::Cover::scale(QPixmap(constants::img::cover), ::Cover::defaultSize());
+        const QPixmap cover = ::Cover::scale(QPixmap(constants::img::Cover), ::Cover::defaultSize());
         coverItem.setId(1);
         coverItem.setCover(cover);
         coverItem.insert();
@@ -53,7 +53,7 @@ void db::DbInitializer::initInfo()
     if (!infoItem.getById(1))
     {
         infoItem.setId(1);
-        infoItem.setVerion(version());
+        infoItem.setVersion(version());
         infoItem.insert();
     }
 }

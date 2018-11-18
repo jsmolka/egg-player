@@ -3,7 +3,6 @@
 
 #include <QMimeData>
 
-#include "core/types.hpp"
 #include "core/shortcutprocessor.hpp"
 #include "widgets/barwidget.hpp"
 #include "widgets/librarywidget.hpp"

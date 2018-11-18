@@ -59,9 +59,6 @@ QPixmap Cover::loadFromFile(const QString &file)
 
 QPixmap Cover::scale(const QPixmap &pixmap, int size, ScalePolicy policy)
 {
-    if (pixmap.height() == size && pixmap.width() == size)
-        return pixmap;
-
     const Qt::TransformationMode mode =
         policy == ScalePolicy::Smooth
             ? Qt::SmoothTransformation
@@ -72,7 +69,7 @@ QPixmap Cover::scale(const QPixmap &pixmap, int size, ScalePolicy policy)
 
 bool Cover::isValid() const
 {
-    return m_id != 0;
+    return m_id > 0;
 }
 
 void Cover::invalidate()
@@ -149,9 +146,7 @@ QColor Cover::computeColor(const QImage &image)
         const int v = hsv.value();
         const int x = h / (360 / range);
 
-        if (qAbs(r - g) > limit
-                || qAbs(g - b) > limit
-                || qAbs(b - r) > limit)
+        if (qAbs(r - g) > limit || qAbs(g - b) > limit || qAbs(b - r) > limit)
         {
             isColorful = true;
             colorful[x].h += h;
