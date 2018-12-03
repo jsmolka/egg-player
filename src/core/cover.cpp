@@ -51,7 +51,7 @@ QPixmap Cover::loadFromFile(const QString &file)
     }
     if (cover.isNull())
     {
-        EGG_LOG("Cannot read cover %1", file);
+        egg_log() << "Cannot read cover" << file;
         cover = defaultCover().pixmap();
     }
     return scale(coverify(cover), defaultSize());

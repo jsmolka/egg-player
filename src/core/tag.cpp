@@ -29,7 +29,7 @@ bool Tag::read()
     const TagLib::MPEG::File file(Util::toWString(m_file));
     if (!file.isValid() || !file.audioProperties())
     {
-        EGG_LOG("Invalid file %1", m_file);
+        egg_log() << "Invalid file" << m_file;
         return false;
     }
 

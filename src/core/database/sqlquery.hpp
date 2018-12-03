@@ -14,7 +14,7 @@ public:
     bool exec();
     bool exec(const QString &query);
 
-    QString lastQuery() const;
+    QString boundLastQuery() const;
 
 private:
     bool check(bool success) const;

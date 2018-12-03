@@ -62,7 +62,7 @@ void db::DbInitializer::update()
 {
     InfoItem infoItem;
     if (!infoItem.getById(1))
-        EGG_LOG("Cannot get version of existing database");
+        egg_log() << "Cannot get version of existing database";
 
     if (infoItem.version() == version())
         return;

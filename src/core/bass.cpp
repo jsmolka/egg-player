@@ -43,7 +43,7 @@ bool Bass::isValidVersion()
 {
     if (HIWORD(BASS_GetVersion()) != BASSVERSION)
     {
-        EGG_LOG("Different BASS versions");
+        egg_log() << "Different BASS versions";
         return false;
     }
     return true;

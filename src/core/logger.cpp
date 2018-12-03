@@ -2,34 +2,57 @@
 
 #include <QDateTime>
 #include <QDebug>
-#include <QFile>
-#include <QTextStream>
+#include <QMutex>
+#include <QMutexLocker>
 
-#include "core/config.hpp"
 #include "core/constants.hpp"
 
-void Logger::log(const char *msg, const char *func, const QVector<QVariant> &args)
+Logger::Logger(const char *function)
 {
-    if (!cfg_app.log())
-        return;
-
-    QString message(msg);
-    QString function(func);
-
-    for (const QVariant &arg : args)
-    {
-        if (arg.canConvert(QVariant::String))
-            message = message.arg(arg.toString());
-    }
-
     const QString time = QDateTime::currentDateTime().toString("dd-MM-yy hh:mm");
-    message = QString("[%1] %2: %3").arg(time, function, message);
 
-    QFile file(constants::log::File);
-    if (file.open(QIODevice::Append))
-    {
-        QTextStream stream(&file);
-        stream << message << "\n";
-    }
+    m_strings << QString("[%1]").arg(time);
+    m_strings << QString("%1:").arg(function);
+}
+
+Logger::~Logger()
+{
+    const QString message = m_strings.join(" ");
+
+    static QMutex mutex;
+    QMutexLocker locker(&mutex);
+
+    auto &stream = fileStream();
+    stream << message << "\n";
+    stream.flush();
+
     qDebug().noquote() << message;
+}
+
+Logger &Logger::operator<<(const QString &string)
+{
+    m_strings << string;
+
+    return *this;
+}
+
+Logger &Logger::operator<<(int value)
+{
+    return *this << QString::number(value);
+}
+
+QFile &Logger::file()
+{
+    static QFile file(constants::log::File);
+    if (!file.isOpen())
+        file.open(QFile::Append);
+
+    return file;
+}
+
+QTextStream &Logger::fileStream()
+{
+    static QTextStream stream(&file());
+
+    return stream;
 }

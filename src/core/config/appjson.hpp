@@ -41,9 +41,6 @@ public:
     void setFontSize(double size);
     double fontSize() const;
 
-    void setLog(bool log);
-    bool log() const;
-
 private:
     app::MinimalSizeJson m_minimalSize;
 };

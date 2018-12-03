@@ -10,7 +10,7 @@ QVector<QIcon> IconCreator::create(const QString &file)
 
     const QPixmap normal(file);
     if (normal.isNull())
-        EGG_LOG("Cannot create pixmap %1", file);
+        egg_log() << "Cannot create pixmap" << file;
 
     icon.addPixmap(normal, QIcon::Normal, QIcon::Off);
     icon.addPixmap(createActive(normal), QIcon::Active, QIcon::Off);

@@ -54,7 +54,7 @@ bool fs::WindowsFile::readFileInfo()
     BY_HANDLE_FILE_INFORMATION info;
     if (!GetFileInformationByHandle(m_handle, &info))
     {
-        EGG_LOG("Cannot read file information %1", m_file);
+        egg_log() << "Cannot read file information" << m_file;
         return false;
     }
 
@@ -78,7 +78,7 @@ void fs::WindowsFile::createHandle()
     );
 
     if (!isHandleValid())
-        EGG_LOG("Cannot create file handle %1", m_file);
+        egg_log() << "Cannot create file handle" << m_file;
 }
 
 void fs::WindowsFile::closeHandle()
@@ -87,5 +87,5 @@ void fs::WindowsFile::closeHandle()
         return;
 
     if (!CloseHandle(m_handle))
-        EGG_LOG("Cannot close file handle %1", m_file);
+        egg_log() << "Cannot close file handle" << m_file;
 }

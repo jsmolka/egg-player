@@ -48,7 +48,7 @@ void Thread::waitToQuit()
     if (wait(2500))
         return;
 
-    EGG_LOG("Could not stop thread within 2500 ms");
+    egg_log() << "Could not stop thread within 2500 ms";
     terminate();
     wait();
 }

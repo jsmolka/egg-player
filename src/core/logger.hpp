@@ -1,16 +1,27 @@
 #ifndef LOGGER_HPP
 #define LOGGER_HPP
 
+#include <QFile>
 #include <QString>
-#include <QVariant>
-#include <QVector>
+#include <QStringList>
+#include <QTextStream>
 
-#define EGG_LOG(message, ...) Logger::log(message, __FUNCTION__, {__VA_ARGS__})
+#define egg_log() Logger(__FUNCTION__)
 
 class Logger
 {
 public:
-    static void log(const char *msg, const char *func, const QVector<QVariant> &args);
+    Logger(const char *function);
+    ~Logger();
+
+    Logger &operator<<(const QString &string);
+    Logger &operator<<(int value);
+
+private:
+    static QFile &file();
+    static QTextStream &fileStream();
+
+    QStringList m_strings;
 };
 
 #endif // LOGGER_HPP

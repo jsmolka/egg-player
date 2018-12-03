@@ -48,7 +48,7 @@ void Library::init(const QStrings &paths)
         if (QDir(path).exists())
             m_fileSystem.addPath(path);
         else
-            EGG_LOG("Library path does not exist %1", path);
+            egg_log() << "Library path does not exist" << path;
     }
     load(m_fileSystem.globFiles());
 }

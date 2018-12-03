@@ -33,14 +33,6 @@ T& T::operator=(T rhs) {
 - figure out how to create a std::shared_pointer using a nullptr
 - make FrozenVector a template
 
-## Logger
-- rewrite the logger using a Qt like [syntax](https://github.com/crosire/reshade/blob/master/source/log.hpp)
-- add different log levels (info, warning, fatal)
-- exit the application using a message box if the level is fatal
-- add a macro for each level (egg_info(), egg_warning(), egg_fatal())
-- try finding a way to keep the stream open, close at error
-- maybe define streams for classes which use the logger
-
 ## Macros
 - rename property macros to EGG_PROP_P / C
 - remove the macros for getter and setter or make them private

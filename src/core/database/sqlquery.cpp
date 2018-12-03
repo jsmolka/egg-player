@@ -15,9 +15,9 @@ bool db::SqlQuery::exec(const QString &query)
     return check(QSqlQuery::exec(query));
 }
 
-QString db::SqlQuery::lastQuery() const
+QString db::SqlQuery::boundLastQuery() const
 {
-    QString query = QSqlQuery::lastQuery();
+    QString query = lastQuery();
     QMapIterator<QString, QVariant> iter(boundValues());
     while (iter.hasNext())
     {
@@ -41,5 +41,5 @@ void db::SqlQuery::error() const
     if (!error.isValid() || error.type() == QSqlError::NoError)
         return;
 
-    EGG_LOG("Errors \"%1\" and \"%2\" for query \"%3\"", error.databaseText(), error.driverText(), lastQuery());
+    egg_log() << QString("Errors \"%1\" and \"%2\" for query \"%3\"").arg(error.databaseText(), error.driverText(), boundLastQuery());
 }

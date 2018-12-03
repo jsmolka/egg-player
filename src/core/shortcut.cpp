@@ -74,7 +74,7 @@ void Shortcut::parseShortcut(const QString &shortcut, RepeatPolicy repeat)
     m_modifier = parseSequence(sequence, s_modifiers);
 
     if (m_vk == 0 || m_modifier == 0)
-        EGG_LOG("Cannot parse shortcut %1", shortcut);
+        egg_log() << "Cannot parse shortcut" << shortcut;
 
     if (repeat == RepeatPolicy::NoRepeat)
         m_modifier |= MOD_NOREPEAT;
@@ -84,14 +84,14 @@ void Shortcut::registerShortcut()
 {
     m_registered = RegisterHotKey(nullptr, m_id, m_modifier, m_vk);
     if (!m_registered)
-        EGG_LOG("Cannot register shortcut %1", m_shortcut);
+        egg_log() << "Cannot register shortcut" << m_shortcut;
 }
 
 void Shortcut::unregisterShortcut()
 {
     m_registered = UnregisterHotKey(nullptr, m_id);
     if (!m_registered)
-        EGG_LOG("Cannot unregister shortcut %1", m_shortcut);
+        egg_log() << "Cannot unregister shortcut" << m_shortcut;
 }
 
 int Shortcut::s_id = 0;

@@ -31,7 +31,7 @@ QString db::QueryObject::threadConnection()
 QSqlDatabase db::QueryObject::threadDb()
 {
     if (!QSqlDatabase::isDriverAvailable("QSQLITE"))
-        EGG_LOG("QSQLITE driver not available");
+        egg_log() << "QSQLITE driver not available";
 
     const QString connection = threadConnection();
     if (!QSqlDatabase::contains(connection))
@@ -40,7 +40,7 @@ QSqlDatabase db::QueryObject::threadDb()
     QSqlDatabase db = QSqlDatabase::database(connection, false);
     db.setDatabaseName(constants::db::File);
     if (!db.open())
-        EGG_LOG("Cannot open database");
+        egg_log() << "Cannot open database";
 
     return db;
 }

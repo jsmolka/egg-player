@@ -80,7 +80,7 @@ bool Audio::read()
 
     if (!info.exists())
     {
-        EGG_LOG("Cannot read non existing file %1", m_file);
+        egg_log() << "Cannot read non existing file" << m_file;
         return false;
     }
 
@@ -90,7 +90,7 @@ bool Audio::read()
     const QDateTime modified = info.lastModified();
     if (modified.isNull() || !modified.isValid())
     {
-        EGG_LOG("Cannot get last modification time %1", m_file);
+        egg_log() << "Cannot get last modification time" << m_file;
         return false;
     }
     m_modified = modified.toSecsSinceEpoch();

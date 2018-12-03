@@ -56,7 +56,6 @@ QJsonObject cfg::AppJson::toObject() const
 void cfg::AppJson::setDefaults()
 {
     setDefault("fontSize", 10.25);
-    setDefault("log", true);
 
     m_minimalSize.setDefaults();
 }
@@ -79,14 +78,4 @@ void cfg::AppJson::setFontSize(double size)
 double cfg::AppJson::fontSize() const
 {
     return get("fontSize").toDouble();
-}
-
-void cfg::AppJson::setLog(bool log)
-{
-    set("log", log);
-}
-
-bool cfg::AppJson::log() const
-{
-    return get("log").toBool();
 }
