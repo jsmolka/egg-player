@@ -6,11 +6,32 @@
 - properly forward declare classes, remove unnecessary ones from headers
 - explore the benefits of enum classes and flags
 - create a base class or a template for pimpl idiom classes
+- use NULL in bass
+- use public inheritance for singleton
+- CurrentState constructor does not need to be explicit
+- use qwindows header
+- use mutable for member variables in classes
+- pass possible deleter for smart pointers
+
+### Copy-swap
+```cpp
+T& T::operator=(const T &rhs) {
+  T temp(rhs);
+  swap(temp);
+  return *this;
+}
+
+T& T::operator=(T rhs) {
+  swap(rhs);
+  return *this
+}
+```
 
 ## Audio
 - implement Audio using the pimpl idiom
 - create constructors and operators to keep the overhead low when copying
 - figure out how to create a std::shared_pointer using a nullptr
+- make FrozenVector a template
 
 ## Logger
 - rewrite the logger using a Qt like [syntax](https://github.com/crosire/reshade/blob/master/source/log.hpp)

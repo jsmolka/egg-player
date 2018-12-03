@@ -49,9 +49,9 @@ private slots:
 private:
     static void syncFunction(void *data);
 
-    void init();
-
     void changeAudio(Audio *audio);
+
+    void init();
 
     Bass m_bass;
     Playlist m_playlist;

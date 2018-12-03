@@ -108,12 +108,6 @@ void Player::syncFunction(void *data)
     player->playlist().next();
 }
 
-void Player::init()
-{
-    m_bass.sync().setFunction(syncFunction);
-    m_bass.sync().setFunctionData(this);
-}
-
 void Player::changeAudio(Audio *audio)
 {
     if (!m_bass.create(audio))
@@ -130,4 +124,10 @@ void Player::changeAudio(Audio *audio)
 
     emit audioChanged(audio);
     emit positionChanged(0);
+}
+
+void Player::init()
+{
+    m_bass.sync().setFunction(syncFunction);
+    m_bass.sync().setFunctionData(this);
 }

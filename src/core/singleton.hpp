@@ -4,7 +4,7 @@
 #include "core/uncopyable.hpp"
 
 template <typename T>
-class Singleton : private Uncopyable
+class Singleton : public Uncopyable
 {
 public:
     static T &instance();
