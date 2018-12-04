@@ -6,13 +6,10 @@
 namespace cfg
 {
 
-namespace app
-{
-
 class MinimalSizeJson : public JsonObject
 {
 public:
-    void loadObject(const QJsonObject &object) override;
+    void loadFromObject(const QJsonObject &object) override;
     QJsonObject toObject() const override;
 
     void setDefaults() override;
@@ -24,25 +21,22 @@ public:
     int width() const;
 };
 
-}
-
 class AppJson : public JsonObject
 {
 public:
-    void loadObject(const QJsonObject &object) override;
+    void loadFromObject(const QJsonObject &object) override;
     QJsonObject toObject() const override;
 
     void setDefaults() override;
 
-    const app::MinimalSizeJson &minimalSize() const;
-
-    app::MinimalSizeJson &minimalSize();
+    const MinimalSizeJson &minimalSize() const;
+    MinimalSizeJson &minimalSize();
 
     void setFontSize(double size);
     double fontSize() const;
 
-private:
-    app::MinimalSizeJson m_minimalSize;
+private:    
+    MinimalSizeJson m_minimalSize;
 };
 
 }

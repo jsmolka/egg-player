@@ -2,47 +2,47 @@
 
 #include "core/macros.hpp"
 
-void cfg::app::MinimalSizeJson::loadObject(const QJsonObject &object)
+void cfg::MinimalSizeJson::loadFromObject(const QJsonObject &object)
 {
     setObject(object);
 }
 
-QJsonObject cfg::app::MinimalSizeJson::toObject() const
+QJsonObject cfg::MinimalSizeJson::toObject() const
 {
     return object();
 }
 
-void cfg::app::MinimalSizeJson::setDefaults()
+void cfg::MinimalSizeJson::setDefaults()
 {
     setDefault("height", 450);
     setDefault("width", 800);
 }
 
-void cfg::app::MinimalSizeJson::setHeight(int height)
+void cfg::MinimalSizeJson::setHeight(int height)
 {
     set("height", height);
 }
 
-int cfg::app::MinimalSizeJson::height() const
+int cfg::MinimalSizeJson::height() const
 {
     return get("height").toInt();
 }
 
-void cfg::app::MinimalSizeJson::setWidth(int width)
+void cfg::MinimalSizeJson::setWidth(int width)
 {
     set("width", width);
 }
 
-int cfg::app::MinimalSizeJson::width() const
+int cfg::MinimalSizeJson::width() const
 {
     return get("width").toInt();
 }
 
-void cfg::AppJson::loadObject(const QJsonObject &object)
+void cfg::AppJson::loadFromObject(const QJsonObject &object)
 {
     setObject(object);
 
-    m_minimalSize.loadObject(object.value("minimalSize").toObject());
+    m_minimalSize.loadFromObject(object.value("minimalSize").toObject());
 }
 
 QJsonObject cfg::AppJson::toObject() const
@@ -60,14 +60,14 @@ void cfg::AppJson::setDefaults()
     m_minimalSize.setDefaults();
 }
 
-const cfg::app::MinimalSizeJson &cfg::AppJson::minimalSize() const
+const cfg::MinimalSizeJson &cfg::AppJson::minimalSize() const
 {
     return m_minimalSize;
 }
 
-cfg::app::MinimalSizeJson &cfg::AppJson::minimalSize()
+cfg::MinimalSizeJson &cfg::AppJson::minimalSize()
 {
-    return EGG_REF_CAST(cfg::AppJson, cfg::app::MinimalSizeJson, minimalSize);
+    return EGG_REF_CAST(cfg::AppJson, cfg::MinimalSizeJson, minimalSize);
 }
 
 void cfg::AppJson::setFontSize(double size)

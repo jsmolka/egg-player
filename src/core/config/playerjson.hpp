@@ -9,7 +9,7 @@ namespace cfg
 class PlayerJson : public JsonObject
 {
 public:
-    void loadObject(const QJsonObject &object) override;
+    void loadFromObject(const QJsonObject &object) override;
     QJsonObject toObject() const override;
 
     void setDefaults() override;

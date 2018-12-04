@@ -7,11 +7,20 @@
 
 struct AudioPrivate
 {
+    AudioPrivate()
+        : valid(false)
+        , cached(false)
+        , outdated(false)
+        , modified(0)
+    {
+
+    }
+
     QString file;
-    bool valid = false;
-    bool cached = false;
-    bool outdated = false;
-    qint64 modified = 0;
+    bool valid;
+    bool cached;
+    bool outdated;
+    qint64 modified;
     Tag tag;
     Cover cover;
     Duration duration;
@@ -106,24 +115,24 @@ const Tag &Audio::tag() const
     return d->tag;
 }
 
-const Cover &Audio::cover() const
-{
-    return d->cover;
-}
-
-const Duration &Audio::duration() const
-{
-    return d->duration;
-}
-
 Tag &Audio::tag()
 {
     return EGG_REF_CAST(Audio, Tag, tag);
 }
 
+const Cover &Audio::cover() const
+{
+    return d->cover;
+}
+
 Cover &Audio::cover()
 {
     return EGG_REF_CAST(Audio, Cover, cover);
+}
+
+const Duration &Audio::duration() const
+{
+    return d->duration;
 }
 
 Duration &Audio::duration()
@@ -135,22 +144,9 @@ bool Audio::read()
 {
     const QFileInfo info(d->file);
 
-    if (!info.exists())
-    {
-        egg_log() << "Cannot read non existing file" << d->file;
-        return false;
-    }
-
     d->valid = d->tag.read();
     d->duration.setSecs(d->tag.duration());
-
-    const QDateTime modified = info.lastModified();
-    if (modified.isNull() || !modified.isValid())
-    {
-        egg_log() << "Cannot get last modification time" << d->file;
-        return false;
-    }
-    d->modified = modified.toSecsSinceEpoch();
+    d->modified = info.lastModified().toSecsSinceEpoch();
 
     return d->valid;
 }

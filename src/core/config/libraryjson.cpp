@@ -5,7 +5,7 @@
 #include <QVariant>
 #include <QVector>
 
-void cfg::LibraryJson::loadObject(const QJsonObject &object)
+void cfg::LibraryJson::loadFromObject(const QJsonObject &object)
 {
     setObject(object);
 }

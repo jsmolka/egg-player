@@ -12,8 +12,9 @@
 - use qwindows header
 - use mutable for member variables in classes
 - pass possible deleter for smart pointers
-- modernize code
 - make FrozenVector a template, possibly rename
+- do not use Audio::vector
+- use update wrapper in database update functions
 
 ### Copy-swap
 ```cpp

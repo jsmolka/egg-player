@@ -142,67 +142,56 @@ bool db::AudioItem::updateFile(const QString &file)
 {
     query().prepare(
         "UPDATE audios SET"
-        "  file = :newfile, "
+        "  file = :newfile "
         "WHERE file = :file"
     );
     query().bindValue(":file", m_file);
     query().bindValue(":newfile", file);
 
-    m_file = file;
-
-    return query().exec();
+    if (query().exec())
+    {
+        m_file = file;
+        return true;
+    }
+    return false;
 }
 
 bool db::AudioItem::updateTitle(const QString &title)
 {
-    m_title = title;
-
-    return update("title", title);
+    return updateWrapper<QString>("title", title, m_title);
 }
 
 bool db::AudioItem::updateAlbum(const QString &album)
 {
-    m_album = album;
-
-    return update("album", album);
+    return updateWrapper<QString>("album", album, m_album);
 }
 
 bool db::AudioItem::updateArtist(const QString &artist)
 {
-    m_artist = artist;
-
-    return update("artist", artist);
+    return updateWrapper<QString>("artist", artist, m_artist);
 }
 
 bool db::AudioItem::updateYear(int year)
 {
-    m_year = year;
-
-    return update("year", year);
+    return updateWrapper<int>("year", year, m_year);
 }
 
 bool db::AudioItem::updateDuration(int duration)
 {
-    m_duration = duration;
-
-    return update("duration", duration);
+    return updateWrapper<int>("duration", duration, m_duration);
 }
 
 bool db::AudioItem::updateCoverId(int coverId)
 {
-    m_coverId = coverId;
-
-    return update("coverid", coverId);
+    return updateWrapper<int>("coverid", coverId, m_coverId);
 }
 
 bool db::AudioItem::updateModified(qint64 modified)
 {
-    m_modified = modified;
-
-    return update("modified", modified);
+    return updateWrapper<qint64>("modified", modified, m_modified);
 }
 
-void db::AudioItem::assignTo(Audio &audio)
+void db::AudioItem::assignTo(Audio &audio) const
 {
     audio.setFile(m_file);
     audio.tag().setTitle(m_title);
@@ -230,6 +219,17 @@ void db::AudioItem::loadFrom(const Audio &audio)
     m_modified = audio.modified();
 }
 
+template<typename T>
+bool db::AudioItem::updateWrapper(const QString &column, const T &value, T &member)
+{
+    if (update(column, value))
+    {
+        member = value;
+        return true;
+    }
+    return false;
+}
+
 bool db::AudioItem::getBy(const QString &column, const QVariant &value)
 {
     query().prepare(
@@ -238,10 +238,7 @@ bool db::AudioItem::getBy(const QString &column, const QVariant &value)
     );
     query().bindValue(":value", value);
 
-    if (!query().exec())
-        return false;
-
-    if (!query().first())
+    if (!query().exec() || !query().first())
         return false;
 
     loadFromRecord(query().record());

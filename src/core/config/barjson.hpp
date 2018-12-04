@@ -12,7 +12,7 @@ namespace bar
 class LabelWidthJson : public JsonObject
 {
 public:
-    void loadObject(const QJsonObject &object) override;
+    void loadFromObject(const QJsonObject &object) override;
     QJsonObject toObject() const override;
 
     void setDefaults() override;
@@ -27,7 +27,7 @@ public:
 class SliderJson : public JsonObject
 {
 public:
-    void loadObject(const QJsonObject &object) override;
+    void loadFromObject(const QJsonObject &object) override;
     QJsonObject toObject() const override;
 
     void setDefaults() override;
@@ -44,7 +44,7 @@ public:
 class BarJson : public JsonObject
 {
 public:
-    void loadObject(const QJsonObject &object) override;
+    void loadFromObject(const QJsonObject &object) override;
     QJsonObject toObject() const override;
 
     void setDefaults() override;

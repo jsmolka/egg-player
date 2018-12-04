@@ -13,7 +13,7 @@ class AudioLoader : public Controller
 public:
     using Controller::Controller;
 
-    EGG_CPROP(QStrings, files, setFiles, files)
+    EGG_C_PROP(QStrings, files, setFiles, files)
 
 public slots:
     void start() override;

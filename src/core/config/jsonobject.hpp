@@ -19,7 +19,7 @@ public:
 
     EGG_CPROP(QJsonObject, object, setObject, object)
 
-    virtual void loadObject(const QJsonObject &object) = 0;
+    virtual void loadFromObject(const QJsonObject &object) = 0;
     virtual QJsonObject toObject() const = 0;
 
     virtual void setDefaults() = 0;

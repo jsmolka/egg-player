@@ -39,11 +39,12 @@ public:
     qint64 modified() const;
 
     const Tag &tag() const;
-    const Cover &cover() const;
-    const Duration &duration() const;
-
     Tag &tag();
+
+    const Cover &cover() const;
     Cover &cover();
+
+    const Duration &duration() const;
     Duration &duration();
 
     bool read();

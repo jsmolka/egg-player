@@ -20,11 +20,9 @@ public:
 
     virtual bool createTable() = 0;
 
-protected:
+private:
     virtual bool getBy(const QString &column, const QVariant &value) = 0;
     virtual bool update(const QString &column, const QVariant &value) = 0;
-
-private:
     virtual void loadFromRecord(const QSqlRecord &record) = 0;
 };
 

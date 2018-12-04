@@ -73,11 +73,11 @@ void Config::load()
     const QJsonDocument json = QJsonDocument::fromJson(FileUtil::readBytes(constants::cfg::File, "{}"));
     const QJsonObject object = json.object();
 
-    m_app.loadObject(object.value("app").toObject());
-    m_bar.loadObject(object.value("bar").toObject());
-    m_library.loadObject(object.value("library").toObject());
-    m_player.loadObject(object.value("player").toObject());
-    m_shortcut.loadObject(object.value("shortcut").toObject());
+    m_app.loadFromObject(object.value("app").toObject());
+    m_bar.loadFromObject(object.value("bar").toObject());
+    m_library.loadFromObject(object.value("library").toObject());
+    m_player.loadFromObject(object.value("player").toObject());
+    m_shortcut.loadFromObject(object.value("shortcut").toObject());
 }
 
 void Config::save()

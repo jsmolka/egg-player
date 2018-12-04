@@ -1,6 +1,6 @@
 #include "shortcutjson.hpp"
 
-void cfg::ShortcutJson::loadObject(const QJsonObject &object)
+void cfg::ShortcutJson::loadFromObject(const QJsonObject &object)
 {
     setObject(object);
 }

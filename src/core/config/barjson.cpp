@@ -1,6 +1,6 @@
 #include "barjson.hpp"
 
-void cfg::bar::LabelWidthJson::loadObject(const QJsonObject &object)
+void cfg::bar::LabelWidthJson::loadFromObject(const QJsonObject &object)
 {
     setObject(object);
 }
@@ -36,7 +36,7 @@ int cfg::bar::LabelWidthJson::track() const
     return scale(get("track").toInt());
 }
 
-void cfg::bar::SliderJson::loadObject(const QJsonObject &object)
+void cfg::bar::SliderJson::loadFromObject(const QJsonObject &object)
 {
     setObject(object);
 }
@@ -72,12 +72,12 @@ int cfg::bar::SliderJson::handleSize() const
     return scale(get("handleSize").toInt());
 }
 
-void cfg::BarJson::loadObject(const QJsonObject &object)
+void cfg::BarJson::loadFromObject(const QJsonObject &object)
 {
     setObject(object);
 
-    m_labelWidth.loadObject(object.value("labelWidth").toObject());
-    m_slider.loadObject(object.value("slider").toObject());
+    m_labelWidth.loadFromObject(object.value("labelWidth").toObject());
+    m_slider.loadFromObject(object.value("slider").toObject());
 }
 
 QJsonObject cfg::BarJson::toObject() const

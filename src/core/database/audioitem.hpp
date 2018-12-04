@@ -13,22 +13,22 @@ class AudioItem : public TableItem
 public:
     AudioItem();
 
-    EGG_CPROP(QString, file, setFile, file)
-    EGG_CPROP(QString, title, setTitle, title)
-    EGG_CPROP(QString, artist, setArtist, artist)
-    EGG_CPROP(QString, album, setAlbum, album)
-    EGG_CPROP(QString, genre, setGenre, genre)
-    EGG_PPROP(int, year, setYear, year)
-    EGG_PPROP(int, track, setTrack, track)
-    EGG_PPROP(int, duration, setDuration, duration)
-    EGG_PPROP(int, coverId, setCoverId, coverId)
-    EGG_PPROP(qint64, modified, setModified, modified)
+    EGG_C_PROP(QString, file, setFile, file)
+    EGG_C_PROP(QString, title, setTitle, title)
+    EGG_C_PROP(QString, artist, setArtist, artist)
+    EGG_C_PROP(QString, album, setAlbum, album)
+    EGG_C_PROP(QString, genre, setGenre, genre)
+    EGG_P_PROP(int, year, setYear, year)
+    EGG_P_PROP(int, track, setTrack, track)
+    EGG_P_PROP(int, duration, setDuration, duration)
+    EGG_P_PROP(int, coverId, setCoverId, coverId)
+    EGG_P_PROP(qint64, modified, setModified, modified)
 
-    bool exists();
-    bool insert();
-    bool commit();
+    bool exists() override;
+    bool insert() override;
+    bool commit() override;
 
-    bool createTable();
+    bool createTable() override;
 
     bool getByFile(const QString &file);
     bool getByTitle(const QString &title);
@@ -48,15 +48,16 @@ public:
     bool updateCoverId(int coverId);
     bool updateModified(qint64 modified);
 
-    void assignTo(Audio &audio);
+    void assignTo(Audio &audio) const;
     void loadFrom(const Audio &audio);
 
-protected:
-    bool getBy(const QString &column, const QVariant &value);
-    bool update(const QString &column, const QVariant &value);
-
 private:
-    void loadFromRecord(const QSqlRecord &record);
+    template <typename T>
+    bool updateWrapper(const QString &column, const T &value, T &member);
+
+    bool getBy(const QString &column, const QVariant &value) override;
+    bool update(const QString &column, const QVariant &value) override;
+    void loadFromRecord(const QSqlRecord &record) override;
 };
 
 }

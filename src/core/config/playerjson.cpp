@@ -1,6 +1,6 @@
 #include "playerjson.hpp"
 
-void cfg::PlayerJson::loadObject(const QJsonObject &object)
+void cfg::PlayerJson::loadFromObject(const QJsonObject &object)
 {
     setObject(object);
 }
