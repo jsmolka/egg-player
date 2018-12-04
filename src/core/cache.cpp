@@ -6,34 +6,41 @@
 #include "core/database/audioitem.hpp"
 #include "core/database/coveritem.hpp"
 
-Audio *Cache::loadAudio(const QString &file)
+Audio Cache::loadAudio(const QString &file)
 {    
-    Audio *audio = loadAudioFromCache(file);
-    if (audio)
-        return audio;
+    db::AudioItem audioItem;
+    if (audioItem.getByFile(file))
+    {
+        Audio audio;
+        audioItem.assignTo(audio);
+        audio.setValid(true);
+        audio.setCached(true);
+        audio.setOutdated(audio.modified() != QFileInfo(file).lastModified().toSecsSinceEpoch());
 
-    return Audio::readFromFile(file);
+        return audio;
+    }
+    return Audio(file);
 }
 
-bool Cache::insertAudio(Audio *audio)
+bool Cache::insertAudio(Audio &audio)
 {
     db::AudioItem audioItem;
     audioItem.loadFrom(audio);
-    audio->setCached(true);
+    audio.setCached(true);
 
     return audioItem.insert();
 }
 
-bool Cache::updateAudio(Audio *audio)
+bool Cache::updateAudio(Audio &audio)
 {
     db::AudioItem audioItem;
     audioItem.loadFrom(audio);
-    audio->setCached(true);
+    audio.setCached(true);
 
     return audioItem.commit();
 }
 
-bool Cache::updateAudioCover(Audio *audio, const QPixmap &cover)
+bool Cache::updateAudioCover(Audio &audio, const QPixmap &cover)
 {
     const int id = coverId(cover);
     if (id == 0)
@@ -50,27 +57,12 @@ QPixmap Cache::loadCover(int id)
     return coverItem.cover();
 }
 
-Audio *Cache::loadAudioFromCache(const QString &file)
-{
-    db::AudioItem audioItem;
-    if (!audioItem.getByFile(file))
-        return nullptr;
-
-    Audio *audio = new Audio;
-    audioItem.assignTo(audio);
-    audio->setValid(true);
-    audio->setCached(true);
-    audio->setOutdated(audio->modified() !=  QFileInfo(file).lastModified().toSecsSinceEpoch());
-
-    return audio;
-}
-
-bool Cache::updateAudioCoverId(Audio *audio, int coverId)
+bool Cache::updateAudioCoverId(Audio &audio, int coverId)
 {
     db::AudioItem audioItem;
     audioItem.loadFrom(audio);
-    audio->setCached(true);
-    audio->cover().setId(coverId);
+    audio.setCached(true);
+    audio.cover().setId(coverId);
 
     return audioItem.updateCoverId(coverId);
 }

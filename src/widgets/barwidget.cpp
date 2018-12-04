@@ -57,17 +57,17 @@ QColor BarWidget::color() const
     return palette().color(QPalette::Background);
 }
 
-void BarWidget::onPlayerAudioChanged(Audio *audio)
+void BarWidget::onPlayerAudioChanged(Audio audio)
 {
-    m_durationSlider.setRange(0, audio->duration().secs());
+    m_durationSlider.setRange(0, audio.duration().secs());
 
     m_trackLabel.setText(trackLabelText(audio));
-    m_coverLabel.setPixmap(audio->cover().pixmap(cfg_bar.coverSize()));
+    m_coverLabel.setPixmap(audio.cover().pixmap(cfg_bar.coverSize()));
 
     m_currentTimeLabel.setText(Duration(0).toString());
-    m_totalTimeLabel.setText(audio->duration().toString());
+    m_totalTimeLabel.setText(audio.duration().toString());
 
-    colorTransition(audio->cover().color());
+    colorTransition(audio.cover().color());
 }
 
 void BarWidget::onPlayerPositionChanged(int position)
@@ -96,12 +96,12 @@ void BarWidget::onDurationSliderMoved(int value)
     m_currentTimeLabel.setText(Duration(value).toString());
 }
 
-QString BarWidget::trackLabelText(Audio *audio) const
+QString BarWidget::trackLabelText(const Audio &audio) const
 {
     const QFontMetrics metrics(font());
     return QString("%1\n%2").arg(
-        metrics.elidedText(audio->tag().title(), Qt::ElideRight, m_trackLabel.width()),
-        metrics.elidedText(audio->tag().artist(), Qt::ElideRight, m_trackLabel.width())
+        metrics.elidedText(audio.tag().title(), Qt::ElideRight, m_trackLabel.width()),
+        metrics.elidedText(audio.tag().artist(), Qt::ElideRight, m_trackLabel.width())
     );
 }
 

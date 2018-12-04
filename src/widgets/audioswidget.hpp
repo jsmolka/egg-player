@@ -34,9 +34,9 @@ private:
         AudioInfo info;
         Qt::Alignment align;
     };
-    static QString audioInfo(Audio *audio, AudioInfo info);
+    static QString audioInfo(const Audio &audio, AudioInfo info);
 
-    void insert(int row, Audio *audio);
+    void insert(int row, const Audio &audio);
 
     void init();
     void initStyle();

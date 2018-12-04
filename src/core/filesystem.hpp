@@ -27,8 +27,8 @@ public:
     QStrings globFiles() const;
     QStrings globDirFiles(const QString &path, GlobPolicy policy = Shallow) const;
 
-    void watchAudio(Audio *audio);
-    void unwatchAudio(Audio *audio);
+    void watchAudio(const Audio &audio);
+    void unwatchAudio(const Audio &audio);
 
     bool containsFile(const QString &file) const;
     bool containsDir(const QString &dir) const;
@@ -37,9 +37,9 @@ public:
 
 signals:
     void added(const QStrings &files);
-    void removed(Audio *audio);
-    void modified(Audio *audio);
-    void renamed(Audio *audio, const QString &name);
+    void removed(Audio audio);
+    void modified(Audio audio);
+    void renamed(Audio audio, const QString &name);
 
 private slots:
     void onDirAdded(fs::Directory *dir);
@@ -62,7 +62,7 @@ private:
 
     Bimap<QString, fs::UniqueFileInfo> m_unique;
     QHash<QString, fs::Directory *> m_dirs;
-    QHash<QString, Audio *> m_watched;
+    QHash<QString, Audio> m_watched;
     fs::FileSystemWatcher m_watcher;
     QSet<QString> m_ignored;
 };

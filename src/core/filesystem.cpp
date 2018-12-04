@@ -56,14 +56,14 @@ QStrings FileSystem::globDirFiles(const QString &path, GlobPolicy policy) const
         : QStrings();
 }
 
-void FileSystem::watchAudio(Audio *audio)
+void FileSystem::watchAudio(const Audio &audio)
 {
-    m_watched.insert(audio->file(), audio);
+    m_watched.insert(audio.file(), audio);
 }
 
-void FileSystem::unwatchAudio(Audio *audio)
+void FileSystem::unwatchAudio(const Audio &audio)
 {
-    m_watched.remove(audio->file());
+    m_watched.remove(audio.file());
 }
 
 bool FileSystem::containsFile(const QString &file) const
@@ -206,7 +206,7 @@ void FileSystem::processRemoved(const QString &file)
 
     if (m_watched.contains(file))
     {
-        Audio *audio = m_watched.value(file);
+        Audio audio = m_watched.value(file);
         m_watched.remove(file);
         emit removed(audio);
     }
@@ -235,7 +235,7 @@ void FileSystem::processRenamed(const QString &from, const QString &to)
 
     if (m_watched.contains(from))
     {
-        Audio *audio = m_watched.value(from);
+        Audio audio = m_watched.value(from);
         m_watched.remove(from);
         m_watched.insert(to, audio);
         emit renamed(audio, to);

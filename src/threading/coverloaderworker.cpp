@@ -10,7 +10,7 @@ CoverLoaderWorker::CoverLoaderWorker(const Audio::vector &audios)
 
 void CoverLoaderWorker::work()
 {
-    for (Audio *audio : qAsConst(m_audios))
+    for (Audio &audio : m_audios)
     {
         if (!loadCover(audio))
             return;
@@ -18,15 +18,15 @@ void CoverLoaderWorker::work()
     emit finished();
 }
 
-bool CoverLoaderWorker::loadCover(Audio *audio)
+bool CoverLoaderWorker::loadCover(Audio &audio)
 {
     if (isInterrupted())
         return false;
 
-    if (audio->cover().isValid())
+    if (audio.cover().isValid())
         return true;
 
-    const QPixmap cover = Cover::loadFromFile(audio->file());
+    const QPixmap cover = Cover::loadFromFile(audio.file());
     if (cover.isNull())
         return false;
 

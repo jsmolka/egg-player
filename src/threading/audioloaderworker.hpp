@@ -14,14 +14,14 @@ public:
     explicit AudioLoaderWorker(const QStrings &files);
 
 signals:
-    void loaded(Audio *audio);
+    void loaded(Audio audio);
 
 private slots:
     void work() override;
 
 private:
-    bool insertAudio(Audio *audio) const;
-    bool updateAudio(Audio *audio) const;
+    bool insertAudio(Audio &audio) const;
+    bool updateAudio(Audio &audio) const;
 
     QStrings m_files;
 };

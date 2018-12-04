@@ -24,13 +24,13 @@ public:
     QColor color() const;
 
 private slots:
-    void onPlayerAudioChanged(Audio *audio);
+    void onPlayerAudioChanged(Audio audio);
     void onPlayerPositionChanged(int position);
     void onVolumeButtonPressed();
     void onDurationSliderMoved(int value);
 
 private:
-    QString trackLabelText(Audio *audio) const;
+    QString trackLabelText(const Audio &audio) const;
 
     void colorTransition(const QColor &color);
 

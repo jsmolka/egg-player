@@ -1,30 +1,42 @@
 #ifndef AUDIO_HPP
 #define AUDIO_HPP
 
+#include <memory>
+
 #include <QVector>
 
 #include "core/cover.hpp"
 #include "core/duration.hpp"
-#include "core/macros.hpp"
 #include "core/tag.hpp"
+
+struct AudioPrivate;
 
 class Audio
 {
 public:
-    using vector = QVector<Audio *>;
+    using vector = QVector<Audio>;
 
     Audio();
+    Audio(const Audio &rhs);
     explicit Audio(const QString &file);
 
-    static Audio *readFromFile(const QString &file);
+    Audio &operator=(Audio rhs);
+    bool operator==(const Audio &rhs) const;
 
     void setFile(const QString &file);
     QString file() const;
 
-    EGG_PPROP(bool, valid, setValid, isValid)
-    EGG_PPROP(bool, cached, setCached, isCached)
-    EGG_PPROP(bool, outdated, setOutdated, isOutdated)
-    EGG_PPROP(qint64, modified, setModified, modified)
+    void setValid(bool valid);
+    bool isValid() const;
+
+    void setCached(bool cached);
+    bool isCached() const;
+
+    void setOutdated(bool outdated);
+    bool isOutdated() const;
+
+    void setModified(qint64 modified);
+    qint64 modified() const;
 
     const Tag &tag() const;
     const Cover &cover() const;
@@ -36,11 +48,10 @@ public:
 
     bool read();
 
+    friend void swap(Audio &lhs, Audio &rhs);
+
 private:
-    QString m_file;
-    Tag m_tag;
-    Cover m_cover;
-    Duration m_duration;
+    std::shared_ptr<AudioPrivate> d;
 };
 
 #endif // AUDIO_HPP

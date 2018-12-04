@@ -12,14 +12,14 @@ public:
     using Callable::Callable;
 
 public slots:
-    void update(Audio *audio);
+    void update(Audio audio);
 
 signals:
-    void updated(Audio *audio);
+    void updated(Audio audio);
 
 private:
-    bool updateAudio(Audio *audio) const;
-    bool loadCover(Audio *audio) const;
+    bool updateAudio(Audio &audio) const;
+    bool loadCover(Audio &audio) const;
 };
 
 #endif // AUDIOUPDATER_HPP

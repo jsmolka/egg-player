@@ -38,12 +38,12 @@ int Playlist::size() const
     return m_indices.size();
 }
 
-Audio *Playlist::audioAt(int index)
+Audio Playlist::audioAt(int index)
 {
     return m_state->at(m_indices.at(index));
 }
 
-Audio *Playlist::currentAudio()
+Audio Playlist::currentAudio()
 {
     return audioAt(m_index);
 }

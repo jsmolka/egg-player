@@ -9,16 +9,15 @@
 class Cache
 {
 public:
-    static Audio *loadAudio(const QString &file);
-    static bool insertAudio(Audio *audio);
-    static bool updateAudio(Audio *audio);
-    static bool updateAudioCover(Audio *audio, const QPixmap &cover);
+    static Audio loadAudio(const QString &file);
+    static bool insertAudio(Audio &audio);
+    static bool updateAudio(Audio &audio);
+    static bool updateAudioCover(Audio &audio, const QPixmap &cover);
 
     static QPixmap loadCover(int id);
 
 private:
-    static Audio *loadAudioFromCache(const QString &file);
-    static bool updateAudioCoverId(Audio *audio, int coverId);
+    static bool updateAudioCoverId(Audio &audio, int coverId);
     static int coverId(const QPixmap &cover);
 };
 

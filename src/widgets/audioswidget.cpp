@@ -69,7 +69,7 @@ void AudiosWidget::onAudiosRemoved(int row)
 
 void AudiosWidget::onAudiosUpdated(int row)
 {
-    Audio *audio = m_audios->at(row);
+    const Audio &audio = m_audios->at(row);
 
     int col = 0;
     for (const Column &column : m_columns)
@@ -81,39 +81,39 @@ void AudiosWidget::onAudiosUpdated(int row)
     }
 }
 
-QString AudiosWidget::audioInfo(Audio *audio, AudioInfo info)
+QString AudiosWidget::audioInfo(const Audio &audio, AudioInfo info)
 {
     switch(info)
     {
     case AudioInfo::Title:
-        return audio->tag().title();
+        return audio.tag().title();
 
     case AudioInfo::Artist:
-        return audio->tag().artist();
+        return audio.tag().artist();
 
     case AudioInfo::Album:
-        return audio->tag().album();
+        return audio.tag().album();
 
     case AudioInfo::Track:
-        return audio->tag().track() != 0
-            ? QString::number(audio->tag().track())
+        return audio.tag().track() != 0
+            ? QString::number(audio.tag().track())
             : QString();
 
     case AudioInfo::Year:
-        return audio->tag().year() != 0
-            ? QString::number(audio->tag().year())
+        return audio.tag().year() != 0
+            ? QString::number(audio.tag().year())
             : QString();
 
     case AudioInfo::Genre:
-        return audio->tag().genre();
+        return audio.tag().genre();
 
     case AudioInfo::Duration:
-        return audio->duration().toString();
+        return audio.duration().toString();
     }
     return QString();
 }
 
-void AudiosWidget::insert(int row, Audio *audio)
+void AudiosWidget::insert(int row, const Audio &audio)
 {
     insertRow(row);
 

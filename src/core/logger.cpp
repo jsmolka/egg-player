@@ -22,7 +22,7 @@ Logger::~Logger()
     static QMutex mutex;
     QMutexLocker locker(&mutex);
 
-    auto &stream = fileStream();
+    auto &stream = textStream();
     stream << message << "\n";
     stream.flush();
 
@@ -50,7 +50,7 @@ QFile &Logger::file()
     return file;
 }
 
-QTextStream &Logger::fileStream()
+QTextStream &Logger::textStream()
 {
     static QTextStream stream(&file());
 

@@ -38,18 +38,18 @@ signals:
     void stateChanged();
     void volumeChanged(int volume);
     void positionChanged(int position);
-    void audioChanged(Audio *audio);
+    void audioChanged(Audio audio);
 
 private slots:
     void updatePosition();
 
-    void onPlaylistAudioChanged(Audio *audio);
+    void onPlaylistAudioChanged(Audio audio);
     void onPlaylistEndReached();
 
 private:
     static void syncFunction(void *data);
 
-    void changeAudio(Audio *audio);
+    void changeAudio(Audio audio);
 
     void init();
 

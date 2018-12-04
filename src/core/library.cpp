@@ -53,7 +53,7 @@ void Library::init(const QStrings &paths)
     load(m_fileSystem.globFiles());
 }
 
-void Library::insert(Audio *audio)
+void Library::insert(const Audio &audio)
 {
     m_fileSystem.watchAudio(audio);
 
@@ -72,7 +72,7 @@ void Library::onAudioLoaderFinished()
     m_coverLoader.start();
 }
 
-void Library::onAudioUpdaterUpdated(Audio *audio)
+void Library::onAudioUpdaterUpdated(Audio audio)
 {
     const int index = m_audios.indexOf(audio);
     if (index == m_audios.lowerBound(audio))
@@ -86,12 +86,12 @@ void Library::onAudioUpdaterUpdated(Audio *audio)
     }
 }
 
-void Library::onFileSystemRenamed(Audio *audio, const QString &name)
+void Library::onFileSystemRenamed(Audio audio, const QString &name)
 {
-    audio->setFile(name);
+    audio.setFile(name);
 }
 
-void Library::onFileSystemRemoved(Audio *audio)
+void Library::onFileSystemRemoved(Audio audio)
 {
     m_audios.removeAudio(audio);
 }

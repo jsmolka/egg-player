@@ -28,7 +28,7 @@ public:
     bool play() const;
     bool pause() const;
 
-    bool create(Audio *audio);
+    bool create(const Audio &audio);
 
 private:
     bool free();

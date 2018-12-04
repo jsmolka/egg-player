@@ -10,9 +10,9 @@ void CoverLoader::start()
     const int threads = QThread::idealThreadCount();
 #endif
 
-    for (const Audio::vector &chunk : chunk<Audio *>(m_audios, threads))
+    for (const Audio::vector &chunk : chunk<Audio>(m_audios, threads))
     {
-        CoverLoaderWorker *worker = new CoverLoaderWorker(chunk);
+        auto *worker = new CoverLoaderWorker(chunk);
         runWorker(worker);
     }
 }

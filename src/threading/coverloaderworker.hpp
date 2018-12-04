@@ -16,7 +16,7 @@ private slots:
     void work() override;
 
 private:
-    bool loadCover(Audio *audio);
+    bool loadCover(Audio &audio);
 
     Audio::vector m_audios;
 };

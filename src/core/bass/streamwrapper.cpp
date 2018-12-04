@@ -86,7 +86,7 @@ bool bass::StreamWrapper::pause() const
     return check(BASS_ChannelPause(m_handle));
 }
 
-bool bass::StreamWrapper::create(Audio *audio)
+bool bass::StreamWrapper::create(const Audio &audio)
 {
     if (isValid())
     {
@@ -94,7 +94,7 @@ bool bass::StreamWrapper::create(Audio *audio)
             return false;
     }
 
-    m_handle = BASS_StreamCreateFile(false, Util::toWString(audio->file()), 0, 0, BASS_ASYNCFILE);
+    m_handle = BASS_StreamCreateFile(false, Util::toWString(audio.file()), 0, 0, BASS_ASYNCFILE);
 
     return check(isValid());
 }

@@ -2,7 +2,7 @@
 
 #include "core/cache.hpp"
 
-void AudioUpdater::update(Audio *audio)
+void AudioUpdater::update(Audio audio)
 {
     if (!updateAudio(audio))
         return;
@@ -13,24 +13,24 @@ void AudioUpdater::update(Audio *audio)
     emit updated(audio);
 }
 
-bool AudioUpdater::updateAudio(Audio *audio) const
+bool AudioUpdater::updateAudio(Audio &audio) const
 {
     if (isInterrupted())
         return false;
 
-    if (!audio->read())
+    if (!audio.read())
         return false;
 
-    audio->cover().invalidate();
+    audio.cover().invalidate();
     return Cache::updateAudio(audio);
 }
 
-bool AudioUpdater::loadCover(Audio *audio) const
+bool AudioUpdater::loadCover(Audio &audio) const
 {
     if (isInterrupted())
         return false;
 
-    const QPixmap cover = Cover::loadFromFile(audio->file());
+    const QPixmap cover = Cover::loadFromFile(audio.file());
     if (cover.isNull())
         return false;
 

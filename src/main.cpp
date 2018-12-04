@@ -2,6 +2,7 @@
 #include <QFont>
 #include <QFontDatabase>
 
+#include "core/audio.hpp"
 #include "core/config.hpp"
 #include "core/constants.hpp"
 #include "core/player.hpp"
@@ -27,6 +28,8 @@ void setup(QApplication &app)
     app.setApplicationName(constants::app::Name);
     app.setOrganizationName(constants::app::Org);
     app.setFont(font());
+
+    qRegisterMetaType<Audio>("Audio");
 
     egg_player.setVolume(cfg_player.volume());
     egg_player.playlist().setLoop(cfg_player.loop());

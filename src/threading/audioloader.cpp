@@ -12,7 +12,7 @@ void AudioLoader::start()
 
     for (const QStrings &chunk : chunk<QString>(m_files, threads))
     {
-        AudioLoaderWorker *worker = new AudioLoaderWorker(chunk);
+        auto *worker = new AudioLoaderWorker(chunk);
         connect(worker, &AudioLoaderWorker::loaded, this, &AudioLoader::loaded);
         runWorker(worker);
     }

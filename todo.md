@@ -12,6 +12,8 @@
 - use qwindows header
 - use mutable for member variables in classes
 - pass possible deleter for smart pointers
+- modernize code
+- make FrozenVector a template, possibly rename
 
 ### Copy-swap
 ```cpp
@@ -26,12 +28,6 @@ T& T::operator=(T rhs) {
   return *this
 }
 ```
-
-## Audio
-- implement Audio using the pimpl idiom
-- create constructors and operators to keep the overhead low when copying
-- figure out how to create a std::shared_pointer using a nullptr
-- make FrozenVector a template
 
 ## Macros
 - rename property macros to EGG_PROP_P / C

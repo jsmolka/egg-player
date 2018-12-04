@@ -48,8 +48,8 @@ public:
     bool updateCoverId(int coverId);
     bool updateModified(qint64 modified);
 
-    void assignTo(::Audio *audio);
-    void loadFrom(::Audio *audio);
+    void assignTo(Audio &audio);
+    void loadFrom(const Audio &audio);
 
 protected:
     bool getBy(const QString &column, const QVariant &value);

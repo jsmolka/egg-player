@@ -19,7 +19,7 @@ public:
 
 private:
     static QFile &file();
-    static QTextStream &fileStream();
+    static QTextStream &textStream();
 
     QStringList m_strings;
 };

@@ -1,42 +1,29 @@
 #include "audios.hpp"
 
-Audios::~Audios()
-{
-    for (Audio *audio : *this)
-        delete audio;
-
-    for (Audio *audio : m_removed)
-        delete audio;
-}
-
-void Audios::insert(int index, Audio *audio)
+void Audios::insert(int index, const Audio &audio)
 {
     Audio::vector::insert(index, audio);
     emit inserted(index);
-    m_removed.remove(audio);
 }
 
-void Audios::append(Audio *audio)
+void Audios::append(const Audio &audio)
 {
     Audio::vector::append(audio);
     emit inserted(size() - 1);
-    m_removed.remove(audio);
 }
 
 void Audios::remove(int index)
 {
-    Audio *audio = at(index);
+    Audio audio = at(index);
     Audio::vector::remove(index);
     emit removed(index);
     emit removedAudio(audio);
-    m_removed << audio;
 }
 
-Audios::iterator Audios::insert(Audios::iterator before, Audio *audio)
+Audios::iterator Audios::insert(Audios::iterator before, const Audio &audio)
 {
     auto position = Audio::vector::insert(before, audio);
     emit inserted(static_cast<int>(position - begin()));
-    m_removed.remove(*position);
 
     return position;
 }
@@ -46,19 +33,18 @@ Audios::iterator Audios::erase(Audios::iterator position)
     auto next = Audio::vector::erase(position);
     emit removed(static_cast<int>(position - begin()));
     emit removedAudio(*position);
-    m_removed << *position;
 
     return next;
 }
 
-int Audios::lowerBound(Audio *audio)
+int Audios::lowerBound(const Audio &audio)
 {
     int low = 0;
     int high = size();
     while (low < high)
     {
         const int mid = (low + high) / 2;
-        const int cmp = audio->tag().title().compare(at(mid)->tag().title(), Qt::CaseInsensitive);
+        const int cmp = audio.tag().title().compare(at(mid).tag().title(), Qt::CaseInsensitive);
         if (cmp < 0)
             high = mid;
         else
@@ -72,14 +58,14 @@ audios::CurrentState *Audios::currentState()
     return new audios::CurrentState(*this, this);
 }
 
-Audios &Audios::operator<<(Audio *audio)
+Audios &Audios::operator<<(const Audio &audio)
 {
     append(audio);
 
     return *this;
 }
 
-void Audios::removeAudio(Audio *audio)
+void Audios::removeAudio(const Audio &audio)
 {
     const int index = indexOf(audio);
     if (index != -1)

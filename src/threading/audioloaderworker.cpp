@@ -10,10 +10,10 @@ AudioLoaderWorker::AudioLoaderWorker(const QStrings &files)
 
 void AudioLoaderWorker::work()
 {
-    for (const QString &file : qAsConst(m_files))
+    for (const QString &file : m_files)
     {
-        Audio *audio = Cache::loadAudio(file);
-        if (!audio)
+        Audio audio = Cache::loadAudio(file);
+        if (!audio.isValid())
             continue;
 
         if (!insertAudio(audio))
@@ -27,28 +27,28 @@ void AudioLoaderWorker::work()
     emit finished();
 }
 
-bool AudioLoaderWorker::insertAudio(Audio *audio) const
+bool AudioLoaderWorker::insertAudio(Audio &audio) const
 {
     if (isInterrupted())
         return false;
 
-    if (audio->isCached())
+    if (audio.isCached())
         return true;
 
     return Cache::insertAudio(audio);
 }
 
-bool AudioLoaderWorker::updateAudio(Audio *audio) const
+bool AudioLoaderWorker::updateAudio(Audio &audio) const
 {
     if (isInterrupted())
         return false;
 
-    if (!audio->isOutdated())
+    if (!audio.isOutdated())
         return true;
 
-    if (!audio->read())
+    if (!audio.read())
         return false;
 
-    audio->cover().invalidate();
+    audio.cover().invalidate();
     return Cache::updateAudio(audio);
 }

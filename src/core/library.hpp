@@ -30,19 +30,19 @@ public:
     void init(const QStrings &paths);
 
 public slots:
-    void insert(Audio *audio);
+    void insert(const Audio &audio);
 
     void load(const QStrings &files);
 
 signals:
-    void inserted(Audio *audio, int index);
+    void inserted(Audio audio, int index);
 
 private slots:
     void onAudioLoaderFinished();
-    void onAudioUpdaterUpdated(Audio *audio);
+    void onAudioUpdaterUpdated(Audio audio);
 
-    void onFileSystemRenamed(Audio *audio, const QString &name);
-    void onFileSystemRemoved(Audio *audio);
+    void onFileSystemRenamed(Audio audio, const QString &name);
+    void onFileSystemRemoved(Audio audio);
 
 private:
     Audios m_audios;

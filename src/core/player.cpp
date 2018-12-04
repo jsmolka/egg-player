@@ -91,7 +91,7 @@ void Player::updatePosition()
     emit positionChanged(position);
 }
 
-void Player::onPlaylistAudioChanged(Audio *audio)
+void Player::onPlaylistAudioChanged(Audio audio)
 {
     changeAudio(audio);
 }
@@ -108,7 +108,7 @@ void Player::syncFunction(void *data)
     player->playlist().next();
 }
 
-void Player::changeAudio(Audio *audio)
+void Player::changeAudio(Audio audio)
 {
     if (!m_bass.create(audio))
         return;

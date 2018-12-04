@@ -19,7 +19,7 @@ public slots:
     void start() override;
 
 signals:
-    void loaded(Audio *audio);
+    void loaded(Audio audio);
 };
 
 #endif // AUDIOLOADER_HPP

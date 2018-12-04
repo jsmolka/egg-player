@@ -6,7 +6,7 @@ audios::CurrentState::CurrentState(const Audio::vector &vector, FrozenVector *pa
     connect(parent, &FrozenVector::removedAudio, this, &CurrentState::removeAudio);
 }
 
-void audios::CurrentState::removeAudio(Audio *audio)
+void audios::CurrentState::removeAudio(const Audio &audio)
 {
     const int index = indexOf(audio);
     if (index == -1)

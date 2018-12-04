@@ -14,7 +14,7 @@ public:
     explicit CurrentState(const Audio::vector &vector, FrozenVector *parent);
 
 private slots:
-    void removeAudio(Audio *audio);
+    void removeAudio(const Audio &audio);
 };
 
 }

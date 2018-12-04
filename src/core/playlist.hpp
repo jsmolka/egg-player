@@ -21,8 +21,8 @@ public:
     int index() const;
     int size() const;
 
-    Audio *audioAt(int index);
-    Audio *currentAudio();
+    Audio audioAt(int index);
+    Audio currentAudio();
 
     void next();
     void previous();
@@ -34,7 +34,7 @@ public slots:
     void setShuffle(bool shuffle);
 
 signals:
-    void audioChanged(Audio *audio);
+    void audioChanged(Audio audio);
     void endReached();
 
 private slots:

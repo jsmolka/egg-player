@@ -202,32 +202,32 @@ bool db::AudioItem::updateModified(qint64 modified)
     return update("modified", modified);
 }
 
-void db::AudioItem::assignTo(::Audio *audio)
+void db::AudioItem::assignTo(Audio &audio)
 {
-    audio->setFile(m_file);
-    audio->tag().setTitle(m_title);
-    audio->tag().setArtist(m_artist);
-    audio->tag().setAlbum(m_album);
-    audio->tag().setGenre(m_genre);
-    audio->tag().setYear(m_year);
-    audio->tag().setTrack(m_track);
-    audio->duration().setSecs(m_duration);
-    audio->cover().setId(m_coverId);
-    audio->setModified(m_modified);
+    audio.setFile(m_file);
+    audio.tag().setTitle(m_title);
+    audio.tag().setArtist(m_artist);
+    audio.tag().setAlbum(m_album);
+    audio.tag().setGenre(m_genre);
+    audio.tag().setYear(m_year);
+    audio.tag().setTrack(m_track);
+    audio.duration().setSecs(m_duration);
+    audio.cover().setId(m_coverId);
+    audio.setModified(m_modified);
 }
 
-void db::AudioItem::loadFrom(::Audio *audio)
+void db::AudioItem::loadFrom(const Audio &audio)
 {
-    m_file = audio->file();
-    m_title = audio->tag().title();
-    m_artist = audio->tag().artist();
-    m_album = audio->tag().album();
-    m_genre = audio->tag().genre();
-    m_year = audio->tag().year();
-    m_track = audio->tag().track();
-    m_duration = audio->duration().secs();
-    m_coverId = audio->cover().id();
-    m_modified = audio->modified();
+    m_file = audio.file();
+    m_title = audio.tag().title();
+    m_artist = audio.tag().artist();
+    m_album = audio.tag().album();
+    m_genre = audio.tag().genre();
+    m_year = audio.tag().year();
+    m_track = audio.tag().track();
+    m_duration = audio.duration().secs();
+    m_coverId = audio.cover().id();
+    m_modified = audio.modified();
 }
 
 bool db::AudioItem::getBy(const QString &column, const QVariant &value)

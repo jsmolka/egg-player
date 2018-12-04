@@ -37,7 +37,7 @@ public:
 
 signals:
     void removed(int index);
-    void removedAudio(Audio *audio);
+    void removedAudio(Audio audio);
 };
 
 }
