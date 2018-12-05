@@ -11,12 +11,12 @@ class AudioFinder : public QObject
     Q_OBJECT
 
 public:
-    AudioFinder(QObject *parent = nullptr);
+    explicit AudioFinder(QObject *parent = nullptr);
 
     void setAudios(Audios *audios);
     void addKey(const QString &key);
 
-    int search();
+    int find();
 
 private slots:
     void reset();

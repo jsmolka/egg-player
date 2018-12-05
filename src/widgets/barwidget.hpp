@@ -5,11 +5,12 @@
 #include <QWidget>
 
 #include "core/audio.hpp"
+#include "widgets/durationslider.hpp"
 #include "widgets/iconbutton.hpp"
 #include "widgets/lockableiconbutton.hpp"
 #include "widgets/playpausebutton.hpp"
-#include "widgets/slider.hpp"
 #include "widgets/volumebutton.hpp"
+#include "widgets/volumeslider.hpp"
 
 class BarWidget : public QWidget
 {
@@ -50,8 +51,8 @@ private:
     LockableIconButton m_loopButton;
     VolumeButton m_volumeButton;
 
-    Slider m_durationSlider;
-    Slider m_volumeSlider;
+    DurationSlider m_durationSlider;
+    VolumeSlider m_volumeSlider;
 };
 
 #endif // BARWIDGET_HPP

@@ -12,8 +12,8 @@ class Thread : public QThread
 public:
     explicit Thread(QObject *parent = nullptr);
 
-    EGG_PPROP(int, objects, setObjects, objects)
-    EGG_PPROP(int, maxObjects, setMaxObjects, maxObjects)
+    EGG_P_PROP(int, objects, setObjects, objects)
+    EGG_P_PROP(int, maxObjects, setMaxObjects, maxObjects)
 
     void incrementObjects();
     void decrementObjects();

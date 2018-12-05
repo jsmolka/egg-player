@@ -29,11 +29,17 @@ public:
 
     void setDefaults() override;
 
-    void setGrooveHeight(int height);
-    int grooveHeight() const;
+    void setGrooveSizeDuration(int height);
+    int grooveSizeDuration() const;
+
+    void setGrooveSizeVolume(int height);
+    int grooveSizeVolume() const;
 
     void setHandleSize(int size);
     int handleSize() const;
+
+    void setHandleSizePressed(int size);
+    int handleSizePressed() const;
 };
 
 class BarJson : public JsonObject

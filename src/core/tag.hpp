@@ -11,14 +11,14 @@ public:
     Tag();
     explicit Tag(const QString &file);
 
-    EGG_CPROP(QString, file, setFile, file)
-    EGG_CPROP(QString, title, setTitle, title)
-    EGG_CPROP(QString, artist, setArtist, artist)
-    EGG_CPROP(QString, album, setAlbum, album)
-    EGG_CPROP(QString, genre, setGenre, genre)
-    EGG_PPROP(int, year, setYear, year)
-    EGG_PPROP(int, track, setTrack, track)
-    EGG_PPROP(int, duration, setDuration, duration)
+    EGG_C_PROP(QString, file, setFile, file)
+    EGG_C_PROP(QString, title, setTitle, title)
+    EGG_C_PROP(QString, artist, setArtist, artist)
+    EGG_C_PROP(QString, album, setAlbum, album)
+    EGG_C_PROP(QString, genre, setGenre, genre)
+    EGG_P_PROP(int, year, setYear, year)
+    EGG_P_PROP(int, track, setTrack, track)
+    EGG_P_PROP(int, duration, setDuration, duration)
 
     bool read();
 };

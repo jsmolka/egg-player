@@ -48,18 +48,30 @@ QJsonObject cfg::SliderJson::toObject() const
 
 void cfg::SliderJson::setDefaults()
 {
-    setDefault("grooveHeight", 2);
-    setDefault("handleSize", 16);
+    setDefault("grooveSizeDuration", 2);
+    setDefault("grooveSizeVolume", 6);
+    setDefault("handleSize", 14);
+    setDefault("handleSizePressed", 16);
 }
 
-void cfg::SliderJson::setGrooveHeight(int height)
+void cfg::SliderJson::setGrooveSizeDuration(int height)
 {
-    set("grooveHeight", height);
+    set("grooveSizeDuration", height);
 }
 
-int cfg::SliderJson::grooveHeight() const
+int cfg::SliderJson::grooveSizeDuration() const
 {
-    return scale(get("grooveHeight").toInt());
+    return scale(get("grooveSizeDuration").toInt());
+}
+
+void cfg::SliderJson::setGrooveSizeVolume(int height)
+{
+    set("grooveSizeVolume", height);
+}
+
+int cfg::SliderJson::grooveSizeVolume() const
+{
+    return scale(get("grooveSizeVolume").toInt());
 }
 
 void cfg::SliderJson::setHandleSize(int size)
@@ -70,6 +82,16 @@ void cfg::SliderJson::setHandleSize(int size)
 int cfg::SliderJson::handleSize() const
 {
     return scale(get("handleSize").toInt());
+}
+
+void cfg::SliderJson::setHandleSizePressed(int size)
+{
+    set("handleSizePressed", size);
+}
+
+int cfg::SliderJson::handleSizePressed() const
+{
+    return scale(get("handleSizePressed").toInt());
 }
 
 void cfg::BarJson::loadFromObject(const QJsonObject &object)

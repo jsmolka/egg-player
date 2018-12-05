@@ -16,8 +16,8 @@ class SyncWrapper : protected BassError
 public:
     SyncWrapper();
 
-    EGG_CPROP(std::function<void(void *)>, function, setFunction, function)
-    EGG_PPROP(void *, functionData, setFunctionData,  functionData)
+    EGG_C_PROP(std::function<void(void *)>, function, setFunction, function)
+    EGG_P_PROP(void *, functionData, setFunctionData,  functionData)
 
     bool isValid() const;
 

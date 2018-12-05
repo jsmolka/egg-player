@@ -2,9 +2,12 @@
  * The css files should only be used to edit color related things. All other
  * values can and should changed through the config. The following values will
  * be replaced by config values.
- * - groove-height
+ * - groove-size-duration
+ * - groove-size-volume
  * - handle-size
  * - handle-size-half
+ * - handle-size-pressed
+ * - handle-size-pressed-half
  * - icon-size-half
  */
 
@@ -20,12 +23,20 @@ LockableIconButton[locked=true] {
     background: rgba(255, 255, 255, 0.3);
 }
 
-Slider::groove:horizontal {
-	background: rgb(150, 150, 150);
-	height: groove-height;
+Slider::sub-page {
+	background: white;
 }
 
-Slider::handle:horizontal {
+Slider::add-page {
+	background: rgb(150, 150, 150);
+}
+
+DurationSlider::groove:horizontal {
+	background: rgb(150, 150, 150);
+	height: groove-size-duration;
+}
+
+DurationSlider::handle:horizontal {
 	background: white;
 	width: handle-size;
 	height: handle-size;
@@ -34,10 +45,20 @@ Slider::handle:horizontal {
 	border-radius: handle-size-half;
 }
 
-Slider::sub-page {
-	background: white;
+DurationSlider::handle:horizontal:hover {
+	background: rgb(175, 175, 175);
 }
 
-Slider::add-page {
-	background: rgb(150, 150, 150);
+DurationSlider::handle:horizontal:pressed {
+	background: white;
+	width: handle-size-pressed;
+	height: handle-size-pressed;
+	margin-top: -handle-size-pressed-half;
+	margin-bottom: -handle-size-pressed-half;
+	border-radius: handle-size-pressed-half;
+}
+
+VolumeSlider::groove:horizontal {
+    background: rgb(150, 150, 150);
+    height: groove-size-volume;
 }

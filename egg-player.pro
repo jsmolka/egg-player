@@ -37,6 +37,7 @@ RESOURCES = egg-player.qrc
 DEFINES *= QT_USE_QSTRINGBUILDER
 
 HEADERS += \
+    src/core/audios/audiosbase.hpp \
     src/core/audios/currentstate.hpp \
     src/core/bass/basserror.hpp \
     src/core/bass/streamwrapper.hpp \
@@ -54,10 +55,12 @@ HEADERS += \
     src/core/database/queryobject.hpp \
     src/core/database/sqlquery.hpp \
     src/core/database/tableitem.hpp \
+    src/core/filesystem/directory.hpp \
     src/core/filesystem/filesystemwatcher.hpp \
     src/core/filesystem/uniquefileinfo.hpp \
     src/core/filesystem/windowsfile.hpp \
     src/core/audio.hpp \
+    src/core/audiofinder.hpp \
     src/core/audios.hpp \
     src/core/bass.hpp \
     src/core/bimap.hpp \
@@ -66,12 +69,14 @@ HEADERS += \
     src/core/constants.hpp \
     src/core/cover.hpp \
     src/core/duration.hpp \
+    src/core/filesystem.hpp \
     src/core/iconcreator.hpp \
     src/core/library.hpp \
     src/core/logger.hpp \
     src/core/macros.hpp \
     src/core/player.hpp \
     src/core/playlist.hpp \
+    src/core/readablevector.hpp \
     src/core/shortcut.hpp \
     src/core/shortcutprocessor.hpp \
     src/core/singleton.hpp \
@@ -95,6 +100,7 @@ HEADERS += \
     src/widgets/barwidget.hpp \
     src/widgets/borderlayout.hpp \
     src/widgets/clickablestyle.hpp \
+    src/widgets/durationslider.hpp \
     src/widgets/eggwidget.hpp \
     src/widgets/iconbutton.hpp \
     src/widgets/librarywidget.hpp \
@@ -106,13 +112,10 @@ HEADERS += \
     src/widgets/smoothtablewidget.hpp \
     src/widgets/tablewidget.hpp \
     src/widgets/volumebutton.hpp \
-    src/core/filesystem/directory.hpp \
-    src/core/filesystem.hpp \
-    src/core/readablevector.hpp \
-    src/core/audios/audiosbase.hpp \
-    src/core/audiofinder.hpp
+    src/widgets/volumeslider.hpp
 
 SOURCES += \
+    src/core/audios/audiosbase.cpp \
     src/core/audios/currentstate.cpp \
     src/core/bass/basserror.cpp \
     src/core/bass/streamwrapper.cpp \
@@ -129,10 +132,12 @@ SOURCES += \
     src/core/database/infoitem.cpp \
     src/core/database/queryobject.cpp \
     src/core/database/sqlquery.cpp \
+    src/core/filesystem/directory.cpp \
     src/core/filesystem/filesystemwatcher.cpp \
     src/core/filesystem/uniquefileinfo.cpp \
     src/core/filesystem/windowsfile.cpp \
     src/core/audio.cpp \
+    src/core/audiofinder.cpp \
     src/core/audios.cpp \
     src/core/bass.cpp \
     src/core/cache.cpp \
@@ -140,6 +145,7 @@ SOURCES += \
     src/core/constants.cpp \
     src/core/cover.cpp \
     src/core/duration.cpp \
+    src/core/filesystem.cpp \
     src/core/iconcreator.cpp \
     src/core/library.cpp \
     src/core/logger.cpp \
@@ -165,6 +171,7 @@ SOURCES += \
     src/widgets/barwidget.cpp \
     src/widgets/borderlayout.cpp \
     src/widgets/clickablestyle.cpp \
+    src/widgets/durationslider.cpp \
     src/widgets/eggwidget.cpp \
     src/widgets/iconbutton.cpp \
     src/widgets/librarywidget.cpp \
@@ -176,8 +183,5 @@ SOURCES += \
     src/widgets/smoothtablewidget.cpp \
     src/widgets/tablewidget.cpp \
     src/widgets/volumebutton.cpp \
-    src/main.cpp \
-    src/core/filesystem/directory.cpp \
-    src/core/filesystem.cpp \
-    src/core/audios/audiosbase.cpp \
-    src/core/audiofinder.cpp
+    src/main.cpp
+

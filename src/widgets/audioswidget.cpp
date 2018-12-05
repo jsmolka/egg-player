@@ -68,7 +68,7 @@ void AudiosWidget::keyboardSearch(const QString &search)
 void AudiosWidget::keyPressEvent(QKeyEvent *event)
 {
     m_finder.addKey(event->text());
-    const int row = m_finder.search();
+    const int row = m_finder.find();
     if (row != -1)
     {
         scrollTo(model()->index(row, 0));

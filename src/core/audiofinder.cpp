@@ -25,7 +25,7 @@ void AudioFinder::addKey(const QString &key)
     m_reset.start(qApp->keyboardInputInterval());
 }
 
-int AudioFinder::search()
+int AudioFinder::find()
 {
     if (!m_audios || m_index == -1 || m_string.isEmpty())
         return -1;

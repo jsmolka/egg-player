@@ -12,8 +12,8 @@ class InfoItem : public TableItem
 public:
     InfoItem();
 
-    EGG_PPROP(int, id, setId, id)
-    EGG_PPROP(int, version, setVersion, version)
+    EGG_P_PROP(int, id, setId, id)
+    EGG_P_PROP(int, version, setVersion, version)
 
     bool exists();
     bool insert();

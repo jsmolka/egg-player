@@ -56,7 +56,8 @@ void cfg::LibraryJson::setPaths(const QStrings &paths)
 QStrings cfg::LibraryJson::paths() const
 {
     QStrings paths;
-    for (const QJsonValue &value : get("paths").toArray())
+    const QJsonArray values = get("paths").toArray();
+    for (const QJsonValue &value : values)
         paths << value.toString();
 
     return paths;

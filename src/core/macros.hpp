@@ -41,7 +41,4 @@
         static_cast<const cls &>(            \
             *this).func())                   \
 
-#define EGG_PPROP EGG_P_PROP
-#define EGG_CPROP EGG_C_PROP
-
 #endif // MACROS_HPP

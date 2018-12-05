@@ -40,9 +40,9 @@ BarWidget::BarWidget(QWidget *parent)
     connect(&m_loopButton, &LockableIconButton::locked, &egg_player.playlist(), &Playlist::setLoop);
     connect(&m_volumeButton, &IconButton::released, this, &BarWidget::onVolumeButtonPressed);
 
-    connect(&m_durationSlider, &Slider::sliderMoved, this, &BarWidget::onDurationSliderMoved);
-    connect(&m_durationSlider, &Slider::sliderValueChanged, &egg_player, &Player::setPosition);
-    connect(&m_volumeSlider, &Slider::sliderMoved, &egg_player, &Player::setVolume);
+    connect(&m_durationSlider, &DurationSlider::sliderMoved, this, &BarWidget::onDurationSliderMoved);
+    connect(&m_durationSlider, &DurationSlider::sliderValueChanged, &egg_player, &Player::setPosition);
+    connect(&m_volumeSlider, &VolumeSlider::sliderMoved, &egg_player, &Player::setVolume);
 }
 
 void BarWidget::setColor(const QColor &color)
@@ -182,10 +182,20 @@ void BarWidget::initUi()
 
 void BarWidget::initStyle()
 {
+    const int grooveSizeDuration = cfg_bar.slider().grooveSizeDuration();
+    const int grooveSizeVolume = cfg_bar.slider().grooveSizeVolume();
+    const int handleSize = cfg_bar.slider().handleSize();
+    const int handleSizePressed = cfg_bar.slider().handleSizePressed();
+    const int iconSize = cfg_bar.iconSize();
+
     setStyleSheet(FileUtil::read(constants::css::Bar)
-        .replace("groove-height", QString::number(cfg_bar.slider().grooveHeight()))
-        .replace("handle-size-half", QString::number(cfg_bar.slider().handleSize() / 2))
-        .replace("handle-size", QString::number(cfg_bar.slider().handleSize()))
-        .replace("icon-size-half", QString::number(cfg_bar.iconSize() / 2))
+        .replace("groove-size-duration", QString::number(grooveSizeDuration))
+        .replace("groove-size-volume", QString::number(grooveSizeVolume))
+        .replace("handle-size-pressed-half", QString::number(handleSizePressed / 2))
+        .replace("handle-size-pressed", QString::number(handleSizePressed))
+        .replace("handle-size-half", QString::number(handleSize / 2))
+        .replace("handle-size", QString::number(handleSize))
+        .replace("icon-size-half", QString::number(iconSize / 2))
+
     );
 }
