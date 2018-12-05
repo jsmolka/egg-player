@@ -45,7 +45,6 @@ void TableWidget::init()
 {
     setAlternatingRowColors(true);
     setEditTriggers(QAbstractItemView::NoEditTriggers);
-    setFocusPolicy(Qt::NoFocus);
     setFrameStyle(QFrame::NoFrame);
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     setItemDelegate(&m_delegate);

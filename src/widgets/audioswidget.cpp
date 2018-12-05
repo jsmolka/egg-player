@@ -1,6 +1,7 @@
 #include "audioswidget.hpp"
 
 #include <QHeaderView>
+#include <QKeyEvent>
 
 #include "core/config.hpp"
 #include "core/constants.hpp"
@@ -9,6 +10,7 @@
 AudiosWidget::AudiosWidget(QWidget *parent)
     : TableWidget(parent)
     , m_audios(nullptr)
+    , m_finder(this)
 {
     init();
 }
@@ -27,6 +29,7 @@ void AudiosWidget::setAudios(Audios *audios)
         clearContents();
     }
     m_audios = audios;
+    m_finder.setAudios(audios);
 
     if (!audios)
         return;
@@ -55,6 +58,21 @@ void AudiosWidget::addColumn(AudioInfo info, Qt::Alignment align, ColumnSizePoli
 
     if (policy == ColumnSizePolicy::Shrink)
         horizontalHeader()->setSectionResizeMode(m_columns.size() - 1, QHeaderView::ResizeToContents);
+}
+
+void AudiosWidget::keyboardSearch(const QString &search)
+{
+    Q_UNUSED(search)
+}
+
+void AudiosWidget::keyPressEvent(QKeyEvent *event)
+{
+    m_finder.addKey(event->text());
+    const int index = m_finder.search();
+    if (index != -1)
+        setCurrentCell(index, 0);
+
+    QTableWidget::keyPressEvent(event);
 }
 
 void AudiosWidget::onAudiosInserted(int row)

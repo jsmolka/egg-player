@@ -4,6 +4,7 @@
 #include <QVector>
 
 #include "core/audio.hpp"
+#include "core/audiofinder.hpp"
 #include "core/audios.hpp"
 #include "widgets/tablewidget.hpp"
 
@@ -22,6 +23,11 @@ public:
     Audios *audios() const;
 
     void addColumn(AudioInfo info, Qt::Alignment align = Qt::AlignLeft, ColumnSizePolicy policy = Expand);
+
+    void keyboardSearch(const QString &search) override;
+
+protected:
+    void keyPressEvent(QKeyEvent *event) override;
 
 private slots:
     void onAudiosInserted(int row);
@@ -42,6 +48,7 @@ private:
     void initStyle();
 
     Audios *m_audios;
+    AudioFinder m_finder;
     QVector<Column> m_columns;
 };
 

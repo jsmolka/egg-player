@@ -41,3 +41,7 @@ QScrollBar::sub-page:vertical {
     background: transparent;
 }
 
+QTableWidget {
+	outline: 0;
+}
+

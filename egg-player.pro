@@ -109,7 +109,8 @@ HEADERS += \
     src/core/filesystem/directory.hpp \
     src/core/filesystem.hpp \
     src/core/readablevector.hpp \
-    src/core/audios/audiosbase.hpp
+    src/core/audios/audiosbase.hpp \
+    src/core/audiofinder.hpp
 
 SOURCES += \
     src/core/audios/currentstate.cpp \
@@ -178,4 +179,5 @@ SOURCES += \
     src/main.cpp \
     src/core/filesystem/directory.cpp \
     src/core/filesystem.cpp \
-    src/core/audios/audiosbase.cpp
+    src/core/audios/audiosbase.cpp \
+    src/core/audiofinder.cpp

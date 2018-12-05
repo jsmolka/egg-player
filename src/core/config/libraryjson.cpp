@@ -20,7 +20,7 @@ void cfg::LibraryJson::setDefaults()
     setDefault("cellPadding", 10);
     setDefault("itemHeight", 50);
     setDefault("paths", QJsonArray({QStandardPaths::writableLocation(QStandardPaths::MusicLocation)}));
-    setDefault("scrollBarWidth", 12);
+    setDefault("scrollBarWidth", 15);
     setDefault("smoothScrolling", true);
 }
 
