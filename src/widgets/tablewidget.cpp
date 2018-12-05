@@ -12,6 +12,16 @@ TableWidget::TableWidget(QWidget *parent)
     connect(this, &TableWidget::entered, this, &TableWidget::onEntered);
 }
 
+void TableWidget::setHoverRow(int row)
+{
+    if (row == m_delegate.hoverRow())
+        return;
+
+    m_delegate.setHoverRow(row);
+
+    viewport()->update();
+}
+
 void TableWidget::leaveEvent(QEvent *event)
 {
     setHoverRow(-1);
@@ -29,16 +39,6 @@ void TableWidget::resizeEvent(QResizeEvent *event)
 void TableWidget::onEntered(const QModelIndex &index)
 {
     setHoverRow(index.row());
-}
-
-void TableWidget::setHoverRow(int row)
-{
-    if (row == m_delegate.hoverRow())
-        return;
-
-    m_delegate.setHoverRow(row);
-
-    viewport()->update();
 }
 
 void TableWidget::init()

@@ -13,7 +13,7 @@ QJsonObject cfg::LabelWidthJson::toObject() const
 void cfg::LabelWidthJson::setDefaults()
 {
     setDefault("time", 50);
-    setDefault("track", 240);
+    setDefault("track", 200);
 }
 
 void cfg::LabelWidthJson::setTime(int width)

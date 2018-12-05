@@ -7,4 +7,3 @@
   - make the volume slider pop out instead of hiding other icons
   - improve the duration slider style (include some form of hover effect)
   - create a unique handle for the duration slider
-- update the track label if the played audio has been modified

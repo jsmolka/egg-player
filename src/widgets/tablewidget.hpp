@@ -12,6 +12,8 @@ class TableWidget : public SmoothTableWidget
 public:
     explicit TableWidget(QWidget *parent = nullptr);
 
+    void setHoverRow(int row);
+
 protected:
     void leaveEvent(QEvent *event);
     void resizeEvent(QResizeEvent *event);
@@ -20,8 +22,6 @@ private slots:
     void onEntered(const QModelIndex &index);
 
 private:
-    void setHoverRow(int row);
-
     void init();
 
     RowHoverDelegate m_delegate;

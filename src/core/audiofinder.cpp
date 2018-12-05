@@ -27,7 +27,7 @@ void AudioFinder::addKey(const QString &key)
 
 int AudioFinder::search()
 {
-    if (!m_audios || m_index == -1)
+    if (!m_audios || m_index == -1 || m_string.isEmpty())
         return -1;
 
     for ( ; m_index < m_audios->size(); ++m_index)

@@ -68,11 +68,13 @@ void AudiosWidget::keyboardSearch(const QString &search)
 void AudiosWidget::keyPressEvent(QKeyEvent *event)
 {
     m_finder.addKey(event->text());
-    const int index = m_finder.search();
-    if (index != -1)
-        setCurrentCell(index, 0);
-
-    QTableWidget::keyPressEvent(event);
+    const int row = m_finder.search();
+    if (row != -1)
+    {
+        scrollTo(model()->index(row, 0));
+        setHoverRow(row);
+    }
+    TableWidget::keyPressEvent(event);
 }
 
 void AudiosWidget::onAudiosInserted(int row)
