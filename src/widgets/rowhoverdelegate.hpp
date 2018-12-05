@@ -12,7 +12,7 @@ class RowHoverDelegate : public QStyledItemDelegate
 public:
     RowHoverDelegate(QObject *parent = nullptr);
 
-    EGG_PPROP(int, hoverRow, setHoverRow, hoverRow)
+    EGG_P_PROP(int, hoverRow, setHoverRow, hoverRow)
 
 protected:
     void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const;

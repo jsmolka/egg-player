@@ -8,7 +8,6 @@
 #include "core/config.hpp"
 #include "core/constants.hpp"
 #include "core/library.hpp"
-#include "core/logger.hpp"
 #include "core/player.hpp"
 #include "core/utils.hpp"
 #include "threading/threadpool.hpp"
@@ -98,13 +97,8 @@ void EggWidget::init()
 
 void EggWidget::initUi()
 {
-    QLabel *label = new QLabel(this);
-    label->setFixedWidth(250);
-    label->setStyleSheet("QLabel {background-color: #666666;}");
-
     BorderLayout *layout = new BorderLayout(0, this);
     layout->addWidget(&m_library, BorderLayout::Center);
-    layout->addWidget(label, BorderLayout::West);
     layout->addWidget(&m_bar, BorderLayout::South);
     setLayout(layout);
 }

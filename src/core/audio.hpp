@@ -3,8 +3,6 @@
 
 #include <memory>
 
-#include <QVector>
-
 #include "core/cover.hpp"
 #include "core/duration.hpp"
 #include "core/tag.hpp"
@@ -14,8 +12,6 @@ struct AudioPrivate;
 class Audio
 {
 public:
-    using vector = QVector<Audio>;
-
     Audio();
     Audio(const Audio &rhs);
     explicit Audio(const QString &file);

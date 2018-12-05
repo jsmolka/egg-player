@@ -11,7 +11,7 @@ public:
     Duration();
     explicit Duration(int secs);
 
-    EGG_PPROP(int, secs, setSecs, secs)
+    EGG_P_PROP(int, secs, setSecs, secs)
 
     QString toString() const;
 };

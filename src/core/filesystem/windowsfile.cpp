@@ -71,10 +71,10 @@ void fs::WindowsFile::createHandle()
         Util::toWString(m_file),
         0,
         FILE_SHARE_READ | FILE_SHARE_WRITE,
-        nullptr,
+        NULL,
         OPEN_EXISTING,
         FILE_ATTRIBUTE_NORMAL,
-        nullptr
+        NULL
     );
 
     if (!isHandleValid())

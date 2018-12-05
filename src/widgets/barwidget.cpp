@@ -57,7 +57,7 @@ QColor BarWidget::color() const
     return palette().color(QPalette::Background);
 }
 
-void BarWidget::onPlayerAudioChanged(Audio audio)
+void BarWidget::onPlayerAudioChanged(const Audio &audio)
 {
     m_durationSlider.setRange(0, audio.duration().secs());
 

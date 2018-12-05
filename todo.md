@@ -1,40 +1,5 @@
 # Things to do
 
-## General
-- properly bind the column in database queries
-- explore the benefits of smart pointers and the limits of Qt parenting
-- properly forward declare classes, remove unnecessary ones from headers
-- explore the benefits of enum classes and flags
-- create a base class or a template for pimpl idiom classes
-- use NULL in bass
-- use public inheritance for singleton
-- CurrentState constructor does not need to be explicit
-- use qwindows header
-- use mutable for member variables in classes
-- pass possible deleter for smart pointers
-- make FrozenVector a template, possibly rename
-- do not use Audio::vector
-- use update wrapper in database update functions
-
-### Copy-swap
-```cpp
-T& T::operator=(const T &rhs) {
-  T temp(rhs);
-  swap(temp);
-  return *this;
-}
-
-T& T::operator=(T rhs) {
-  swap(rhs);
-  return *this
-}
-```
-
-## Macros
-- rename property macros to EGG_PROP_P / C
-- remove the macros for getter and setter or make them private
-- add property macro for pimple classes (EGG_PROP_P)
-
 ## User Interface
 
 ### Bar

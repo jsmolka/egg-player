@@ -15,9 +15,9 @@ class CoverItem : public TableItem
 public:
     CoverItem();
 
-    EGG_PPROP(int, id, setId, id)
-    EGG_PPROP(int, size, setSize, size)
-    EGG_CPROP(QPixmap, cover, setCover, cover)
+    EGG_P_PROP(int, id, setId, id)
+    EGG_P_PROP(int, size, setSize, size)
+    EGG_C_PROP(QPixmap, cover, setCover, cover)
 
     bool exists();
     bool insert();
@@ -34,10 +34,6 @@ public:
     bool updateSize(int size);
     bool updateCover(const QPixmap &cover);
 
-protected:
-    bool getBy(const QString &column, const QVariant &value);
-    bool update(const QString &column, const QVariant &value);
-
 private:
     static QByteArray coverToBytes(const QPixmap &cover);
 
@@ -50,6 +46,12 @@ private:
     int coverId(const QByteArray &bytes);
     int coverIdBySize(const QByteArray &bytes);
     int coverIdByBlob(const QByteArray &bytes);
+
+    template <typename T>
+    bool updateWrapper(const QString &column, const T &value, T &member);
+
+    bool getBy(const QString &column, const QVariant &value);
+    bool update(const QString &column, const QVariant &value);
     void loadFromRecord(const QSqlRecord &record);
 };
 

@@ -3,8 +3,6 @@
 #include <QDateTime>
 #include <QFileInfo>
 
-#include "core/logger.hpp"
-
 struct AudioPrivate
 {
     AudioPrivate()

@@ -26,14 +26,14 @@ const Audios &Library::audios() const
     return m_audios;
 }
 
-const FileSystem &Library::fileSystem() const
-{
-    return m_fileSystem;
-}
-
 Audios &Library::audios()
 {
     return EGG_REF_CAST(Library, Audios, audios);
+}
+
+const FileSystem &Library::fileSystem() const
+{
+    return m_fileSystem;
 }
 
 FileSystem &Library::fileSystem()

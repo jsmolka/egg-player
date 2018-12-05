@@ -21,15 +21,18 @@ public:
     ~Config();
 
     const cfg::AppJson &app() const;
-    const cfg::BarJson &bar() const;
-    const cfg::LibraryJson &library() const;
-    const cfg::PlayerJson &player() const;
-    const cfg::ShortcutJson &shortcut() const;
-
     cfg::AppJson &app();
+
+    const cfg::BarJson &bar() const;
     cfg::BarJson &bar();
+
+    const cfg::LibraryJson &library() const;
     cfg::LibraryJson &library();
+
+    const cfg::PlayerJson &player() const;
     cfg::PlayerJson &player();
+
+    const cfg::ShortcutJson &shortcut() const;
     cfg::ShortcutJson &shortcut();
 
 private:

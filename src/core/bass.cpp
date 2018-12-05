@@ -31,7 +31,7 @@ bool Bass::applySync()
 
 bool Bass::init()
 {
-    return check(BASS_Init(-1, 44100, 0, nullptr, nullptr));
+    return check(BASS_Init(-1, 44100, 0, NULL, NULL));
 }
 
 bool Bass::free()

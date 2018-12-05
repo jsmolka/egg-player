@@ -75,16 +75,28 @@ bool db::InfoItem::udpateId(int id)
     query().bindValue(":id", m_id);
     query().bindValue(":newid", id);
 
-    m_id = id;
-
-    return query().exec();
+    if (query().exec())
+    {
+        m_id = id;
+        return true;
+    }
+    return false;
 }
 
 bool db::InfoItem::updateVersion(int version)
 {
-    m_version = version;
+    return  updateWrapper<int>("version", version, m_version);
+}
 
-    return update("version", version);
+template<typename T>
+bool db::InfoItem::updateWrapper(const QString &column, const T &value, T &member)
+{
+    if (update(column, value))
+    {
+        member = value;
+        return true;
+    }
+    return false;
 }
 
 bool db::InfoItem::getBy(const QString &column, const QVariant &value)
@@ -95,10 +107,7 @@ bool db::InfoItem::getBy(const QString &column, const QVariant &value)
     );
     query().bindValue(":value", value);
 
-    if (!query().exec())
-        return false;
-
-    if (!query().first())
+    if (!query().exec() || !query().first())
         return false;
 
     loadFromRecord(query().record());

@@ -19,13 +19,13 @@ public:
     static QPixmap loadFromFile(const QString &file);
     static QPixmap scale(const QPixmap &pixmap, int size, ScalePolicy policy = ScalePolicy::Smooth);
 
-    EGG_PPROP(int, id, setId, id)
+    EGG_P_PROP(int, id, setId, id)
 
     bool isValid() const;
     void invalidate();
 
-    QPixmap pixmap(int size = 0);
-    QColor color();
+    QPixmap pixmap(int size = 0) const;
+    QColor color() const;
 
 private:
     struct HsvRange
@@ -35,6 +35,7 @@ private:
         int v;
         int c;
     };
+    static QPixmap readFromFile(const QString &file);
     static QPixmap coverify(const QPixmap &cover);
     static QColor computeColor(const QImage &image);
     static QColor dominantColor(const QVector<HsvRange> &ranges);

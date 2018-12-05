@@ -1,17 +1,20 @@
 #ifndef AUDIOS_CURRENTSTATE_HPP
 #define AUDIOS_CURRENTSTATE_HPP
 
-#include "core/audios/frozenvector.hpp"
+#include <QVector>
+
+#include "core/audio.hpp"
+#include "core/audios/audiosbase.hpp"
 
 namespace audios
 {
 
-class CurrentState : public FrozenVector
+class CurrentState : public AudiosBase
 {
     Q_OBJECT
 
 public:
-    explicit CurrentState(const Audio::vector &vector, FrozenVector *parent);
+    CurrentState(const QVector<Audio> &vector, AudiosBase *parent);
 
 private slots:
     void removeAudio(const Audio &audio);

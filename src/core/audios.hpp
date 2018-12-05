@@ -1,15 +1,15 @@
 #ifndef AUDIOS_HPP
 #define AUDIOS_HPP
 
-#include "core/audios/frozenvector.hpp"
+#include "core/audios/audiosbase.hpp"
 #include "core/audios/currentstate.hpp"
 
-class Audios : public audios::FrozenVector
+class Audios : public audios::AudiosBase
 {
     Q_OBJECT
 
 public:
-    using audios::FrozenVector::FrozenVector;
+    using audios::AudiosBase::AudiosBase;
 
     void insert(int index, const Audio &audio);
     void append(const Audio &audio);

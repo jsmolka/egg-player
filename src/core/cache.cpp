@@ -57,6 +57,15 @@ QPixmap Cache::loadCover(int id)
     return coverItem.cover();
 }
 
+int Cache::coverId(const QPixmap &cover)
+{
+    db::CoverItem coverItem;
+    if (!coverItem.getOrInsertCover(cover))
+        return 0;
+
+    return coverItem.id();
+}
+
 bool Cache::updateAudioCoverId(Audio &audio, int coverId)
 {
     db::AudioItem audioItem;
@@ -65,13 +74,4 @@ bool Cache::updateAudioCoverId(Audio &audio, int coverId)
     audio.cover().setId(coverId);
 
     return audioItem.updateCoverId(coverId);
-}
-
-int Cache::coverId(const QPixmap &cover)
-{
-    db::CoverItem coverItem;
-    if (!coverItem.getOrInsertCover(cover))
-        return 0;
-
-    return coverItem.id();
 }

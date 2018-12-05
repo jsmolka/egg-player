@@ -84,56 +84,29 @@ bool db::CoverItem::updateId(int id)
     query().bindValue(":id", m_id);
     query().bindValue(":newid", id);
 
-    m_id = id;
-
-    return query().exec();
+    if (query().exec())
+    {
+        m_id = id;
+        return true;
+    }
+    return false;
 }
 
 bool db::CoverItem::updateSize(int size)
 {
-    m_size = size;
-
-    return update("size", size);
+    return updateWrapper<int>("size", size, m_size);
 }
 
 bool db::CoverItem::updateCover(const QPixmap &cover)
 {
-    m_cover = cover;
     const QByteArray bytes = coverToBytes(cover);
 
-    return update("cover", bytes);
-}
-
-bool db::CoverItem::getBy(const QString &column, const QVariant &value)
-{
-    query().prepare(
-        "SELECT * FROM covers "
-        "WHERE " + column + " = :value"
-    );
-    query().bindValue(":value", value);
-
-    if (!query().exec())
-        return false;
-
-    if (!query().first())
-        return false;
-
-    loadFromRecord(query().record());
-
-    return true;
-}
-
-bool db::CoverItem::update(const QString &column, const QVariant &value)
-{
-    query().prepare(
-        "UPDATE covers SET"
-        "  " + column + " = :value "
-        "WHERE id = :file"
-    );
-    query().bindValue(":id", m_id);
-    query().bindValue(":value", value);
-
-    return query().exec();
+    if (update("cover", bytes))
+    {
+        m_cover = cover;
+        return true;
+    }
+    return false;
 }
 
 QByteArray db::CoverItem::coverToBytes(const QPixmap &cover)
@@ -243,6 +216,46 @@ int db::CoverItem::coverIdByBlob(const QByteArray &bytes)
         id = record.value("id").toInt();
     }
     return id;
+}
+
+template<typename T>
+bool db::CoverItem::updateWrapper(const QString &column, const T &value, T &member)
+{
+    if (update(column, value))
+    {
+        member = value;
+        return true;
+    }
+    return false;
+}
+
+bool db::CoverItem::getBy(const QString &column, const QVariant &value)
+{
+    query().prepare(
+        "SELECT * FROM covers "
+        "WHERE " + column + " = :value"
+    );
+    query().bindValue(":value", value);
+
+    if (!query().exec() || !query().first())
+        return false;
+
+    loadFromRecord(query().record());
+
+    return true;
+}
+
+bool db::CoverItem::update(const QString &column, const QVariant &value)
+{
+    query().prepare(
+        "UPDATE covers SET"
+        "  " + column + " = :value "
+        "WHERE id = :file"
+    );
+    query().bindValue(":id", m_id);
+    query().bindValue(":value", value);
+
+    return query().exec();
 }
 
 void db::CoverItem::loadFromRecord(const QSqlRecord &record)

@@ -20,7 +20,7 @@ public:
 
     explicit Directory(const QString &path, QObject *parent = nullptr);
 
-    EGG_PPROP(AddPolicy, addPolicy, setAddPolicy, addPolicy)
+    EGG_P_PROP(AddPolicy, addPolicy, setAddPolicy, addPolicy)
 
     QString path() const;
     QSet<QString> files() const;
@@ -37,10 +37,10 @@ signals:
     void removed(Directory *dir);
 
 private:
-    QStrings processRemovedSubdirs();
-    QStrings processCurrentSubdirs();
-    QStrings processRemovedFiles();
-    QStrings processCurrentFiles();
+    void processRemovedSubdirs(QStrings &changes);
+    void processCurrentSubdirs(QStrings &changes);
+    void processRemovedFiles(QStrings &changes);
+    void processCurrentFiles(QStrings &changes);
 
     QStrings deleteRecursive(Directory *dir);
 

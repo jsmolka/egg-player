@@ -38,7 +38,6 @@ DEFINES *= QT_USE_QSTRINGBUILDER
 
 HEADERS += \
     src/core/audios/currentstate.hpp \
-    src/core/audios/frozenvector.hpp \
     src/core/bass/basserror.hpp \
     src/core/bass/streamwrapper.hpp \
     src/core/bass/syncwrapper.hpp \
@@ -108,11 +107,12 @@ HEADERS += \
     src/widgets/tablewidget.hpp \
     src/widgets/volumebutton.hpp \
     src/core/filesystem/directory.hpp \
-    src/core/filesystem.hpp
+    src/core/filesystem.hpp \
+    src/core/readablevector.hpp \
+    src/core/audios/audiosbase.hpp
 
 SOURCES += \
     src/core/audios/currentstate.cpp \
-    src/core/audios/frozenvector.cpp \
     src/core/bass/basserror.cpp \
     src/core/bass/streamwrapper.cpp \
     src/core/bass/syncwrapper.cpp \
@@ -177,4 +177,5 @@ SOURCES += \
     src/widgets/volumebutton.cpp \
     src/main.cpp \
     src/core/filesystem/directory.cpp \
-    src/core/filesystem.cpp
+    src/core/filesystem.cpp \
+    src/core/audios/audiosbase.cpp

@@ -17,7 +17,7 @@ public:
     static float scale(float value);
     static int scale(int value);
 
-    EGG_CPROP(QJsonObject, object, setObject, object)
+    EGG_C_PROP(QJsonObject, object, setObject, object)
 
     virtual void loadFromObject(const QJsonObject &object) = 0;
     virtual QJsonObject toObject() const = 0;

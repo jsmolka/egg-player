@@ -2,7 +2,7 @@
 
 #include "core/cache.hpp"
 
-CoverLoaderWorker::CoverLoaderWorker(const Audio::vector &audios)
+CoverLoaderWorker::CoverLoaderWorker(const QVector<Audio> &audios)
     : m_audios(audios)
 {
 

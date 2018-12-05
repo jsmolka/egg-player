@@ -23,29 +23,14 @@ const cfg::AppJson &Config::app() const
     return m_app;
 }
 
-const cfg::BarJson &Config::bar() const
-{
-    return m_bar;
-}
-
-const cfg::LibraryJson &Config::library() const
-{
-    return m_library;
-}
-
-const cfg::PlayerJson &Config::player() const
-{
-    return m_player;
-}
-
-const cfg::ShortcutJson &Config::shortcut() const
-{
-    return m_shortcut;
-}
-
 cfg::AppJson &Config::app()
 {
     return EGG_REF_CAST(Config, cfg::AppJson, app);
+}
+
+const cfg::BarJson &Config::bar() const
+{
+    return m_bar;
 }
 
 cfg::BarJson &Config::bar()
@@ -53,14 +38,29 @@ cfg::BarJson &Config::bar()
     return EGG_REF_CAST(Config, cfg::BarJson, bar);
 }
 
+const cfg::LibraryJson &Config::library() const
+{
+    return m_library;
+}
+
 cfg::LibraryJson &Config::library()
 {
     return EGG_REF_CAST(Config, cfg::LibraryJson, library);
 }
 
+const cfg::PlayerJson &Config::player() const
+{
+    return m_player;
+}
+
 cfg::PlayerJson &Config::player()
 {
     return EGG_REF_CAST(Config, cfg::PlayerJson, player);
+}
+
+const cfg::ShortcutJson &Config::shortcut() const
+{
+    return m_shortcut;
 }
 
 cfg::ShortcutJson &Config::shortcut()

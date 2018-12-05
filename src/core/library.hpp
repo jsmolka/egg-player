@@ -22,9 +22,9 @@ public:
     explicit Library(QObject *parent = nullptr);
 
     const Audios &audios() const;
-    const FileSystem &fileSystem() const;
-
     Audios &audios();
+
+    const FileSystem &fileSystem() const;
     FileSystem &fileSystem();
 
     void init(const QStrings &paths);

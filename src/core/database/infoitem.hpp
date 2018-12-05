@@ -27,11 +27,12 @@ public:
     bool udpateId(int id);
     bool updateVersion(int version);
 
-protected:
+private:
+    template <typename T>
+    bool updateWrapper(const QString &column, const T &value, T &member);
+
     bool getBy(const QString &column, const QVariant &value);
     bool update(const QString &column, const QVariant &value);
-
-private:
     void loadFromRecord(const QSqlRecord &record);
 };
 

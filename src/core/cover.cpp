@@ -37,18 +37,7 @@ Cover Cover::defaultCover()
 
 QPixmap Cover::loadFromFile(const QString &file)
 {
-    QPixmap cover;
-    TagLib::MPEG::File mFile(Util::toWString(file));
-    if (mFile.hasID3v2Tag())
-    {
-        const TagLib::ID3v2::Tag *tag = mFile.ID3v2Tag();
-        const TagLib::ID3v2::FrameList frameList = tag->frameList("APIC");
-        if (!frameList.isEmpty())
-        {
-            const TagLib::ID3v2::AttachedPictureFrame *frame = static_cast<TagLib::ID3v2::AttachedPictureFrame *>(frameList.front());
-            cover.loadFromData(reinterpret_cast<const uchar *>(frame->picture().data()), frame->picture().size());
-        }
-    }
+    QPixmap cover = readFromFile(file);
     if (cover.isNull())
     {
         egg_log() << "Cannot read cover" << file;
@@ -77,7 +66,7 @@ void Cover::invalidate()
     m_id = 0;
 }
 
-QPixmap Cover::pixmap(int size)
+QPixmap Cover::pixmap(int size) const
 {
     const int id = qMax(1, m_id);
     static QHash<int, QPixmap> cache;
@@ -89,7 +78,7 @@ QPixmap Cover::pixmap(int size)
     return size == 0 ? pixmap : scale(pixmap, size);
 }
 
-QColor Cover::color()
+QColor Cover::color() const
 {
     const int id = qMax(1, m_id);
     static QHash<int, QColor> cache;
@@ -100,6 +89,23 @@ QColor Cover::color()
         cache.insert(id, adjustColor(raw).toRgb());
     }
     return cache.value(id);
+}
+
+QPixmap Cover::readFromFile(const QString &file)
+{
+    QPixmap cover;
+    TagLib::MPEG::File mFile(Util::toWString(file));
+    if (mFile.hasID3v2Tag())
+    {
+        const TagLib::ID3v2::Tag *tag = mFile.ID3v2Tag();
+        const TagLib::ID3v2::FrameList frameList = tag->frameList("APIC");
+        if (!frameList.isEmpty())
+        {
+            const TagLib::ID3v2::AttachedPictureFrame *frame = static_cast<TagLib::ID3v2::AttachedPictureFrame *>(frameList.front());
+            cover.loadFromData(reinterpret_cast<const uchar *>(frame->picture().data()), frame->picture().size());
+        }
+    }
+    return cover;
 }
 
 QPixmap Cover::coverify(const QPixmap &cover)

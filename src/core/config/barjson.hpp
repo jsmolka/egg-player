@@ -6,9 +6,6 @@
 namespace cfg
 {
 
-namespace bar
-{
-
 class LabelWidthJson : public JsonObject
 {
 public:
@@ -39,8 +36,6 @@ public:
     int handleSize() const;
 };
 
-}
-
 class BarJson : public JsonObject
 {
 public:
@@ -49,11 +44,11 @@ public:
 
     void setDefaults() override;
 
-    const bar::LabelWidthJson &labelWidth() const;
-    const bar::SliderJson &slider() const;
+    const LabelWidthJson &labelWidth() const;
+    LabelWidthJson &labelWidth();
 
-    bar::LabelWidthJson &labelWidth();
-    bar::SliderJson &slider();
+    const SliderJson &slider() const;
+    SliderJson &slider();
 
     void setHeight(int height);
     int height() const;
@@ -70,8 +65,8 @@ public:
     int coverSize() const;
 
 private:
-    bar::LabelWidthJson m_labelWidth;
-    bar::SliderJson m_slider;
+    LabelWidthJson m_labelWidth;
+    SliderJson m_slider;
 };
 
 }

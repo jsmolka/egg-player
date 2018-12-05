@@ -15,12 +15,12 @@ public:
     explicit SmoothTableWidget(QWidget *parent = nullptr);
     ~SmoothTableWidget();
 
-    EGG_PPROP(int, fps, setFps, fps)
-    EGG_PPROP(int, duration, setDuration, duration)
-    EGG_PPROP(double, slowMultiplier, setSlowMultiplier, slowMultiplier)
-    EGG_PPROP(double, fastMultiplier, setFastMultiplier, fastMultiplier)
-    EGG_PPROP(Qt::KeyboardModifier, slowModifier, setSlowModifier, slowModifier)
-    EGG_PPROP(Qt::KeyboardModifier, fastModifier, setFastModifier, fastModifier)
+    EGG_P_PROP(int, fps, setFps, fps)
+    EGG_P_PROP(int, duration, setDuration, duration)
+    EGG_P_PROP(double, slowMultiplier, setSlowMultiplier, slowMultiplier)
+    EGG_P_PROP(double, fastMultiplier, setFastMultiplier, fastMultiplier)
+    EGG_P_PROP(Qt::KeyboardModifier, slowModifier, setSlowModifier, slowModifier)
+    EGG_P_PROP(Qt::KeyboardModifier, fastModifier, setFastModifier, fastModifier)
 
 protected:
     void wheelEvent(QWheelEvent *event);

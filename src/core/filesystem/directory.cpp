@@ -60,21 +60,20 @@ QStrings fs::Directory::update()
     QStrings changes;
     if (exists())
     {
-        changes << processRemovedSubdirs();
-        changes << processCurrentSubdirs();
-        changes << processRemovedFiles();
-        changes << processCurrentFiles();
+        processRemovedSubdirs(changes);
+        processCurrentSubdirs(changes);
+        processRemovedFiles(changes);
+        processCurrentFiles(changes);
     }
     else
     {
-        changes << deleteRecursive(this);
+        deleteRecursive(this);
     }
     return changes;
 }
 
-QStrings fs::Directory::processRemovedSubdirs()
+void fs::Directory::processRemovedSubdirs(QStrings &changes)
 {
-    QStrings changes;
     for (auto iter = m_subdirs.begin(); iter != m_subdirs.end(); )
     {
         if (!(*iter)->exists())
@@ -87,12 +86,10 @@ QStrings fs::Directory::processRemovedSubdirs()
             ++iter;
         }
     }
-    return changes;
 }
 
-QStrings fs::Directory::processCurrentSubdirs()
+void fs::Directory::processCurrentSubdirs(QStrings &changes)
 {
-    QStrings changes;
     QDirIterator iter(m_path, QDir::Dirs | QDir::NoDotAndDotDot);
     while (iter.hasNext())
     {
@@ -111,12 +108,10 @@ QStrings fs::Directory::processCurrentSubdirs()
         }
         changes << dir->update();
     }
-    return changes;
 }
 
-QStrings fs::Directory::processRemovedFiles()
+void fs::Directory::processRemovedFiles(QStrings &changes)
 {
-    QStrings changes;
     for (auto iter = m_files.begin(); iter != m_files.end(); )
     {
         if (!QFileInfo::exists(*iter))
@@ -129,12 +124,10 @@ QStrings fs::Directory::processRemovedFiles()
             ++iter;
         }
     }
-    return changes;
 }
 
-QStrings fs::Directory::processCurrentFiles()
+void fs::Directory::processCurrentFiles(QStrings &changes)
 {
-    QStrings changes;
     QDirIterator iter(m_path, QStringList() << "*.mp3", QDir::Files);
     while (iter.hasNext())
     {
@@ -146,7 +139,6 @@ QStrings fs::Directory::processCurrentFiles()
             m_files.insert(file);
         }
     }
-    return changes;
 }
 
 QStrings fs::Directory::deleteRecursive(fs::Directory *dir)

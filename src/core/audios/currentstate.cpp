@@ -1,9 +1,9 @@
 #include "currentstate.hpp"
 
-audios::CurrentState::CurrentState(const Audio::vector &vector, FrozenVector *parent)
-    : FrozenVector(vector, parent)
+audios::CurrentState::CurrentState(const QVector<Audio> &vector, AudiosBase *parent)
+    : AudiosBase(vector, parent)
 {
-    connect(parent, &FrozenVector::removedAudio, this, &CurrentState::removeAudio);
+    connect(parent, &AudiosBase::removedAudio, this, &CurrentState::removeAudio);
 }
 
 void audios::CurrentState::removeAudio(const Audio &audio)

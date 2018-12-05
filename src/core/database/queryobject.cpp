@@ -39,8 +39,7 @@ QSqlDatabase db::QueryObject::threadDb()
 
     QSqlDatabase db = QSqlDatabase::database(connection, false);
     db.setDatabaseName(constants::db::File);
-    if (!db.open())
-        egg_log() << "Cannot open database";
+    db.open();
 
     return db;
 }

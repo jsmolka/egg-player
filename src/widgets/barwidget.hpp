@@ -24,7 +24,7 @@ public:
     QColor color() const;
 
 private slots:
-    void onPlayerAudioChanged(Audio audio);
+    void onPlayerAudioChanged(const Audio &audio);
     void onPlayerPositionChanged(int position);
     void onVolumeButtonPressed();
     void onDurationSliderMoved(int value);

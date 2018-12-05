@@ -2,27 +2,27 @@
 
 void Audios::insert(int index, const Audio &audio)
 {
-    Audio::vector::insert(index, audio);
+    QVector<Audio>::insert(index, audio);
     emit inserted(index);
 }
 
 void Audios::append(const Audio &audio)
 {
-    Audio::vector::append(audio);
+    QVector<Audio>::append(audio);
     emit inserted(size() - 1);
 }
 
 void Audios::remove(int index)
 {
     Audio audio = at(index);
-    Audio::vector::remove(index);
+    QVector<Audio>::remove(index);
     emit removed(index);
     emit removedAudio(audio);
 }
 
 Audios::iterator Audios::insert(Audios::iterator before, const Audio &audio)
 {
-    auto position = Audio::vector::insert(before, audio);
+    auto position = QVector<Audio>::insert(before, audio);
     emit inserted(static_cast<int>(position - begin()));
 
     return position;
@@ -30,7 +30,7 @@ Audios::iterator Audios::insert(Audios::iterator before, const Audio &audio)
 
 Audios::iterator Audios::erase(Audios::iterator position)
 {
-    auto next = Audio::vector::erase(position);
+    auto next = QVector<Audio>::erase(position);
     emit removed(static_cast<int>(position - begin()));
     emit removedAudio(*position);
 
