@@ -3,7 +3,9 @@
  * values can and should changed through the config. The following values will
  * be replaced by config values.
  * - groove-size-duration
- * - groove-size-volume
+ * - groove-size-duration-half
+ * - groove-size-volume 
+ * - groove-size-volume-half
  * - handle-size
  * - handle-size-half
  * - handle-size-pressed
@@ -23,16 +25,20 @@ LockableIconButton[locked=true] {
     background: rgba(255, 255, 255, 0.3);
 }
 
-Slider::sub-page {
+DurationSlider::sub-page {
 	background: white;
+	border-top-left-radius: groove-size-duration-half;
+	border-bottom-left-radius: groove-size-duration-half;
 }
 
-Slider::add-page {
-	background: rgb(150, 150, 150);
+DurationSlider::add-page {
+	background: rgba(150, 150, 150, 0.6);
+	border-top-right-radius: groove-size-duration-half;
+	border-bottom-right-radius: groove-size-duration-half;
 }
 
 DurationSlider::groove:horizontal {
-	background: rgb(150, 150, 150);
+	background: transparent;
 	height: groove-size-duration;
 }
 
@@ -58,7 +64,27 @@ DurationSlider::handle:horizontal:pressed {
 	border-radius: handle-size-pressed-half;
 }
 
+VolumeSlider::sub-page {
+	background: white;
+	border-top-left-radius: groove-size-volume-half;
+	border-bottom-left-radius: groove-size-volume-half;
+}
+
+VolumeSlider::add-page {
+	background: transparent;
+	border-top-right-radius: groove-size-volume-half;
+	border-bottom-right-radius: groove-size-volume-half;
+}
+
 VolumeSlider::groove:horizontal {
-    background: rgb(150, 150, 150);
-    height: groove-size-volume;
+	background: rgba(150, 150, 150, 0.6);
+	height: groove-size-volume;
+	border-radius: groove-size-volume-half; 
+}
+
+VolumeSlider::handle:horizontal {
+	background: white;
+	width: groove-size-volume;
+	height: groove-size-volume;
+	border-radius: groove-size-volume-half;
 }

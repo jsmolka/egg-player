@@ -189,7 +189,9 @@ void BarWidget::initStyle()
     const int iconSize = cfg_bar.iconSize();
 
     setStyleSheet(FileUtil::read(constants::css::Bar)
+        .replace("groove-size-duration-half", QString::number(grooveSizeDuration / 2))
         .replace("groove-size-duration", QString::number(grooveSizeDuration))
+        .replace("groove-size-volume-half", QString::number(grooveSizeVolume / 2))
         .replace("groove-size-volume", QString::number(grooveSizeVolume))
         .replace("handle-size-pressed-half", QString::number(handleSizePressed / 2))
         .replace("handle-size-pressed", QString::number(handleSizePressed))
