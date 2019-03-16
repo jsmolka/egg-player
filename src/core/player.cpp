@@ -78,7 +78,10 @@ void Player::setVolume(int volume)
 void Player::setPosition(int position)
 {
     if (m_bass.setPosition(position))
+    {
+        m_position = position;
         emit positionChanged(position);
+    }
 }
 
 void Player::updatePosition()
